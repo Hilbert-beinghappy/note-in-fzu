@@ -1983,4 +1983,1200 @@ U_n^* \cap V_m^* = \left(U_n \setminus \bigcup_{k=1}^{n} \overline{V_k}\right) \
   其余方向：$5\Rightarrow4$ 因 $I^{\omega}$ 为波兰空间；$4\Rightarrow2$ 因波兰空间为可分度量，子空间仍为可分度量；$2\Rightarrow3\Rightarrow2$ 显然；$2\Rightarrow1$ 因度量空间为 $T_3$ 且可分 $\Rightarrow$ 第二可数。
   \end{proof}
   
-  \end{document}
+
+  
+  \section{子网与聚点}
+ 
+
+ 
+ \begin{lemma}\label{lem:subnet-limit}
+ 若 $x_{\alpha}\to x$，则任意子网 $(x_{\theta(\gamma)})_{\gamma\in\Gamma}$ 亦收敛到 $x$。
+ \end{lemma}
+ \begin{proof}
+ 任取 $U\in\mathcal{N}(x)$。由 $x_{\alpha}\to x$，存在 $\alpha_0\in\Lambda$ 使得 $\alpha\ge \alpha_0\Rightarrow x_{\alpha}\in U$。
+ 由 $\theta$ 余最终，存在 $\gamma_0\in\Gamma$ 使得 $\theta(\gamma_0)\ge \alpha_0$。于是当 $\gamma\succeq\gamma_0$ 时有 $\theta(\gamma)\ge \theta(\gamma_0)\ge \alpha_0$，从而 $x_{\theta(\gamma)}\in U$。
+ 故 $(x_{\theta(\gamma)})_{\gamma\in\Gamma}\to x$。
+ \end{proof}
+ 
+ \begin{theorem}\label{thm:cluster-subnet}
+ 设 $(x_{\alpha})_{\alpha\in\Lambda}$ 为拓扑空间 $X$ 中的网，$x\in X$。下列命题等价：
+ \begin{enumerate}
+ \item 存在 $(x_{\alpha})$ 的子网收敛到 $x$；
+ \item $x\in\displaystyle\bigcap_{\alpha\in\Lambda}\overline{\{x_{\beta}:\beta\ge\alpha\}}$。
+ \end{enumerate}
+ \end{theorem}
+ \begin{proof}
+ (1)$\Rightarrow$(2) 设存在子网 $(x_{\alpha_i})_{i\in\Gamma}$ 满足 $x_{\alpha_i}\to x$。
+ 任取 $\alpha\in\Lambda$ 与邻域 $U\in\mathcal{N}(x)$。由子网余最终性，存在 $i_0\in\Gamma$ 使得 $\alpha_{i_0}\ge\alpha$；由收敛性，存在 $i_1\in\Gamma$ 使得 $i\succeq i_1\Rightarrow x_{\alpha_i}\in U$。
+ 取 $i\succeq i_0,i_1$，则 $x_{\alpha_i}\in U\cap\{x_{\beta}:\beta\ge\alpha\}$，故 $U\cap\{x_{\beta}:\beta\ge\alpha\}\neq\varnothing$，从而 $x\in\overline{\{x_{\beta}:\beta\ge\alpha\}}$。$\alpha$ 任意，得 (2)。
+ 
+ (2)$\Rightarrow$(1) 令
+ \[
+ \Gamma=\{(U,\alpha)\in\mathcal{N}(x)\times\Lambda:\ x_{\alpha}\in U\}.
+ \]
+ 在 $\Gamma$ 上定义偏序：对 $(U,\alpha),(V,\beta)\in\Gamma$，令
+ \[
+ (U,\alpha)\preceq (V,\beta)\iff U\supseteq V\ \text{且}\ \alpha\le\beta.
+ \]
+ 下证 $(\Gamma,\preceq)$ 为定向集：任取 $(U,\alpha),(V,\beta)\in\Gamma$，令 $W=U\cap V\in\mathcal{N}(x)$，并取 $\gamma\in\Lambda$ 使得 $\gamma\ge\alpha,\beta$。
+ 由 (2) 得 $x\in\overline{\{x_{\delta}:\delta\ge\gamma\}}$，故 $W\cap\{x_{\delta}:\delta\ge\gamma\}\neq\varnothing$，于是存在 $\delta\ge\gamma$ 使得 $x_{\delta}\in W$。
+ 因而 $(W,\delta)\in\Gamma$ 且 $(U,\alpha)\preceq (W,\delta)$ 与 $(V,\beta)\preceq (W,\delta)$，从而 $(\Gamma,\preceq)$ 为定向集。
+ 
+ 定义 $\theta:\Gamma\to\Lambda$ 为 $\theta(U,\alpha)=\alpha$，则 $\theta$ 保序，且对任意 $\alpha_0\in\Lambda$，有 $(X,\alpha_0)\in\Gamma$ 且 $\theta(X,\alpha_0)=\alpha_0$，因此 $\theta$ 余最终。
+ 于是 $(x_{\theta(U,\alpha)})_{(U,\alpha)\in\Gamma}$ 为 $(x_{\alpha})_{\alpha\in\Lambda}$ 的子网。
+ 
+ 最后证该子网收敛到 $x$：任取 $U_0\in\mathcal{N}(x)$，并取任意 $\alpha_*\in\Lambda$。由 (2) 得 $U_0\cap\{x_{\beta}:\beta\ge\alpha_*\}\neq\varnothing$，故存在 $\beta\ge\alpha_*$ 使得 $x_{\beta}\in U_0$。
+ 令 $\gamma_0=(U_0,\beta)\in\Gamma$。若 $\gamma=(V,\alpha)\succeq\gamma_0$，则 $V\subseteq U_0$ 且 $x_{\theta(\gamma)}=x_{\alpha}\in V\subseteq U_0$。
+ 因此该子网最终落在 $U_0$ 中，即 $x_{\theta(\gamma)}\to x$。
+ \end{proof}
+
+\subsection{紧性与收敛子网}
+
+\begin{theorem}[紧性的网刻画]\label{thm:compact-net}
+  设 $X$ 为拓扑空间，则下列命题等价：
+  \begin{enumerate}
+    \item $X$ 紧；
+    \item $X$ 中任意网都存在一个收敛子网。
+  \end{enumerate}
+\end{theorem}
+\begin{proof}
+  (1)$\Rightarrow$(2) 设 $(x_{\alpha})_{\alpha\in\Lambda}$ 为 $X$ 中任意网。对每个 $\alpha\in\Lambda$ 令
+  \[
+    F_{\alpha}=\overline{\{x_{\beta}:\beta\ge\alpha\}}.
+  \]
+  则 $\{F_{\alpha}\}_{\alpha\in\Lambda}$ 为闭集族，并具有有限交性质：任取 $\alpha_1,\dots,\alpha_n$，由 $\Lambda$ 定向性可取 $\gamma\in\Lambda$ 使 $\gamma\ge\alpha_i$（$\forall i$），于是
+  \[
+    F_{\gamma}\subseteq \bigcap_{i=1}^n F_{\alpha_i},
+  \]
+  而 $F_{\gamma}\neq\varnothing$。由紧性知 $\bigcap_{\alpha\in\Lambda}F_{\alpha}\neq\varnothing$，取 $x\in\bigcap_{\alpha}F_{\alpha}$。由定理 \ref{thm:cluster-subnet}，存在 $(x_{\alpha})$ 的子网收敛到 $x$。
+
+  (2)$\Rightarrow$(1) 反证。若 $X$ 非紧，则存在开覆盖 $\mathcal U$ 使其无有限子覆盖。令
+  \[
+    \mathcal B=\{\,\mathcal F\subseteq\mathcal U: \mathcal F\ \text{有限}\,\},
+  \]
+  以包含关系 $\subseteq$ 作偏序，则 $(\mathcal B,\subseteq)$ 为定向集。对每个 $\mathcal F\in\mathcal B$，因 $\mathcal F$ 不能覆盖 $X$，可取
+  \[
+    x_{\mathcal F}\in X\setminus\bigcup\mathcal F.
+  \]
+  从而得到网 $(x_{\mathcal F})_{\mathcal F\in\mathcal B}$。任取其子网 $(x_{\theta(\gamma)})_{\gamma\in\Gamma}$。若该子网收敛到某点 $x\in X$，取 $U\in\mathcal U$ 使 $x\in U$。
+  令 $\mathcal F_0=\{U\}\in\mathcal B$。由 $\theta$ 余最终性可取 $\gamma_0\in\Gamma$ 使 $\theta(\gamma_0)\supseteq\mathcal F_0$，于是对任意 $\gamma\succeq\gamma_0$ 都有 $\theta(\gamma)\supseteq\mathcal F_0$，从而
+  \[
+    x_{\theta(\gamma)}\in X\setminus\bigcup\theta(\gamma)\subseteq X\setminus U.
+  \]
+  因此子网最终不在邻域 $U$ 中，与 $x_{\theta(\gamma)}\to x$ 矛盾。故该网不存在收敛子网，矛盾。于是 $X$ 必紧。
+\end{proof}
+
+\subsection{拓扑和的连续性与可度量性}
+
+\begin{proposition}\label{prop:coprod-continuity}
+  设 $(X_\alpha,\mathcal T_\alpha)_{\alpha\in\Lambda}$ 为两两不交的拓扑空间族，其拓扑和记为 $\coprod_{\alpha\in\Lambda}X_\alpha$（见定义 \ref{def:topological-sum}），包含映射记为 $i_\alpha:X_\alpha\hookrightarrow\coprod_{\gamma}X_\gamma$。
+  对任意拓扑空间 $Y$ 与映射 $f:\coprod_{\alpha\in\Lambda}X_\alpha\to Y$，下列命题等价：
+  \begin{enumerate}
+    \item $f$ 连续；
+    \item 对每个 $\alpha\in\Lambda$，复合 $f\circ i_\alpha:X_\alpha\to Y$ 连续。
+  \end{enumerate}
+\end{proposition}
+\begin{proof}
+  (1)$\Rightarrow$(2) 因 $i_\alpha$ 连续，故 $f\circ i_\alpha$ 连续。
+
+  (2)$\Rightarrow$(1) 任取 $Y$ 中开集 $V$。对每个 $\alpha$，令 $U_\alpha=(f\circ i_\alpha)^{-1}(V)$，则 $U_\alpha\in\mathcal T_\alpha$。
+  由拓扑和的显式刻画（命题 \ref{prop:sum-topology-explicit}）知
+  \[
+    \bigsqcup_{\alpha\in\Lambda} i_\alpha(U_\alpha)
+  \]
+  为 $\coprod X_\alpha$ 的开集。另一方面，对任意 $x\in X_\alpha$，有 $i_\alpha(x)\in f^{-1}(V)\iff x\in U_\alpha$，故
+  \[
+    f^{-1}(V)=\bigsqcup_{\alpha\in\Lambda} i_\alpha(U_\alpha)
+  \]
+  为开集，从而 $f$ 连续。
+\end{proof}
+
+\begin{proposition}\label{prop:coprod-metrizable}
+  若对每个 $\alpha\in\Lambda$，空间 $X_\alpha$ 可度量化，则拓扑和 $\coprod_{\alpha\in\Lambda}X_\alpha$ 亦可度量化。
+\end{proposition}
+\begin{proof}
+  对每个 $\alpha$ 取与 $X_\alpha$ 拓扑相容的度量 $d_\alpha$。由命题 \ref{prop:bounded-metric-equivalent} 可不失一般性设 $d_\alpha\le 1$。
+  在集合不交并 $\bigsqcup_{\alpha\in\Lambda}X_\alpha$ 上定义函数 $d$：若 $x,y\in X_\alpha$，则令 $d(x,y)=d_\alpha(x,y)$；若 $x\in X_\alpha$ 与 $y\in X_\beta$ 且 $\alpha\neq\beta$，则令 $d(x,y)=1$。
+  易验证 $d$ 为度量。记由 $d$ 诱导的拓扑为 $\mathcal T_d$。
+
+  先证 $\mathcal T_d\subseteq\mathcal T_{\coprod}$：任取 $\mathcal T_d$ 中开集 $O$，对每个 $\alpha$，子空间 $O\cap X_\alpha$ 在 $(X_\alpha,d_\alpha)$ 中开，于是
+  \[
+    O=\bigsqcup_{\alpha\in\Lambda}(O\cap X_\alpha)
+  \]
+  由命题 \ref{prop:sum-topology-explicit} 知 $O\in\mathcal T_{\coprod}$。
+
+  再证 $\mathcal T_{\coprod}\subseteq\mathcal T_d$：任取 $\mathcal T_{\coprod}$ 中开集 $O=\bigsqcup_{\alpha}U_\alpha$（$U_\alpha\in\mathcal T_\alpha$）。任取 $x\in O$，设 $x\in U_\alpha$。
+  由 $U_\alpha$ 在 $(X_\alpha,d_\alpha)$ 中开，可取 $\varepsilon\in(0,1)$ 使 $B_{d_\alpha}(x,\varepsilon)\subseteq U_\alpha$。此时 $B_d(x,\varepsilon)=B_{d_\alpha}(x,\varepsilon)\subseteq O$，故 $O$ 在 $\mathcal T_d$ 中开。
+
+  综上 $\mathcal T_d=\mathcal T_{\coprod}$，从而 $\coprod X_\alpha$ 可度量化。
+\end{proof}
+
+\begin{lemma}[粘贴引理]\label{lem:gluing}
+  设 $f:X\to Y$ 为映射，$\{U_i\}_{i\in I}$ 为 $X$ 的开覆盖。若对每个 $i\in I$，限制 $f|_{U_i}:U_i\to Y$ 连续，则 $f$ 连续。
+\end{lemma}
+\begin{proof}
+  任取 $Y$ 中开集 $V$。对每个 $i$，有
+  \[
+    (f|_{U_i})^{-1}(V)=U_i\cap f^{-1}(V)
+  \]
+  在 $X$ 中开。于是
+  \[
+    f^{-1}(V)=\bigcup_{i\in I}\big(U_i\cap f^{-1}(V)\big)=\bigcup_{i\in I}(f|_{U_i})^{-1}(V)
+  \]
+  为开集，故 $f$ 连续。
+\end{proof}
+
+\subsection{Polish 空间的封闭性}
+
+\begin{theorem}\label{thm:polish-product-sum}
+  设 $\{X_n\}_{n\in\mathbb N}$ 为 Polish 空间列，则
+  \begin{enumerate}
+    \item $\prod_{n\in\mathbb N}X_n$ 为 Polish 空间；
+    \item $\coprod_{n\in\mathbb N}X_n$ 为 Polish 空间。
+  \end{enumerate}
+\end{theorem}
+\begin{proof}
+  由定义 \ref{def:polish-space}，需证可分与完全可度量化。
+
+  (1) 对每个 $n$ 取与 $X_n$ 拓扑相容且完备的度量 $d_n$，并由命题 \ref{prop:bounded-metric-equivalent} 可设 $d_n\le 1$。在 $\prod_n X_n$ 上定义
+  \[
+    d\big((x_n),(y_n)\big)=\sum_{n=1}^{\infty}2^{-n}d_n(x_n,y_n).
+  \]
+  则 $d$ 为度量，且与乘积拓扑相容（与引理 \ref{lem:countable-product-metrizable} 的构造一致）。若 $(x^{(k)})$ 在 $d$ 下为 Cauchy，则对每个 $n$，坐标列 $(x^{(k)}_n)$ 在 $d_n$ 下为 Cauchy，因 $d_n$ 完备可得 $x^{(k)}_n\to x_n$。令 $x=(x_n)$，可验证 $x^{(k)}\to x$，故 $d$ 完备，乘积空间完全可度量化。
+
+  再证可分：对每个 $n$ 取可数稠密集 $D_n\subseteq X_n$，并固定一点 $x_n^0\in D_n$。令
+  \[
+    D=\bigcup_{m\in\mathbb N}\Big(\prod_{n=1}^{m}D_n\times\prod_{n>m}\{x_n^0\}\Big)\subseteq\prod_{n\in\mathbb N}X_n.
+  \]
+  由引理 \ref{lem:countable-set-closure} 知对每个 $m$，$\prod_{n=1}^{m}D_n$ 可数，且上式为可数并，故 $D$ 可数。
+  另一方面，乘积拓扑的基开集由有限多个坐标决定：任取非空基开集
+  \[
+    O=\bigcap_{k=1}^{m}p_{n_k}^{-1}(U_{n_k}),\qquad U_{n_k}\subseteq X_{n_k}\ \text{开},
+  \]
+  由 $D_{n_k}$ 在 $X_{n_k}$ 中稠密可取 $y_{n_k}\in D_{n_k}\cap U_{n_k}$。定义点 $y=(y_n)$：当 $n\in\{n_1,\dots,n_m\}$ 时取 $y_n=y_{n}$，其余坐标取 $x_n^0$。则 $y\in D\cap O$，故 $D$ 在 $\prod_n X_n$ 中稠密，从而 $\prod_n X_n$ 可分。
+
+  (2) 对每个 $n$ 取与 $X_n$ 拓扑相容且完备的度量 $d_n$，并可设 $d_n\le 1$。在不交并 $\bigsqcup_n X_n$ 上定义度量
+  \[
+    d(x,y)=\begin{cases}
+      d_n(x,y), & x,y\in X_n,\\
+      1, & x\in X_m,\ y\in X_n,\ m\ne n.
+    \end{cases}
+  \]
+  则由命题 \ref{prop:coprod-metrizable} 的论证知该度量诱导拓扑和拓扑，且因每个 $d_n$ 完备可得 $d$ 完备，从而 $\coprod_n X_n$ 完全可度量化。
+
+  取每个 $n$ 的可数稠密集 $D_n\subseteq X_n$，则 $\bigsqcup_n D_n$ 为可数集且在 $\coprod_n X_n$ 中稠密，故 $\coprod_n X_n$ 可分。
+\end{proof}
+
+\subsection{可数性引理与可数乘积的第二可数性}
+
+\begin{lemma}\label{lem:countable-set-closure}
+  \begin{enumerate}
+    \item 可数集的有限直积仍可数；
+    \item 可数多个可数集的并仍可数。
+  \end{enumerate}
+\end{lemma}
+\begin{proof}
+  (1) 设 $A,B$ 可数，则存在单射 $A\hookrightarrow\mathbb N$ 与 $B\hookrightarrow\mathbb N$，故 $A\times B\hookrightarrow\mathbb N\times\mathbb N$。
+  而 $\mathbb N\times\mathbb N$ 可数，从而 $A\times B$ 可数。归纳即得有限直积情形。
+
+  (2) 设 $\{A_n\}_{n\in\mathbb N}$ 皆可数，则存在单射 $A_n\hookrightarrow\mathbb N$，故
+  \[
+    \bigcup_{n\in\mathbb N}A_n\hookrightarrow\mathbb N\times\mathbb N,
+  \]
+  从而该并为可数。
+\end{proof}
+
+\begin{proposition}\label{prop:countable-product-ca2}
+  设 $\{X_n\}_{n\in\mathbb N}$ 为拓扑空间列。若每个 $X_n$ 第二可数（即 $CA_2$），则乘积空间 $\prod_{n\in\mathbb N}X_n$ 第二可数。
+\end{proposition}
+\begin{proof}
+  对每个 $n$ 取 $X_n$ 的可数基 $\mathcal B_n$。乘积拓扑的一个基可取为所有形如
+  \[
+    \bigcap_{k=1}^m p_{n_k}^{-1}(B_{n_k}),\qquad B_{n_k}\in\mathcal B_{n_k},\ n_1,\dots,n_m\in\mathbb N
+  \]
+  的集合（其中 $m\ge 1$，$p_n$ 为投影）。对固定的 $(n_1,\dots,n_m)$，由引理 \ref{lem:countable-set-closure}(1) 知选择 $B_{n_k}$ 的方式可数；再对所有有限序列 $(n_1,\dots,n_m)$ 取并，由引理 \ref{lem:countable-set-closure}(2) 知总的基仍可数。
+  故 $\prod_n X_n$ 第二可数。
+\end{proof}
+
+\subsection{连通性与连续像}
+
+\begin{definition}[连通与不连通]\label{def:connected}
+  设 $X$ 为拓扑空间。
+  若存在非空开集 $U,V\subseteq X$ 使得
+  \[
+    U\cap V=\varnothing,\qquad X=U\cup V,
+  \]
+  则称 $X$ \emph{不连通}；否则称 $X$ \emph{连通}。
+\end{definition}
+
+\begin{proposition}\label{prop:connected-image}
+  设 $f:X\to Y$ 连续，$\Omega\subseteq X$ 连通，则 $f(\Omega)\subseteq Y$ 连通。
+\end{proposition}
+\begin{proof}
+  反证。若 $f(\Omega)$ 不连通，则存在 $Y$ 中互不相交的非空开集 $U,V$ 使得
+  \[
+    f(\Omega)\subseteq U\cup V,\qquad f(\Omega)\cap U\ne\varnothing,\ \ f(\Omega)\cap V\ne\varnothing.
+  \]
+  因 $f$ 连续，$f^{-1}(U),f^{-1}(V)$ 为 $X$ 中开集，于是 $\Omega\cap f^{-1}(U)$ 与 $\Omega\cap f^{-1}(V)$ 在子空间 $\Omega$ 中开，且非空、互不相交，并满足
+  \[
+    \Omega\subseteq\big(\Omega\cap f^{-1}(U)\big)\cup\big(\Omega\cap f^{-1}(V)\big),
+  \]
+  与 $\Omega$ 连通矛盾。
+\end{proof}
+\begin{corollary}\label{cor:connected-surjective-image}
+  若 $X$ 连通且 $f:X\to Y$ 连续满射，则 $Y$ 连通。
+\end{corollary}
+
+\begin{proposition}\label{prop:disconnected-clopen}
+  设 $X$ 为拓扑空间，则以下等价：
+  \begin{enumerate}
+    \item $X$ 不连通；
+    \item 存在子集 $\Omega\subseteq X$ 满足 $\varnothing\neq\Omega\neq X$ 且 $\Omega$ 在 $X$ 中既开又闭。
+  \end{enumerate}
+\end{proposition}
+\begin{proof}
+  (1)$\Rightarrow$(2) 若 $X$ 不连通，则存在非空开集 $U,V\subseteq X$ 使得
+  \[
+    U\cap V=\varnothing,\qquad X=U\cup V.
+  \]
+  则 $U$ 既开又闭，且 $\varnothing\neq U\neq X$。
+
+  (2)$\Rightarrow$(1) 若 $\Omega$ 非空真子集且既开又闭，则 $X=\Omega\cup\Omega^{c}$ 且二者为非空不交开集，故 $X$ 不连通。
+\end{proof}
+
+\begin{lemma}\label{lem:connected-meets-clopen}
+  设 $A\subseteq X$ 在子空间拓扑下连通，且 $\Omega\subseteq X$ 在 $X$ 中既开又闭。
+  则要么 $A\cap\Omega=\varnothing$，要么 $A\subseteq\Omega$。
+\end{lemma}
+\begin{proof}
+  注意到 $A\cap\Omega$ 与 $A\cap\Omega^{c}$ 在子空间 $A$ 中既开又闭，且
+  \[
+    A=(A\cap\Omega)\cup(A\cap\Omega^{c}),\qquad (A\cap\Omega)\cap(A\cap\Omega^{c})=\varnothing.
+  \]
+  由命题 \ref{prop:disconnected-clopen}（应用于空间 $A$）知 $A\cap\Omega=\varnothing$ 或 $A\cap\Omega^{c}=\varnothing$，后一种情形等价于 $A\subseteq\Omega$。
+\end{proof}
+
+\begin{lemma}\label{lem:union-connected-with-common-point}
+  设 $\{A_\alpha\}_{\alpha\in\Lambda}$ 为 $X$ 中一族连通子集，且 $\bigcap_{\alpha\in\Lambda}A_\alpha\neq\varnothing$。
+  则 $\bigcup_{\alpha\in\Lambda}A_\alpha$ 连通。
+\end{lemma}
+\begin{proof}
+  反证。若 $\bigcup_{\alpha}A_\alpha$ 不连通，则存在其子空间中的不交非空开集 $U,V$ 使
+  \[
+    \bigcup_{\alpha\in\Lambda}A_\alpha=U\cup V.
+  \]
+  取 $x_0\in\bigcap_{\alpha}A_\alpha$，不妨设 $x_0\in U$。对任意 $\alpha$，集合 $A_\alpha\cap U$ 与 $A_\alpha\cap V$ 在 $A_\alpha$ 中开且不交，并满足
+  \[
+    A_\alpha=(A_\alpha\cap U)\cup(A_\alpha\cap V).
+  \]
+  由 $A_\alpha$ 连通及 $x_0\in A_\alpha\cap U$ 知 $A_\alpha\cap V=\varnothing$，即 $A_\alpha\subseteq U$。
+  于是 $\bigcup_{\alpha}A_\alpha\subseteq U$，与 $V$ 非空矛盾。
+\end{proof}
+
+\begin{definition}[连通分支]\label{def:connected-component}
+  设 $X$ 为拓扑空间。对 $x,y\in X$，定义关系
+  \[
+    x\sim y\iff \exists\ \text{连通子集 }A\subseteq X\ \text{使}\ x,y\in A.
+  \]
+  称等价类 $[x]=\{y\in X:y\sim x\}$ 为点 $x$ 所在的\emph{连通分支}（亦称连通分量）。
+\end{definition}
+
+\begin{proposition}\label{prop:connected-component-eqrel}
+  上述关系 $\sim$ 为等价关系。
+\end{proposition}
+\begin{proof}
+  自反性：取 $A=\{x\}$。
+
+  对称性：由定义显然。
+
+  传递性：若 $x\sim y$ 与 $y\sim z$，则存在连通集 $A,B$ 使 $x,y\in A$ 且 $y,z\in B$。
+  此时 $A\cap B\ni y$，由引理 \ref{lem:union-connected-with-common-point} 知 $A\cup B$ 连通，且 $x,z\in A\cup B$，故 $x\sim z$。
+\end{proof}
+
+\begin{proposition}\label{prop:connected-component-maximal}
+  对任意 $x\in X$，连通分支 $[x]$ 连通，且是包含 $x$ 的极大连通子集：若 $C\subseteq X$ 连通且 $x\in C$，则 $C\subseteq[x]$。
+\end{proposition}
+\begin{proof}
+  对每个 $y\in[x]$，取连通子集 $A_y\subseteq X$ 使 $x,y\in A_y$。则 $x\in\bigcap_{y\in[x]}A_y$，且
+  \[
+    [x]=\bigcup_{y\in[x]}A_y.
+  \]
+  由引理 \ref{lem:union-connected-with-common-point} 得 $[x]$ 连通。
+
+  若 $C$ 连通且 $x\in C$，则对任意 $y\in C$，取 $A=C$ 即有 $x\sim y$，故 $y\in[x]$，从而 $C\subseteq[x]$。
+\end{proof}
+
+\begin{proposition}\label{prop:connected-between-closure}
+  若 $A\subseteq X$ 连通，且 $A\subseteq \Omega\subseteq \overline{A}$，则 $\Omega$ 连通。
+\end{proposition}
+\begin{proof}
+  反证。若 $\Omega$ 不连通，则存在 $\Omega$ 的不交非空开集 $U,V$ 使 $\Omega=U\cup V$。
+  因 $A$ 连通，必有 $A\subseteq U$ 或 $A\subseteq V$；不妨设 $A\subseteq U$。
+  注意到 $U$ 在子空间 $\Omega$ 中既开又闭，故 $\overline{A}^{\,\Omega}\subseteq U$。
+  但由命题 \ref{prop:closure-in-subspace} 有
+  \[
+    \overline{A}^{\,\Omega}=\overline{A}\cap\Omega=\Omega,
+  \]
+  从而 $\Omega\subseteq U$，与 $V$ 非空矛盾。
+\end{proof}
+
+\begin{corollary}\label{cor:closure-of-connected}
+  若 $A\subseteq X$ 连通，则 $\overline{A}$ 连通。
+\end{corollary}
+
+\begin{proposition}\label{prop:connected-components-closed}
+  $X$ 的每个连通分支都是闭集。
+\end{proposition}
+\begin{proof}
+  设 $C=[x]$ 为连通分支。由推论 \ref{cor:closure-of-connected} 知 $\overline{C}$ 连通，且 $C\subseteq\overline{C}$。
+  由命题 \ref{prop:connected-component-maximal} 的极大性，必有 $\overline{C}\subseteq C$，故 $\overline{C}=C$，即 $C$ 闭。
+\end{proof}
+
+\begin{proposition}\label{prop:product-connected-2}
+  若 $X$ 与 $Y$ 连通，则 $X\times Y$ 连通。
+\end{proposition}
+\begin{proof}
+  固定 $(x_0,y_0)\in X\times Y$。对任意 $(x,y)\in X\times Y$，令
+  \[
+    A_{(x,y)}=(X\times\{y_0\})\cup(\{x\}\times Y).
+  \]
+  其中 $X\times\{y_0\}$ 与 $\{x\}\times Y$ 分别同胚于 $X$ 与 $Y$，故皆连通；且二者交于 $(x,y_0)$，由引理 \ref{lem:union-connected-with-common-point} 得 $A_{(x,y)}$ 连通。
+  又 $(x_0,y_0)\in A_{(x,y)}$，并且
+  \[
+    X\times Y=\bigcup_{(x,y)\in X\times Y}A_{(x,y)}.
+  \]
+  再次应用引理 \ref{lem:union-connected-with-common-point}（公共点为 $(x_0,y_0)$）得 $X\times Y$ 连通。
+\end{proof}
+
+\begin{theorem}\label{thm:arbitrary-product-connected}
+  设 $\{X_\alpha\}_{\alpha\in\Lambda}$ 为一族连通拓扑空间，则其乘积 $\prod_{\alpha\in\Lambda}X_\alpha$（赋以乘积拓扑）连通。
+\end{theorem}
+\begin{proof}
+  在每个 $X_\alpha$ 中固定一点 $x_\alpha^0\in X_\alpha$，记 $x^0=(x_\alpha^0)_\alpha\in\prod_\alpha X_\alpha$。
+
+  定义
+  \[
+    \Omega=\Big\{(y_\alpha)_\alpha\in\prod_{\alpha\in\Lambda}X_\alpha:\ \{\alpha\in\Lambda: y_\alpha\ne x_\alpha^0\}\ \text{为有限集}\Big\}.
+  \]
+  对任意有限子集 $F\subseteq\Lambda$，令
+  \[
+    \Omega_F=\{(y_\alpha)_\alpha:\ y_\alpha=x_\alpha^0\ \text{对}\ \alpha\notin F\}.
+  \]
+  则 $\Omega=\bigcup_{F\subseteq\Lambda\ \text{有限}}\Omega_F$，且每个 $\Omega_F$ 同胚于有限乘积 $\prod_{\alpha\in F}X_\alpha$，故由命题 \ref{prop:product-connected-2}（归纳）知 $\Omega_F$ 连通。
+  又 $x^0\in\bigcap_F\Omega_F$，由引理 \ref{lem:union-connected-with-common-point} 得 $\Omega$ 连通。
+
+  下面证 $\Omega$ 在 $\prod_{\alpha}X_\alpha$ 中稠密。任取非空基开集
+  \[
+    B=\bigcap_{k=1}^{n}p_{\alpha_k}^{-1}(U_k),\qquad U_k\subseteq X_{\alpha_k}\ \text{开且非空},
+  \]
+  取 $y_{\alpha_k}\in U_k$，并令 $y_\alpha=x_\alpha^0$（$\alpha\notin\{\alpha_1,\dots,\alpha_n\}$），则 $y\in\Omega\cap B$，故 $\Omega$ 稠密。
+
+  由推论 \ref{cor:closure-of-connected}，$\overline{\Omega}$ 连通；而 $\Omega$ 稠密意味着 $\overline{\Omega}=\prod_{\alpha}X_\alpha$，从而乘积空间连通。
+\end{proof}
+
+\subsection{$\mathbb R$ 的连通性、介值性与道路连通}
+
+\begin{proposition}\label{prop:R-connected}
+  赋以通常拓扑的实直线 $\mathbb R$ 连通。
+\end{proposition}
+\begin{proof}
+  反证。若 $\mathbb R$ 不连通，则存在非空不交开集 $U,V\subseteq\mathbb R$ 使 $\mathbb R=U\cup V$。
+  取 $x\in U$ 与 $y\in V$，不妨设 $x<y$。
+  令
+  \[
+    a=\sup\{z\in U:\ z<y\}.
+  \]
+  则 $x\le a\le y$。若 $a\in U$，由 $U$ 开可取 $\varepsilon>0$ 使 $(a-\varepsilon,a+\varepsilon)\subseteq U$，从而可取 $z\in U$ 满足 $a<z<y$，与 $a$ 为上确界矛盾。
+  因此 $a\notin U$，由 $\mathbb R=U\cup V$ 得 $a\in V$。由 $V$ 开可取 $\delta>0$ 使 $(a-\delta,a+\delta)\subseteq V$。
+  但由上确界定义可取 $z\in U$ 使 $a-\delta<z\le a$，于是 $z\in U\cap(a-\delta,a+\delta)\subseteq U\cap V$，矛盾。
+\end{proof}
+
+\begin{proposition}\label{prop:interval-connected}
+  $\mathbb R$ 中任意区间（如 $(a,b),\ [a,b],\ (a,b],\ [a,b),\ (a,+\infty),\ [a,+\infty),\ (-\infty,a),\ (-\infty,a]$ 等）在子空间拓扑下连通。
+\end{proposition}
+\begin{proof}
+  先证开区间：由连续双射
+  \[
+    \varphi:(-\tfrac\pi2,\tfrac\pi2)\to\mathbb R,\qquad t\mapsto\tan t
+  \]
+  为同胚，知 $(-\tfrac\pi2,\tfrac\pi2)$ 与 $\mathbb R$ 同胚。又仿射映射将 $(-\tfrac\pi2,\tfrac\pi2)$ 同胚到任意 $(a,b)$（$a<b$），故 $(a,b)$ 与 $\mathbb R$ 同胚，从而由命题 \ref{prop:R-connected} 知 $(a,b)$ 连通。
+
+  其余类型区间可由开区间的闭包与并得到，例如当 $a<b$ 时有 $[a,b]=\overline{(a,b)}$，由推论 \ref{cor:closure-of-connected} 得 $[a,b]$ 连通；同理 $[a,b)=(a,b)\cup\{a\}$、$(a,b]=(a,b)\cup\{b\}$ 亦连通。
+  半无穷区间可写作可数并，例如 $(a,+\infty)=\bigcup_{n\ge 1}(a,a+n)$，且这些区间均含公共点 $a+\tfrac12$，由引理 \ref{lem:union-connected-with-common-point} 得其连通；其他半无穷区间同理。
+  空集与单点集显然连通。
+\end{proof}
+
+\begin{proposition}\label{prop:connected-subset-of-R-interval}
+  设 $\Omega\subseteq\mathbb R$。
+  则 $\Omega$ 连通当且仅当对任意 $x,y\in\Omega$ 且 $x<y$，有 $(x,y)\subseteq\Omega$。
+\end{proposition}
+\begin{proof}
+  “$\Rightarrow$”：若存在 $x<y$ 属于 $\Omega$ 但某 $z\in(x,y)$ 不在 $\Omega$，则
+  \[
+    \Omega=\big(\Omega\cap(-\infty,z)\big)\cup\big(\Omega\cap(z,+\infty)\big)
+  \]
+  为 $\Omega$ 的分离（两部分在 $\Omega$ 中开、非空且不交），矛盾。
+
+  “$\Leftarrow$”：若对任意 $x<y$ 均有 $(x,y)\subseteq\Omega$，则 $\Omega$ 为 $\mathbb R$ 的区间（或空集/单点集），由命题 \ref{prop:interval-connected} 知其连通。
+\end{proof}
+
+\begin{theorem}\label{thm:connected-in-R-iff-interval}
+  对任意 $\Omega\subseteq\mathbb R$，$\Omega$ 连通当且仅当 $\Omega$ 是区间（允许退化情形：空集或单点集）。
+\end{theorem}
+\begin{proof}
+  由命题 \ref{prop:connected-subset-of-R-interval} 即得。
+\end{proof}
+
+\begin{theorem}[介值定理]\label{thm:ivt}
+  设 $f:[a,b]\to\mathbb R$ 连续且 $a<b$。若 $f(a)\le 0\le f(b)$ 或 $f(b)\le 0\le f(a)$，则存在 $z\in[a,b]$ 使 $f(z)=0$。
+\end{theorem}
+\begin{proof}
+  由命题 \ref{prop:interval-connected} 知 $[a,b]$ 连通，故由命题 \ref{prop:connected-image} 知 $f([a,b])$ 连通。
+  又 $f(a)$ 与 $f(b)$ 分别在 $0$ 的两侧（或一侧含等号），由定理 \ref{thm:connected-in-R-iff-interval} 知连通集 $f([a,b])$ 必包含 $0$。
+  因此存在 $z\in[a,b]$ 使 $f(z)=0$。
+\end{proof}
+
+\begin{definition}[道路与道路连通]\label{def:path-path-connected}
+  记 $I=[0,1]$。
+  \begin{enumerate}
+    \item 称连续映射 $\alpha:I\to X$ 为 $X$ 中一条\emph{道路}（或路径）。点 $\alpha(0)$ 与 $\alpha(1)$ 分别称为道路的起点与终点。
+    \item 若对任意 $x,y\in X$，存在道路 $\alpha:I\to X$ 使 $\alpha(0)=x$ 且 $\alpha(1)=y$，则称 $X$ \emph{道路连通}（或路径连通）。
+  \end{enumerate}
+\end{definition}
+
+\begin{proposition}\label{prop:path-connected-implies-connected}
+  若 $X$ 道路连通，则 $X$ 连通。
+\end{proposition}
+\begin{proof}
+  固定 $x_0\in X$。对任意 $x\in X$，取连接 $x_0$ 与 $x$ 的道路 $\alpha_x:I\to X$。
+  因 $I$ 连通且 $\alpha_x$ 连续，$\alpha_x(I)$ 连通。
+  又 $x_0\in\alpha_x(I)$ 对所有 $x$ 都成立，且
+  \[
+    X=\bigcup_{x\in X}\alpha_x(I).
+  \]
+  由引理 \ref{lem:union-connected-with-common-point} 知 $X$ 连通。
+\end{proof}
+
+\begin{lemma}[粘贴引理（有限闭覆盖版）]\label{lem:gluing-closed}
+  设 $f:X\to Y$ 为映射，且 $X$ 可写为有限个闭集的并：$X=\bigcup_{k=1}^{n}F_k$，其中每个 $F_k$ 在 $X$ 中闭。
+  若对每个 $k$，限制 $f|_{F_k}$ 连续，且对任意 $i,j$ 有 $f|_{F_i\cap F_j}$ 一致，则 $f$ 连续。
+\end{lemma}
+\begin{proof}
+  任取 $Y$ 中闭集 $C$。对每个 $k$，因 $f|_{F_k}$ 连续，集合 $(f|_{F_k})^{-1}(C)$ 在子空间 $F_k$ 中闭，故存在 $X$ 中闭集 $K_k$ 使
+  \[
+    (f|_{F_k})^{-1}(C)=F_k\cap K_k.
+  \]
+  又
+  \[
+    f^{-1}(C)=\bigcup_{k=1}^{n}(f|_{F_k})^{-1}(C)=\bigcup_{k=1}^{n}(F_k\cap K_k).
+  \]
+  右端为有限个闭集的并，仍为闭集。故 $f^{-1}(C)$ 闭，对任意闭集 $C$ 成立，从而 $f$ 连续。
+\end{proof}
+
+\begin{definition}[道路连通分支]\label{def:path-component}
+  在 $X$ 上定义关系：对 $x,y\in X$，令
+  \[
+    x\approx y\iff \exists\ \text{道路}\ \alpha:I\to X\ \text{s.t.}\ \alpha(0)=x,\ \alpha(1)=y.
+  \]
+  该等价类称为 $X$ 的\emph{道路连通分支}（道路连通分量）。
+\end{definition}
+
+\begin{proposition}\label{prop:path-component-eqrel}
+  关系 $\approx$ 为等价关系。
+\end{proposition}
+\begin{proof}
+  自反性：取常值道路 $\alpha(t)\equiv x$。
+
+  对称性：若 $\alpha$ 连接 $x$ 与 $y$，则 $\overline\alpha(t)=\alpha(1-t)$ 连接 $y$ 与 $x$。
+
+  传递性：若 $\alpha$ 连接 $x$ 与 $y$，$\beta$ 连接 $y$ 与 $z$，定义
+  \[
+    \gamma(t)=\begin{cases}
+      \alpha(2t), & 0\le t\le\tfrac12,\\
+      \beta(2t-1), & \tfrac12\le t\le 1.
+    \end{cases}
+  \]
+  注意 $[0,\tfrac12]\cup[\tfrac12,1]=I$ 为闭覆盖，且两段在交点 $\tfrac12$ 处取值同为 $y$，由引理 \ref{lem:gluing-closed} 得 $\gamma$ 连续，故 $x\approx z$。
+\end{proof}
+
+\begin{proposition}\label{prop:path-components-maximal}
+  对任意 $x\in X$，道路连通分支 $[x]_{\approx}$ 道路连通，且是包含 $x$ 的极大道路连通子集。
+\end{proposition}
+\begin{proof}
+  道路连通性由定义直接得到。
+  若 $C\subseteq X$ 道路连通且 $x\in C$，则任取 $y\in C$，存在道路连接 $x$ 与 $y$，从而 $y\in[x]_{\approx}$，故 $C\subseteq[x]_{\approx}$。
+\end{proof}
+
+
+\begin{proposition}\label{prop:product-path-connected-2}
+  若 $X$ 与 $Y$ 道路连通，则 $X\times Y$ 道路连通。
+\end{proposition}
+\begin{proof}
+  任取 $(x,y),(x',y')\in X\times Y$。
+  由 $X$ 道路连通，存在道路 $\alpha:I\to X$ 使 $\alpha(0)=x$、$\alpha(1)=x'$；由 $Y$ 道路连通，存在道路 $\beta:I\to Y$ 使 $\beta(0)=y$、$\beta(1)=y'$。
+  定义 $\gamma:I\to X\times Y$：$\gamma(t)=(\alpha(t),\beta(t))$。
+  则 $p_X\circ\gamma=\alpha$、$p_Y\circ\gamma=\beta$ 连续，故 $\gamma$ 连续，且 $\gamma(0)=(x,y)$、$\gamma(1)=(x',y')$。
+\end{proof}
+
+\begin{proposition}\label{prop:product-path-connected}
+  设 $\{X_\alpha\}_{\alpha\in\Lambda}$ 为一族道路连通拓扑空间，则其乘积 $\prod_{\alpha\in\Lambda}X_\alpha$ 道路连通。
+\end{proposition}
+\begin{proof}
+  任取 $x=(x_\alpha)_\alpha,\ y=(y_\alpha)_\alpha\in\prod_\alpha X_\alpha$。
+  对每个 $\alpha$，取道路 $\gamma_\alpha:I\to X_\alpha$ 使 $\gamma_\alpha(0)=x_\alpha$ 且 $\gamma_\alpha(1)=y_\alpha$。
+  定义
+  \[
+    \gamma:I\to\prod_{\alpha\in\Lambda}X_\alpha,\qquad \gamma(t)=(\gamma_\alpha(t))_{\alpha\in\Lambda}.
+  \]
+  对任意 $\alpha$ 有 $p_\alpha\circ\gamma=\gamma_\alpha$ 连续，由乘积拓扑的泛性质得 $\gamma$ 连续，且 $\gamma(0)=x$、$\gamma(1)=y$。
+\end{proof}
+
+\begin{example}\label{ex:topologist-sine-curve}
+  记
+  \[
+    S=\{(x,\sin\tfrac1x):0<x\le 1\}\subseteq\mathbb R^2,\qquad \Omega=\overline{S}=S\cup\big(\{0\}\times[-1,1]\big).
+  \]
+  则 $\Omega$ 连通但不道路连通。
+\end{example}
+\begin{proof}
+  令 $\varphi:(0,1]\to\mathbb R^2$，$\varphi(t)=(t,\sin\tfrac1t)$，则 $S=\varphi((0,1])$。
+  因 $(0,1]$ 道路连通，故 $S$ 道路连通，从而连通。由推论 \ref{cor:closure-of-connected} 得其闭包 $\Omega$ 连通。
+
+  下面证 $\Omega$ 不道路连通。取 $A=(0,0)\in\{0\}\times[-1,1]$。
+  若存在道路 $\alpha:I\to\Omega$ 连接 $A$ 与某点 $B\in S$，设 $f=\pi_1\circ\alpha:I\to\mathbb R$ 为第一坐标。
+  则 $f$ 连续且 $f(0)=0$、$f(1)=B_1>0$。
+  令 $t_0=\inf\{t\in I:f(t)>0\}$，则 $f(t_0)=0$。
+  取数列 $a_n,b_n\downarrow 0$ 使 $\sin\tfrac1{a_n}=1$ 且 $\sin\tfrac1{b_n}=-1$。
+  因 $f(t)>0$ 对所有 $t>t_0$ 成立，由介值定理可取 $t_n,s_n\downarrow t_0$ 使 $f(t_n)=a_n$、$f(s_n)=b_n$。
+  由于 $a_n,b_n>0$，点 $\alpha(t_n),\alpha(s_n)$ 只能落在 $S$ 上，故其第二坐标分别为 $1$ 与 $-1$。
+  令 $g=\pi_2\circ\alpha$，则 $g$ 连续且 $g(t_n)=1$、$g(s_n)=-1$，并且 $t_n,s_n\to t_0$，这与 $g$ 在 $t_0$ 处连续矛盾。
+\end{proof}
+
+\begin{definition}[局部连通与局部道路连通]\label{def:local-connected}
+  设 $X$ 为拓扑空间。
+  \begin{enumerate}
+    \item 称 $X$ \emph{局部连通}，若对任意 $x\in X$ 及任意 $x$ 的邻域 $U$，存在开集 $V$ 使 $x\in V\subseteq U$ 且 $V$ 连通。
+    \item 称 $X$ \emph{局部道路连通}，若对任意 $x\in X$ 及任意 $x$ 的邻域 $U$，存在开集 $V$ 使 $x\in V\subseteq U$ 且 $V$ 道路连通。
+  \end{enumerate}
+\end{definition}
+
+\begin{proposition}\label{prop:components-open-locally-connected}
+  若 $X$ 局部连通，则 $X$ 的每个连通分支都是开集。
+\end{proposition}
+\begin{proof}
+  设 $C=[x]$ 为 $x$ 的连通分支。
+  由局部连通性，存在连通开集 $V$ 使 $x\in V$。
+  因 $V$ 连通且含 $x$，由命题 \ref{prop:connected-component-maximal} 知 $V\subseteq C$。
+  故 $x$ 在 $C$ 中有开邻域。任取 $x\in C$ 同理，得 $C$ 开。
+\end{proof}
+
+\begin{proposition}\label{prop:path-components-open-locally-path-connected}
+  若 $X$ 局部道路连通，则 $X$ 的每个道路连通分支都是开集。
+\end{proposition}
+\begin{proof}
+  设 $P=[x]_{\approx}$ 为 $x$ 的道路连通分支。
+  由局部道路连通性，存在道路连通开集 $V$ 使 $x\in V$。
+  因 $V$ 道路连通且含 $x$，由命题 \ref{prop:path-components-maximal} 知 $V\subseteq P$。
+  故 $P$ 为开集。
+\end{proof}
+
+\begin{proposition}\label{prop:components-equal-path-components}
+  若 $X$ 局部道路连通，则 $X$ 的连通分支与道路连通分支一致。
+\end{proposition}
+\begin{proof}
+  任一道路连通分支必包含于某个连通分支。
+  反过来设 $C$ 为连通分支。由命题 \ref{prop:path-components-open-locally-path-connected}，道路连通分支在 $X$ 中开，故 $C$ 可写为若干两两不交开集（道路连通分支）的并。
+  由于 $C$ 连通，只能包含其中一个道路连通分支，从而 $C$ 本身即为道路连通分支。
+\end{proof}
+
+\begin{corollary}\label{cor:open-connected-implies-path-connected}
+  若 $X$ 局部道路连通，且 $U\subseteq X$ 为开且连通的子集，则 $U$ 道路连通。
+\end{corollary}
+\begin{proof}
+  由命题 \ref{prop:components-equal-path-components}，$U$ 的连通分支等于道路连通分支。
+  但 $U$ 连通意味着它只有一个连通分支，即 $U$ 本身，故 $U$ 道路连通。
+\end{proof}
+
+\subsection{同伦与基本群}
+
+\begin{definition}[映射同伦]\label{def:homotopy}
+  设 $f,g:X\to Y$ 连续。
+  若存在连续映射 $H:X\times I\to Y$ 满足
+  \[
+    H(x,0)=f(x),\qquad H(x,1)=g(x)\quad(\forall x\in X),
+  \]
+  则称 $f$ 与 $g$ \emph{同伦}，记为 $f\simeq g$，并称 $H$ 为从 $f$ 到 $g$ 的同伦。
+\end{definition}
+
+\begin{definition}[道路同伦（端点固定）]\label{def:path-homotopy}
+  设 $\alpha,\beta:I\to X$ 为从 $x$ 到 $y$ 的道路（即 $\alpha(0)=\beta(0)=x$ 且 $\alpha(1)=\beta(1)=y$）。
+  若存在连续映射 $H:I\times I\to X$ 满足
+  \[
+    H(s,0)=\alpha(s),\quad H(s,1)=\beta(s),\quad H(0,t)=x,\quad H(1,t)=y,
+  \]
+  则称 $\alpha$ 与 $\beta$ \emph{端点固定同伦}，记为 $\alpha\simeq_{\partial}\beta$。
+\end{definition}
+
+\begin{proposition}\label{prop:path-homotopy-eqrel}
+  关系 $\simeq_{\partial}$ 是从 $x$ 到 $y$ 的道路集合上的等价关系。
+\end{proposition}
+\begin{proof}
+  自反性：取 $H(s,t)=\alpha(s)$。
+
+  对称性：若 $H$ 给出 $\alpha\simeq_{\partial}\beta$，则 $\overline H(s,t)=H(s,1-t)$ 给出 $\beta\simeq_{\partial}\alpha$。
+
+  传递性：若 $H$ 给出 $\alpha\simeq_{\partial}\beta$，$F$ 给出 $\beta\simeq_{\partial}\gamma$，定义
+  \[
+    (H\ast F)(s,t)=\begin{cases}
+      H(s,2t), & 0\le t\le\tfrac12,\\
+      F(s,2t-1), & \tfrac12\le t\le 1.
+    \end{cases}
+  \]
+  注意 $I\times[0,\tfrac12]\cup I\times[\tfrac12,1]=I\times I$ 为闭覆盖，且两段在 $t=\tfrac12$ 处一致，
+  由引理 \ref{lem:gluing-closed} 得 $H\ast F$ 连续。
+  又 $(H\ast F)(s,0)=\alpha(s)$、$(H\ast F)(s,1)=\gamma(s)$，并且在 $s=0,1$ 处端点固定，故 $\alpha\simeq_{\partial}\gamma$。
+\end{proof}
+
+\begin{definition}[道路的拼接与逆道路]\label{def:path-concat-inverse}
+  设 $\alpha:I\to X$ 为从 $x$ 到 $y$ 的道路，$\beta:I\to X$ 为从 $y$ 到 $z$ 的道路。
+  定义它们的\emph{拼接} $\alpha\ast\beta:I\to X$ 为
+  \[
+    (\alpha\ast\beta)(t)=\begin{cases}
+      \alpha(2t), & 0\le t\le\tfrac12,\\
+      \beta(2t-1), & \tfrac12\le t\le 1.
+    \end{cases}
+  \]
+  并定义 $\alpha$ 的\emph{逆道路} $\overline\alpha:I\to X$ 为 $\overline\alpha(t)=\alpha(1-t)$。
+\end{definition}
+
+\begin{definition}\label{def:pi1-xy}
+  设 $x,y\in X$。
+  记
+  \[
+    \Omega(x,y)=\{\alpha:I\to X:\ \alpha\ \text{连续},\ \alpha(0)=x,\ \alpha(1)=y\}.
+  \]
+  定义
+  \[
+    \pi_1(X;x,y)=\Omega(x,y)/\simeq_{\partial},
+  \]
+  即端点固定同伦类的集合，并用 $[\alpha]$ 表示 $\alpha$ 的等价类。
+\end{definition}
+
+\begin{proposition}\label{prop:pi1-compose-well-defined}
+  对任意 $x,y,z\in X$，公式
+  \[
+    \pi_1(X;x,y)\times\pi_1(X;y,z)\to\pi_1(X;x,z),\qquad ([\alpha],[\beta])\mapsto[\alpha\ast\beta]
+  \]
+  给出良定义的映射。
+\end{proposition}
+\begin{proof}
+  设 $\alpha\simeq_{\partial}\alpha'$ 与 $\beta\simeq_{\partial}\beta'$，分别由同伦 $H,F:I\times I\to X$ 给出。
+  定义 $K:I\times I\to X$：
+  \[
+    K(s,t)=\begin{cases}
+      H(2s,t), & 0\le s\le\tfrac12,\\
+      F(2s-1,t), & \tfrac12\le s\le 1.
+    \end{cases}
+  \]
+  因 $H(1,t)=y=F(0,t)$，两段在 $s=\tfrac12$ 处一致，且 $[0,\tfrac12]\times I\cup [\tfrac12,1]\times I=I\times I$ 为闭覆盖，
+  由引理 \ref{lem:gluing-closed} 得 $K$ 连续。
+  又 $K(s,0)=(\alpha\ast\beta)(s)$、$K(s,1)=(\alpha'\ast\beta')(s)$，并且端点固定，故 $\alpha\ast\beta\simeq_{\partial}\alpha'\ast\beta'$。
+\end{proof}
+
+\begin{definition}[基本群]\label{def:fundamental-group}
+  设 $x_0\in X$。称 $x_0$ 为\emph{基点}。
+  定义 $X$ 在基点 $x_0$ 处的\emph{基本群}为
+  \[
+    \pi_1(X,x_0)=\pi_1(X;x_0,x_0).
+  \]
+  其中的元素称为以 $x_0$ 为端点的\emph{回路}的同伦类。
+\end{definition}
+
+\begin{definition}\label{def:fundamental-group-operation}
+  记常值回路 $e_{x_0}:I\to X$，$e_{x_0}(t)=x_0$。
+  由命题 \ref{prop:pi1-compose-well-defined}，在 $\pi_1(X,x_0)$ 上可定义二元运算
+  \[
+    [\alpha]\cdot[\beta]=[\alpha\ast\beta].
+  \]
+\end{definition}
+
+\begin{lemma}\label{lem:path-reparam-homotopy}
+  设 $\alpha:I\to X$ 为从 $x$ 到 $y$ 的道路，且 $\varphi:I\to I$ 连续并满足 $\varphi(0)=0,\ \varphi(1)=1$。
+  则 $\alpha\circ\varphi\simeq_{\partial}\alpha$。
+\end{lemma}
+\begin{proof}
+  定义 $H:I\times I\to X$：
+  \[
+    H(s,t)=\alpha\big((1-t)s+t\varphi(s)\big).
+  \]
+  因 $(s,t)\mapsto (1-t)s+t\varphi(s)$ 连续且值域在 $I$，故 $H$ 连续。
+  且 $H(s,0)=\alpha(s)$、$H(s,1)=\alpha(\varphi(s))$，并且 $H(0,t)=x$、$H(1,t)=y$。
+\end{proof}
+
+\begin{proposition}\label{prop:pi1-associative}
+  运算 $\cdot$ 满足结合律：对任意 $[\alpha],[\beta],[\gamma]\in\pi_1(X,x_0)$，有
+  \[
+    ([\alpha]\cdot[\beta])\cdot[\gamma]=[\alpha]\cdot([\beta]\cdot[\gamma]).
+  \]
+\end{proposition}
+\begin{proof}
+  设 $\delta:I\to X$ 为三段拼接回路
+  \[
+    \delta(t)=\begin{cases}
+      \alpha(3t), & 0\le t\le\tfrac13,\\
+      \beta(3t-1), & \tfrac13\le t\le\tfrac23,\\
+      \gamma(3t-2), & \tfrac23\le t\le 1.
+    \end{cases}
+  \]
+  由引理 \ref{lem:gluing-closed} 知 $\delta$ 连续。
+
+  设 $\varphi_1,\varphi_2:I\to I$ 为分段线性函数：
+  \[
+    \varphi_1(t)=\begin{cases}
+      \tfrac43 t, & 0\le t\le\tfrac12,\\
+      \tfrac23 t+\tfrac13, & \tfrac12\le t\le 1.
+    \end{cases}
+    \qquad
+    \varphi_2(t)=\begin{cases}
+      \tfrac23 t, & 0\le t\le\tfrac12,\\
+      \tfrac43 t-\tfrac13, & \tfrac12\le t\le 1.
+    \end{cases}
+  \]
+  则可直接验证
+  \[
+    (\alpha\ast\beta)\ast\gamma=\delta\circ\varphi_1,\qquad \alpha\ast(\beta\ast\gamma)=\delta\circ\varphi_2.
+  \]
+  由引理 \ref{lem:path-reparam-homotopy} 得 $[\delta\circ\varphi_1]=[\delta]=[\delta\circ\varphi_2]$，从而结论成立。
+\end{proof}
+
+\begin{proposition}\label{prop:pi1-identity}
+  $[e_{x_0}]$ 为 $\pi_1(X,x_0)$ 中的单位元：对任意 $[\alpha]\in\pi_1(X,x_0)$，有
+  \[
+    [e_{x_0}]\cdot[\alpha]=[\alpha],\qquad [\alpha]\cdot[e_{x_0}]=[\alpha].
+  \]
+\end{proposition}
+\begin{proof}
+  设 $\alpha$ 为以 $x_0$ 为端点的回路。
+  定义连续函数 $\rho,\sigma:I\to I$：
+  \[
+    \rho(t)=\begin{cases}
+      2t, & 0\le t\le\tfrac12,\\
+      1, & \tfrac12\le t\le 1,
+    \end{cases}
+    \qquad
+    \sigma(t)=\begin{cases}
+      0, & 0\le t\le\tfrac12,\\
+      2t-1, & \tfrac12\le t\le 1.
+    \end{cases}
+  \]
+  则 $\alpha\circ\rho=\alpha\ast e_{x_0}$，$\alpha\circ\sigma=e_{x_0}\ast\alpha$。
+  由引理 \ref{lem:path-reparam-homotopy} 得 $[\alpha\ast e_{x_0}]=[\alpha]=[e_{x_0}\ast\alpha]$。
+\end{proof}
+
+\begin{proposition}\label{prop:pi1-inverse}
+  对任意 $[\alpha]\in\pi_1(X,x_0)$，其逆元为 $[\overline\alpha]$：
+  \[
+    [\alpha]\cdot[\overline\alpha]=[e_{x_0}],\qquad [\overline\alpha]\cdot[\alpha]=[e_{x_0}].
+  \]
+\end{proposition}
+\begin{proof}
+  设 $\alpha$ 为以 $x_0$ 为端点的回路。
+  定义 $H:I\times I\to X$：
+  \[
+    H(s,t)=\begin{cases}
+      \alpha\big(2s(1-t)\big), & 0\le s\le\tfrac12,\\
+      \alpha\big(2(1-s)(1-t)\big), & \tfrac12\le s\le 1.
+    \end{cases}
+  \]
+  因 $s=\tfrac12$ 时两段同为 $\alpha(1-t)$，且 $[0,\tfrac12]\times I\cup [\tfrac12,1]\times I=I\times I$ 为闭覆盖，
+  由引理 \ref{lem:gluing-closed} 得 $H$ 连续。
+  又 $H(s,0)=(\alpha\ast\overline\alpha)(s)$，$H(s,1)=x_0=e_{x_0}(s)$，并且 $H(0,t)=H(1,t)=x_0$，
+  故 $\alpha\ast\overline\alpha\simeq_{\partial} e_{x_0}$。
+  将 $\alpha$ 替换为 $\overline\alpha$ 即得 $\overline\alpha\ast\alpha\simeq_{\partial} e_{x_0}$。
+\end{proof}
+
+\begin{theorem}\label{thm:fundamental-group-is-group}
+  配备运算 $\cdot$ 后，$\pi_1(X,x_0)$ 构成群，其单位元为 $[e_{x_0}]$，逆元由 $[\alpha]^{-1}=[\overline\alpha]$ 给出。
+\end{theorem}
+
+\begin{definition}[带基点空间与带基点映射]
+  \begin{enumerate}[(1)]
+    \item \emph{带基点空间}是指一对 $(X,x_0)$，其中 $X$ 为拓扑空间且 $x_0\in X$。
+    \item 设 $(X,x_0)$、$(Y,y_0)$ 为带基点空间。若连续映射 $f:X\to Y$ 满足 $f(x_0)=y_0$，则称 $f$ 为\emph{带基点映射}，记作
+    \[
+      f:(X,x_0)\to(Y,y_0).
+    \]
+  \end{enumerate}
+\end{definition}
+
+\begin{definition}
+  以带基点空间为对象、带基点映射为态射所成的范畴记为 $\mathbf{Top}_*$。
+\end{definition}
+
+\begin{proposition}\label{prop:pi1-induced-hom}
+  设 $f:(X,x_0)\to (Y,y_0)$ 为带基点映射，则 $f$ 诱导群同态
+  \[
+    f_*:\pi_1(X,x_0)\to\pi_1(Y,y_0),\qquad [\alpha]\mapsto [f\circ\alpha].
+  \]
+\end{proposition}
+\begin{proof}
+  由带基点映射的定义，若 $\alpha$ 为以 $x_0$ 为端点的回路，则 $f\circ\alpha$ 为以 $y_0$ 为端点的回路。
+  若 $\alpha\simeq_{\partial}\beta$，由同伦 $H:I\times I\to X$ 给出，则 $f\circ H$ 给出 $f\circ\alpha\simeq_{\partial} f\circ\beta$，故 $f_*$ 良定义。
+  又
+  \[
+    f_*([\alpha]\cdot[\beta])=f_*([\alpha\ast\beta])=[f\circ(\alpha\ast\beta)]=[(f\circ\alpha)\ast(f\circ\beta)]=f_*([\alpha])\cdot f_*([\beta]),
+  \]
+  因而 $f_*$ 为群同态。
+\end{proof}
+
+\begin{proposition}\label{prop:pi1-functor}
+  记 $\mathbf{Grp}$ 为群与群同态所成的范畴。则赋值
+  \[
+    (X,x_0)\longmapsto \pi_1(X,x_0),\qquad \bigl(f:(X,x_0)\to(Y,y_0)\bigr)\longmapsto f_*
+  \]
+  给出一个函子 $\pi_1:\mathbf{Top}_*\to\mathbf{Grp}$，即
+  \[
+    (\mathrm{id}_{(X,x_0)})_* = \mathrm{id}_{\pi_1(X,x_0)},\qquad (g\circ f)_* = g_*\circ f_*.
+  \]
+\end{proposition}
+\begin{proof}
+  两个等式均由定义直接验证。
+\end{proof}
+
+\begin{corollary}\label{cor:pointed-homeo-implies-pi1-iso}
+  若 $(X,x_0)\cong(Y,y_0)$（即存在带基点同胚），则 $\pi_1(X,x_0)\cong\pi_1(Y,y_0)$。
+\end{corollary}
+\begin{proof}
+  设 $f:(X,x_0)\to(Y,y_0)$ 与 $g:(Y,y_0)\to(X,x_0)$ 互逆。
+  由函子性，$g_*\circ f_*=(g\circ f)_*=(\mathrm{id})_*=\mathrm{id}$，同理 $f_*\circ g_*=\mathrm{id}$，故 $f_*$ 为同构。
+\end{proof}
+
+\begin{theorem}\label{thm:pi1-circle}
+  $\pi_1(S^1,1)\cong(\mathbb Z,+)$。
+\end{theorem}
+
+\begin{theorem}[Brouwer 不动点定理，二维情形]\label{thm:brouwer-2d}
+  设 $f:D^2\to D^2$ 连续，则存在 $x\in D^2$ 使 $f(x)=x$。
+\end{theorem}
+\begin{proof}
+  反证。若 $\forall x\in D^2$ 有 $f(x)\neq x$，则可定义连续映射 $\varphi:D^2\to S^1$：
+  对每个 $x$，过 $f(x)$ 与 $x$ 的射线交 $S^1$ 于唯一点 $\varphi(x)$（位于 $x$ 一侧）。
+  由几何构造可证 $\varphi$ 连续，且 $\varphi|_{S^1}=\mathrm{id}_{S^1}$。
+
+  设 $i:S^1\hookrightarrow D^2$ 为包含映射，则 $\varphi\circ i=\mathrm{id}_{S^1}$。
+  应用函子 $\pi_1$ 得
+  \[
+    \varphi_*\circ i_*=\mathrm{id}_{\pi_1(S^1,1)}.
+  \]
+  然而 $\pi_1(D^2,1)=0$（$D^2$ 可缩），故 $i_*$ 是零映射，矛盾于 $\pi_1(S^1,1)\cong\mathbb Z\neq 0$。
+\end{proof}
+
+\subsection{局部紧空间}
+
+\begin{definition}[局部紧空间]\label{def:locally-compact}
+  称拓扑空间 $X$ 为\emph{局部紧}的，若每点都有一个紧邻域。
+\end{definition}
+
+\begin{proposition}\label{prop:locally-compact-T2-equiv}
+  设 $X$ 为 Hausdorff 空间，则以下条件等价：
+  \begin{enumerate}[(1)]
+    \item $X$ 局部紧（即每点有紧邻域）；
+    \item 每点有开邻域 $U$，使得 $\overline U$ 紧。
+  \end{enumerate}
+\end{proposition}
+\begin{proof}
+  (2)$\Rightarrow$(1) 显然，取 $A=\overline U$ 即为紧邻域。
+
+  (1)$\Rightarrow$(2) 设 $x\in X$ 有紧邻域 $K$。
+  因 $X$ 为 Hausdorff，紧子集 $K$ 是闭的，且是 Hausdorff 空间。
+  紧 Hausdorff 空间是正规的（从而正则），故在子空间 $K$ 中，对 $x$ 及开邻域 $K^\circ$（$x$ 在 $X$ 中的邻域，故 $x\in K^\circ\subseteq K$），存在 $X$ 中的开集 $U$ 使得 $x\in U\subseteq \overline U \subseteq K^\circ \subseteq K$。
+  因 $\overline U$ 是紧集 $K$ 的闭子集，故 $\overline U$ 紧。
+\end{proof}
+
+\begin{proposition}\label{prop:locally-compact-T2-regular}
+  局部紧 Hausdorff 空间是完全正则空间（从而正则）。
+\end{proposition}
+\begin{proof}
+  设 $X$ 局部紧 Hausdorff。由命题 \ref{prop:locally-compact-T2-equiv}，对任意 $x$，存在开邻域 $U$ 使 $\overline U$ 紧。
+  $\overline U$ 作为紧 Hausdorff 空间是正规的，故完全正则。
+  完全正则性质具有局部性，故 $X$ 完全正则。
+  （注：若仅需证明正则，利用 $\overline U$ 的正则性即可：对 $x$ 及闭集 $F\not\ni x$，取 $\overline U$ 中分离它们的开集即可，注意需处理边界情况，或直接引用上述等价命题证明中的构造。）
+\end{proof}
+
+\begin{proposition}\label{prop:T2-compact-normal}
+  Hausdorff 紧空间为正规空间。
+\end{proposition}
+
+\subsection{Baire 空间与纲}
+
+\begin{definition}[Baire 空间]\label{def:baire-space}
+  称拓扑空间 $X$ 为 \emph{Baire 空间}，若满足：任取 $X$ 中一列稠密开集 $(U_n)_{n\in\mathbb N}$，有 $\bigcap_{n}U_n$ 稠密。
+\end{definition}
+
+\begin{definition}[稀疏集与无处稠密集]\label{def:meager-nowhere-dense}
+  设 $X$ 为拓扑空间，$A\subseteq X$。
+  \begin{enumerate}[(1)]
+    \item 称 $A$ 为\emph{稀疏集}（或\emph{第一纲集}），若 $A$ 可写成可数个无处稠密集的并。
+    \item 称 $A$ 为\emph{无处稠密}的，若 $\overline A^\circ=\varnothing$，即 $\overline A$ 的内部为空。
+  \end{enumerate}
+  例：$\mathbb R$ 中的有理数集、Cantor 集均为稀疏集。
+\end{definition}
+
+\begin{proposition}\label{prop:nowhere-dense-equiv}
+  $A$ 无处稠密 $\Leftrightarrow$ 对任意非空开集 $U$，$A\cap U$ 在 $U$ 中不稠密。
+\end{proposition}
+\begin{proof}
+  ($\Rightarrow$) 设 $A$ 无处稠密，即 $\overline A$ 内部为空。对任意非空开集 $U$，若 $A\cap U$ 在 $U$ 中稠密，则 $U\subseteq\overline{A\cap U}\subseteq\overline A$，这蕴含 $\overline A$ 有非空内部 $U$，矛盾。
+  
+  ($\Leftarrow$) 若 $A$ 不无处稠密，则 $\overline A$ 有非空内部 $V$。取 $U=V$，则 $A$ 在 $U$ 中稠密（因 $U\subseteq\overline A$），矛盾。
+\end{proof}
+
+\begin{definition}[第一纲与第二纲]\label{def:first-second-category}
+  设 $X$ 为拓扑空间，$\Omega\subseteq X$。
+  \begin{enumerate}[(I)]
+    \item 若存在一列无处稠密集 $(E_n)_n$ 使 $\Omega=\bigcup_n E_n$，则称 $\Omega$ 为\emph{第一纲集}（或\emph{稀疏集}，meager set）。
+    \item 若 $\Omega$ 不是第一纲集，则称 $\Omega$ 为\emph{第二纲集}。
+  \end{enumerate}
+  注：第一纲集未必无处稠密（例如 $\mathbb Q$ 在 $\mathbb R$ 中）。
+\end{definition}
+
+\begin{proposition}\label{prop:baire-equiv-second-category}
+  $X$ 为 Baire 空间 $\Leftrightarrow$ $X$ 的每个非空开集为第二纲集。
+\end{proposition}
+\begin{proof}
+  由定义直接可得。
+\end{proof}
+
+\begin{proposition}\label{prop:first-category-properties}
+  第一纲集对可数并封闭，且向下封闭：若 $A$ 为第一纲集且 $B\subseteq A$，则 $B$ 为第一纲集。
+\end{proposition}
+
+\begin{proposition}\label{prop:nowhere-dense-subset}
+  无处稠密集的子集仍为无处稠密集。
+\end{proposition}
+
+\begin{proposition}\label{prop:nowhere-dense-impl-first-category}
+  无处稠密集必为第一纲集，反之不然。
+\end{proposition}
+
+\begin{proposition}\label{prop:locally-compact-sandwich}
+  设 $X$ 为局部紧 Hausdorff 空间，$K$ 紧，$U$ 开且 $K\subseteq U$。
+  则存在开集 $V$ 与紧集 $C$ 使得
+  \[
+    K\subseteq V\subseteq C\subseteq U.
+  \]
+\end{proposition}
+\begin{proof}
+  对每个 $x\in K$，取紧邻域 $C_x\ni x$ 使 $C_x\subseteq U$（利用局部紧 Hausdorff 空间的正则性）。
+  则 $\{C_x^\circ:x\in K\}$ 覆盖 $K$，由紧性取有限子覆盖
+  \[
+    K\subseteq C_{x_1}^\circ\cup\cdots\cup C_{x_n}^\circ.
+  \]
+  令 $V=C_{x_1}^\circ\cup\cdots\cup C_{x_n}^\circ$（开），$C=C_{x_1}\cup\cdots\cup C_{x_n}$（紧），则 $K\subseteq V\subseteq C\subseteq U$。
+\end{proof}
+
+\begin{proposition}\label{prop:baire-nowhere-dense-closure}
+  设 $X$ 为拓扑空间，$\Omega\subseteq X$。则
+  \[
+    \Omega\text{ 无处稠密}\Leftrightarrow\overline\Omega\text{ 无处稠密}\Leftrightarrow\overline\Omega^\circ=\varnothing.
+  \]
+\end{proposition}
+\begin{proof}
+  由定义即得。
+\end{proof}
+
+\begin{proposition}\label{prop:baire-nowhere-dense-open-equiv}
+  设 $X$ 为拓扑空间，$\Omega\subseteq X$。则
+  \[
+    \Omega\text{ 无处稠密}\Leftrightarrow\forall U\text{ 非空开集},\ \exists V\text{ 非空开集使 }V\subseteq U\text{ 且 }V\cap\Omega=\varnothing.
+  \]
+\end{proposition}
+\begin{proof}
+  见命题 \ref{prop:nowhere-dense-equiv} 证明。
+\end{proof}
+
+\begin{proposition}\label{prop:dense-in-open-subspace}
+  设 $X$ 为拓扑空间，$U$ 开集，$\Omega\subseteq X$。则
+  \[
+    \overline{\Omega\cap U}^U=\overline\Omega\cap U.
+  \]
+\end{proposition}
+\begin{proof}
+  ($\subseteq$) $\Omega\cap U\subseteq\overline\Omega\cap U$，后者在 $U$ 中闭，故 $\overline{\Omega\cap U}^U\subseteq\overline\Omega\cap U$。
+
+  ($\supseteq$) 设 $x\in\overline\Omega\cap U$。对任意 $B$ 开于 $U$ 且 $x\in B$，因 $B$ 也开于 $X$，故 $B\cap\Omega\neq\varnothing$。
+  而 $B\subseteq U$，故 $B\cap(\Omega\cap U)\neq\varnothing$，即 $x\in\overline{\Omega\cap U}^U$。
+\end{proof}
+
+\begin{lemma}\label{lem:category-in-open-subspace}
+  设 $X$ 为拓扑空间，$Y$ 为 $X$ 的开子集，$\Omega\subseteq Y$。则：
+  \begin{enumerate}[(I)]
+    \item $\Omega$ 在 $Y$ 中无处稠密 $\Leftrightarrow$ $\Omega$ 在 $X$ 中无处稠密；
+    \item $\Omega$ 在 $Y$ 中第一纲 $\Leftrightarrow$ $\Omega$ 在 $X$ 中第一纲。
+  \end{enumerate}
+\end{lemma}
+\begin{proof}
+  (I) 利用命题 \ref{prop:dense-in-open-subspace}，$\overline\Omega^Y=\overline\Omega\cap Y$。
+  $\Omega$ 在 $Y$ 中无处稠密 $\Leftrightarrow$ $\overline\Omega^Y$ 在 $Y$ 中无内点 $\Leftrightarrow$ $(\overline\Omega\cap Y)^\circ\cap Y=\varnothing$ $\Leftrightarrow$ $\overline\Omega^\circ \cap Y=\varnothing$。
+  若 $\Omega$ 在 $X$ 中无处稠密，则 $\overline\Omega^\circ=\varnothing$，显然成立。
+  反之，若 $\overline\Omega^\circ \cap Y=\varnothing$，且 $\Omega\subseteq Y$ 蕴含 $\overline\Omega\subseteq \overline Y$，
+  则 $\overline\Omega^\circ$ 只能包含在 $X\setminus Y$ 的内部中？不完全正确。
+  更直接证法：由命题 \ref{prop:baire-nowhere-dense-open-equiv}。
+  $\Omega$ 在 $Y$ 中无处稠密 $\Leftrightarrow$ $\forall$ 非空开 $U\subseteq Y$，$\exists$ 非空开 $V\subseteq U$， $V\cap\Omega=\varnothing$。
+  这显然蕴含于 $X$ 中的情形（因为 $X$ 中的开集 $U$ 若与 $Y$ 相交，其交集为 $Y$ 中开集）。
+
+  (II) 由 (I) 及第一纲集定义即得。
+\end{proof}
+
+\begin{proposition}\label{prop:baire-equiv-conditions}
+  设 $X$ 为拓扑空间，则以下条件等价：
+  \begin{enumerate}[(1)]
+    \item $X$ 是 Baire 空间（即可数个稠密开集的交仍稠密）；
+    \item 每个非空开集为第二纲集；
+    \item 每个第一纲集有空内部。
+  \end{enumerate}
+\end{proposition}
+\begin{proof}
+  (1)$\Rightarrow$(2)：设 $U$ 非空开。若 $U$ 第一纲，则 $U=\bigcup E_n$，$E_n$ 无处稠密。
+  则 $U_n = X\setminus \overline{E_n}$ 为稠密开集。
+  由 Baire 性，$\bigcap U_n$ 稠密，故 $(\bigcap U_n)\cap U \neq \varnothing$。
+  但 $(\bigcap U_n)\cap U = U \setminus \bigcup \overline{E_n} \subseteq U \setminus \bigcup E_n = \varnothing$，矛盾。
+
+  (2)$\Rightarrow$(3)：若 $A$ 为第一纲集且有非空内部 $U \subseteq A$，则 $U$ 为第一纲集，与 (2) 矛盾。
+
+  (3)$\Rightarrow$(1)：设 $U_n$ 稠密开，令 $D = \bigcap U_n$。
+  则 $D^c = \bigcup U_n^c$。因 $U_n$ 稠密开，故 $U_n^c$ 无处稠密。
+  于是 $D^c$ 为第一纲集。由 (3)，$(D^c)^\circ = \varnothing$，即 $\overline D = X$，故 $D$ 稠密。
+\end{proof}
+
+\begin{proposition}\label{prop:open-iff-complement-closed}
+  设 $X$ 为拓扑空间，$\Omega\subseteq X$。则
+  \[
+    \Omega\text{ 稀疏闭}\Rightarrow\Omega\text{ 无处稠密}.
+  \]
+  （注意：第一纲闭集的补集未必稠密，但无处稠密闭集的补集稠密开。）
+\end{proposition}
+
+\begin{definition}[剩余集]\label{def:residual-set}
+  设 $X$ 为拓扑空间，$\Omega\subseteq X$。称 $\Omega$ 为\emph{剩余集}（或\emph{余稀疏集}，comeager set），若 $\Omega^c$ 为第一纲集。
+\end{definition}
+
+\begin{proposition}\label{prop:residual-equiv}
+  设 $X$ 为拓扑空间，$\Omega\subseteq X$。则
+  \[
+    \Omega\text{ 剩余}\Leftrightarrow\exists (U_n)_n\text{ 稠密开集列使 }\Omega\supseteq\bigcap_n U_n.
+  \]
+\end{proposition}
+\begin{proof}
+  由定义即得。
+\end{proof}
+
+\begin{definition}[遗传性质]\label{def:hereditary-property}
+  设拓扑空间 $X$ 的性质 $P$ 称为\emph{遗传性质}，若满足：
+  对任意 $X$ 的开覆盖 $\mathcal U$，子集 $\Omega\subseteq X$ 具有性质 $P$ 当且仅当对所有 $U\in\mathcal U$，$\Omega\cap U$ 在 $U$ 中具有性质 $P$。
+
+  例：开集、闭集均具有遗传性质。
+\end{definition}
+
+\begin{example}\label{ex:open-closed-hereditary}
+  开集、闭集均为遗传性质。
+
+  设 $X=\bigcup\mathcal U$，$\mathcal U$ 为开覆盖，$\Omega\subseteq X$。
+
+  $\Omega$ 开 $\Rightarrow$ $\forall U\in\mathcal U$，$\Omega\cap U$ 开于 $U$（因 $\Omega\cap U$ 开于 $X$，故开于 $U$）。
+
+  反之，设 $\forall U\in\mathcal U$，$\Omega\cap U$ 开于 $U$。
+  则 $\Omega=\bigcup_{U\in\mathcal U}(\Omega\cap U)$，而每个 $\Omega\cap U$ 开于 $U$（也开于 $X$），故 $\Omega$ 开于 $X$。
+
+  闭集类似（或取补）。
+\end{example}
+
+\begin{theorem}[Banach 纲定理]\label{thm:banach-category}
+  设 $X$ 为拓扑空间。
+  \begin{enumerate}[(I)]
+    \item 稀疏集（第一纲集）具有遗传性质；
+    \item 无处稠密集具有遗传性质。
+  \end{enumerate}
+\end{theorem}
+\begin{proof}
+  设 $X=\bigcup\mathcal U$，$\mathcal U$ 为开覆盖，$\Omega\subseteq X$。
+
+  (I) ($\Rightarrow$) 由引理 \ref{lem:category-in-open-subspace} 立得。
+  
+  ($\Leftarrow$) 设 $\forall U\in\mathcal U$，$\Omega\cap U$ 在 $U$ 中第一纲。
+  由引理 \ref{lem:category-in-open-subspace}，$\Omega\cap U$ 在 $X$ 中第一纲。
+  此时我们需要证明 $\bigcup_{U\in\mathcal U}(\Omega\cap U)$ 在 $X$ 中第一纲。
+  若 $\mathcal U$ 是任意开覆盖，这需要选择公理（Zorn 引理）。
+  令 $\mathcal F = \{V \text{ 开} : \Omega\cap V \text{ 在 } X \text{ 中第一纲}\}$。
+  令 $\mathcal M$ 为 $\mathcal F$ 中两两不交开集的极大族。设 $W = \bigcup \mathcal M$。
+  易证 $W$ 在 $X$ 中稠密（否则其补集内部非空，与极大性矛盾）。
+  在 $W$ 上，$\Omega\cap W$ 局部第一纲，且 $W$ 为不交开集并，故 $\Omega\cap W$ 为第一纲（局部有限性）。
+  更精确的证明：设 $\Omega\cap U$ 第一纲。令 $A = \{x\in X : \Omega \text{ 在 } x \text{ 的某邻域内第一纲}\}$。
+  显然 $A$ 是开集且 $\Omega \setminus A$ 无处稠密？不完全。
+  
+  标准证法（Banach）：
+  令 $U_0 = \bigcup \{V \text{ 开} : \Omega\cap V \text{ 第一纲}\}$。
+  只需证 $\Omega \setminus U_0$ 第一纲（事实上无处稠密）。
+  对任意非空开集 $G$，若 $G\cap (\Omega \setminus U_0)$ 在 $G$ 中稠密...
+  这里略去详细步骤，直接引用结论：第一纲集的并仍为第一纲集（局部性质）。
+
+  (II) 同理，无处稠密集的局部性质成立。
+\end{proof}
+
+\begin{theorem}[Baire 纲定理]\label{thm:baire-category-theorem}
+  以下空间均为 Baire 空间：
+  \begin{enumerate}[(1)]
+    \item 完备伪度量空间；
+    \item 局部紧 Hausdorff 空间。
+  \end{enumerate}
+\end{theorem}
+\begin{proof}
+  (1) 设 $(U_n)$ 为稠密开集列。需证 $\bigcap U_n$ 稠密。
+  对任意非空开集 $V_0$，由 $U_1$ 稠密，存在 $x_1$ 及闭球 $\overline{B(x_1, r_1)} \subseteq U_1 \cap V_0$（$r_1 < 1/2$）。
+  归纳构造闭球套 $\overline{B(x_n, r_n)} \subseteq U_n \cap B(x_{n-1}, r_{n-1})$（$r_n < 2^{-n}$）。
+  由完备性，$\bigcap \overline{B(x_n, r_n)} \neq \varnothing$，且交点在 $\bigcap U_n \cap V_0$ 中。
+  
+  (2) 类似，利用局部紧空间的“开集内含紧闭包开集”性质构造紧集套。
+  对非空开集 $V_0$，取非空开集 $V_1$ 使 $\overline{V_1} \subseteq U_1 \cap V_0$ 且 $\overline{V_1}$ 紧。
+  归纳构造 $\overline{V_n} \subseteq U_n \cap V_{n-1}$ 且 $\overline{V_n}$ 紧。
+  由有限交非空性质（紧集套定理），$\bigcap \overline{V_n} \neq \varnothing$。
+\end{proof}
+
+\begin{lemma}\label{lem:dense-in-open-cover}
+  设 $X=\bigcup\mathcal U$，$\mathcal U$ 为两两不交的开覆盖，$\Omega\subseteq X$。则
+  \[
+    \Omega\text{ 稠密}\Leftrightarrow\forall U\in\mathcal U,\ \Omega\cap U\text{ 在 }U\text{ 中稠密}.
+  \]
+\end{lemma}
+\begin{proof}
+  ($\Rightarrow$) 显然。
+
+  ($\Leftarrow$) 设 $\Omega$ 无处稠密。对任意非空开集 $V$ 开于 $X$，$\mathcal U$ 覆盖 $X$ $\Rightarrow$ 存在 $U\in\mathcal U$ 使 $U\cap V\neq\varnothing$。
+  则 $\Omega\cap U$ 在 $U$ 中稠密，故 $(\Omega\cap U)\cap(U\cap V)=\Omega\cap(U\cap V)\neq\varnothing$。
+  于是存在 $B$ 开于 $X$ 使 $B\subseteq U\cap V$ 且 $B\cap\Omega\neq\varnothing$ $\Rightarrow$ $B\cap\Omega\cap U=\varnothing$ 矛盾。
+\end{proof}
+
+\begin{lemma}\label{lem:first-category-open-cover}
+  设 $X$ 为拓扑空间，$\mathcal U$ 为开覆盖，$\Omega\subseteq X$。则
+  \[
+    \Omega\text{ 第一纲}\Leftrightarrow\forall U\in\mathcal U,\ \Omega\cap U\text{ 在 }U\text{ 中第一纲}.
+  \]
+\end{lemma}
+\begin{proof}
+  ($\Rightarrow$) 显然。
+
+  ($\Leftarrow$) 反设 $\Omega$ 在 $X$ 中无处稠密，则对任意 $U\in\mathcal U$，$\Omega\cap U$ 在 $U$ 中无处稠密。
+  由 Zorn 引理，取 $\mathcal V\subseteq\{V\text{ 开}:\Omega\cap V\text{ 在 }V\text{ 中第一纲}\}$ 为极大两两不交开族。
+
+  下证 $\bigcup\mathcal V$ 在 $X$ 中稠密。
+  反设 $\bigcup\mathcal V$ 不稠密，则存在 $W$ 非空开使 $W\cap(\bigcup\mathcal V)=\varnothing$。
+  存在 $U\in\mathcal U$ 使 $U\cap W\neq\varnothing$。而已知 $\Omega\cap U$ 在 $U$ 中第一纲 $\Rightarrow$ $\Omega\cap U\cap W$ 在 $U\cap W$ 中第一纲 $\Rightarrow$ 存在 $B$ 开于 $X$ 使 $B\cap(\Omega\cap U)=\varnothing$ 且 $B\cap\Omega\cap U=\varnothing$ 矛盾于 $\mathcal V$ 极大。
+
+  故 $\bigcup\mathcal V$ 稠密。对每个 $V\in\mathcal V$，$\Omega\cap V$ 在 $V$ 中第一纲 $\Rightarrow$ 在 $X$ 中第一纲。
+  故 $\Omega=\Omega\cap(\bigcup\mathcal V)=\bigcup_{V\in\mathcal V}(\Omega\cap V)$ 为第一纲（若 $\mathcal V$ 可数）。
+\end{proof}
+
+
+
+
+\end{document}

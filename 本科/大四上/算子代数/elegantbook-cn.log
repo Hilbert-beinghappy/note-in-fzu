@@ -1,4 +1,4 @@
-This is XeTeX, Version 3.141592653-2.6-0.999997 (TeX Live 2025) (preloaded format=xelatex 2025.4.29)  15 NOV 2025 16:09
+This is XeTeX, Version 3.141592653-2.6-0.999997 (TeX Live 2025) (preloaded format=xelatex 2025.4.29)  1 DEC 2025 11:34
 entering extended mode
  restricted \write18 enabled.
  file:line:error style messages enabled.
@@ -1947,6 +1947,102 @@ LaTeX Warning: Label `pro:-NoValue-' multiply defined.
 LaTeX Warning: Label `pro:-NoValue-' multiply defined.
 
 
+LaTeX Warning: Label `def:-NoValue-' multiply defined.
+
+
+LaTeX Warning: Label `pro:-NoValue-' multiply defined.
+
+
+LaTeX Warning: Label `thm:-NoValue-' multiply defined.
+
+
+LaTeX Warning: Label `def:-NoValue-' multiply defined.
+
+
+LaTeX Warning: Label `pro:-NoValue-' multiply defined.
+
+
+LaTeX Warning: Label `pro:-NoValue-' multiply defined.
+
+
+LaTeX Warning: Label `lem:-NoValue-' multiply defined.
+
+
+LaTeX Warning: Label `thm:-NoValue-' multiply defined.
+
+
+LaTeX Warning: Label `thm:-NoValue-' multiply defined.
+
+
+LaTeX Warning: Label `cor:-NoValue-' multiply defined.
+
+
+LaTeX Warning: Label `pro:-NoValue-' multiply defined.
+
+
+LaTeX Warning: Label `pro:-NoValue-' multiply defined.
+
+
+LaTeX Warning: Label `pro:-NoValue-' multiply defined.
+
+
+LaTeX Warning: Label `pro:-NoValue-' multiply defined.
+
+
+LaTeX Warning: Label `thm:-NoValue-' multiply defined.
+
+
+LaTeX Warning: Label `thm:-NoValue-' multiply defined.
+
+
+LaTeX Warning: Label `pro:-NoValue-' multiply defined.
+
+
+LaTeX Warning: Label `pro:-NoValue-' multiply defined.
+
+
+LaTeX Warning: Label `def:-NoValue-' multiply defined.
+
+
+LaTeX Warning: Label `pro:-NoValue-' multiply defined.
+
+
+LaTeX Warning: Label `pro:-NoValue-' multiply defined.
+
+
+LaTeX Warning: Label `lem:-NoValue-' multiply defined.
+
+
+LaTeX Warning: Label `lem:-NoValue-' multiply defined.
+
+
+LaTeX Warning: Label `pro:-NoValue-' multiply defined.
+
+
+LaTeX Warning: Label `thm:-NoValue-' multiply defined.
+
+
+LaTeX Warning: Label `pro:-NoValue-' multiply defined.
+
+
+LaTeX Warning: Label `def:-NoValue-' multiply defined.
+
+
+LaTeX Warning: Label `pro:-NoValue-' multiply defined.
+
+
+LaTeX Warning: Label `pro:-NoValue-' multiply defined.
+
+
+LaTeX Warning: Label `pro:-NoValue-' multiply defined.
+
+
+LaTeX Warning: Label `pro:-NoValue-' multiply defined.
+
+
+LaTeX Warning: Label `pro:-NoValue-' multiply defined.
+
+
 LaTeX Warning: Label `thm:-NoValue-' multiply defined.
 
 )
@@ -2453,7 +2549,23 @@ Package hyperref Warning: Token not allowed in a PDF string (Unicode):
 
 [28]
 
-[29] (./elegantbook-cn.aux)
+[29]
+
+[30]
+
+[31]
+
+[32]
+
+[33]
+
+[34]
+
+[35]
+
+[36]
+
+[37] (./elegantbook-cn.aux)
  ***********
 LaTeX2e <2024-11-01> patch level 2
 L3 programming layer <2022/08/05>
@@ -2466,18 +2578,18 @@ LaTeX Font Warning: Some font shapes were not available, defaults substituted.
 LaTeX Warning: There were multiply-defined labels.
 
 Package rerunfilecheck Info: File `elegantbook-cn.out' has not changed.
-(rerunfilecheck)             Checksum: DC58E6BC0BCFAD27A5175287DC371530;1847.
+(rerunfilecheck)             Checksum: 3D035C4D86FDD48B11A8C325A35477C1;2104.
 Package logreq Info: Writing requests to 'elegantbook-cn.run.xml'.
 \openout1 = `elegantbook-cn.run.xml'.
 
  ) 
 Here is how much of TeX's memory you used:
- 50765 strings out of 473832
- 1092140 string characters out of 5729481
- 2038655 words of memory out of 5000000
- 72969 multiletter control sequences out of 15000+600000
+ 51376 strings out of 473832
+ 1109851 string characters out of 5729481
+ 2039895 words of memory out of 5000000
+ 73580 multiletter control sequences out of 15000+600000
  652649 words of font info for 261 fonts, out of 8000000 for 9000
  1348 hyphenation exceptions out of 8191
- 103i,20n,136p,699b,1491s stack positions out of 10000i,1000n,20000p,200000b,200000s
+ 103i,20n,136p,699b,1493s stack positions out of 10000i,1000n,20000p,200000b,200000s
 
-Output written on elegantbook-cn.pdf (31 pages).
+Output written on elegantbook-cn.pdf (39 pages).

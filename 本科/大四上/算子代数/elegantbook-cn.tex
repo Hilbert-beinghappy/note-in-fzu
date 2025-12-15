@@ -43,8 +43,8 @@
   为一个二元运算（结合律），则称$(A,m)$为一个$F$代数。若满足$m$为双线性且满足结合律，则称为结合代数。
 \end{definition}
 
-\begin{example}[非结合代数]
-  典型的非结合代数为矩阵代数$M_n(F)$（矩阵代数组成$F$域）。
+\begin{example}[结合代数]
+  典型的结合代数为矩阵代数$M_n(F)$（矩阵代数组成$F$域）。
 \end{example}
 
 \begin{example}[函数代数]
@@ -2275,6 +2275,57 @@ $\widetilde{\operatorname{id}_A} = \operatorname{id}_{\tilde{A}}$，$\widetilde{
   $A/M$为域（可除代数）若任意元素谱非空，则$A/M \cong \mathbb{C}$（拓扑同构）
 \end{proof}
 
+\begin{definition}[Fréchet导数]
+  若$X$, $Y$为赋范空间，$\Omega$开于$X$，$\Omega \xrightarrow{f} Y$，$x \in \Omega$。称$f$在$x$处可微（Fréchet导数），若满足$\exists X \xrightarrow{A} Y$有界线性，使
+  \begin{equation*}
+    \lim_{h \to 0}\frac{f(x+h) - f(x) - Ah}{\|h\|} = 0
+  \end{equation*}
+  $A$称为$f$在$x$处的微分。可以证明以上的$A$具有唯一性，$A$记为$Df(x)$。
+\end{definition}
+
+\begin{remark}
+  $\Omega \xrightarrow{g} Y \xrightarrow{f} X$，$\Omega$开集，
+  \begin{equation*}
+    D(f \circ g)(x_0) = Df(g(x_0))Dg(x_0)
+  \end{equation*}
+  其中$f \leftarrow A$，$g \leftarrow B$，$x \longmapsto g(x_0) \longmapsto f(g(x_0))$，$f \circ g \leftarrow A \cdot B$。
+\end{remark}
+
+\begin{proposition}[链式法则]
+  $\Omega$为$X$中开集，$\Omega \xrightarrow{g} Y \xrightarrow{f} Z$。已知$g$在$x$处可微且$Dg(x) = B$，$f$在$g(x)$处可微且$Df(g(x)) = A$，则$f \circ g$在$x$处可微且$D(f \circ g)(x) = A \cdot B$。
+\end{proposition}
+
+\begin{proof}
+  \begin{align*}
+    &\lim_{h \to 0}\frac{(f \circ g)(x+h) - (f \circ g)(x) - A \cdot B(h)}{\|h\|} \\
+    &= \lim_{h \to 0}\frac{f(g(x+h) - g(x) + g(x)) - f(g(x)) - A(Bh)}{\|h\|} \\
+    &= \lim_{h \to 0}\frac{f(g(x) + Bh + o_g(h)) - f(g(x)) - A(Bh)}{\|h\|} \\
+    &= \lim_{h \to 0}\frac{O_f(Bh + o_g(h)) + A(Bh + o_g(h)) - A(Bh)}{\|h\|} \\
+    &= \lim_{h \to 0}\frac{O_f(Bh + o_g(h))}{\|h\|} + A\left(\frac{o_g(h)}{\|h\|}\right) = 0
+  \end{align*}
+  
+  因为$A\left(\frac{o_g(h)}{\|h\|}\right) \longrightarrow A(0) = 0$。
+  
+  \begin{equation*}
+    \frac{O_f(Bh + o_g(h))}{\|h\|} = \begin{cases}
+      \displaystyle\frac{O_f(Bh + o_g(h))}{\|Bh + o_g(h)\|} \cdot \frac{\|Bh + o_g(h)\|}{\|h\|} \longrightarrow 0 \cdot \text{有界} & \text{若}Bh + o_g(h) \neq 0 \\
+      0 & \text{otherwise}
+    \end{cases}
+  \end{equation*}
+\end{proof}
+
+\begin{example}
+  $X \xrightarrow{f} Y$，线性，则$f$在每个点处可微，且$Df(x) = f$。
+\end{example}
+
+\begin{example}
+  $ \begin{aligned}
+      X &\xrightarrow{f} Y \\
+      x &\longmapsto Ax + b
+    \end{aligned}$若$A \in \mathcal{B}(X, Y)$，$b \in Y$，则称$f$为仿射，
+
+  $Df(x) = A$。仿射的表达也是唯一的。
+\end{example}
 \begin{theorem}
   若$A$为含幺复Banach代数，$a \in A$，则$\sigma(a) \neq \emptyset$，且为$\mathbb{C}$中紧子集
 \end{theorem}
@@ -2295,6 +2346,616 @@ $\widetilde{\operatorname{id}_A} = \operatorname{id}_{\tilde{A}}$，$\widetilde{
   
   由$ G(A)^c$闭 $\Rightarrow \tau^{-1}(G(A)^c)$闭集
   
+  下证$\sigma(a)$有界。
+  
+
+\begin{definition}[谱半径]
+  $A$为含幺Banach代数，$a \in A$，定义
+  \begin{equation*}
+    r(a) \triangleq \sup\{|\lambda| : \lambda \in \sigma(a)\}
+  \end{equation*}
+  称$r(a)$为$a$的谱半径。
+\end{definition}
+
+\begin{proposition}
+  $r(a) \leq \|a\|$。
+\end{proposition}
+
+\begin{proposition}
+  $r(a) = \max\{|\lambda| : \lambda \in \sigma(a)\}$。
+\end{proposition}
+
+\begin{proof}
+  上面已证$\sigma(a)$是紧集。
+\end{proof}  
+
+  若$\lambda \neq 0$，则$\lambda 1 - a$不可逆$\Longleftrightarrow 1 - \lambda^{-1}a$不可逆。
+  
+  已证$B(1, 1) \subset G(A)$，$\Rightarrow$若$\lambda \in \sigma(a)$则$\|\lambda^{-1}a\| \geq 1$，
+  i.e. $|\lambda| \leq \|a\|$，故$\sigma(a)$有界。
+  
+  下证$\sigma(a) \neq \emptyset$。反证，若$\sigma(a) = \emptyset$，则定义
+  \begin{equation*}
+    \begin{aligned}
+      \mathbb{C} &\xrightarrow{f} A \quad \text{良定义} \\
+      \lambda &\longmapsto (\lambda 1 - a)^{-1}
+    \end{aligned}
+  \end{equation*}
+  下证$f$可微。
+  
+
+\begin{lemma}
+  $A$为含幺Banach代数，则
+  \begin{equation*}
+    \begin{aligned}
+      G(A) &\xrightarrow{\nu} G(A) \quad \text{可微} \\
+      x &\longmapsto x^{-1}
+    \end{aligned}
+  \end{equation*}
+\end{lemma}
+
+\begin{proof}
+  已证若$x$可逆，$B(x, \frac{1}{\|x^{-1}\|}) \subset G(A)$。
+  
+  若$h \in B(0, \frac{1}{\|x^{-1}\|})$，
+  \begin{align*}
+    \nu(x+h) &= (x+h)^{-1} = (x(1 + x^{-1}h))^{-1} = (1 + x^{-1}h)^{-1} \cdot x^{-1} \\
+    &= \sum_{n=0}^{\infty}(-x^{-1}h)^n x^{-1} = x^{-1} + (-x^{-1}h)x^{-1} + \sum_{n=2}^{\infty}(-x^{-1}h)^n x^{-1}
+  \end{align*}
+  
+  $\Rightarrow \nu(x+h) - \nu(x) = -x^{-1}hx^{-1} + \sum_{n \geq 2}(x^{-1}h)^n x^{-1}$
+  
+  定义$T_x: A \longrightarrow A$，连续线性，
+  \begin{equation*}
+    a \longmapsto -x^{-1}ax^{-1}
+  \end{equation*}
+  
+  下证$D\nu(x) = T_x$。这是因为
+  \begin{equation*}
+    \frac{\nu(x+h) - \nu(x) - T_x h}{\|h\|} = \sum_{n \geq 2}\frac{(-1)^n}{\|h\|}(x^{-1}h)^n x^{-1} \quad \circled{1}
+  \end{equation*}
+  
+  由$n \geq 2$有
+  \begin{equation*}
+    \left\|\frac{(-1)^n}{\|h\|}(x^{-1}h)^n x^{-1}\right\| \leq \frac{1}{\|h\|}\|x^{-1}\|^{n+1}\|h\|^n = \|h\|^{n-1}\|x^{-1}\|^{n+1}
+  \end{equation*}
+  
+  \begin{equation*}
+    \|\circled{1}\| \leq \left(\sum_{n \geq 2}\|h\|^{n-1}\|x^{-1}\|^{n-1}\right)\|x^{-1}\|^2 \longrightarrow 0
+  \end{equation*}
+\end{proof}
+  由Lemma，$\lambda \longmapsto \lambda 1 - a \longmapsto (\lambda 1 - a)^{-1}$可微。
+  
+  $\Rightarrow$对于$\forall \varphi \in A^*$，有$\mathbb{C} \xrightarrow{f} A \xrightarrow{\varphi} \mathbb{C}$，$\varphi$有界线性。
+  
+  下证$\varphi \circ f$为有界函数，只要证$f(\mathbb{C})$在$A$中有界。
+  
+  $\forall |\lambda| > \|a\| + 1$，$\Rightarrow \|\lambda^{-1}a\| < 1$，有
+  \begin{equation*}
+    f(\lambda) = (\lambda(1 - \lambda^{-1}a))^{-1} = \lambda^{-1}(1 - \lambda^{-1}a)^{-1} = \lambda^{-1}\sum_{n=0}^{\infty}(\lambda^{-1}a)^n
+  \end{equation*}
+  
+  \begin{equation*}
+    \|f(\lambda)\| \leq \frac{1}{|\lambda|}\sum_{n=0}^{\infty}\|(\lambda^{-1}a)^n\| \leq \sum_{n=0}^{\infty}|\lambda^{-1}|^{n+1}\|a\|^n = \frac{1}{|\lambda|} \cdot \frac{1}{1 - |\lambda^{-1}|\|a\|} = \frac{1}{|\lambda| - \|a\|} < 1
+  \end{equation*}
+  
+  $\forall |\lambda| \leq \|a\| + 1$，为紧集，像是紧的，故有界。
+  \begin{equation*}
+    f(\mathbb{C}) = f(\bar{B}(0, \|a\|+1)) \cup f(\bar{B}(0, \|a\|+1)^c)
+  \end{equation*}
+  
+  由刘维尔定理，$\varphi \circ f$全平面解析有界$\Rightarrow \varphi \circ f$为常值函数。
+  
+  由Hahn-Banach延拓定理，$\forall \varphi \in A^*$允许分离点$\Rightarrow f(\mathbb{C})$为常元。
+  
+  矛盾，$\forall \lambda_1 \neq \lambda_2$，有$\lambda_1 1 \neq \lambda_2 1 \Rightarrow \lambda_1 1 - a \neq \lambda_2 1 - a \Rightarrow (\lambda_1 1 - a)^{-1} \neq (\lambda_2 1 - a)^{-1}$。
+  
+  故$\sigma(a) \neq \emptyset$。
+\end{proof}
+
+
+\section{Gelfand理论}
+
+\begin{remark}
+  称交换含幺$F$代数$A$具有谱性质，若$\forall A \xrightarrow{f} B$满同态，有$B$中每个元素谱非空。
+  
+  $\Longleftrightarrow$ $A$的每个元素谱非空，且$\forall M$为$A$的极大理想，$A/M$的元素谱非空。
+\end{remark}
+
+\begin{theorem}
+  交换含幺Banach代数$A$具有谱性质。
+\end{theorem}
+
+\begin{proof}
+  由Gelfand定理，$A$的每个元素谱非空。已证$\forall M$为$A$极大理想，$A/M$亦为Banach代数，从而$A/M$的每个元素谱非空。
+\end{proof}
+
+\begin{theorem}
+  若$A$为交换含幺$F$代数且具有谱性质，则$\forall a \in A$，有
+  \begin{equation*}
+    \sigma(a) = \{\tau(a) : \tau \in \Sigma A\} \triangleq \hat{a}(\Sigma A), \quad \hat{a}(\tau) \triangleq \tau(a)
+  \end{equation*}
+  其中$\Sigma A \triangleq \{\tau \in F^A : \tau\text{为保幺同态}\}$，称为$A$的谱。
+\end{theorem}
+
+\begin{corollary}[Gelfand]
+  若$A$为交换含幺Banach代数，$a \in A$，则
+  \begin{equation*}
+    \sigma(a) = \{\tau(a) : \tau \in \Sigma A\}
+  \end{equation*}
+  其中$A \xrightarrow{\tau} \mathbb{C}$称为特征。
+\end{corollary}
+
+\begin{proposition}
+  若$A$为含幺Banach代数，则$A \xrightarrow{\tau} \mathbb{C}$保幺同态为压缩的。
+\end{proposition}
+
+\begin{proof}
+  $\forall a \in A$，须证$\tau(a) \in \sigma(a)$。
+  
+  这是因为$\tau(\tau(a)1 - a) = \tau(a)\tau(1) - \tau(a) = 0$。
+  
+  $\Rightarrow \tau(a)1 - a$不可逆。
+  
+  $\Rightarrow |\tau(a)| \leq r(a) \leq \|a\|$，i.e. $\tau$压缩，从而$\tau$连续，$\|\tau\| \leq 1$。
+\end{proof}
+
+\begin{proposition}
+  由上一个性质知，若$A$为含幺Banach代数，则$\Sigma A \subset \bar{B}_{A^*}(0, 1)$。而$\bar{B}_{A^*}(0, 1)$在弱$*$拓扑下为紧集。只要证$\Sigma A$闭，则$\Sigma A$紧。
+\end{proposition}
+
+\begin{proof}
+  任取$\{\tau_\alpha\}_{\alpha \in \Lambda} \longrightarrow \tau$为$\Sigma A$中的网，下证$\tau \in \Sigma A$。
+  
+  $1 = \tau_\alpha(1) \longrightarrow \tau(1) \Rightarrow \tau(1) = 1$。
+  
+  $\tau_\alpha(ab) = \tau_\alpha(a)\tau_\alpha(b) \longrightarrow \tau(ab) = \tau(a)\tau(b)$。
+  
+  故$\tau \in \Sigma A$。
+\end{proof}
+
+\begin{proposition}
+  $A$为Banach代数，则$\Sigma A$赋弱$*$拓扑为紧$T_2$空间。
+\end{proposition}
+
+\begin{proposition}
+  若$\Omega$为紧$T_2$空间，则$C(\Omega)$为交换含幺Banach代数。$C(\Omega)$为$\Omega$上全体$\mathbb{C}$值连续映射。
+\end{proposition}
+
+\begin{theorem}[Gelfand变换]
+  $A$为交换含幺Banach代数，则
+  \begin{equation*}
+    \begin{aligned}
+      A &\xrightarrow{\theta} C(\Sigma A) \quad \text{为保幺同态且压缩且$\|\hat{a}\| = r(a)$。} \\
+      a &\longmapsto \hat{a}: \Sigma A \longrightarrow \mathbb{C} \\
+      & \quad\quad\quad \tau \longmapsto \tau(a)
+    \end{aligned}
+  \end{equation*}
+  
+\end{theorem}
+
+\begin{proof}
+  （良定义）$\hat{a}$连续，因为$\forall \tau_\alpha \xrightarrow{w^*} \tau$，有
+  \begin{equation*}
+    \begin{tikzcd}
+      \hat{a}(\tau_\alpha) \arrow[r] \arrow[d, equal] & \hat{a}(\tau) \arrow[d, equal] \\
+      \tau_\alpha(a) \arrow[r] & \tau(a)
+    \end{tikzcd}
+  \end{equation*}
+  
+  验证同态性质：$\widehat{a+b} = \hat{a} + \hat{b}$，$\widehat{ab} = \hat{a}\hat{b}$，$\widehat{\lambda a} = \lambda\hat{a}$，$\hat{1} = \tilde{1}$。
+  
+  \begin{equation*}
+    \|\hat{a}\| = \sup\{|\hat{a}(\tau)| : \tau \in \Sigma A\} = \sup\{|\tau(a)| : \tau \in \Sigma A\} = r(a)
+  \end{equation*}
+  （已证$\{\tau(a) : \tau \in \Sigma A\} = \sigma(a)$）
+  
+  $\Rightarrow \|\hat{a}\| = \|\theta(a)\| \leq \|a\|$。
+\end{proof}
+
+\begin{theorem}[Jacobson根]
+  \begin{equation*}
+    \ker\theta = \bigcap\{M : M\text{为}A\text{的极大理想}\}
+  \end{equation*}
+\end{theorem}
+
+\begin{proof}
+  $a \in \ker\theta \Longleftrightarrow \theta(a) = 0 \Longleftrightarrow \forall \tau \in \Sigma A$，$\tau(a) = 0$
+  $\Longleftrightarrow a \in \bigcap_{\tau \in \Sigma A}\ker\tau$。
+\end{proof}
+
+\begin{proposition}
+  \begin{equation*}
+    \begin{aligned}
+      \Sigma A &\longrightarrow \mathrm{Max}A \quad \text{为双射} \\
+      \tau &\longmapsto \ker\tau
+    \end{aligned}
+  \end{equation*}
+\end{proposition}
+
+\begin{proof}
+  由同态基本定理，有交换图：
+  \begin{equation*}
+    \begin{tikzcd}
+      A \arrow[r, "\tau", two heads] \arrow[d, "\pi"'] & F \\
+      A/\ker\tau \arrow[ur, "\cong"'] &
+    \end{tikzcd}
+  \end{equation*}
+  故$\tau \longmapsto \ker\tau$。
+  
+  下证单射。设$\ker\tau_1 = \ker\tau_2$，有交换图：
+  \begin{equation*}
+    \begin{tikzcd}
+      A \arrow[r, "\tau_1", two heads] \arrow[d, "\tau_2"'] & F \arrow[dl, "\exists! \sigma"] \\
+      F &
+    \end{tikzcd}
+  \end{equation*}
+  $\sigma$数乘。由保幺，$\sigma = \ell_1 = \mathrm{id}$，$\Rightarrow \tau_1 = \tau_2$。
+\end{proof}
+
+\begin{proposition}
+  若$A$为Banach代数，$A \xrightarrow{\tau} \mathbb{C}$为同态，则$\tau$为压缩映射。
+\end{proposition}
+
+\begin{proof}
+  设$A \hookrightarrow \hat{A}$为Banach代数幺元化，也为$A$作为纯代数的幺元化。有交换图：
+  \begin{equation*}
+    \begin{tikzcd}
+      A \arrow[r, hook] \arrow[rd, "\tau"'] & \hat{A} \arrow[d, "\exists! \tilde{\tau}"] \\
+      & \mathbb{C}
+    \end{tikzcd}
+  \end{equation*}
+  由上次已证，$\tilde{\tau}$压缩$\Rightarrow \tau = \tilde{\tau}|_A$压缩。
+\end{proof}
+
+\begin{definition}[单点紧化]
+  若$Y$为拓扑空间，$X$为其子空间，$Y = X \cup \{\infty\}$。若$Y$为紧$T_2$空间，则称$Y$为$X$的一个单点紧化。
+  
+  或一般的定义：$X \overset{\eta}{\hookrightarrow} Y = \eta(X) \cup \{\infty\}$，$\eta$为同胚嵌入，称$(Y, \eta)$为$X$的一个单点紧化。
+\end{definition}
+
+\begin{proposition}
+  若$X$存在单点紧化，则$X$为局部紧$T_2$空间。
+\end{proposition}
+
+\begin{proposition}
+  $X \hookrightarrow X \cup \{\infty\}$紧$T_2$空间，则$\forall \varphi \in C_0(X)$，$\exists! \tilde{\varphi} \in C(X \cup \{\infty\})$，使$\tilde{\varphi}|_X = \varphi$且$\tilde{\varphi}(\infty) = 0$。
+  \begin{equation*}
+    \begin{tikzcd}
+      X \arrow[r, hook] \arrow[rd, "\varphi"'] & X \cup \{\infty\} \arrow[d, "\exists! \tilde{\varphi}"] \\
+      & \mathbb{C}
+    \end{tikzcd}
+  \end{equation*}
+\end{proposition}
+
+\begin{remark}
+  $C_0(X) \triangleq \{f \in \mathbb{C}^X : f\text{连续且}\forall \varepsilon > 0, \exists K\text{为}X\text{的紧子集使}\forall x \in X \setminus K\text{有}|f(x)| < \varepsilon\}$。
+  
+  易知，$C_0(X) \subset C_b(X)$。
+\end{remark}
+
+\begin{proof}
+  唯一性显然，下证存在性。
+  
+  已知$\varphi \in C_0(X)$，定义$\tilde{\varphi}(x) \triangleq \begin{cases} \varphi(x), & x \in X \\ 0, & x = \infty \end{cases}$，使$\tilde{\varphi}|_X = \varphi$且$\tilde{\varphi}(\infty) = 0$。
+  
+  由于$X$为$X \cup \{\infty\}$的开子集且$\varphi|_X = \varphi$连续，则$\forall x \in X$，$\tilde{\varphi}$在$x$处连续。
+  
+  $\forall \varepsilon > 0$，由$\varphi \in C_0(X)$，$\exists K$为$X$中紧集，$K$闭集，$X \setminus K \cup \{\infty\}$为$\{\infty\}$的开邻域，$\forall x \in X \setminus K$，有$\varphi(x) \in B_{\mathbb{C}}(0, \varepsilon)$。
+\end{proof}
+
+\begin{remark}
+  $C(X \cup \{\infty\}, \infty) \triangleq \{f \in C(X \cup \{\infty\}) : f(\infty) = 0\}$，为$C(X \cup \{\infty\})$的闭的极大理想。
+\end{remark}
+
+\begin{proof}
+  $X$为紧空间，$\forall x \in X$，有
+  \begin{equation*}
+    \begin{aligned}
+      C(X) &\xrightarrow{\hat{x}} \mathbb{C} \quad \text{为保幺同态} \\
+      f &\longmapsto f(x)
+    \end{aligned}
+  \end{equation*}
+  有交换图：
+  \begin{equation*}
+    \begin{tikzcd}
+      C(X) \arrow[r, "\hat{x}"] \arrow[d] & \mathbb{C} \\
+      C(X)/\ker\hat{x} \arrow[ur, "\text{为代数同构$\Rightarrow \ker\hat{x}$极大理想。}"'] &
+    \end{tikzcd}
+  \end{equation*}
+  
+  
+  $C(X \cup \{\infty\}, \infty)$为交换Banach代数。
+\end{proof}
+
+\begin{lemma}
+  \begin{equation*}
+    \begin{aligned}
+      C_0(X) &\xrightarrow{\theta} C(X \cup \{\infty\}, \infty) \quad \text{为等距代数同构} \\
+      \varphi &\longmapsto \tilde{\varphi}
+    \end{aligned}
+  \end{equation*}
+\end{lemma}
+
+\begin{proof}
+  若$\tilde{\varphi} = \tilde{\psi} \Rightarrow \varphi = \tilde{\varphi}|_X = \tilde{\psi}|_X = \psi \Rightarrow \theta$单。
+  
+  有交换图：
+  \begin{equation*}
+    \begin{tikzcd}
+      X \arrow[r, hook] \arrow[rd, "f|_X"'] & X \cup \{\infty\} \arrow[d, "f", "\text{连续}"'] \\
+      & \mathbb{C}
+    \end{tikzcd}
+  \end{equation*}
+  由定义易知，$\theta$满。
+  
+  \begin{equation*}
+    \begin{aligned}
+      C(X \cup \{\infty\}, \infty) &\xrightarrow{\theta^{-1}} C(X) \quad \text{为代数同态} \\
+      f &\longmapsto f|_X
+    \end{aligned}
+  \end{equation*}
+  
+  $\mathrm{Im}\,\theta^{-1} = C_0(X)$为$C(X)$的子代数。$\Rightarrow C_0(X)$为交换Banach代数。
+\end{proof}
+
+\begin{lemma}
+  $A$为Banach代数，$A \hookrightarrow \hat{A}$为Banach代数幺元化。$\Sigma A$为全体非零同态。有交换图：
+  \begin{equation*}
+    \begin{tikzcd}
+      A \arrow[r, hook] \arrow[rd, "\tau"'] & \hat{A} \arrow[d, "\exists! \tilde{\tau}"] \\
+      & \mathbb{C}
+    \end{tikzcd}
+  \end{equation*}
+  则
+  \begin{equation*}
+    \begin{aligned}
+      \{0\} \cup \Sigma A &\xrightarrow{\theta} \Sigma\hat{A} \quad \text{为同胚} \\
+      \tau &\longmapsto \tilde{\tau}
+    \end{aligned}
+  \end{equation*}
+\end{lemma}
+
+\begin{proof}
+  $\tau_1 \longmapsto \tilde{\tau}_1$，$\tau_1 = \tilde{\tau}_1|_A = \tilde{\tau}_2|_A = \tau_2 \Rightarrow \theta$单。
+  
+  任取$\psi \in \Sigma\hat{A}$，$\psi|_A^{\text{显}} \in \{0\} \cup \Sigma A$，$\widetilde{\psi|_A} = \psi$（唯一性）$\Rightarrow \theta$满。
+  
+  已证$\theta$为双射，下证$\theta$为同胚。Rmk：$\{0\} \cup \Sigma A \subset A^*$，$T_2$。
+  
+  由已证$\Sigma\hat{A}$紧，$\{0\} \cup \Sigma A$为$T_2$。
+  
+  从而只要证$\theta^{-1}$为连续，从而同胚。
+  \begin{equation*}
+    \begin{aligned}
+      \Sigma\hat{A} &\xrightarrow{\theta^{-1}} \{0\} \cup \Sigma A \\
+      \psi &\longmapsto \psi|_A
+    \end{aligned}
+  \end{equation*}
+  
+  这是因为：若$\psi_\alpha \xrightarrow{w^*} \psi$（在$\hat{A}^*$中），要证$\psi_\alpha|_A \xrightarrow{w^*} \psi|_A$（在$A^*$中）。
+  
+  而$\forall a \in A$，有$\psi_\alpha|_A(a) = \psi_\alpha(a) \longrightarrow \psi(a) = \psi|_A(a)$。
+  
+  $\Rightarrow \psi_\alpha|_A \xrightarrow{w^*} \psi|_A$（在$A^*$中）。
+\end{proof}
+
+\begin{proposition}
+  \begin{equation*}
+    \begin{aligned}
+      \Sigma A &\xrightarrow{\mu} \Sigma\hat{A} = \mu(\Sigma A) \cup \{\tilde{0}\} \quad \text{为单点紧化} \\
+      \tau &\longmapsto \tilde{\tau}
+    \end{aligned}
+  \end{equation*}
+  其中$\tilde{\tau}|_A = \tau$（从而$\Sigma A$为LCH空间）。
+  
+  诱导
+  \begin{equation*}
+    \begin{aligned}
+      C_0(\Sigma A) &\longrightarrow C(\Sigma\hat{A}, \tilde{0}) \quad \text{等距同构} \\
+      \varphi &\longmapsto \tilde{\varphi}
+    \end{aligned}
+  \end{equation*}
+  有交换图：
+  \begin{equation*}
+    \begin{tikzcd}
+      \Sigma A \arrow[r, "\mu"] \arrow[rd, "\varphi"'] & \Sigma\hat{A} \arrow[d, "\tilde{\varphi}"] \\
+      & \mathbb{C}
+    \end{tikzcd}
+  \end{equation*}
+  其中$\tilde{\varphi} \circ \mu = \varphi$且$\tilde{\varphi}(\tilde{0}) = 0$。
+\end{proposition}
+
+\begin{theorem}[Gelfand]
+  $A$为交换Banach代数，则
+  \begin{equation*}
+    \begin{aligned}
+      A &\xrightarrow{\theta} C_0(\Sigma A) \quad \text{为代数同态，且}\|\hat{a}\| = r(a) \\
+      a &\longmapsto \hat{a}: \tau \longmapsto \tau(a)
+    \end{aligned}
+  \end{equation*}
+\end{theorem}
+
+\begin{proof}
+  已证$\sigma_{\hat{A}}(a) \cup \{0\} = \tilde{\sigma}_{\hat{A}}(a) = \{\tilde{\tau}(a) : \tilde{\tau} \in \Sigma\hat{A}\} = \{\tau(a) : \tau \in \Sigma A \cup \{0\}\}$。
+  
+  $\|\hat{a}\| = \|\tilde{\hat{a}}\| = \|\hat{\hat{a}}\| = r(a)$。
+  
+  有交换图：
+  \begin{equation*}
+    \begin{tikzcd}
+      \Sigma A \arrow[r, hook] \arrow[rd, "\hat{a}"'] & \Sigma\hat{A} \arrow[d, "\tilde{\hat{a}}"] \\
+      & \mathbb{C}
+    \end{tikzcd}
+  \end{equation*}
+  $\hat{a}(\tilde{0}) = \tilde{0}(a) = 0$（$\tilde{\hat{a}} = \hat{a}$）。
+  
+  $\ker\theta = \{a : \hat{a} = 0\} = \{a \in A : \forall \tau \in \Sigma A, \tau(a) = 0\} = \bigcap_{\tau \in \Sigma A}\ker\tau$。
+\end{proof}
+
+\begin{proposition}
+  $A \xrightarrow{\tau} \mathbb{C}$，$A$交换不含幺，有交换图：
+  \begin{equation*}
+    \begin{tikzcd}
+      A \arrow[r, "\tau", two heads] \arrow[d, "\pi"'] & \mathbb{C} \\
+      A/\ker\tau \arrow[ur, "\cong"'] &
+    \end{tikzcd}
+  \end{equation*}
+  $\ker\tau$是$A$的极大理想。
+\end{proposition}
+
+\begin{definition}[正则理想]
+  若$A$为代数，$I \trianglelefteq A$，满足$A/I$含幺，称$I$为一个正则理想。
+\end{definition}
+
+\begin{proposition}
+  $A$的全体正则极大理想，记为$\mathrm{Max}(A)$（$A$交换）。则
+  \begin{equation*}
+    \begin{aligned}
+      \Sigma A &\xrightarrow{\theta} \mathrm{Max}(A) \quad \text{为双射} \\
+      \tau &\longmapsto \ker\tau
+    \end{aligned}
+  \end{equation*}
+\end{proposition}
+
+\begin{proof}
+  已证$\ker\tau$是正则极大。下证$\theta$单。
+  
+  若$\ker\tau_1 = \ker\tau_2$，有交换图：
+  \begin{equation*}
+    \begin{tikzcd}
+      A \arrow[r, "\tau_1", two heads] \arrow[d, "\tau_2"'] & \mathbb{C} = A/\ker\tau \arrow[dl, "\exists! \psi"] \\
+      \mathbb{C} &
+    \end{tikzcd}
+  \end{equation*}
+  $\psi$代数同态，$\psi$数乘$\Rightarrow \psi = \ell_\lambda$，$\lambda \in \mathbb{C}$。
+  
+  $\ell_\lambda(1 \cdot 1) = \ell_\lambda(1)\ell_\lambda(1) \Rightarrow \lambda = \lambda^2$。由$\psi$满，$\lambda \neq 0$。
+  
+  $\Rightarrow \lambda = 1 \Rightarrow \tau_2 = \tau_1$。
+  
+  下证$\theta$满：
+\end{proof}
+
+\begin{proposition}
+  若$A$为Banach代数，$M$为正则极大理想，则$M$为闭理想。
+\end{proposition}
+
+\begin{proof}
+  $\forall M \in \mathrm{Max}(A)$，有$A \xrightarrow{\pi} A/M$为Banach代数，交换含幺单环，故$A/M \cong \mathbb{C}$。
+  
+  有交换图：
+  \begin{equation*}
+    \begin{tikzcd}[column sep=large]
+      A \arrow[r, "\pi", two heads] & A/M \arrow[r, "\cong"] & \mathbb{C} \arrow[ll, bend right=50, "\exists \tau \neq 0"']
+    \end{tikzcd}
+  \end{equation*}
+  故$\exists \tau$ s.t. $\ker\tau = M$。
+\end{proof}
+
+\begin{proposition}
+  $I$为$A$的正则理想，$[e] \in A/I$为幺元，$e \in A$，则$e \notin \bar{I}$。
+\end{proposition}
+
+\begin{proof}
+  $A \hookrightarrow \hat{A}$ Banach代数幺元化。反证，若$e \in \bar{I}$（在$\hat{A}$中）。
+  
+  在$\hat{A}$中$B(e, 1) \cap I \neq \varnothing$，取$b \in I$ s.t. $\|e - b\| < 1$。
+  
+  $\Rightarrow 1 - (e - b)$在$\hat{A}$中可逆，$(1 - (e - b))^{-1} = u$。
+  
+  $\Rightarrow$由$A$为$\hat{A}$的理想，$Au^{-1} \subset A \Rightarrow A \subset Au$。
+  
+  下证$Au \subset I$，这是因为$\forall a \in A$，$au = a(1 - e + b) = a - ae + ab \in I$（$ae \in I$，$ab \in I$）。
+  
+  $A \subset Au \subset I \subset A$，与$I$真理想矛盾。
+\end{proof}
+
+\begin{proposition}
+  若$I$为正则理想，$J \trianglelefteq A$，$I \subset J \Rightarrow J$正则。
+\end{proposition}
+
+\begin{proof}
+  $[e] \in A/I$，$\forall a \in A$，$ae - a \in I \subset J$，$ea - a \in I \subset J$。
+  
+  $\Rightarrow J$正则。
+\end{proof}
+
+\begin{proposition}
+  若$A$为Banach代数，$M$为正则极大理想，则$M$为闭理想。
+\end{proposition}
+
+\begin{proof}
+  $M$已闭$\Rightarrow \bar{M}$真正则理想，由$M$极大，$M = \bar{M}$。
+\end{proof}
+
+\section{谱半径公式}
+
+\begin{theorem}[Beurling-Gelfand谱半径公式]
+  若$A$为含幺Banach代数，$a \in A$，则（$A$无须交换）
+  \begin{equation*}
+    r(a) = \inf\{\|a^n\|^{\frac{1}{n}} : n \in \mathbb{N}^*\} = \lim_{n \to \infty}\|a^n\|^{\frac{1}{n}}
+  \end{equation*}
+\end{theorem}
+
+\begin{proof}
+  已证$\forall n \in \mathbb{N}^*$，$\sigma(a^n) = \sigma(a)^n = \{\lambda^n : \lambda \in \sigma(a)\}$。
+  
+  $\Rightarrow \forall \lambda \in \sigma(a)$，有$\lambda^n \in \sigma(a^n) \Rightarrow |\lambda^n| \leq r(a^n) \leq \|a^n\|$。
+  
+  $|\lambda| \leq \|a^n\|^{\frac{1}{n}}$，$\forall n$。
+  
+  $\Rightarrow r(a) \leq \inf\{\|a^n\|^{\frac{1}{n}} : n \in \mathbb{N}^*\} \leq \liminf_{n \to \infty}\|a^n\|^{\frac{1}{n}}$。
+  
+  下证$\limsup_{n \to \infty}\|a^n\|^{\frac{1}{n}} \leq r(a)$。
+  
+  记$\Omega = \bar{B}(0, r(a))^c$为$\mathbb{C}$中开集，$U \triangleq \bar{B}(0, \|a\|)^c$为$\Omega$的开子集。
+  
+  定义$\forall \varphi \in A^*$，
+  \begin{equation*}
+    \begin{aligned}
+      \Omega &\xrightarrow{f} A \xrightarrow{\varphi} \mathbb{C} \\
+      \lambda &\longmapsto (1 - \lambda^{-1}a)^{-1} \longmapsto \varphi((1 - \lambda^{-1}a)^{-1})
+    \end{aligned}
+  \end{equation*}
+  
+  $f$可微，$\varphi$可微$\Rightarrow \varphi \circ f$可微。
+  
+  \begin{equation*}
+    \varphi((1 - \lambda^{-1}a)^{-1}) = \sum_{n=-\infty}^{\infty}C_n\lambda^n \quad \text{洛朗展开}
+  \end{equation*}
+  
+  而
+  \begin{equation*}
+    \begin{aligned}
+      U &\xrightarrow{f} A \xrightarrow{\varphi} \mathbb{C} \\
+      \lambda &\longmapsto (1 - \lambda^{-1}a)^{-1}
+    \end{aligned}
+  \end{equation*}
+  
+  $\lambda \in U \Rightarrow |\lambda| > \|a\| \Rightarrow \|\lambda^{-1}a\| = \frac{1}{|\lambda|}\|a\| < 1$。
+  
+  故$(1 - \lambda^{-1}a)^{-1} = \sum_{n=0}^{\infty}(\lambda^{-1}a)^n = \sum_{n=0}^{\infty}\lambda^{-n}a^n \xrightarrow{\varphi} \sum_{n=0}^{\infty}\varphi(a^n)\lambda^{-n}$。
+  
+  由洛朗展开唯一，知$\varphi(a^n) = C_{-n}$。
+  
+  $\forall \lambda \in \Omega$有$f(\varphi(\lambda)) = \sum_{n=0}^{\infty}\varphi(a^n)\lambda^{-n} = \sum_{n=0}^{\infty}\varphi(\lambda^{-n}a^n)$收敛。
+  
+  $\Rightarrow \forall \lambda \in \Omega$，$\forall \varphi$，$\{\varphi(\lambda^{-n}a^n) : n \in \mathbb{N}^*\}$有界。
+  
+  $\Rightarrow \{\lambda^{-n}a^n : n \in \mathbb{N}^*\}$弱有界$\Rightarrow \{\|\lambda^{-n}a^n\| : n \in \mathbb{N}\}$有界
+  
+  （Thm. 弱有界$\Rightarrow$范数有界）。
+  
+  $\Rightarrow \exists M_\lambda > 0$，使$\forall n$，$\|\lambda^{-n}a^n\| \leq M_\lambda$，即$|\lambda|^{-n}\|a^n\| \leq M_\lambda$。
+  
+  $\Rightarrow \frac{1}{|\lambda|}\|a^n\|^{\frac{1}{n}} \leq M_\lambda^{\frac{1}{n}}$。
+  
+  $\Rightarrow \frac{1}{|\lambda|}\limsup_{n \to \infty}\|a^n\|^{\frac{1}{n}} \leq \limsup_{n \to \infty}M_\lambda^{\frac{1}{n}} = \lim_{n \to \infty}M_\lambda^{\frac{1}{n}} = 1$。
+  
+  $\Rightarrow \limsup_{n \to \infty}\|a^n\|^{\frac{1}{n}} \leq |\lambda|\leq r(a)$，$\forall \lambda \in \Omega$。
+  
+
 \end{proof}
 
 \end{document}

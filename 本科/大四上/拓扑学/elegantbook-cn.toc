@@ -23,3 +23,13 @@
 \contentsline {section}{\numberline {8.4}可度量空间}{23}{section.8.4}%
 \contentsline {chapter}{\numberline {9}乘积与和}{28}{chapter.9}%
 \contentsline {section}{\numberline {9.1}乘积拓扑与其子基}{28}{section.9.1}%
+\contentsline {section}{\numberline {9.2}子网与聚点}{36}{section.9.2}%
+\contentsline {subsection}{\numberline {9.2.1}紧性与收敛子网}{36}{subsection.9.2.1}%
+\contentsline {subsection}{\numberline {9.2.2}拓扑和的连续性与可度量性}{37}{subsection.9.2.2}%
+\contentsline {subsection}{\numberline {9.2.3}Polish 空间的封闭性}{38}{subsection.9.2.3}%
+\contentsline {subsection}{\numberline {9.2.4}可数性引理与可数乘积的第二可数性}{38}{subsection.9.2.4}%
+\contentsline {subsection}{\numberline {9.2.5}连通性与连续像}{39}{subsection.9.2.5}%
+\contentsline {subsection}{\numberline {9.2.6}$\mathbb R$ 的连通性、介值性与道路连通}{41}{subsection.9.2.6}%
+\contentsline {subsection}{\numberline {9.2.7}同伦与基本群}{45}{subsection.9.2.7}%
+\contentsline {subsection}{\numberline {9.2.8}局部紧空间}{48}{subsection.9.2.8}%
+\contentsline {subsection}{\numberline {9.2.9}Baire 空间与纲}{49}{subsection.9.2.9}%

@@ -13,3 +13,5 @@
 \contentsline {section}{\numberline {1.11}$C^*$代数幺元化}{21}{section.1.11}%
 \contentsline {subsection}{\numberline {1.11.1}$A$为含幺$(e)$的$C^*$代数}{22}{subsection.1.11.1}%
 \contentsline {subsection}{\numberline {1.11.2} $A$为$C^*$代数且不含幺}{23}{subsection.1.11.2}%
+\contentsline {section}{\numberline {1.12}Gelfand理论}{31}{section.1.12}%
+\contentsline {section}{\numberline {1.13}谱半径公式}{37}{section.1.13}%
