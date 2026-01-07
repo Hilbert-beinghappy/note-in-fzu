@@ -1,4 +1,4 @@
-This is XeTeX, Version 3.141592653-2.6-0.999997 (TeX Live 2025) (preloaded format=xelatex 2025.4.29)  15 DEC 2025 16:35
+This is XeTeX, Version 3.141592653-2.6-0.999997 (TeX Live 2025) (preloaded format=xelatex 2025.4.29)  16 DEC 2025 12:20
 entering extended mode
  restricted \write18 enabled.
  file:line:error style messages enabled.
@@ -2174,10 +2174,10 @@ Package logreq Info: Writing requests to 'elegantbook-cn.run.xml'.
 
  ) 
 Here is how much of TeX's memory you used:
- 48947 strings out of 473832
- 1041058 string characters out of 5729481
+ 48926 strings out of 473832
+ 1039683 string characters out of 5729481
  2029325 words of memory out of 5000000
- 71168 multiletter control sequences out of 15000+600000
+ 71147 multiletter control sequences out of 15000+600000
  631503 words of font info for 225 fonts, out of 8000000 for 9000
  1348 hyphenation exceptions out of 8191
  103i,13n,136p,699b,1344s stack positions out of 10000i,1000n,20000p,200000b,200000s

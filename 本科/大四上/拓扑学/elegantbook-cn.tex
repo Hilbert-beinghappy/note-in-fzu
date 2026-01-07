@@ -2913,31 +2913,31 @@ U_n^* \cap V_m^* = \left(U_n \setminus \bigcup_{k=1}^{n} \overline{V_k}\right) \
   称拓扑空间 $X$ 为 \emph{Baire 空间}，若满足：任取 $X$ 中一列稠密开集 $(U_n)_{n\in\mathbb N}$，有 $\bigcap_{n}U_n$ 稠密。
 \end{definition}
 
-\begin{definition}[稀疏集与无处稠密集]\label{def:meager-nowhere-dense}
+\begin{definition}[稀疏集与第一纲集]\label{def:meager-nowhere-dense}
   设 $X$ 为拓扑空间，$A\subseteq X$。
   \begin{enumerate}[(1)]
-    \item 称 $A$ 为\emph{稀疏集}（或\emph{第一纲集}），若 $A$ 可写成可数个无处稠密集的并。
-    \item 称 $A$ 为\emph{无处稠密}的，若 $\overline A^\circ=\varnothing$，即 $\overline A$ 的内部为空。
+    \item 称 $A$ 为\emph{稀疏集}（或\emph{无处稠密集}），若 $\overline A^\circ=\varnothing$，即 $\overline A$ 的内部为空。
+    \item 称 $A$ 为\emph{第一纲集}（meager set），若 $A$ 可写成可数个稀疏集的并。
   \end{enumerate}
-  例：$\mathbb R$ 中的有理数集、Cantor 集均为稀疏集。
+  例：$\mathbb R$ 中的有理数集为第一纲集；Cantor 集为稀疏集。
 \end{definition}
 
 \begin{proposition}\label{prop:nowhere-dense-equiv}
-  $A$ 无处稠密 $\Leftrightarrow$ 对任意非空开集 $U$，$A\cap U$ 在 $U$ 中不稠密。
+  $A$ 稀疏（无处稠密）$\Leftrightarrow$ 对任意非空开集 $U$，$A\cap U$ 在 $U$ 中不稠密。
 \end{proposition}
 \begin{proof}
-  ($\Rightarrow$) 设 $A$ 无处稠密，即 $\overline A$ 内部为空。对任意非空开集 $U$，若 $A\cap U$ 在 $U$ 中稠密，则 $U\subseteq\overline{A\cap U}\subseteq\overline A$，这蕴含 $\overline A$ 有非空内部 $U$，矛盾。
+  ($\Rightarrow$) 设 $A$ 稀疏，即 $\overline A$ 内部为空。对任意非空开集 $U$，若 $A\cap U$ 在 $U$ 中稠密，则 $U\subseteq\overline{A\cap U}\subseteq\overline A$，这蕴含 $\overline A$ 有非空内部 $U$，矛盾。
   
-  ($\Leftarrow$) 若 $A$ 不无处稠密，则 $\overline A$ 有非空内部 $V$。取 $U=V$，则 $A$ 在 $U$ 中稠密（因 $U\subseteq\overline A$），矛盾。
+  ($\Leftarrow$) 若 $A$ 不稀疏，则 $\overline A$ 有非空内部 $V$。取 $U=V$，则 $A$ 在 $U$ 中稠密（因 $U\subseteq\overline A$），矛盾。
 \end{proof}
 
 \begin{definition}[第一纲与第二纲]\label{def:first-second-category}
   设 $X$ 为拓扑空间，$\Omega\subseteq X$。
   \begin{enumerate}[(I)]
-    \item 若存在一列无处稠密集 $(E_n)_n$ 使 $\Omega=\bigcup_n E_n$，则称 $\Omega$ 为\emph{第一纲集}（或\emph{稀疏集}，meager set）。
+    \item 若存在一列稀疏集 $(E_n)_n$ 使 $\Omega=\bigcup_n E_n$，则称 $\Omega$ 为\emph{第一纲集}（meager set）。
     \item 若 $\Omega$ 不是第一纲集，则称 $\Omega$ 为\emph{第二纲集}。
   \end{enumerate}
-  注：第一纲集未必无处稠密（例如 $\mathbb Q$ 在 $\mathbb R$ 中）。
+  注：第一纲集未必稀疏（例如 $\mathbb Q$ 在 $\mathbb R$ 中）。
 \end{definition}
 
 \begin{proposition}\label{prop:baire-equiv-second-category}
@@ -2952,11 +2952,11 @@ U_n^* \cap V_m^* = \left(U_n \setminus \bigcup_{k=1}^{n} \overline{V_k}\right) \
 \end{proposition}
 
 \begin{proposition}\label{prop:nowhere-dense-subset}
-  无处稠密集的子集仍为无处稠密集。
+  稀疏集（无处稠密集）的子集仍为稀疏集。
 \end{proposition}
 
 \begin{proposition}\label{prop:nowhere-dense-impl-first-category}
-  无处稠密集必为第一纲集，反之不然。
+  稀疏集必为第一纲集，反之不然。
 \end{proposition}
 
 \begin{proposition}\label{prop:locally-compact-sandwich}
@@ -2978,7 +2978,7 @@ U_n^* \cap V_m^* = \left(U_n \setminus \bigcup_{k=1}^{n} \overline{V_k}\right) \
 \begin{proposition}\label{prop:baire-nowhere-dense-closure}
   设 $X$ 为拓扑空间，$\Omega\subseteq X$。则
   \[
-    \Omega\text{ 无处稠密}\Leftrightarrow\overline\Omega\text{ 无处稠密}\Leftrightarrow\overline\Omega^\circ=\varnothing.
+    \Omega\text{ 稀疏}\Leftrightarrow\overline\Omega\text{ 稀疏}\Leftrightarrow\overline\Omega^\circ=\varnothing.
   \]
 \end{proposition}
 \begin{proof}
@@ -2988,7 +2988,7 @@ U_n^* \cap V_m^* = \left(U_n \setminus \bigcup_{k=1}^{n} \overline{V_k}\right) \
 \begin{proposition}\label{prop:baire-nowhere-dense-open-equiv}
   设 $X$ 为拓扑空间，$\Omega\subseteq X$。则
   \[
-    \Omega\text{ 无处稠密}\Leftrightarrow\forall U\text{ 非空开集},\ \exists V\text{ 非空开集使 }V\subseteq U\text{ 且 }V\cap\Omega=\varnothing.
+    \Omega\text{ 稀疏}\Leftrightarrow\forall U\text{ 非空开集},\ \exists V\text{ 非空开集使 }V\subseteq U\text{ 且 }V\cap\Omega=\varnothing.
   \]
 \end{proposition}
 \begin{proof}
@@ -3011,21 +3011,24 @@ U_n^* \cap V_m^* = \left(U_n \setminus \bigcup_{k=1}^{n} \overline{V_k}\right) \
 \begin{lemma}\label{lem:category-in-open-subspace}
   设 $X$ 为拓扑空间，$Y$ 为 $X$ 的开子集，$\Omega\subseteq Y$。则：
   \begin{enumerate}[(I)]
-    \item $\Omega$ 在 $Y$ 中无处稠密 $\Leftrightarrow$ $\Omega$ 在 $X$ 中无处稠密；
+    \item $\Omega$ 在 $Y$ 中稀疏 $\Leftrightarrow$ $\Omega$ 在 $X$ 中稀疏；
     \item $\Omega$ 在 $Y$ 中第一纲 $\Leftrightarrow$ $\Omega$ 在 $X$ 中第一纲。
   \end{enumerate}
 \end{lemma}
 \begin{proof}
-  (I) 利用命题 \ref{prop:dense-in-open-subspace}，$\overline\Omega^Y=\overline\Omega\cap Y$。
-  $\Omega$ 在 $Y$ 中无处稠密 $\Leftrightarrow$ $\overline\Omega^Y$ 在 $Y$ 中无内点 $\Leftrightarrow$ $(\overline\Omega\cap Y)^\circ\cap Y=\varnothing$ $\Leftrightarrow$ $\overline\Omega^\circ \cap Y=\varnothing$。
-  若 $\Omega$ 在 $X$ 中无处稠密，则 $\overline\Omega^\circ=\varnothing$，显然成立。
-  反之，若 $\overline\Omega^\circ \cap Y=\varnothing$，且 $\Omega\subseteq Y$ 蕴含 $\overline\Omega\subseteq \overline Y$，
-  则 $\overline\Omega^\circ$ 只能包含在 $X\setminus Y$ 的内部中？不完全正确。
-  更直接证法：由命题 \ref{prop:baire-nowhere-dense-open-equiv}。
-  $\Omega$ 在 $Y$ 中无处稠密 $\Leftrightarrow$ $\forall$ 非空开 $U\subseteq Y$，$\exists$ 非空开 $V\subseteq U$， $V\cap\Omega=\varnothing$。
-  这显然蕴含于 $X$ 中的情形（因为 $X$ 中的开集 $U$ 若与 $Y$ 相交，其交集为 $Y$ 中开集）。
+  (I) 用命题 \ref{prop:baire-nowhere-dense-open-equiv}。
+  
+  若 $\Omega$ 在 $X$ 中稀疏，则对任意 $Y$ 中非空开集 $U$，因 $Y$ 开，$U$ 亦为 $X$ 中开集，故存在非空开集 $V\subseteq U$ 使 $V\cap\Omega=\varnothing$，从而 $\Omega$ 在 $Y$ 中稀疏。
 
-  (II) 由 (I) 及第一纲集定义即得。
+  反之，设 $\Omega$ 在 $Y$ 中稀疏。对任意 $X$ 中非空开集 $U$：
+  若 $U\cap Y=\varnothing$，取 $V=U$，则 $V\cap\Omega=\varnothing$；
+  若 $U\cap Y\neq\varnothing$，则 $U\cap Y$ 为 $Y$ 中非空开集，存在非空开集 $V\subseteq U\cap Y$ 使 $V\cap\Omega=\varnothing$。
+  故 $\Omega$ 在 $X$ 中稀疏。
+
+  (II) 若 $\Omega$ 在 $X$ 中第一纲，则 $\Omega=\bigcup_n E_n$，其中每个 $E_n$ 在 $X$ 中稀疏。
+  由 (I) 知 $E_n$ 在 $Y$ 中亦稀疏，故 $\Omega$ 在 $Y$ 中第一纲。
+  反之，若 $\Omega$ 在 $Y$ 中第一纲，则 $\Omega=\bigcup_n F_n$，其中每个 $F_n$ 在 $Y$ 中稀疏。
+  由 (I) 知 $F_n$ 在 $X$ 中亦稀疏，故 $\Omega$ 在 $X$ 中第一纲。
 \end{proof}
 
 \begin{proposition}\label{prop:baire-equiv-conditions}
@@ -3037,7 +3040,7 @@ U_n^* \cap V_m^* = \left(U_n \setminus \bigcup_{k=1}^{n} \overline{V_k}\right) \
   \end{enumerate}
 \end{proposition}
 \begin{proof}
-  (1)$\Rightarrow$(2)：设 $U$ 非空开。若 $U$ 第一纲，则 $U=\bigcup E_n$，$E_n$ 无处稠密。
+  (1)$\Rightarrow$(2)：设 $U$ 非空开。若 $U$ 第一纲，则 $U=\bigcup E_n$，$E_n$ 稀疏。
   则 $U_n = X\setminus \overline{E_n}$ 为稠密开集。
   由 Baire 性，$\bigcap U_n$ 稠密，故 $(\bigcap U_n)\cap U \neq \varnothing$。
   但 $(\bigcap U_n)\cap U = U \setminus \bigcup \overline{E_n} \subseteq U \setminus \bigcup E_n = \varnothing$，矛盾。
@@ -3045,16 +3048,16 @@ U_n^* \cap V_m^* = \left(U_n \setminus \bigcup_{k=1}^{n} \overline{V_k}\right) \
   (2)$\Rightarrow$(3)：若 $A$ 为第一纲集且有非空内部 $U \subseteq A$，则 $U$ 为第一纲集，与 (2) 矛盾。
 
   (3)$\Rightarrow$(1)：设 $U_n$ 稠密开，令 $D = \bigcap U_n$。
-  则 $D^c = \bigcup U_n^c$。因 $U_n$ 稠密开，故 $U_n^c$ 无处稠密。
+  则 $D^c = \bigcup U_n^c$。因 $U_n$ 稠密开，故 $U_n^c$ 稀疏。
   于是 $D^c$ 为第一纲集。由 (3)，$(D^c)^\circ = \varnothing$，即 $\overline D = X$，故 $D$ 稠密。
 \end{proof}
 
 \begin{proposition}\label{prop:open-iff-complement-closed}
   设 $X$ 为拓扑空间，$\Omega\subseteq X$。则
   \[
-    \Omega\text{ 稀疏闭}\Rightarrow\Omega\text{ 无处稠密}.
+    \Omega\text{ 闭且第一纲}\Rightarrow\Omega\text{ 稀疏}.
   \]
-  （注意：第一纲闭集的补集未必稠密，但无处稠密闭集的补集稠密开。）
+  （注意：第一纲闭集的补集未必稠密，但稀疏闭集的补集稠密开。）
 \end{proposition}
 
 \begin{definition}[剩余集]\label{def:residual-set}
@@ -3071,15 +3074,15 @@ U_n^* \cap V_m^* = \left(U_n \setminus \bigcup_{k=1}^{n} \overline{V_k}\right) \
   由定义即得。
 \end{proof}
 
-\begin{definition}[遗传性质]\label{def:hereditary-property}
-  设拓扑空间 $X$ 的性质 $P$ 称为\emph{遗传性质}，若满足：
+\begin{definition}[局部性质]\label{def:hereditary-property}
+  设拓扑空间 $X$ 的性质 $P$ 称为\emph{局部性质}，若满足：
   对任意 $X$ 的开覆盖 $\mathcal U$，子集 $\Omega\subseteq X$ 具有性质 $P$ 当且仅当对所有 $U\in\mathcal U$，$\Omega\cap U$ 在 $U$ 中具有性质 $P$。
 
-  例：开集、闭集均具有遗传性质。
+  例：开集、闭集均具有局部性质。
 \end{definition}
 
 \begin{example}\label{ex:open-closed-hereditary}
-  开集、闭集均为遗传性质。
+  开集、闭集均为局部性质。
 
   设 $X=\bigcup\mathcal U$，$\mathcal U$ 为开覆盖，$\Omega\subseteq X$。
 
@@ -3094,33 +3097,56 @@ U_n^* \cap V_m^* = \left(U_n \setminus \bigcup_{k=1}^{n} \overline{V_k}\right) \
 \begin{theorem}[Banach 纲定理]\label{thm:banach-category}
   设 $X$ 为拓扑空间。
   \begin{enumerate}[(I)]
-    \item 稀疏集（第一纲集）具有遗传性质；
-    \item 无处稠密集具有遗传性质。
+    \item 第一纲集具有局部性质；
+    \item 稀疏集（即无处稠密集）具有局部性质。
   \end{enumerate}
 \end{theorem}
 \begin{proof}
   设 $X=\bigcup\mathcal U$，$\mathcal U$ 为开覆盖，$\Omega\subseteq X$。
 
-  (I) ($\Rightarrow$) 由引理 \ref{lem:category-in-open-subspace} 立得。
-  
-  ($\Leftarrow$) 设 $\forall U\in\mathcal U$，$\Omega\cap U$ 在 $U$ 中第一纲。
-  由引理 \ref{lem:category-in-open-subspace}，$\Omega\cap U$ 在 $X$ 中第一纲。
-  此时我们需要证明 $\bigcup_{U\in\mathcal U}(\Omega\cap U)$ 在 $X$ 中第一纲。
-  若 $\mathcal U$ 是任意开覆盖，这需要选择公理（Zorn 引理）。
-  令 $\mathcal F = \{V \text{ 开} : \Omega\cap V \text{ 在 } X \text{ 中第一纲}\}$。
-  令 $\mathcal M$ 为 $\mathcal F$ 中两两不交开集的极大族。设 $W = \bigcup \mathcal M$。
-  易证 $W$ 在 $X$ 中稠密（否则其补集内部非空，与极大性矛盾）。
-  在 $W$ 上，$\Omega\cap W$ 局部第一纲，且 $W$ 为不交开集并，故 $\Omega\cap W$ 为第一纲（局部有限性）。
-  更精确的证明：设 $\Omega\cap U$ 第一纲。令 $A = \{x\in X : \Omega \text{ 在 } x \text{ 的某邻域内第一纲}\}$。
-  显然 $A$ 是开集且 $\Omega \setminus A$ 无处稠密？不完全。
-  
-  标准证法（Banach）：
-  令 $U_0 = \bigcup \{V \text{ 开} : \Omega\cap V \text{ 第一纲}\}$。
-  只需证 $\Omega \setminus U_0$ 第一纲（事实上无处稠密）。
-  对任意非空开集 $G$，若 $G\cap (\Omega \setminus U_0)$ 在 $G$ 中稠密...
-  这里略去详细步骤，直接引用结论：第一纲集的并仍为第一纲集（局部性质）。
+  (I) 先证 ``$\Rightarrow$''。
+  若 $\Omega$ 为第一纲集，则存在稀疏集列 $(A_n)_{n\in\mathbb N}$ 使 $\Omega=\bigcup_n A_n$。
+  对任意 $U\in\mathcal U$，有
+  \[
+    \Omega\cap U=\bigcup_n (A_n\cap U).
+  \]
+  由命题 \ref{prop:baire-nowhere-dense-open-equiv} 可知 $A_n\cap U$ 在 $U$ 中仍为稀疏集，故 $\Omega\cap U$ 在 $U$ 中为第一纲集。
 
-  (II) 同理，无处稠密集的局部性质成立。
+  再证 ``$\Leftarrow$''。
+  设对所有 $U\in\mathcal U$，$\Omega\cap U$ 在 $U$ 中为第一纲集。
+  由上一步，对任意开集 $V\subseteq U$，$\Omega\cap V$ 在 $V$ 中亦为第一纲集。
+
+  令
+  \[
+    \mathscr G=\{V\subseteq X: V\text{ 开且 }\Omega\cap V\text{ 在 }V\text{ 中为第一纲集}\}.
+  \]
+  由 Zorn 引理，取 $\mathcal V\subseteq\mathscr G$ 为极大两两不交开族，记 $W=\bigcup_{V\in\mathcal V}V$。
+  断言 $W$ 在 $X$ 中稠密。否则存在非空开集 $G\subseteq X$ 使 $G\cap W=\varnothing$。
+  取 $U\in\mathcal U$ 使 $G\cap U\neq\varnothing$，则 $G\cap U$ 为 $U$ 中非空开集，且 $G\cap U$ 与每个 $V\in\mathcal V$ 不交。
+  由前述性质，$\Omega\cap(G\cap U)$ 在 $G\cap U$ 中为第一纲集，即 $G\cap U\in\mathscr G$，从而可将 $G\cap U$ 加入 $\mathcal V$，与极大性矛盾。
+  故 $W$ 稠密。
+
+  对每个 $V\in\mathcal V$，可取稀疏集列 $(E_{V,n})_{n\in\mathbb N}$ 使
+  \[
+    \Omega\cap V=\bigcup_{n\in\mathbb N}E_{V,n}.
+  \]
+  对每个 $n$，令 $F_n=\bigcup_{V\in\mathcal V}E_{V,n}$。
+  因 $\mathcal V$ 两两不交且每个 $E_{V,n}$ 在 $V$ 中稀疏，可由命题 \ref{prop:baire-nowhere-dense-open-equiv} 直接验证 $F_n$ 在 $W$ 中稀疏。
+  故
+  \[
+    \Omega\cap W=\bigcup_{n\in\mathbb N}F_n
+  \]
+  在 $W$ 中为第一纲集。
+  又因 $W$ 为 $X$ 的开子集，$\Omega\cap W$ 在 $X$ 中亦为第一纲集。
+
+  另一方面，由 $W$ 稠密知 $X\setminus W$ 为稀疏闭集，从而 $\Omega\setminus W\subseteq X\setminus W$ 为稀疏集，特别地为第一纲集。
+  因此 $\Omega=(\Omega\cap W)\cup(\Omega\setminus W)$ 为第一纲集。
+
+  (II) 设对所有 $U\in\mathcal U$，$\Omega\cap U$ 在 $U$ 中为稀疏集。
+  任取非空开集 $G\subseteq X$。
+  取 $U\in\mathcal U$ 使 $G\cap U\neq\varnothing$。
+  因 $\Omega\cap U$ 在 $U$ 中稀疏，存在非空开集 $V\subseteq G\cap U$ 使 $V\cap\Omega=\varnothing$。
+  由命题 \ref{prop:baire-nowhere-dense-open-equiv} 得 $\Omega$ 在 $X$ 中稀疏。
 \end{proof}
 
 \begin{theorem}[Baire 纲定理]\label{thm:baire-category-theorem}
