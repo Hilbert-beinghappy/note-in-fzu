@@ -8,10 +8,30 @@
 \contentsline {subsection}{\numberline {1.6.1}Banach代数}{8}{subsection.1.6.1}%
 \contentsline {section}{\numberline {1.7}多项式代数}{10}{section.1.7}%
 \contentsline {section}{\numberline {1.8}乘子代数}{11}{section.1.8}%
-\contentsline {section}{\numberline {1.9}$*$代数}{15}{section.1.9}%
-\contentsline {section}{\numberline {1.10}$*$代数幺元化}{16}{section.1.10}%
-\contentsline {section}{\numberline {1.11}$C^*$代数幺元化}{21}{section.1.11}%
-\contentsline {subsection}{\numberline {1.11.1}$A$为含幺$(e)$的$C^*$代数}{22}{subsection.1.11.1}%
-\contentsline {subsection}{\numberline {1.11.2} $A$为$C^*$代数且不含幺}{23}{subsection.1.11.2}%
-\contentsline {section}{\numberline {1.12}Gelfand理论}{31}{section.1.12}%
-\contentsline {section}{\numberline {1.13}谱半径公式}{37}{section.1.13}%
+\contentsline {chapter}{\numberline {2}$*$代数与$C^*$代数}{16}{chapter.2}%
+\contentsline {section}{\numberline {2.1}$*$代数}{16}{section.2.1}%
+\contentsline {section}{\numberline {2.2}$*$代数幺元化}{17}{section.2.2}%
+\contentsline {section}{\numberline {2.3}$C^*$代数幺元化}{22}{section.2.3}%
+\contentsline {subsection}{\numberline {2.3.1}$A$为含幺$(e)$的$C^*$代数}{23}{subsection.2.3.1}%
+\contentsline {subsection}{\numberline {2.3.2} $A$为$C^*$代数且不含幺}{24}{subsection.2.3.2}%
+\contentsline {chapter}{\numberline {3}Gelfand理论与对偶性}{33}{chapter.3}%
+\contentsline {section}{\numberline {3.1}Gelfand理论}{33}{section.3.1}%
+\contentsline {section}{\numberline {3.2}谱半径公式}{38}{section.3.2}%
+\contentsline {section}{\numberline {3.3}真*同态与恰当范畴}{39}{section.3.3}%
+\contentsline {section}{\numberline {3.4}函数运算}{43}{section.3.4}%
+\contentsline {section}{\numberline {3.5}谱与子代数}{44}{section.3.5}%
+\contentsline {section}{\numberline {3.6}连续函数演算}{46}{section.3.6}%
+\contentsline {section}{\numberline {3.7}正元}{48}{section.3.7}%
+\contentsline {section}{\numberline {3.8}指数函数与谱}{52}{section.3.8}%
+\contentsline {section}{\numberline {3.9}Gelfand定理}{53}{section.3.9}%
+\contentsline {section}{\numberline {3.10}范畴等价}{55}{section.3.10}%
+\contentsline {section}{\numberline {3.11}恰当映射}{57}{section.3.11}%
+\contentsline {section}{\numberline {3.12}正元的进一步性质}{58}{section.3.12}%
+\contentsline {chapter}{\numberline {4}逼近单位元、理想与表示}{60}{chapter.4}%
+\contentsline {section}{\numberline {4.1}逼近单位元}{60}{section.4.1}%
+\contentsline {section}{\numberline {4.2}表示与模}{63}{section.4.2}%
+\contentsline {subsection}{\numberline {4.2.1}单 $*$-同态保范}{65}{subsection.4.2.1}%
+\contentsline {subsection}{\numberline {4.2.2}非退化模}{66}{subsection.4.2.2}%
+\contentsline {subsection}{\numberline {4.2.3}循环向量}{67}{subsection.4.2.3}%
+\contentsline {subsection}{\numberline {4.2.4}正线性映射与正泛函}{68}{subsection.4.2.4}%
+\contentsline {subsection}{\numberline {4.2.5}GNS 构造}{69}{subsection.4.2.5}%

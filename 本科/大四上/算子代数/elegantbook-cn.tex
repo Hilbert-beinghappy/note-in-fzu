@@ -16,6 +16,20 @@
 % 本文档命令
 \usepackage{array}
 \usepackage{tikz-cd}
+\usepackage{extarrows}
+
+% 禁用 elegantbook 定理环境的自动标签生成（避免 -NoValue- 重复标签警告）
+\makeatletter
+\ExplSyntaxOn
+\cs_set_eq:NN \__elegantbook_label_orig:n \label
+\cs_new_protected:Npn \__elegantbook_label_check:n #1 {
+  \tl_if_in:nnF {#1} {-NoValue-} {
+    \__elegantbook_label_orig:n {#1}
+  }
+}
+\cs_set_eq:NN \label \__elegantbook_label_check:n
+\ExplSyntaxOff
+\makeatother
 \newcommand{\ccr}[1]{\makecell{{\color{#1}\rule{1cm}{1cm}}}}
 
 % 修改标题页的橙色带
@@ -1121,6 +1135,8 @@ $A \xrightarrow{\varphi} C$同态，$A \xrightarrow{\psi} D$同态，定义$A \x
   
   $M(A)$为以$A$为本性理想的最大含幺代数。
 \end{proof}
+
+\chapter{$*$代数与$C^*$代数}
 
 \section{$*$代数}
 
@@ -2454,6 +2470,8 @@ $\widetilde{\operatorname{id}_A} = \operatorname{id}_{\tilde{A}}$，$\widetilde{
 \end{proof}
 
 
+\chapter{Gelfand理论与对偶性}
+
 \section{Gelfand理论}
 
 \begin{remark}
@@ -2486,7 +2504,7 @@ $\widetilde{\operatorname{id}_A} = \operatorname{id}_{\tilde{A}}$，$\widetilde{
   其中$A \xrightarrow{\tau} \mathbb{C}$称为特征。
 \end{corollary}
 
-\begin{proposition}
+\begin{proposition}\label{prop:char-contract}
   若$A$为含幺Banach代数，则$A \xrightarrow{\tau} \mathbb{C}$保幺同态为压缩的。
 \end{proposition}
 
@@ -2501,7 +2519,7 @@ $\widetilde{\operatorname{id}_A} = \operatorname{id}_{\tilde{A}}$，$\widetilde{
 \end{proof}
 
 \begin{proposition}
-  由上一个性质知，若$A$为含幺Banach代数，则$\Sigma A \subset \bar{B}_{A^*}(0, 1)$。而$\bar{B}_{A^*}(0, 1)$在弱$*$拓扑下为紧集。只要证$\Sigma A$闭，则$\Sigma A$紧。
+  由命题~\ref{prop:char-contract} 知，若$A$为含幺Banach代数，则$\Sigma A \subset \bar{B}_{A^*}(0, 1)$。而$\bar{B}_{A^*}(0, 1)$在弱$*$拓扑下为紧集。只要证$\Sigma A$闭，则$\Sigma A$紧。
 \end{proposition}
 
 \begin{proof}
@@ -2956,6 +2974,2467 @@ $\widetilde{\operatorname{id}_A} = \operatorname{id}_{\tilde{A}}$，$\widetilde{
   $\Rightarrow \limsup_{n \to \infty}\|a^n\|^{\frac{1}{n}} \leq |\lambda|\leq r(a)$，$\forall \lambda \in \Omega$。
   
 
+\end{proof}
+
+\section{真*同态与恰当范畴}
+
+\begin{definition}[恰当映射]
+  设$X \xrightarrow{f} Y$为拓扑空间之间的连续映射，称$f$为\textbf{恰当映射}，若对任意$Y$中的紧集$K$，有$f^{-1}(K)$在$X$中亦为紧集。
+\end{definition}
+
+\begin{definition}[局部紧$T_2$空间的恰当范畴]
+  非空局部紧$T_2$空间的恰当范畴$\mathbf{LCH}_{\mathrm{prop}}$定义为：
+  \begin{itemize}
+    \item \textbf{对象}：全体局部紧Hausdorff空间
+    \item \textbf{态射}：全体恰当连续映射
+  \end{itemize}
+  注：紧$T_2$空间范畴为其满子范畴。
+\end{definition}
+
+\begin{definition}[真$*$同态]
+  设$A \xrightarrow{f} B$为$C^*$代数之间的$*$同态，称$f$为\textbf{真$*$同态}，若满足
+  \begin{equation*}
+    \forall \tau \in \Sigma B, \quad \tau \circ f \in \Sigma A
+  \end{equation*}
+\end{definition}
+
+\begin{proposition}
+  $A \xrightarrow{\mathrm{id}} A$为真$*$同态。
+\end{proposition}
+
+\begin{proposition}
+  若$A \xrightarrow{f} B$与$B \xrightarrow{g} C$均为真$*$同态，则$g \circ f$亦为真$*$同态。
+\end{proposition}
+
+\begin{proof}
+  任取$\tau \in \Sigma C$，由$g$真，$\tau \circ g \in \Sigma B$。
+  再由$f$真，$(\tau \circ g) \circ f = \tau \circ (g \circ f) \in \Sigma A$。
+  
+  交换图如下：
+  \begin{equation*}
+    \begin{tikzcd}
+      A \arrow[r, "f"] & B \arrow[r, "g"] & C \\
+      & & \mathbb{C} \arrow[u, "\tau"'] \arrow[ul, "\tau \circ g \in \Sigma B"] \arrow[ull, bend right=20, "\tau \circ g \circ f \in \Sigma A"']
+    \end{tikzcd}
+  \end{equation*}
+\end{proof}
+
+\begin{definition}[非零交换$C^*$代数的恰当范畴]
+  非零交换$C^*$代数的恰当范畴$\mathbf{C^*Alg}_{\mathrm{prop}}$定义为：
+  \begin{itemize}
+    \item \textbf{对象}：全体非零交换$C^*$代数
+    \item \textbf{态射}：全体真$*$同态
+  \end{itemize}
+\end{definition}
+
+\begin{proposition}[范畴等价]
+  局部紧$T_2$空间的恰当范畴与非零交换$C^*$代数的恰当范畴反变等价：
+  \begin{equation*}
+    \mathbf{LCH}_{\mathrm{prop}} \simeq \mathbf{C^*Alg}_{\mathrm{prop}}^{\mathrm{op}}
+  \end{equation*}
+  函子为：
+  \begin{equation*}
+    \begin{aligned}
+      X &\longmapsto C_0(X) \\
+      \left(X \xrightarrow{f} Y\right) &\longmapsto \left(C_0(Y) \xrightarrow{f^*} C_0(X)\right) \\
+      \varphi &\longmapsto \varphi \circ f
+    \end{aligned}
+  \end{equation*}
+\end{proposition}
+
+\begin{remark}
+  下证$f^*$恰当。
+\end{remark}
+
+\begin{proposition}
+  嵌入映射$\theta: C_0(X) \to C(X \cup \{\infty\})$为（单）$*$同态，定义为
+  \begin{equation*}
+    \begin{aligned}
+      \varphi &\longmapsto \tilde{\varphi} \\
+      \tilde{\varphi}(z) &\triangleq \begin{cases}
+        \varphi(z), & z \in X \\
+        0, & z = \infty
+      \end{cases}
+    \end{aligned}
+  \end{equation*}
+\end{proposition}
+
+\begin{proof}
+  易知$\theta$为$*$同态且单（$\widehat{\varphi\psi} = \tilde{\varphi}\tilde{\psi}$，$\widehat{\varphi + \psi} = \tilde{\varphi} + \tilde{\psi}$，$\widehat{\lambda\varphi} = \lambda\tilde{\varphi}$，$\widetilde{\bar{\varphi}} = \overline{\tilde{\varphi}}$）。
+\end{proof}
+
+\begin{remark}
+  $C(X \cup \{\infty\}) = \theta(C_0(X)) \oplus \mathbb{C}1$（内直和，常1函数）。
+  
+  验证：
+  \begin{enumerate}
+    \item $\theta(C_0(X)) \cap \mathbb{C}1 = \{0\}$：若$\tilde{\varphi} \in \theta(C_0(X)) \cap \mathbb{C}1$，则$\tilde{\varphi}(\infty) = 0 = \lambda 1$，故$\lambda = 0$，$\tilde{\varphi} = 0$。
+    \item $\forall \psi \in C(X \cup \{\infty\})$，设$\psi(\infty) = \lambda \in \mathbb{C}$，则$\psi = (\psi - \lambda 1) + \lambda 1$，其中$(\psi - \lambda 1) \in \theta(C_0(X))$，$\lambda 1 \in \mathbb{C}1$。
+  \end{enumerate}
+\end{remark}
+
+\begin{lemma}
+  设$X$为局部紧$T_2$空间，若$\tau \in \Sigma(C_0(X))$，则存在$x \in X$使得$\tau = \hat{x}$，其中$C_0(X) \xrightarrow{\hat{x}} \mathbb{C}$，$\varphi \longmapsto \varphi(x)$。
+\end{lemma}
+
+\begin{proof}
+  考虑$C_0(X) \xrightarrow{\theta} C(X \cup \{\infty\})$：
+  \begin{equation*}
+    \begin{tikzcd}
+      C_0(X) \arrow[r, "\theta"] \arrow[dr, "\tau"'] & C(X \cup \{\infty\}) \arrow[d, "\exists! \tilde{\tau}"] \\
+      & \mathbb{C}
+    \end{tikzcd}
+  \end{equation*}
+  
+  由上次已证，$X \cup \{\infty\}$为紧$T_2$空间，故$\exists z \in X \cup \{\infty\}$，s.t. $\tilde{\tau} = \hat{z}$。
+  
+  若$z = \infty$，则$\tau = 0$，与$\tau \in \Sigma$矛盾。故$z \in X$。
+  
+  交换图：
+  \begin{equation*}
+    \begin{tikzcd}
+      \varphi \arrow[r, mapsto] & \tilde{\varphi} \\
+      \tau \arrow[u] \arrow[dr] & \hat{z} \arrow[d] \\
+      & \tilde{\varphi}(\infty) = 0
+    \end{tikzcd}
+  \end{equation*}
+\end{proof}
+
+\begin{remark}
+  下证$f^*$恰当。任取$\tau \in \Sigma(C_0(X))$，
+  \begin{equation*}
+    \begin{tikzcd}
+      C_0(Y) \arrow[r, "f^*"] & C_0(X) \\
+      \tau \circ f^* \arrow[u] & \mathbb{C} \arrow[u, "\tau"'] \arrow[ul, "\tau \text{形如} \hat{x}"]
+    \end{tikzcd}
+  \end{equation*}
+  故$\tau \circ f^* = \widehat{f(x)}$，$x \in X$，即$\tau \circ f^* \in \Sigma(C_0(Y))$。
+\end{remark}
+
+\begin{remark}
+  另一个方向：由$*$同态$A \xrightarrow{f} B$诱导谱映射
+  \begin{equation*}
+    \begin{aligned}
+      f^*: \Sigma B &\longrightarrow \Sigma A \\
+      \tau &\longmapsto \tau \circ f
+    \end{aligned}
+  \end{equation*}
+  其为连续映射。事实上，若$\tau_\alpha \xrightarrow{w^*} \tau$于$\Sigma B$，则对任意$a \in A$有
+  $(\tau_\alpha \circ f)(a) = \tau_\alpha(f(a)) \to \tau(f(a)) = (\tau \circ f)(a)$，
+  从而$\tau_\alpha \circ f \xrightarrow{w^*} \tau \circ f$。
+\end{remark}
+
+\begin{remark}
+  幺元化与谱映射相容。设$A \hookrightarrow \hat{A}$与$B \hookrightarrow \hat{B}$为幺元化，
+  令$\hat{f}: \hat{A} \to \hat{B}$为延拓（满足$\hat{f}|_A = f$）。则对任意$\tau \in \Sigma B$有
+  \begin{equation*}
+    \widetilde{\tau \circ f} = \tilde{\tau} \circ \hat{f},
+  \end{equation*}
+  从而下图交换：
+  \begin{equation*}
+    \begin{tikzcd}
+      \Sigma B \arrow[r, "f^*"] \arrow[d, hook] & \Sigma A \arrow[d, hook] \\
+      \Sigma\hat{B} \arrow[r, "\hat{f}^*"'] & \Sigma\hat{A}
+    \end{tikzcd}
+  \end{equation*}
+\end{remark}
+
+\begin{proposition}\label{prop:proper-extend}
+  设$X,Y$为局部紧$T_2$空间，$f: X \to Y$连续。令$\hat{X} = X \cup \{\infty\}$与$\hat{Y} = Y \cup \{\infty\}$为单点紧化。
+  则$f$恰当当且仅当存在连续映射$\hat{f}: \hat{X} \to \hat{Y}$满足
+  \begin{equation*}
+    \hat{f}|_X = f, \qquad \hat{f}(\infty) = \infty.
+  \end{equation*}
+\end{proposition}
+
+\begin{proof}
+  ($\Rightarrow$) 设$f$恰当，定义
+  \begin{equation*}
+    \hat{f}(x) \triangleq \begin{cases}
+      f(x), & x \in X, \\
+      \infty, & x = \infty.
+    \end{cases}
+  \end{equation*}
+  只需证$\hat{f}$在$\infty$处连续。任取$\hat{Y}$中$\infty$的开邻域$U$，则$\hat{Y}\setminus U$为$Y$中的紧集。
+  由于$f$恰当，$f^{-1}(\hat{Y}\setminus U)$为$X$中的紧集，从而
+  \begin{equation*}
+    V \triangleq \hat{X} \setminus f^{-1}(\hat{Y}\setminus U)
+  \end{equation*}
+  为$\hat{X}$中$\infty$的开邻域且$\hat{f}(V) \subset U$，故$\hat{f}$在$\infty$处连续。
+  
+  ($\Leftarrow$) 设存在$\hat{f}$满足$\hat{f}(\infty)=\infty$。任取$Y$中紧集$K$，则$K$在$\hat{Y}$中亦为紧集。
+  由连续性，$\hat{f}^{-1}(K)$在$\hat{X}$中为紧集。
+  又因$\infty \notin \hat{f}^{-1}(K)$，故$\hat{f}^{-1}(K) = f^{-1}(K) \subset X$，从而$f^{-1}(K)$为$X$中的紧集，即$f$恰当。
+\end{proof}
+
+\begin{remark}
+  设$A \xrightarrow{f} B$为交换Banach代数的同态。对诱导谱映射$f^*: \Sigma B \to \Sigma A$，进一步定义
+  \begin{equation*}
+    \begin{aligned}
+      f^{**}: C_0(\Sigma A) &\longrightarrow C_0(\Sigma B) \\
+      \varphi &\longmapsto \varphi \circ f^*
+    \end{aligned}
+  \end{equation*}
+  则对任意$a \in A$有$\widehat{f(a)} = f^{**}(\hat{a})$，即
+  \begin{equation*}
+    \widehat{f(a)} = \hat{a} \circ f^*.
+  \end{equation*}
+  交换图为：
+  \begin{equation*}
+    \begin{tikzcd}
+      A \arrow[r, "f"] \arrow[d, "\theta"'] & B \arrow[d, "\theta"] \\
+      C_0(\Sigma A) \arrow[r, "f^{**}"'] & C_0(\Sigma B)
+    \end{tikzcd}
+  \end{equation*}
+\end{remark}
+
+\begin{proposition}
+  设$X$为局部紧$T_2$空间，则映射
+  \begin{equation*}
+    \begin{aligned}
+      X & \xrightarrow{\eta_X} \Sigma(C_0(X)) \quad \text{为同胚} \\
+      x & \longmapsto \hat{x}
+    \end{aligned}
+  \end{equation*}
+  其中$\hat{x}(\varphi) = \varphi(x)$。
+\end{proposition}
+
+\begin{proof}
+  令$\hat{X} = X \cup \{\infty\}$为单点紧化。
+  
+  由紧$T_2$空间情形（已证）知
+  \begin{equation*}
+    \begin{aligned}
+      \hat{X} & \xrightarrow{\Phi} \Sigma(C(\hat{X})) \quad \text{为同胚} \\
+      z & \longmapsto \hat{z}
+    \end{aligned}
+  \end{equation*}
+  其中$\hat{z}: C(\hat{X}) \to \mathbb{C}$由$\psi \mapsto \psi(z)$给出。
+  
+  又由幺元化引理（应用于$C_0(X) \hookrightarrow C(\hat{X})$）知
+  \begin{equation*}
+    \{0\} \cup \Sigma(C_0(X)) \xrightarrow{\mu} \Sigma(C(\hat{X})) \quad \text{为同胚},
+  \end{equation*}
+  且$\mu(0) = \hat{\infty}$。
+  
+  因此$\mu$限制为同胚
+  \begin{equation*}
+    \Sigma(C_0(X)) \xrightarrow{\cong} \Sigma(C(\hat{X})) \setminus \{\hat{\infty}\}.
+  \end{equation*}
+  注意到$X = \hat{X} \setminus \{\infty\}$，于是$X \xrightarrow{\eta_X} \Sigma(C_0(X))$为同胚。
+\end{proof}
+
+\begin{remark}
+  上述同胚关于恰当映射自然：若$f: X \to Y$为恰当连续映射，则由命题~\ref{prop:proper-extend} 存在连续延拓$\hat{f}: \hat{X} \to \hat{Y}$满足$\hat{f}|_X = f$且$\hat{f}(\infty)=\infty$。
+  
+  记$f^*: C_0(Y) \to C_0(X)$为拉回$*$同态，则诱导谱映射$(f^*)^*: \Sigma(C_0(X)) \to \Sigma(C_0(Y))$。
+  对任意$x \in X$，
+  \begin{equation*}
+    (f^*)^*(\hat{x}) = \hat{x} \circ f^* = \widehat{f(x)}.
+  \end{equation*}
+  因此下图交换：
+  \begin{equation*}
+    \begin{tikzcd}
+      X \arrow[r, "f"] \arrow[d, "\eta_X"'] & Y \arrow[d, "\eta_Y"] \\
+      \Sigma(C_0(X)) \arrow[r, "(f^*)^*"'] & \Sigma(C_0(Y))
+    \end{tikzcd}
+  \end{equation*}
+\end{remark}
+
+\section{函数运算}
+
+\begin{definition}[指数函数]
+  设$A$为Banach代数，$a \in A$，定义
+  \begin{equation*}
+    e^a \triangleq \sum_{n=0}^\infty \frac{a^n}{n!}.
+  \end{equation*}
+\end{definition}
+
+\begin{lemma}
+  上述级数在$A$中绝对收敛，并满足$\|e^a\| \leq e^{\|a\|}$。
+\end{lemma}
+
+\begin{proof}
+  由于$\|a^n\| \leq \|a\|^n$，故
+  \begin{equation*}
+    \sum_{n=0}^\infty \left\|\frac{a^n}{n!}\right\|
+    \leq \sum_{n=0}^\infty \frac{\|a\|^n}{n!}
+    = e^{\|a\|} < \infty.
+  \end{equation*}
+  从而$\sum_{n=0}^\infty \frac{a^n}{n!}$绝对收敛。
+  取范数即得$\|e^a\| \leq e^{\|a\|}$。
+\end{proof}
+
+\begin{lemma}[双重级数重排]
+  设$E$为Banach空间，$\{a_{n,m}\}_{n,m \geq 0} \subset E$满足
+  \begin{equation*}
+    \sum_{n=0}^\infty \sum_{m=0}^\infty \|a_{n,m}\| < \infty.
+  \end{equation*}
+  则双重级数$\sum_{n,m \geq 0} a_{n,m}$无条件收敛，并且
+  \begin{equation*}
+    \sum_{n=0}^\infty \sum_{m=0}^\infty a_{n,m}
+    = \sum_{k=0}^\infty \sum_{n=0}^k a_{n,k-n}.
+  \end{equation*}
+\end{lemma}
+
+\begin{proof}
+  由绝对收敛知，对任意$\varepsilon > 0$存在$N$使得对任意有限集合$F \subset \{(n,m): n,m \geq N\}$有
+  \begin{equation*}
+    \left\|\sum_{(n,m)\in F} a_{n,m}\right\| \leq \sum_{(n,m)\in F}\|a_{n,m}\| < \varepsilon.
+  \end{equation*}
+  因此任意按有限子集取和的部分和网均为Cauchy，从而双重级数无条件收敛。
+  
+  对于沿对角线的重排，记$S_N \triangleq \sum_{k=0}^N \sum_{n=0}^k a_{n,k-n}$。
+  由于$\sum_{n,m}\|a_{n,m}\|<\infty$，当$N\to\infty$时，$S_N$的尾项范数可由$\sum_{n+m>N}\|a_{n,m}\|$控制并趋于$0$，
+  故其极限与原双重级数的和一致，即
+  \begin{equation*}
+    \sum_{n=0}^\infty \sum_{m=0}^\infty a_{n,m}
+    = \sum_{k=0}^\infty \sum_{n=0}^k a_{n,k-n}.
+  \end{equation*}
+\end{proof}
+
+\begin{proposition}
+  设$A$为Banach代数，$x,y \in A$满足$xy=yx$，则
+  \begin{equation*}
+    e^{x+y} = e^x e^y = e^y e^x.
+  \end{equation*}
+\end{proposition}
+
+\begin{proof}
+  由于
+  \begin{equation*}
+    e^x e^y = \left(\sum_{n=0}^\infty \frac{x^n}{n!}\right)\left(\sum_{m=0}^\infty \frac{y^m}{m!}\right)
+    = \sum_{n=0}^\infty\sum_{m=0}^\infty \frac{x^n y^m}{n!m!},
+  \end{equation*}
+  且
+  \begin{equation*}
+    \sum_{n=0}^\infty\sum_{m=0}^\infty \left\|\frac{x^n y^m}{n!m!}\right\|
+    \leq \sum_{n=0}^\infty\sum_{m=0}^\infty \frac{\|x\|^n\|y\|^m}{n!m!}
+    = e^{\|x\|}e^{\|y\|} < \infty,
+  \end{equation*}
+  故由双重级数重排引理可沿对角线求和：
+  \begin{equation*}
+    e^x e^y
+    = \sum_{k=0}^\infty \sum_{n=0}^k \frac{x^n y^{k-n}}{n!(k-n)!}
+    = \sum_{k=0}^\infty \frac{1}{k!}\sum_{n=0}^k \binom{k}{n} x^n y^{k-n}.
+  \end{equation*}
+  由于$xy=yx$，可用二项式公式得$\sum_{n=0}^k \binom{k}{n} x^n y^{k-n} = (x+y)^k$。
+  因此
+  \begin{equation*}
+    e^x e^y
+    = \sum_{k=0}^\infty \frac{(x+y)^k}{k!}
+    = e^{x+y}.
+  \end{equation*}
+  同理可得$e^y e^x = e^{y+x} = e^{x+y}$。
+\end{proof}
+
+\section{谱与子代数}
+
+\begin{proposition}
+  若$A$为含幺代数，$1$为幺元，$B$为$A$的含$1$子代数，$b \in B$，则
+  \begin{equation*}
+    \sigma_B(b) \supset \sigma_A(b).
+  \end{equation*}
+\end{proposition}
+
+\begin{proof}
+  $\forall \lambda \in \sigma_A(b) \Rightarrow \lambda 1 - b$在$A$中不可逆$\Rightarrow \lambda 1 - b$在$B$中不可逆$\Rightarrow \lambda \in \sigma_B(b)$。
+\end{proof}
+
+\begin{theorem}[Gelfand-Naimark]
+  $A$为交换含幺$C^*$代数，则
+  \begin{equation*}
+    \begin{aligned}
+      A &\xrightarrow{\theta} C(\Sigma A) \quad \text{等距$*$同构} \\
+      a &\longmapsto \hat{a}
+    \end{aligned}
+  \end{equation*}
+\end{theorem}
+
+\begin{theorem}[Gelfand-Naimark，非幺情形]
+  $A$为交换非幺$C^*$代数，则
+  \begin{equation*}
+    \begin{aligned}
+      A &\xrightarrow{\theta} C_0(\Sigma A) \quad \text{等距$*$同构} \\
+      a &\longmapsto \hat{a}
+    \end{aligned}
+  \end{equation*}
+\end{theorem}
+
+\begin{proof}[Thm $\Rightarrow$ Thm']
+  考虑幺元化$A \hookrightarrow \hat{A}$与谱空间的关系。有交换图：
+  \begin{equation*}
+    \begin{tikzcd}
+      A \arrow[r, "\theta"] \arrow[d, hook] & C_0(\Sigma A) \arrow[d, hook] \\
+      \hat{A} \arrow[r, "\tilde{\theta}"'] & C(\Sigma\hat{A})
+    \end{tikzcd}
+  \end{equation*}
+  其中$\Sigma A \hookrightarrow \Sigma\hat{A} = \ell(\Sigma A) \cup \{\tilde{0}\}$（单点紧化）。
+  
+  定义$\tilde{\gamma}: C(\Sigma\hat{A}) \to \mathbb{C}$为
+  \begin{equation*}
+    \tilde{\gamma}(\psi) = \begin{cases}
+      \psi(z), & z \in \Sigma A \\
+      0, & z = \tilde{0}
+    \end{cases}
+  \end{equation*}
+  
+  验证：$\forall z \in \Sigma\hat{A}$，
+  \begin{enumerate}
+    \item 若$z = \tilde{0}$，则$\hat{a}(\tilde{0}) = \tilde{0}(a) = 0(a) = 0$，且$\tilde{\hat{a}}(\tilde{0}) = 0$。
+    \item 若$z$形如$\tilde{\tau}$，其中$\tau \in \Sigma A$，则$\hat{a}(\tilde{\tau}) = \tilde{\tau}(a) = \tau(a)$，且$\tilde{\hat{a}}(\tilde{\tau}) = \hat{a}(\tau) = \tau(a)$。
+  \end{enumerate}
+  
+  以图表示换，易知由Thm，$\theta$单$\Rightarrow \tilde{\theta}$单。
+  
+  又有交换图：
+  \begin{equation*}
+    \begin{tikzcd}
+      A \arrow[r, "\theta"] \arrow[d, hook] & C_0(\Sigma A) \arrow[d, hook] \arrow[r, "\hat{a}"] & \hat{a} \\
+      A \oplus \mathbb{C}1 \arrow[r, "\tilde{\theta}"'] & C(\Sigma\hat{A}) \cong C_0(\Sigma A) \oplus \mathbb{C}1
+    \end{tikzcd}
+  \end{equation*}
+  其中$a + \lambda 1 \longmapsto \hat{a} + \lambda 1$。若$\tilde{g} = \hat{a} \Rightarrow \lambda = 0$，故$\theta$满射。
+\end{proof}
+
+\begin{lemma}\label{lem:GB-closed}
+  若$A$为含幺Banach代数，$1$为$A$的幺元，$B$为$A$的含$1$闭子代数，则$G(B)$为$G(A)$中闭集。（$G(A)$为$A$中可逆集，赋予子空间拓扑）
+\end{lemma}
+
+\begin{proof}
+  设$b_n \to a$，其中$(b_n)_n$为$G(B)$中序列，$a \in G(A)$。要证$a \in G(B)$。由$B$闭，$a \in B$。
+  
+  已证$G(A) \xrightarrow{r} G(A)$连续，$x \mapsto x^{-1}$（子代数在乘法下封闭）。
+  
+  由此取逆$b_n^{-1} \to a^{-1} \Rightarrow a^{-1} \in B$（$B$闭），故$a$在$B$中可逆，即$a \in G(B)$。
+\end{proof}
+
+\begin{lemma}
+  若$A$为含幺Banach代数，$B$为含$1_A$的闭子代数，$b \in B$，则
+  \begin{enumerate}
+    \item $\sigma_B(b) \supset \sigma_A(b)$
+    \item $\partial\sigma_B(b) \subset \partial\sigma_A(b)$
+  \end{enumerate}
+\end{lemma}
+
+\begin{proof}
+  (1) 已证。
+  
+  (2) 任取$\lambda \in \partial\sigma_B(b)$，要证$\lambda \in \partial\sigma_A(b)$。
+  
+  由已知，$\exists (\lambda_n)_n$为$\mathbb{C} \setminus \sigma_B(b)$中序列，使$\lambda_n \to \lambda$。
+  
+  $\Rightarrow \forall n$，$\lambda_n 1 - b$在$B$中可逆，故在$A$中可逆。
+  
+  $\Rightarrow \forall n$，$\lambda_n \notin \sigma_A(b)$。反证，若$\lambda \notin \partial\sigma_A(b)$，则$\lambda \notin \sigma_A(b)$。
+  
+  否则，若$\lambda \in \sigma_A(b)$，而$\lambda_n \to \lambda \Rightarrow \lambda \in \partial\sigma_A(b)$，矛盾。
+  
+  由$\lambda_n 1 - b \to \lambda 1 - b$，且由引理~\ref{lem:GB-closed} 知$G(B)$在$G(A)$中为闭集，
+  
+  $\overline{G(B)}^{G(A)} = G(B) \Rightarrow \lambda 1 - b \in G(B)$，与$\lambda \in \partial\sigma_B(b) \subset \sigma_B(b)$矛盾。
+\end{proof}
+
+\begin{definition}[洞]
+  $\Omega$为$\mathbb{C}$中闭子集，若$E$为$\mathbb{C} \setminus \Omega$的一个有界连通分支，则称$E$为$\Omega$的一个\textbf{洞}（hole）。
+\end{definition}
+
+\begin{lemma}
+  $X$为拓扑空间，$\Omega_1, \Omega_2$为$X$的两个闭子集，若满足：
+  \begin{enumerate}
+    \item $\Omega_1 \subset \Omega_2$
+    \item $\partial\Omega_2 \subset \partial\Omega_1$
+  \end{enumerate}
+  则$\Omega_2^c$的连通分支为$\Omega_1^c$的连通分支。
+\end{lemma}
+
+\begin{proof}
+  设$E$为$\Omega_2^c$的一个连通分支，则$E$为$\Omega_1^c$的连通子集。
+  
+  下证$E$为$\Omega_1^c$的极大连通子集。任取$F$为$\Omega_1^c$中连通子集，且$F \supset E$，要证$F = E$。
+  
+  只要证$F \cap \Omega_2 = \varnothing$，从而$F$为$\Omega_2^c$中连通子集。由$E$为$\Omega_2^c$中连通分支，$F \supset E \Rightarrow F = E$。
+  
+  反证，若$F \cap \Omega_2 \neq \varnothing$，考虑
+  \begin{equation*}
+    F = (F \cap \Omega_2^c) \cup (F \cap \partial\Omega_2) \cup (F \cap \Omega_2^\circ).
+  \end{equation*}
+  
+  $\partial\Omega_2 \subset \partial\Omega_1 \subset \Omega_1$（闭），由$F \cap \Omega_1 = \varnothing \Rightarrow F \cap \partial\Omega_2 = \varnothing$。
+  
+  $\Omega_2 = \Omega_2^\circ \cup \partial\Omega_2 \Rightarrow F = (F \cap \Omega_2^c) \cup (F \cap \Omega_2^\circ)$。
+  
+  注意到$F \cap \Omega_2^c$与$F \cap \Omega_2^\circ$均为$F$中的开子集，且$F \cap \Omega_2^c \supset E \neq \varnothing$，$F \cap \Omega_2^\circ \neq \varnothing$，与$F$连通矛盾。
+\end{proof}
+
+\begin{theorem}
+  $A$为含幺$C^*$代数，$B$为$A$的含$1_A$的$C^*$子代数，$b \in B$，则
+  \begin{equation*}
+    b\text{在}B\text{中可逆} \Longleftrightarrow b\text{在}A\text{中可逆}.
+  \end{equation*}
+  或者说$\sigma_B(b) = \sigma_A(b)$（以$\lambda 1 - b$代替$b$）。
+\end{theorem}
+
+\begin{theorem}[等价形式]
+  $A$为含幺$C^*$代数，$B$为$A$的含$1_A$的$C^*$子代数，$b \in B$，则$\sigma_B(b) = \sigma_A(b)$。
+\end{theorem}
+
+\begin{proof}[Thm $\Rightarrow$ Thm'与Thm' $\Rightarrow$ Thm的等价性]
+  Thm $\Rightarrow$ Thm' 显然。下证Thm' $\Rightarrow$ Thm：
+  \begin{equation*}
+    b\text{在}B\text{中可逆} \Longleftrightarrow 0 \notin \sigma_B(b) = \sigma_A(b) \Longleftrightarrow b\text{在}A\text{中可逆}.
+  \end{equation*}
+\end{proof}
+
+\begin{proof}[Thm的证明]
+  (I) 若$b$为自伴元。由已证$\sigma_A(b) \subset \mathbb{R}$。
+  
+  $\mathbb{C} \setminus \sigma_B(b)$的连通分支为$\mathbb{C} \setminus \sigma_A(b)$的连通分支。
+  
+  而$\mathbb{C} \setminus \sigma_B(b)$连通$\Rightarrow \mathbb{C} \setminus \sigma_B(b) = \mathbb{C} \setminus \sigma_A(b)$。
+  
+  $\Rightarrow \sigma_B(b) = \sigma_A(b)$。
+  
+  (II) $\forall b \in B$，有$b^*b$为自伴元。
+  
+  易知$b$在$B$中可逆$\Rightarrow b$在$A$中可逆。
+  
+  下证$b$在$A$中可逆$\Rightarrow b$在$B$中可逆。
+  
+  设$ba = 1 = ab$，其中$a \in A \Rightarrow a^*b^* = 1^* = 1 = b^*a^*$。
+  
+  $\Rightarrow b^*ba a^* = 1 \Rightarrow b^*b$在$A$中可逆，由(I)，$b^*b$在$B$中可逆。
+  
+  其逆记为$c \in B$，$cb^*b = 1 \Rightarrow b$在$B$中可逆。
+  
+  （注：此证明对Banach代数不适用）
+\end{proof}
+
+\section{连续函数演算}
+
+\begin{theorem}[连续函数演算]
+  若$A$为含幺$C^*$代数，$a$为$A$中正规元，则存在唯一的保幺$*$同态
+  \begin{equation*}
+    \hat{a}: C(\sigma(a)) \longrightarrow A
+  \end{equation*}
+  使得$\hat{a}(\iota) = a$（其中$\iota: \sigma(a) \to \mathbb{C}$，$z \mapsto z$为恒等函数），且$\hat{a}$为单射。
+  
+  记$\hat{a}(f) \triangleq f(a)$为$a$的连续函数演算。
+\end{theorem}
+
+\begin{proof}
+  \textbf{唯一性}：由Stone-Weierstrass定理，知$C(\sigma(a))$以$1$和$\iota$为$*$子代数生成元。
+  
+  $\Rightarrow \hat{a}$具有唯一性（$*$同态为连续）。
+  
+  \textbf{存在性}：记$B \triangleq C^*(1, a)$为$\{1, a\}$在$A$中生成的$C^*$子代数。
+  
+  由$a^*a = aa^*$，知$B$为交换含幺$C^*$代数，由Gelfand变换
+  \begin{equation*}
+    \begin{aligned}
+      B &\xrightarrow{\theta} C(\Sigma B) \quad \text{等距$*$同构} \\
+      b &\longmapsto \hat{b}
+    \end{aligned}
+  \end{equation*}
+  
+  而$\Sigma B \xrightarrow{\tilde{a}} \sigma_B(a) = \sigma_A(a)$，其中$\sigma_B(a) = \{\tau(a) : \tau \in \Sigma B\}$，$\tau \mapsto \tau(a)$。
+  
+  易知$\tilde{a}$为单射：若$\tau_1(a) = \tau_2(a)$，而$\tau_1(1) = 1 = \tau_2(1)$，且$\tau_1, \tau_2$连续，$\{a, 1\}$生成$B \Rightarrow \tau_1 = \tau_2$（$\tau_1, \tau_2$在生成元上一致）。
+  
+  由$\tilde{a}$双射，$\Sigma B$紧，$\sigma_B(a)$为$T_2$空间$\Rightarrow$紧$\to T_2$连续双射为同胚。
+  
+  诱导
+  \begin{equation*}
+    \begin{aligned}
+      C(\sigma(a)) &\xrightarrow{\tilde{a}^*} C(\Sigma B) \quad \text{保幺$*$同构} \\
+      f &\longmapsto f \circ \tilde{a}
+    \end{aligned}
+  \end{equation*}
+  
+  从而有
+  \begin{equation*}
+    C(\sigma(a)) \xrightarrow{\tilde{a}^*} C(\Sigma B) \xrightarrow{\theta^{-1}} B \hookrightarrow A
+  \end{equation*}
+  其中$\iota \mapsto \iota \circ \tilde{a} \mapsto ? \mapsto a$。
+  
+  又要记$\hat{a} \leftarrow a$。易知$\forall \tau \in \Sigma B$，有
+  \begin{equation*}
+    (\iota \circ \tilde{a})(\tau) = \iota(\tau(a)) = \tau(a) = \hat{a}(\tau).
+  \end{equation*}
+  
+  故$\hat{a}$为保幺单$*$同态，且$\hat{a}(f) \triangleq f(a)$为一个与$a$可换的正规元。
+\end{proof}
+
+\begin{definition}
+  $B \triangleq C^*(1, a)$为$\{1, a\}$生成的$C^*$子代数。
+\end{definition}
+
+\begin{lemma}
+  若$A$为含幺$C^*$代数，$a$为$A$的正规元，$B = C^*(1, a)$，则$\forall f \in C(\sigma(a))$，$\forall \tau \in \Sigma B$，有
+  \begin{equation*}
+    \tau(f(a)) = f(\tau(a)).
+  \end{equation*}
+\end{lemma}
+
+\begin{proof}
+  考虑
+  \begin{equation*}
+    \begin{aligned}
+      C(\sigma(a)) &\xrightarrow{\alpha} \mathbb{C} & C(\sigma(a)) &\xrightarrow{\beta} \mathbb{C} \\
+      f &\longmapsto \tau(f(a)) & f &\longmapsto f(\tau(a))
+    \end{aligned}
+  \end{equation*}
+  
+  下证$\alpha, \beta$为保幺$*$同态，且$\alpha(\iota) = a = \beta(\iota)$，从而由S-W定理，$\alpha = \beta$。
+  
+  注意到$\beta = \widehat{\tau(a)}$，即
+  \begin{equation*}
+    \begin{aligned}
+      C(\sigma(a)) &\longrightarrow \mathbb{C} \\
+      \iota &\longmapsto \tau(a)
+    \end{aligned}
+  \end{equation*}
+  
+  故$\alpha(\iota) = \beta(\iota)$，即$\hat{a}(\iota) = \iota(a) = a$。
+\end{proof}
+
+\begin{theorem}[谱映射定理]
+  若$A$为含幺$C^*$代数，$a$为$A$的正规元，$f \in C(\sigma(a))$，$g \in C(f(\sigma(a)))$，则
+  \begin{equation*}
+    \sigma(a) \xrightarrow{f} f(\sigma(a)) \xrightarrow{g} \mathbb{C}
+  \end{equation*}
+  有
+  \begin{enumerate}
+    \item $\sigma(f(a)) = f(\sigma(a))$
+    \item $g(f(a)) = (g \circ f)(a)$
+  \end{enumerate}
+\end{theorem}
+
+\begin{proof}
+  (1) 记$C^*(1, a) \triangleq B$（交换含幺$C^*$代数），已证$f(a) \in B$。
+  
+  则
+  \begin{equation*}
+    \sigma(f(a)) = \sigma_B(f(a)) = \{\tau(f(a)) : \tau \in \Sigma B\}
+    \xlongequal{\text{Lemma}} \{f(\tau(a)) : \tau \in \Sigma B\} = f(\sigma_B(a)) = f(\sigma(a)).
+  \end{equation*}
+  
+  (2) $g(f(a)) \in C^*(1, f(a)) \subset B = C^*(1, a)$。
+  
+  $(g \circ f)(a) \in B = C^*(1, a)$。
+  
+  \begin{proposition}
+    $B$为交换$C^*$代数，则$\Sigma B$分离$B$中元，即$\forall x, y \in B$，$x \neq y$，则$\exists \tau \in \Sigma B$，使$\tau(x) \neq \tau(y)$。
+  \end{proposition}
+  
+  \begin{proof}
+    $B \xrightarrow{\theta} C_0(\Sigma B)$单，若$x \neq y \Rightarrow \hat{x} \neq \hat{y}$，$\exists \tau \in \Sigma B$，$\hat{x}(\tau) \neq \hat{y}(\tau)$。
+  \end{proof}
+  
+  故只要证$\forall \tau \in \Sigma B$，有$\tau(g(f(a))) = \tau((g \circ f)(a))$。
+  
+  因为
+  \begin{align*}
+    \tau((g \circ f)(a)) &\xlongequal{\text{对}a\text{用Lemma}} (g \circ f)(\tau(a)) = g(f(\tau(a))) \\
+    &= g(\tau(f(a))) = g(\tau|_C(f(a))) \\
+    &\xlongequal{\text{对}f(a)\text{用Lemma}} \tau|_C(g(f(a))) \quad (C \triangleq C^*(1, f(a))) \\
+    &= \tau(g(f(a))).
+  \end{align*}
+  
+  由$\Sigma B$分离$B$中元，$\Rightarrow (g \circ f)(a) = g(f(a))$。
+\end{proof}
+
+\section{正元}
+
+\begin{definition}[正元]
+  $A$为一个$C^*$代数，$a \in A$，若满足：
+  \begin{enumerate}
+    \item $a^* = a$（自伴）
+    \item $\sigma(a) \subset [0, +\infty)$
+  \end{enumerate}
+  则称$a$为$A$中的一个\textbf{正元}，记为$a \geq 0$。全体正元记为$A^+$。
+\end{definition}
+
+\begin{example}
+  $\mathbb{C}$中，$a \in \mathbb{C}$，$a$为正元$\Longleftrightarrow a$为非负实数（包括$0$）。
+\end{example}
+
+\begin{example}
+  $A \in M_n(\mathbb{C})$，$A^* = A$且$\sigma(A) \subset [0, +\infty)$，则$A$称为\textbf{正矩阵}（半正定矩阵）。
+\end{example}
+
+\begin{example}
+  $H$为Hilbert空间，$T \in B(H)$，称$T$为一个\textbf{正算子}，若满足：
+  \begin{equation*}
+    \forall x \in H, \quad \langle Tx, x \rangle \geq 0.
+  \end{equation*}
+  可证$T^* = T$，且$\sigma(T) \triangleq \{\lambda \in \mathbb{C} : \lambda I - T \text{不可逆}\} \subset [0, +\infty)$。
+  
+  结论：$T \in B(H)$，$T$为正算子$\Longleftrightarrow T$为正元。
+\end{example}
+
+\begin{proposition}
+  令$\hat{A}$为$A$的幺元化，$a \in A$，则
+  \begin{equation*}
+    a \in A^+ \Longleftrightarrow a \in \hat{A}^+.
+  \end{equation*}
+\end{proposition}
+
+\begin{proof}
+  $a$在$A$中自伴$\Longleftrightarrow a$在$\hat{A}$中自伴。
+  
+  ($\Rightarrow$) 
+  \begin{equation*}
+    \sigma_{\hat{A}}(a) = \begin{cases}
+      \sigma_A(a) \cup \{0\}, & A\text{不含幺} \\
+      \sigma_A(a), & A\text{含幺}
+    \end{cases}
+    \Rightarrow \sigma_{\hat{A}}(a) \subset \mathbb{R}^+.
+  \end{equation*}
+  
+  ($\Leftarrow$) $\{0\} \cup \sigma_A(a) = \sigma_{\hat{A}}(a) \Rightarrow a \in A^+$。
+\end{proof}
+
+\begin{proposition}
+  若$A$为$C^*$代数，$B$为$A$的$C^*$子代数，$b \in B$，则
+  \begin{equation*}
+    b \in B^+ \Longleftrightarrow b \in A^+.
+  \end{equation*}
+\end{proposition}
+
+\begin{proof}
+  考虑$B \hookrightarrow A \hookrightarrow \hat{A}$，$1$为$\hat{A}$幺元。
+  \begin{equation*}
+    b \in B^+ \Longleftrightarrow b \in (B \oplus \mathbb{C}1)^+ \Longleftrightarrow b \in \hat{A}^+ \Longleftrightarrow b \in A^+.
+  \end{equation*}
+  其中$B \oplus \mathbb{C}1$为$\hat{A}$的闭子代数。
+\end{proof}
+
+\begin{proposition}
+  $C_0(\Omega)$中正元$f$，有$f$为正元$\Longleftrightarrow f(\Omega) \subset [0, +\infty)$。
+\end{proposition}
+
+\begin{remark}
+  若$C_0(\Omega)$不含幺，$f \in C_0(\Omega)$，则$\sigma(f) = f(\Omega) \cup \{0\}$。
+  
+  若$C_0(\Omega)$含幺$\Longleftrightarrow \Omega$紧。
+\end{remark}
+
+\begin{proof}
+  由$C_0(\Omega) \hookrightarrow C(\Omega \cup \{\infty\})$，$f \mapsto \tilde{f}$，
+  \begin{equation*}
+    \sigma(f) = \sigma_{\text{紧化}}(\tilde{f}) = \tilde{f}(\Omega \cup \{\infty\}) = f(\Omega) \cup \{0\}.
+  \end{equation*}
+  
+  故$f \in C_0(\Omega)$且为正元$\Longleftrightarrow \sigma(f) = f(\Omega) \subset [0, +\infty)$。
+  
+  $f$为$C_0(\Omega)$中正元$\Rightarrow \sqrt{f} \in C_0(\Omega)$，正元。取逆即可。
+\end{proof}
+
+\begin{proposition}
+  若$a$为$C^*$代数$A$中的正元，则存在唯一的$b \in A^+$使$b^2 = a$。
+\end{proposition}
+
+\begin{proof}
+  \textbf{存在性}：令$B = C^*(a)$，由于$a^* = a$知$B$交换。
+  
+  (1) 若$a = 0$，则$\sigma = 0$且$b = 0$：
+  \begin{equation*}
+    0 = b^2 = b^*b = \|b^*b\| = 0 \Rightarrow \|b\|^2 = 0 \Rightarrow b = 0.
+  \end{equation*}
+  
+  (2) $a \neq 0$，由Gelfand变换，$\exists \Omega$局部紧$T_2$空间，使
+  \begin{equation*}
+    B \cong C_0(\Omega) \quad \text{等距$*$同构}.
+  \end{equation*}
+  
+  由上述命题，$f \in C_0(\Omega)$且为正元$\Longleftrightarrow f(\Omega) \subset [0, +\infty)$。
+  
+  $f$为$C_0(\Omega)$中正元$\Rightarrow \sqrt{f} \in C_0(\Omega)$，正元。取逆即可。
+  
+  \textbf{唯一性}：设$c^2 = a$且$c \in A^+$，往证$c = b$。
+  
+  由于$c$与$c^2$交换$\Rightarrow c$与$a$交换$\Rightarrow a \in \{c\}'$。
+  
+  由于$c^* = c$知$\{c\}'$为闭$*$子代数（$\{c\}$的换位子）。
+  
+  若$x_n c = c x_n$，则$x_n \to x$时$xc = cx$。
+  
+  $b \in B = C^*(a) \subset \{c\}' \Rightarrow bc = cb$。
+  
+  考虑$C^*(a, b, c)$为交换$C^*$子代数。
+  
+  由Gelfand变换，$\exists X$局部紧$T_2$空间，
+  \begin{equation*}
+    C^*(a, b, c) \cong C_0(X).
+  \end{equation*}
+  其中$a \mapsto \hat{a}$，$b \mapsto \hat{b}$，$c \mapsto \hat{c}$均为正元，且$\hat{b}^2 = \hat{a}$，$\hat{c}^2 = \hat{a}$。
+  
+  $C_0(\Omega)$中根号唯一$\Rightarrow \hat{b} = \hat{c} \Rightarrow b = c$。
+\end{proof}
+
+\begin{proposition}
+  若$a$为$C^*$代数$A$的自伴元，则$\exists!$一对正元$(b, c)$，使
+  \begin{equation*}
+    a = b - c \quad \text{且} \quad bc = 0.
+  \end{equation*}
+\end{proposition}
+
+\begin{proof}
+  考虑$C^*(a) = B$。
+  
+  (1) $a = 0$：$0 = 0 - 0$，$0 \cdot 0 = 0$。
+  
+  若$0 = b - c$，$b, c \in A^+$且$bc = 0$，则$b = c$，$b^2 = 0 \Rightarrow b = 0 \Rightarrow c = 0$，即唯一。
+  
+  (2) 设$a \neq 0$，则$B$为交换$C^*$子代数。
+  
+  由Gelfand变换，设$B \cong C_0(\Omega)$，$\Omega$局部紧$T_2$空间。
+  
+  记$a \mapsto f$，则$f = f^+ - f^-$，其中$f^+, f^- \geq 0$且$f^+ f^- = 0$。
+  
+  记$a^+ \leftarrow f^+$，$a^- \leftarrow f^-$，则
+  \begin{equation*}
+    a = a^+ - a^- \quad \text{且} \quad a^+ a^- = 0.
+  \end{equation*}
+  
+  \textbf{唯一性}：设另有一对$(b, c)$，$a = b - c$，$bc = 0$，$b, c \in A^+$。
+  
+  $(bc)^* = 0^* = 0 \Rightarrow c^* b^* = cb = 0 \Rightarrow bc = cb$。
+  
+  $ba = bb - bc = b^2$，$ab = bb - cb = b^2 \Rightarrow ab = ba$。
+  
+  同理$ac = ca$。
+  
+  $\Rightarrow a \in \{b, c\}'$为$C^*$子代数，$\{b, c\}' = \{b\}' \cap \{c\}'$。
+  
+  $a, a^+, a^- \in C^*(a) \subset \{b, c\}' \Rightarrow a, a^+, a^-$均与$b, c$可换。
+  
+  考虑$C^*(a, a^+, a^-, b, c) \cong C_0(X)$，$X$局部紧空间。
+  \begin{equation*}
+    \begin{aligned}
+      a = a^+ - a^- &\quad a \mapsto \hat{a} \\
+      a^+ a^- = 0 &\quad a^+ \mapsto \widehat{a^+} \\
+      &\quad a^- \mapsto \widehat{a^-} \\
+      &\quad b \mapsto \hat{b} \\
+      &\quad c \mapsto \hat{c}
+    \end{aligned}
+  \end{equation*}
+  
+  于是$\widehat{a^+} = \hat{b}$，$\widehat{a^-} = \hat{c} \Rightarrow a^+ = b$，$a^- = c$。
+\end{proof}
+
+\begin{proposition}
+  设$f = \varphi - \psi$，$\varphi \geq 0$，$\psi \geq 0$，$\varphi \cdot \psi = 0$，$f: X \to \mathbb{R}$，则$\varphi = f^+$，$\psi = f^-$。
+\end{proposition}
+
+\begin{proof}
+  (I) 若$f(x) \geq 0$，$f^+(x) = f(x) = \varphi(x) - \psi(x)$。
+  \begin{enumerate}
+    \item 若$\psi(x) = 0$，则$f^+(x) = \varphi(x)$。
+    \item 若$\psi(x) \neq 0$，则$\psi(x) > 0 \Rightarrow \varphi(x) = 0$，$f^+(x) = -\psi(x) < 0$，矛盾。
+  \end{enumerate}
+  
+  (II) 若$f(x) \leq 0$，则$f^+(x) = 0$，$f(x) = \varphi(x) - \psi(x)$。
+  \begin{enumerate}
+    \item 若$\varphi(x) = 0$，则$f^+(x) = 0 = \varphi(x)$。
+    \item 若$\varphi(x) > 0$，则$f(x) = \varphi(x) > 0$，矛盾。
+  \end{enumerate}
+\end{proof}
+
+\begin{proposition}
+  $C(\Omega)$中元素$f$有（$\Omega$紧$T_2$）：$f$为酉元$\Longleftrightarrow \mathrm{Im}\, f \subset S^1$。
+\end{proposition}
+
+\begin{proof}
+  ($\Rightarrow$) $f = f^{-1} \Rightarrow \forall x$，$f(x) = \frac{1}{\overline{f(x)}} \Rightarrow |f(x)| = \frac{1}{|f(x)|} \Rightarrow |f(x)| = 1 \Rightarrow f(x) \in S^1$。
+  
+  ($\Leftarrow$) $\forall x \in \Omega$，$f(x) \in S^1$，$\frac{1}{f(x)} = \overline{f(x)}$有意义，$f^* = \bar{f}$，$f$的幺元。
+\end{proof}
+
+\begin{proposition}
+  若$A$为含幺$C^*$代数，$a$为其自伴元，且$\|a\| \leq 1$，则$\exists u, v \in U(A)$，使
+  \begin{equation*}
+    a = \frac{1}{2}(u + v).
+  \end{equation*}
+\end{proposition}
+
+\begin{proof}
+  记$C^*(1, a) = B$，设$B \cong C(\Omega)$，$\Omega$紧$T_2$空间，$1 \mapsto 1$，$a \mapsto f$。
+  
+  $\|a\| \leq 1 \Rightarrow \|f\|_\infty \leq 1$。
+  
+  定义
+  \begin{equation*}
+    \tilde{u}(x) = f(x) + i\sqrt{1 - |f(x)|^2}, \quad \tilde{v}(x) = f(x) - i\sqrt{1 - |f(x)|^2}.
+  \end{equation*}
+  
+  则$\tilde{u}, \tilde{v} \in S^1$，故$u, v \in U(A)$，且$a = \frac{1}{2}(u + v)$。
+\end{proof}
+
+\begin{corollary}
+  若$A$为含幺$C^*$代数，则$A = \mathrm{span}\, U(A)$。
+\end{corollary}
+
+\begin{proof}
+  $\forall a \in A$，设$a = b + ic$，$b, c$自伴。
+  
+  取$\lambda > 0$，使$\left\|\frac{b}{\lambda}\right\|, \left\|\frac{c}{\lambda}\right\| \leq 1$，$\frac{b}{\lambda}, \frac{c}{\lambda}$自伴。
+  
+  \begin{equation*}
+    a = \lambda \cdot \frac{b}{\lambda} + i\lambda \cdot \frac{c}{\lambda} = \lambda \cdot \frac{1}{2}(u_1 + v_1) + i \cdot \frac{\lambda}{2}(u_2 + v_2).
+  \end{equation*}
+  
+  故可由酉元生成。
+\end{proof}
+
+\begin{proposition}
+  若$a \in A^+$，$\lambda \geq 0$，则$\lambda a \in A^+$。
+\end{proposition}
+
+\begin{lemma}
+  已知$a$为含幺$C^*$代数中的自伴元。
+  \begin{enumerate}
+    \item 若$\exists t \geq 0$，使$\|a - t1\| \leq t$，则$a \geq 0$。
+    \item 若$\exists t \geq 0$，$\|a\| \leq t$且$a \geq 0$，则$\|a - t1\| \leq t$。
+  \end{enumerate}
+\end{lemma}
+
+\begin{proof}
+  (I) 考虑$C^*(1, a) \cong C(\Omega)$，$\Omega$紧$T_2$空间，$a \mapsto f$，$1 \mapsto 1$。
+  
+  $\|a - t1\| \leq t$，$\|f - t1\|_\infty \leq t \Rightarrow \forall x$，$-t \leq f(x) - t \leq 0 \Rightarrow f(x) \geq 0$。
+  
+  $a$自伴$\Rightarrow f$实值$\Rightarrow f(x) \geq 0$。
+  
+  (II) $C^*(1, a) \cong C(\Omega)$，$a \mapsto f \geq 0$，$\|a\| \leq t$，$\|f\|_\infty \leq t$。
+  
+  $\Rightarrow 0 \leq f(x) \leq t$，$\forall x \in \Omega$。
+  
+  $\Rightarrow -t \leq f(x) - t \leq 0 \Rightarrow |f(x) - t| \leq t$。
+  
+  $\Rightarrow \|f(x) - t1\|_\infty \leq t \Rightarrow \|a - t1\| \leq t$。
+\end{proof}
+
+\begin{theorem}
+  $A^+$为闭集且对加法封闭。
+\end{theorem}
+
+\begin{proof}
+  \textbf{闭性}：设$(a_n)_n$为$A^+$序列，且$a_n \to a$，则$(\|a_n\|)_n$有界$M$。
+  
+  即$\forall n$，$\|a_n\| \leq M$，由引理(II)，$\|a_n - M1\| \leq M$（$a_n \geq 0$）。
+  
+  $\Rightarrow \|a - M1\| \leq M$，由引理(I)$\Rightarrow a \geq 0$。
+  
+  \textbf{加法封闭}：设$a, b \in A^+$，则$a + b$自伴。
+  
+  验证：$\|a\| \leq \|a\|$，由引理(II)，$\|a - \|a\|1\| \leq \|a\|$。
+  
+  $\|b\| \leq \|b\|$，$a \geq 0$，$b \geq 0$，$\|b - \|b\|1\| \leq \|b\|$。
+  
+  \begin{equation*}
+    \|(a + b) - (\|a\| + \|b\|)1\| \leq \|a - \|a\|1\| + \|b - \|b\|1\| \leq \|a\| + \|b\|.
+  \end{equation*}
+  
+  由引理(I)$\Rightarrow a + b \geq 0$。
+\end{proof}
+
+\begin{definition}[偏序关系]
+  $A$为$C^*$代数，定义$A$上的关系"$\leq$"：
+  \begin{equation*}
+    \forall a, b \in A, \quad a \leq b \stackrel{\mathrm{def}}{\Longleftrightarrow} b - a\text{为正元}（b - a \geq 0）.
+  \end{equation*}
+\end{definition}
+
+\begin{proposition}
+  以上"$\leq$"为偏序关系。
+\end{proposition}
+
+\begin{proof}
+  \begin{itemize}
+    \item 自反性：$a - a = 0 \geq 0 \Rightarrow a \leq a$。
+    \item 传递性：$a \leq b$，$b \leq c \Rightarrow b - a \geq 0$，$c - b \geq 0 \Rightarrow c - a = (c - b) + (b - a) \geq 0$。
+  \end{itemize}
+\end{proof}
+
+\begin{remark}
+  $\hat{A}^+ \cap A = A^+$，闭子$\hat{A}$。
+\end{remark}
+
+\begin{proof}[偏序的反对称性]
+  由$A^+$的加法封闭$\Rightarrow a - c = (a - b) + (b - c) \geq 0$。
+  
+  (*) "$\leq$"在$A_{sa}$（全体自伴元）中为偏序关系：
+  
+  若$a \geq b$，$b \geq a \Rightarrow a - b \geq 0$，$b - a \geq 0$。
+  
+  由$\sigma(b - a) = \sigma(a - b) \Rightarrow \sigma(a - b) = \{0\}$。
+  
+  $\|a - b\| = r(a - b) = 0 \Rightarrow a = b$。
+\end{proof}
+
+\section{指数函数与谱}
+
+\begin{definition}[指数函数]
+  $A$为含幺Banach代数，$a \in A$，定义
+  \begin{equation*}
+    e^a \triangleq \sum_{n=0}^\infty \frac{a^n}{n!} = 1 + a + \frac{a^2}{2!} + \cdots
+  \end{equation*}
+  以上良定义：$\sum\left\|\frac{a^n}{n!}\right\| \leq \sum\frac{\|a\|^n}{n!} < +\infty$，由$A$完备知$\sum\frac{a^n}{n!}$收敛。
+\end{definition}
+
+\begin{remark}
+  $e^0 = 1 + 0 + \frac{0^2}{2!} + \cdots = 1$。
+\end{remark}
+
+\begin{lemma}
+  $e^a \cdot e^{-a} = 1 = e^{-a} \cdot e^a$（可逆）。
+\end{lemma}
+
+\begin{proof}
+  $e^a \cdot e^{-a} = \sum\frac{a^n}{n!} \cdot \sum\frac{(-a)^n}{n!}$（之后由Cauchy Product证明，详见函数演算部分）。
+\end{proof}
+
+\begin{corollary}
+  若$A$为含幺Banach$*$代数，$a \in A$为自伴元，则$e^{ia}$为酉元。
+\end{corollary}
+
+\begin{proof}
+  $(e^{ia})^* = e^{(ia)^*} = e^{-ia^*} = e^{-ia} = (e^{ia})^{-1}$（由Lemma）。
+  
+  （$*$连续，共轭线性反同态）
+\end{proof}
+
+\begin{proposition}
+  $A$为含幺Banach代数，则$\sigma(e^{ia}) = \{e^{i\lambda} : \lambda \in \sigma(a)\}$。
+\end{proposition}
+
+\begin{proof}
+  只证明$\sigma(e^{ia}) \supset \{e^{i\lambda} : \lambda \in \sigma(a)\}$。
+  
+  要证$e^{i\lambda}1 - e^{ia}$不可逆，$\forall \lambda \in \sigma(a)$。
+  
+  $\left(\sum\frac{(i\lambda)^n}{n!}\right)1 = \left(\sum\frac{(i\lambda 1)^n}{n!}\right) = e^{i\lambda 1}$。
+  
+  从而$e^{i\lambda 1} - e^{ia} = \sum\frac{(i\lambda 1)^n - (ia)^n}{n!} = (i\lambda 1 - ia)S$，
+  
+  $S$—记求和，且$S$与$i\lambda 1 - ia$交换。
+\end{proof}
+
+\begin{proposition}
+  $x \in G$（左零群），$x$不可逆，且$sx = xs \Rightarrow xs$不可逆。
+\end{proposition}
+
+\begin{proof}
+  反证，若$xs$可逆，设$y$为其逆元，则
+  \begin{equation*}
+    x(sy) \cdot 1 = yxs = (ys)x,
+  \end{equation*}
+  $x$有左逆与右逆$\Rightarrow x$可逆，矛盾。
+  
+  （左零群有左逆不一定有右逆，like $(\mathbb{N}, +)$）
+\end{proof}
+
+\begin{lemma}
+  若$A$为含幺$C^*$代数，$a \in A$自伴元，则$\sigma(a) \subset \mathbb{R}$。
+\end{lemma}
+
+\begin{proof}
+  由已证知$e^{ia}$为酉元，由已证$\sigma(e^{ia}) \subset S^1$。
+  
+  $\forall \lambda \in \sigma(a)$，由Prop，$e^{i\lambda} \in \sigma(e^{ia}) \subset S^1$，设$\lambda = x + iy$。
+  
+  $e^{i\lambda} = e^{i(x + iy)} = e^{ix}e^{-y} \Rightarrow e^{-y} = 1 \Rightarrow y = 0$。
+  
+  $\Rightarrow \lambda = x \in \mathbb{R}$。
+\end{proof}
+
+\begin{remark}
+  若$A$不含幺，则$\sigma_A(x) \triangleq \sigma_{\hat{A}}(x)$。
+\end{remark}
+
+\begin{lemma}
+  若$A$为含幺$C^*$代数，$\tau \in \Sigma A$，则
+  \begin{equation*}
+    \forall a \in A, \quad \tau(a^*) = \overline{\tau(a)}.
+  \end{equation*}
+\end{lemma}
+
+\begin{proof}
+  \begin{proposition}
+    $A$为$*$代数，则$\forall a \in A$，$\exists b, c$自伴，使$a = b + ic$。
+  \end{proposition}
+  
+  \begin{proof}
+    若存在$a = b + ic$，$a^* = b^* - ic^* = b - ic$。
+    \begin{equation*}
+      \Rightarrow b = \frac{a + a^*}{2}\text{（自伴）}, \quad c = \frac{a - a^*}{2i}\text{（自伴）},
+    \end{equation*}
+    从而$(b, c)$存在唯一。
+  \end{proof}
+  
+  设$a = b + ic$，$b, c$自伴，则$\tau(a) = \tau(b) + i\tau(c)$。
+  
+  由于$\tau(b) \in \sigma(b) \subset \mathbb{R}$，$\tau(c) \in \sigma(c) \subset \mathbb{R}$。
+  
+  且$\tau(a^*) = \tau(b - ic) = \tau(b) - i\tau(c)$。
+  
+  故$\tau(a^*) = \overline{\tau(a)}$。
+\end{proof}
+
+\begin{lemma}
+  若$A$为$C^*$代数，$\tau \in \Sigma A$，则$\forall a \in A$，有$\tau(a^*) = \overline{\tau(a)}$。
+\end{lemma}
+
+\begin{proof}
+  $A \hookrightarrow \tilde{A}$（$C^*$代数幺元化使得代数幺元化恰好度）。
+  
+  $\exists! \tilde{\tau}$保幺代数同态，由Lemma知$\tilde{\tau}$保$*$。
+  
+  $\tau = \tilde{\tau}|_A$保$*$。
+\end{proof}
+
+\section{Gelfand定理}
+
+\begin{theorem}[Gelfand]
+  若$A$为交换含幺$C^*$代数，则
+  \begin{equation*}
+    \begin{aligned}
+      A &\xrightarrow{\theta} C(\Sigma A) \quad \text{为等距$*$同构} \\
+      a &\longmapsto \hat{a}
+    \end{aligned}
+  \end{equation*}
+  （$\Sigma A \neq \varnothing$已证）
+\end{theorem}
+
+\begin{proof}
+  由已证，$\theta$是代数同态。下证$\theta$保$*$运算。
+  
+  $\theta(a^*) = \widehat{a^*}$，$\theta(a)^* = \bar{\hat{a}}$。
+  
+  $\forall \tau \in \Sigma A$，$\widehat{a^*}(\tau) = \tau(a^*) \xlongequal{\text{Lemma}} \overline{\tau(a)} = \overline{\hat{a}(\tau)} = \bar{\hat{a}}(\tau)$。
+  
+  \textbf{$\theta$单}：只要证$\theta$保范（因为$\theta(a) = \theta(b) \Leftrightarrow \theta(a - b) = 0 \Leftrightarrow \|\theta(a - b)\| = 0 \Leftrightarrow \|a - b\| = 0 \Leftrightarrow a = b$）。
+  
+  \begin{equation*}
+    \|\hat{a}\|^2 = \|\theta(a)\theta(a)^*\| = \|\theta(a)\theta(a^*)\| = \|\widehat{aa^*}\| = r(aa^*) \xlongequal{\text{正规元}} \|aa^*\| = \|a\|^2.
+  \end{equation*}
+  故保范。
+  
+  \textbf{$\theta$满}：$A \xrightarrow{\theta} C(\Sigma A) \Rightarrow \theta(A)$为$C(\Sigma A)$中的闭$*$子代数（等距嵌入，$*$同态，等距$\Rightarrow$像完备）。
+  
+  \begin{theorem}[Stone-Weierstrass]
+    若$X$为紧$T_2$空间，$A$为$C(X)$（复值）的闭$*$子代数，满足：
+    \begin{enumerate}
+      \item $A$含幺
+      \item $A$可分离$X$中的点（即$\forall x, y \in X$且$x \neq y$，$\exists f \in A$使$f(x) \neq f(y)$）
+    \end{enumerate}
+    则$A = C(X)$。
+  \end{theorem}
+  
+  $\theta(A)$为$C(\Sigma A)$中的闭$*$子代数，$\theta(A)$含$\hat{1} = 1$常$1$函数。
+  
+  易知$\theta(A)$可分离$\Sigma A$中的点：
+  
+  （$\forall \tau, \tau' \in \Sigma A$且$\tau \neq \tau' \Rightarrow \exists a \in A$，$\tau(a) \neq \tau'(a) \Rightarrow \hat{a}(\tau) \neq \hat{a}(\tau')$，$\hat{a} \in \theta(A)$，故$\theta(A)$可分离点）
+  
+  由Stone-Weierstrass定理，$\theta(A) = C(\Sigma A)$。
+\end{proof}
+
+\begin{theorem}
+  若$A$为交换非$0$ $C^*$代数，则$\Sigma A \neq \varnothing$。
+\end{theorem}
+
+\begin{proof}
+  $A \hookrightarrow \tilde{A}$（$C^*$代数幺元化）。
+  
+  $\forall \tau$，$\exists! \tilde{\tau}$保幺同态。已证$\{0\} \cup \Sigma A \xrightarrow{\text{双射}} \Sigma\tilde{A}$，$\tau \mapsto \tilde{\tau}$。
+  
+  反证，若$\Sigma A = \varnothing$，则$\Sigma\tilde{A}$为单点集。
+  
+  由Gelfand变换，$\tilde{A} \xrightarrow{\theta} C(\Sigma\tilde{A})$为$*$同构。
+  
+  $A \neq 0$，且$\tilde{A} \cong A \oplus \mathbb{C} \Rightarrow \dim\tilde{A} \geq 2$。
+  
+  而$\dim C(\Sigma\tilde{A}) = 1$（$\{*\} \xrightarrow{f} \mathbb{C} \Rightarrow f \in \mathbb{C}^{\{*\}}$—维），矛盾。
+\end{proof}
+
+\begin{theorem}
+  若$X$为紧$T_2$空间，则
+  \begin{equation*}
+    \begin{aligned}
+      X &\xrightarrow{\theta} \mathrm{Max}\, C(X) \\
+      x &\longmapsto I(x) \triangleq \{f \in C(X) : f(x) = 0\}
+    \end{aligned}
+  \end{equation*}
+  其中$I(x)$为$x$的零化理想，$= \ker\hat{x}$，$C(X) \xrightarrow{\hat{x}} \mathbb{C}$满环同态，$f \mapsto f(x)$，$\cong \Rightarrow \ker(\hat{x})$极大理想。
+\end{theorem}
+
+\begin{proof}
+  \textbf{良定义}（即$\ker\hat{x}$极大）已证。
+  
+  \textbf{$\theta$单}：若$I(x) = I(y)$，要证$x = y$。反证若$x \neq y$。
+  
+  由$T_2$紧$\Rightarrow T_4$，知$\exists f \in C(X)$，$X \xrightarrow{f} [0, 1] \subset \mathbb{C}$（Urysohn Lemma）。
+  
+  使$f(x) = 0$，$f(y) = 1 \Rightarrow f \in I(x)$，$f \notin I(y) \Rightarrow I(x) \neq I(y)$，矛盾。
+  
+  \textbf{$\theta$满}：$X \xrightarrow{\theta} \mathrm{Max}\, C(X)$。
+  
+  若$\exists M$不在像中，则$\forall f \in M$，$f(x) = 0$。
+  
+  下证$M$有公共零点。一般地若$I$为$C(X)$的真理想，则$\exists x \in X$，使$\forall f \in I$，$f(x) = 0$。
+  
+  这是因为：$Z(f) \triangleq \{x \in X : f(x) = 0\}$闭于$X$，要证$\bigcap_{f \in I} Z(f) \neq \varnothing$。
+  
+  由$X$紧，只要证$\{Z(f) : f \in I\}$有有限交性质。
+  
+  $\forall f_1, \ldots, f_n \in I$，要证$Z(f_1) \cap \cdots \cap Z(f_n) \neq \varnothing$。
+  
+  令$f = f_1\bar{f_1} + \cdots + f_n\bar{f_n} \in I$，而$I$中的化恒函数恒有$0$点（这是因为若$Z(f) = \varnothing \Rightarrow g$可逆，$\frac{1}{g} \triangleq \frac{1}{g(x)}$与$I$真理想矛盾）。
+  
+  $\exists x \in X$，$f(x) = 0$，而$f(x) = |f_1(x)|^2 + \cdots + |f_n(x)|^2 \geq 0$。
+  
+  $\Rightarrow f_1(x) = 0, \ldots, f_n(x) = 0 \Rightarrow x \in Z(f_1) \cap \cdots \cap Z(f_n)$。
+  
+  故有有限交性质。
+\end{proof}
+
+\begin{theorem}
+  若$X$为紧$T_2$空间，则
+  \begin{equation*}
+    \begin{aligned}
+      X &\xrightarrow{\theta} \Sigma C(X) \quad \text{为同胚} \\
+      x &\longmapsto \hat{x}: C(X) \to \mathbb{C}, \quad f \mapsto f(x)
+    \end{aligned}
+  \end{equation*}
+\end{theorem}
+
+\begin{proof}
+  \textbf{$\theta$单}：若$\hat{x} = \hat{y} \Rightarrow \ker\hat{x} = \ker\hat{y}$，由上Thm$\Rightarrow x = y$。
+  
+  \textbf{$\theta$满}：任取$\tau \in \Sigma \Rightarrow \ker\tau$为$C(X)$的极大理想。
+  
+  由Thm1，知$\exists x \in X$，$\ker\tau = I(x) = \ker\hat{x}$。
+  
+  $\Rightarrow \tau = \hat{x}$（因为
+  \begin{equation*}
+    \begin{tikzcd}
+      A \arrow[r, "\tau_1"] \arrow[d, "\tau_2"'] & \mathbb{C} = A/\ker\tau_1 \\
+      \mathbb{C} = A/\ker\tau_2 \arrow[ur, "\exists!\iota"', dashed]
+    \end{tikzcd}
+  \end{equation*}
+  $\exists!\iota$，$\tau_2 = \iota \circ \tau_1$，$\iota$保幺，故$\ker\tau_1 = \ker\tau_2$可推出$\tau_1 = \tau_2$）。
+  
+  \textbf{$\theta$连续}：若$x_\alpha \to x$，要证$\hat{x}_\alpha \xrightarrow{w^*} \hat{x}$，$\Sigma C(X) \subset C(X)^*$。
+  
+  这是因为：$\forall f \in C(X)$，有$\hat{x}_\alpha(f) = f(x_\alpha) \xrightarrow{f\text{连续}} f(x) = \hat{x}(f)$。
+  
+  $\Rightarrow \hat{x}_\alpha \xrightarrow{w^*} \hat{x}$，故$\theta$连续。
+  
+  \textbf{结论}：紧$\to T_2$的连续双射为同胚。
+\end{proof}
+
+\section{范畴等价}
+
+\begin{definition}[紧$T_2$空间范畴]
+  定义范畴$\mathbf{CHaus}$：
+  \begin{itemize}
+    \item \textbf{Ob}：全体紧$T_2$空间（非$\varnothing$）
+    \item \textbf{Hom}：全体紧$T_2$空间之间的连续映射
+    \item \textbf{复合}：映射复合
+  \end{itemize}
+\end{definition}
+
+\begin{definition}[交换$C^*$代数范畴]
+  定义范畴$\mathbf{C.U.C^*\text{-}alg}$：
+  \begin{itemize}
+    \item \textbf{Ob}：全体非$0$交换含幺$C^*$代数
+    \item \textbf{Hom}：全体保幺$*$同态
+    \item \textbf{复合}：映射复合
+  \end{itemize}
+\end{definition}
+
+\begin{proposition}
+  有反变函子
+  \begin{equation*}
+    \mathbf{CHaus} \xleftarrow[\Sigma(-)]{C(-)} \mathbf{C.U.C^*\text{-}alg}
+  \end{equation*}
+  其中：
+  \begin{equation*}
+    \begin{aligned}
+      X &\longmapsto C(X) \\
+      \left(X \xrightarrow{f} Y\right) &\longmapsto \left(C(Y) \xrightarrow{f^*} C(X)\right) \\
+      &\quad \psi \longmapsto \psi \circ f
+    \end{aligned}
+  \end{equation*}
+\end{proposition}
+
+\begin{proof}
+  易知$f^*$为一个保幺$*$同态：$f^*(1) = 1 \circ f = 1$，$f^*(\bar{\psi}) = \bar{\psi} \circ f = \overline{\psi \circ f} = \overline{f^*(\psi)}$。
+  
+  保交换图：若$X \xrightarrow{g} Y \xrightarrow{f} Z$，则$(f \circ g)^*(\psi) = \psi \circ f \circ g = (g^* \circ f^*)(\psi)$。
+\end{proof}
+
+\begin{proposition}
+  $\Sigma A$压缩，为$w^*$拓扑，单位球闭子集，故紧。
+  
+  若$A \xrightarrow{f} B$为保幺$*$同态，则
+  \begin{equation*}
+    \begin{aligned}
+      \Sigma B &\xrightarrow{f^*} \Sigma A \\
+      \tau &\longmapsto \tau \circ f
+    \end{aligned}
+  \end{equation*}
+\end{proposition}
+
+\begin{proof}
+  易知以上$f^*$连续：因为设$\tau_\alpha \xrightarrow{w^*} \tau$，要证$f^*(\tau_\alpha) \xrightarrow{w^*} f^*(\tau)$，即$\tau_\alpha \circ f \to \tau \circ f$。
+  
+  $\forall a \in A$，有$\tau_\alpha \circ f(a) = \tau_\alpha(f(a)) \to \tau(f(a))$。
+  
+  $\mathrm{id}^*(\tau) = \tau \circ \mathrm{id} = \tau \Rightarrow \mathrm{id}^* = \mathrm{id}$。
+\end{proof}
+
+\begin{proposition}
+  易知保交换图：
+  \begin{equation*}
+    \begin{tikzcd}
+      \Sigma A \arrow[d] & A \arrow[l] \\
+      C(\Sigma A) & 
+    \end{tikzcd}
+    \quad \text{Gelfand变换}
+  \end{equation*}
+  $C \circ \Sigma \cong \mathrm{Id}$。
+\end{proposition}
+
+\begin{proposition}
+  \begin{equation*}
+    \begin{tikzcd}
+      X \arrow[r] \arrow[d, "\cong"'] & C(X) \\
+      \Sigma C(X) \arrow[ur] &
+    \end{tikzcd}
+    \quad \Sigma \circ C \cong \mathrm{Id}.
+  \end{equation*}
+\end{proposition}
+
+\begin{proposition}
+  下图交换：
+  \begin{equation*}
+    \begin{tikzcd}
+      X \arrow[r, "\theta_X"] \arrow[d, "f"'] & \Sigma C(X) \arrow[d, "f^{**}"] \\
+      X' \arrow[r, "\theta_{X'}"'] & \Sigma C(X')
+    \end{tikzcd}
+  \end{equation*}
+\end{proposition}
+
+\begin{proof}
+  $x \mapsto \hat{x}$，$f(x) \mapsto \widehat{f(x)}$，$\hat{x} \circ f^* \mapsto \widehat{f(x)}$。
+  
+  $\forall \psi \in C(X')$，有$\widehat{f(x)}(\psi) = \psi(f(x))$。
+  
+  $(\hat{x} \circ f^*)(\psi) = \hat{x}(\psi \circ f) = \psi \circ f(x) = \psi(f(x))$。
+  
+  故图表交换。
+\end{proof}
+
+\begin{proposition}
+  下图交换：
+  \begin{equation*}
+    \begin{tikzcd}
+      A \arrow[r, "\Gamma_A", "*\text{同构}"] \arrow[d, "f"', "\text{保幺$*$同态}"] & C(\Sigma A) \arrow[d, "f^{**}"] \\
+      A' \arrow[r, "\Gamma_{A'}"'] & C(\Sigma A')
+    \end{tikzcd}
+  \end{equation*}
+\end{proposition}
+
+\begin{proof}
+  $a \mapsto \hat{a}: \Sigma A \to \mathbb{C}$，$\tau \mapsto \tau(a)$。
+  
+  $f(a) \mapsto \widehat{f(a)}$，$\hat{a} \circ f^* \mapsto \widehat{f(a)}$。
+  
+  $\forall \tau \in \Sigma A'$，$(\hat{a} \circ f^*)(\tau) = \hat{a}(\tau \circ f) = (\tau \circ f)(a) = \tau(f(a))$。
+  
+  $\widehat{f(a)}(\tau) = \tau(f(a))$。
+  
+  故图表交换。
+\end{proof}
+
+\begin{theorem}
+  $\mathbf{CHaus} \xleftarrow[\Sigma(-)]{C(-)} \mathbf{C.U.C^*\text{-}alg}$为范畴等价。
+\end{theorem}
+
+\begin{proposition}
+  $\mathbf{C} \xleftarrow[G]{F} \mathbf{D}$，$F, G$互为等价逆（等价$\Rightarrow$全忠实）。
+  
+  任取$X, X'$为$\mathbf{C}$中两个对象，则
+  \begin{equation*}
+    \mathrm{Hom}_{\mathbf{C}}(X, Y) \xrightarrow{F} \mathrm{Hom}_{\mathbf{D}}(FX, FY), \quad f \mapsto Ff \triangleq f^*
+  \end{equation*}
+  为一个双射。
+\end{proposition}
+
+\begin{proof}
+  \textbf{单（忠实）}：$f_1 \neq f_2 \Rightarrow f_1^* = f_2^*$均记为$T$。
+  \begin{equation*}
+    \begin{tikzcd}
+      X \arrow[r, "\theta_X", "\cong"'] \arrow[d, "f_1"', shift right] \arrow[d, "f_2", shift left] & GFX \arrow[d, "T^*"] \\
+      Y \arrow[r, "\theta_Y"', "\cong"] & GFY
+    \end{tikzcd}
+  \end{equation*}
+  $f_1 = \theta_Y^{-1}T^*\theta_X$，$f_2 = \theta_Y^{-1}T^*\theta_X \Rightarrow f_1 = f_2$。
+  
+  \textbf{满（全）}：$\exists f$使$f^* = T$（任取$T$）。
+  \begin{equation*}
+    \begin{tikzcd}
+      X \arrow[r, "\theta_X", "\cong"'] \arrow[d, "f"', dashed] & GFX \arrow[d, "T^*"] & FX \arrow[d, "T"] \\
+      Y \arrow[r, "\theta_Y"', "\cong"] & GFY & FY
+    \end{tikzcd}
+  \end{equation*}
+  定义$f \triangleq \theta_Y^{-1}T^*\theta_X$，下证$f^* = T$。
+  
+  $f^{**} = T^* = \theta_Y f \theta_X^{-1}$。
+  
+  再由$*$是单的，有$f^* = T$。
+\end{proof}
+
+\section{恰当映射}
+
+\begin{definition}[恰当映射]
+  $X, Y$为拓扑空间，$X \xrightarrow{f} Y$连续，称$f$为\textbf{恰当}，若任取$K \subset Y$紧集，有$f^{-1}(K)$紧集。
+\end{definition}
+
+\begin{proposition}
+  $X \xrightarrow{f} Y \xrightarrow{g} Z$，$f, g$恰当$\Rightarrow g \circ f$恰当。
+\end{proposition}
+
+\begin{proposition}
+  若$X \cup \{p\} \xrightarrow{f} Y \cup \{q\}$，且$X \cup \{p\}$，$Y \cup \{q\}$为紧$T_2$，$f(X) \subset Y$，$f(p) = q$，则$f|_X: X \to Y$为恰当映射。
+\end{proposition}
+
+\begin{proof}
+  任取$K$在$Y$中紧$\Rightarrow K$在$Y \cup \{q\}$紧$\Rightarrow K$在$Y \cup \{q\}$中闭。
+  
+  $\Rightarrow f^{-1}(K)$在$X \cup \{p\}$中闭，易知$f^{-1}(K) = (f|_X)^{-1}(K)$闭于$X \cup \{p\}$。
+  
+  $\Rightarrow (f|_X)^{-1}(K)$紧。
+\end{proof}
+
+\begin{proposition}
+  若$X \xrightarrow{\psi} Y$为恰当映射，其中$X, Y$局部紧$T_2$，则定义
+  \begin{equation*}
+    X \cup \{p\} \xrightarrow{\hat{\psi}} Y \cup \{q\}
+  \end{equation*}
+  为连续映射，其中$X \cup \{p\}$，$Y \cup \{q\}$分别为单点紧化，
+  \begin{equation*}
+    \hat{\psi}(x) \triangleq \begin{cases}
+      \psi(x), & x \in X \\
+      q, & x = p
+    \end{cases}
+  \end{equation*}
+  （保紧生）
+\end{proposition}
+
+\section{正元的进一步性质}
+
+\begin{lemma}\label{lem:neg-pos-zero}
+  若$A$为$C^*$代数，$a \in A$满足$-a^*a \geq 0$，则$a = 0$。
+\end{lemma}
+
+\begin{proof}
+  设$a = b + ic$，其中$b, c$自伴，则
+  \begin{equation*}
+    a^*a + aa^* = 2b^2 + 2c^2.
+  \end{equation*}
+  由于$b$自伴，$\sigma(b) \subset \mathbb{R}$，从而
+  \begin{equation*}
+    \sigma(b^2) = \{t^2 : t \in \sigma(b)\} \subset [0, +\infty),
+  \end{equation*}
+  即$b^2 \geq 0$；同理$c^2 \geq 0$。
+  于是$a^*a + aa^* \geq 0$。
+  
+  由假设$-a^*a \geq 0$，得
+  \begin{equation*}
+    aa^* = (a^*a + aa^*) + (-a^*a) \geq 0.
+  \end{equation*}
+  因此$\sigma(aa^*) \subset [0, +\infty)$。
+  
+  又已知$\sigma(a^*a) \cup \{0\} = \sigma(aa^*) \cup \{0\}$，故$\sigma(a^*a) \subset [0, +\infty)$。
+  
+  同时由$-a^*a \geq 0$知$\sigma(-a^*a) \subset [0, +\infty)$，即$\sigma(a^*a) \subset (-\infty, 0]$。
+  
+  综上$\sigma(a^*a) = \{0\}$，从而$\|a^*a\| = 0$。
+  由$C^*$恒等式$\|a\|^2 = \|a^*a\|$，得$a = 0$。
+\end{proof}
+
+\begin{theorem}
+  若$A$为$C^*$代数，$a \in A$，则$a^*a \geq 0$。
+\end{theorem}
+
+\begin{proof}
+  设$a^*a = b^+ - b^-$，其中$b^+, b^- \geq 0$且$b^+b^- = 0$。
+  
+  令$c \triangleq ab^-$，则
+  \begin{equation*}
+    c^*c = (ab^-)^*(ab^-) = b^-a^*ab^- = b^-(b^+ - b^-)b^- = -(b^-)^3.
+  \end{equation*}
+  因此$-c^*c = (b^-)^3 \geq 0$。
+  
+  由引理~\ref{lem:neg-pos-zero}（取$a=c$），得$c = 0$。
+  
+  从而$(b^-)^3 = 0$，进而$b^- = 0$，故$a^*a = b^+ \geq 0$。
+\end{proof}
+
+\begin{proposition}\label{prop:conj-order}
+  $A$为$C^*$代数，$\forall x, y \in A$，$\forall a \in A$，若$x \leq y$，则$a^*xa \leq a^*ya$。
+\end{proposition}
+
+\begin{proof}
+  由$x \leq y \Rightarrow y - x \geq 0$，由已证$y - x = b^*b$（$b = \sqrt{y - x}$，$b^2 = b^*b$）。
+  
+  则$a^*ya - a^*xa = a^*b^*ba = (ba)^*(ba) \geq 0$（由Thm）。
+  
+  $a^*ya \geq a^*xa$。
+\end{proof}
+
+\begin{lemma}\label{lem:inv-ineq}
+  若$A$为含幺$C^*$代数，$b$为正元，则$1 \leq b \Rightarrow b^{-1} \leq 1$。
+\end{lemma}
+
+\begin{proof}
+  考虑交换$C^*$代数$C^*(1, b)$，由连续函数演算可视为$C(\sigma(b))$。
+  
+  在此同构下$b$对应于恒等函数$f$，而$1 \leq b$对应于$1 \leq f$。
+  因此$f$处处非零，从而$f$可逆，故$b$可逆。
+  
+  又由$1 \leq f$知$f^{-1} \leq 1$，对应得到$b^{-1} \leq 1$。
+\end{proof}
+
+\begin{proposition}\label{prop:inv-order}
+  若$A$为含幺$C^*$代数，$a, b$为正元且均可逆，则$0 \leq a \leq b \Rightarrow 0 \leq b^{-1} \leq a^{-1}$。
+\end{proposition}
+
+\begin{proof}
+  由$a$可逆知$a^{-\frac{1}{2}} \in C^*(1, a)$存在。
+  
+  由$0 \leq a \leq b$及命题~\ref{prop:conj-order}（取$x=a, y=b, a=a^{-\frac{1}{2}}$）得
+  \begin{equation*}
+    1 = a^{-\frac{1}{2}}aa^{-\frac{1}{2}} \leq a^{-\frac{1}{2}}ba^{-\frac{1}{2}} \triangleq c.
+  \end{equation*}
+  其中$c$为正元且可逆。
+  
+  由引理~\ref{lem:inv-ineq}，$1 \leq c \Rightarrow c^{-1} \leq 1$。
+  注意到$c^{-1} = a^{\frac{1}{2}}b^{-1}a^{\frac{1}{2}}$，于是
+  \begin{equation*}
+    a^{\frac{1}{2}}b^{-1}a^{\frac{1}{2}} \leq 1.
+  \end{equation*}
+  左右同乘$a^{-\frac{1}{2}}$得到$b^{-1} \leq a^{-1}$。
+\end{proof}
+
+\begin{remark}
+  $a \leq b \Rightarrow -b \leq -a$，$a \leq b \Rightarrow \forall c$，$a + c \leq b + c$。
+\end{remark}
+
+\begin{proposition}
+  $A$为$C^*$代数，若$a, b$为正元，则$a \leq b \Rightarrow \|a\| \leq \|b\|$。
+\end{proposition}
+
+\begin{proof}
+  在$A$的幺元化$\tilde{A}$中，$b$为正元且满足$b \leq \|b\|1$。
+  由$a \leq b$得$a \leq \|b\|1$。
+  
+  考虑交换$C^*$代数$C^*(1, a) \subset \tilde{A}$，由连续函数演算可视为$C(\sigma(a))$。
+  在此同构下$a$对应于恒等函数$f \geq 0$，而$\|b\|1$对应于常值函数$\|b\|$。
+  因此$f \leq \|b\|$，从而
+  \begin{equation*}
+    \|a\| = \|f\|_{\infty} \leq \|b\|.
+  \end{equation*}
+\end{proof}
+
+\begin{remark}
+  若$A$为$C^*$代数，$0 \leq a \leq b$，则$0 \leq \sqrt{a} \leq \sqrt{b}$。
+  
+  一般地，$A$含幺，$\forall t \in [0, 1]$，有$0 \leq a \leq b \Rightarrow 0 \leq a^t \leq b^t$。
+\end{remark}
+
+\chapter{逼近单位元、理想与表示}
+
+\section{逼近单位元}
+
+\begin{definition}[逼近单位元]
+  $A$为$C^*$代数，$(u_\lambda)_{\lambda \in \Lambda}$为$A$中的网，若满足：
+  \begin{enumerate}
+    \item $\forall \lambda$，$\|u_\lambda\| \leq 1$
+    \item $\forall \lambda$，$u_\lambda \geq 0$
+    \item $\forall a \in A$，有$u_\lambda a \to a$（$\lambda \to \infty$）
+  \end{enumerate}
+  则称$(u_\lambda)_\lambda$为一个\textbf{逼近单位元}。
+\end{definition}
+
+\begin{remark}
+  若$(u_\lambda)_\lambda$为逼近单位元，则$\forall a$，$au_\lambda \to a$。
+\end{remark}
+
+\begin{proof}
+  $\forall a$，有$u_\lambda a^* \to a^* \Rightarrow au_\lambda^* = au_\lambda \to a$。
+\end{proof}
+
+\begin{lemma}\label{lem:order-iso}
+  若$A$为含幺$C^*$代数，则以下两个映射互逆：
+  \begin{equation*}
+    \{a \in A^+ : \|a\| < 1\} \xleftrightarrow{\varphi} A^+
+  \end{equation*}
+  且$\varphi$与$\varphi^{-1}$均保序，其中
+  \begin{equation*}
+    a \longmapsto \frac{a}{1 - a}, \quad \frac{b}{1 + b} \longleftarrow b.
+  \end{equation*}
+\end{lemma}
+  
+  \begin{proof}
+    $r(a) = \|a\| < 1$，$\sigma(1 - a) = 1 - \sigma(a) > 0$，$1 - a$可逆且$(1 - a)^{-1} \in C^*(1, a)$。
+    因此$\varphi(a)$有意义。
+    另一方面，若$b \in A^+$，则$1 + b$可逆且$(1 + b)^{-1} \in C^*(1, b)$，故$\varphi^{-1}(b)$有意义。
+    由直接计算可知$\varphi$与$\varphi^{-1}$互为逆映射。
+    
+    由连续函数演算，$t \mapsto \frac{t}{1+t}$在$[0,+\infty)$上取值于$[0,1)$，从而$\|\varphi^{-1}(b)\| < 1$。
+    
+    \textbf{下证$\varphi$保序}：若$a_1, a_2 \in A^+$且$\|a_1\|, \|a_2\| < 1$并满足$a_1 \leq a_2$，则$0 \leq 1 - a_2 \leq 1 - a_1$。
+    由命题~\ref{prop:inv-order} 得$(1 - a_1)^{-1} \leq (1 - a_2)^{-1}$，从而
+    \begin{equation*}
+      \varphi(a_1) = (1 - a_1)^{-1} - 1 \leq (1 - a_2)^{-1} - 1 = \varphi(a_2).
+    \end{equation*}
+    
+    \textbf{下证$\varphi^{-1}$保序}：已知$a, b \in A^+$且$a \leq b$。
+    
+    由$a \leq b \Rightarrow 0 \leq 1 + a \leq 1 + b$，由已证得
+    \begin{equation*}
+      0 \leq (1 + b)^{-1} \leq (1 + a)^{-1}.
+    \end{equation*}
+    两边同乘$-1$并加$1$，得
+    \begin{equation*}
+      1 - (1 + a)^{-1} \leq 1 - (1 + b)^{-1}.
+    \end{equation*}
+    即$\varphi^{-1}(a) \leq \varphi^{-1}(b)$。
+  \end{proof}
+  
+  \begin{theorem}
+    若$A$为$C^*$代数，则$\{a \in A^+ : \|a\| < 1\}$为定向集（按$\leq$序）。
+  \end{theorem}
+  
+  \begin{proof}
+    $\forall a, b \in A^+$，且$\|a\|, \|b\| < 1$，设$\tilde{A}$为$A$的$C^*$代数幺元化，$\|a\|, \|b\|$仍小于$1$。
+    
+    $a \mapsto a' \triangleq a(1 - a)^{-1} \in \tilde{A}$，$A$是$\tilde{A}$的理想。
+    
+    $b \mapsto b' \triangleq b(1 - b)^{-1} \in \tilde{A}$。
+    
+    令$c \triangleq a' + b' \in \tilde{A}^+$，并取
+    \begin{equation*}
+      d \triangleq \varphi^{-1}(c) = \frac{c}{1 + c} \in \Lambda.
+    \end{equation*}
+    由于$c \geq a'$且$c \geq b'$，由引理~\ref{lem:order-iso} 知$\varphi^{-1}$保序，故
+    \begin{equation*}
+      d = \varphi^{-1}(c) \geq \varphi^{-1}(a') = a, \qquad d = \varphi^{-1}(c) \geq \varphi^{-1}(b') = b.
+    \end{equation*}
+  \end{proof}
+  
+  \begin{theorem}
+    $A$为$C^*$代数，记$\Lambda = \{\lambda \in A^+ : \|\lambda\| < 1\}$，则$(u_\lambda)_{\lambda \in \Lambda}$为逼近单位元，其中$\forall \lambda$，$u_\lambda = \lambda$。
+  \end{theorem}
+  
+  \begin{proof}
+    考虑$C^*$代数幺元化$\tilde{A}$。
+    
+    $\mathcal{O} = \{a \in \tilde{A} : u_\lambda a \to a\}$，易知其为$\tilde{A}$的线性子空间。
+    
+    注意$\mathrm{span}\,\Lambda = A$：任取$0 \leq x \in A$，令$\alpha \triangleq 1 + \|x\|$，则$\alpha^{-1}x \in \Lambda$且$x = \alpha(\alpha^{-1}x) \in \mathrm{span}\,\Lambda$。
+    因此$A^+ \subset \mathrm{span}\,\Lambda$。
+    又任取自伴元$h \in A_{sa}$，写$h = h^+ - h^-$（正负部分解），得$h \in \mathrm{span}\,A^+ \subset \mathrm{span}\,\Lambda$。
+    对一般元$y \in A$，写$y = b + ic$（$b, c$自伴），从而$A \subset \mathrm{span}\,\Lambda$。
+    故$\mathrm{span}\,\Lambda = A$，从而只要证$\Lambda \subset \mathcal{O}$。
+    
+    这是因为若$\Lambda \subset \mathcal{O}$，则$\mathrm{span}\,\Lambda \subset \mathcal{O}$，即$A \subset \mathcal{O}$。
+    
+    $\forall \varepsilon > 0$，考虑$C^*(a) \cong C_0(\Omega)$，$\Omega$局部紧。
+    
+    不妨设$a \neq 0$，$0 < a \mapsto f \geq 0$。
+    
+    由于$f \in C_0(\Omega)$，存在紧集$K \subset \Omega$使得$|f(x)| < \varepsilon^2/2$对所有$x \notin K$成立。
+    
+    由Urysohn引理，存在$\psi \in C_c(\Omega)$使$0 \leq \psi \leq 1$且$\psi|_K = 1$。
+    取$\delta \in (0, 1)$使得$\delta\|f\|_{\infty} < \varepsilon^2/2$，并令$g \triangleq (1 - \delta)\psi$。
+    则$g \geq 0$且$\|g\|_{\infty} < 1$，并且
+    \begin{equation*}
+      \|gf - f\|_{\infty} = \|((1-\delta)\psi - 1)f\|_{\infty} \leq \max\{\delta\|f\|_{\infty},\, \varepsilon^2/2\} < \varepsilon^2.
+    \end{equation*}
+    
+    $b \leftarrow g$，$b \in \Lambda$。
+    
+    \textbf{下证}：$\forall \lambda \geq b$，有$\|a - u_\lambda a\| \leq \varepsilon$。
+    
+    $\|a - u_\lambda a\| = \|(1 - u_\lambda)a\|$。
+    
+    由$u_\lambda \leq 1 \Rightarrow 1 - u_\lambda \geq 0$。
+    
+    由于$u_\lambda \in \Lambda$，在$\tilde{A}$中有$0 \leq u_\lambda \leq 1$，从而$0 \leq (1 - u_\lambda)^2 \leq 1 - u_\lambda$。
+    因此
+    \begin{equation*}
+      \|a - u_\lambda a\|^2 = \|(a - u_\lambda a)^*(a - u_\lambda a)\| = \|a^*(1 - u_\lambda)^2a\| \leq \|a^*(1 - u_\lambda)a\|.
+    \end{equation*}
+    
+    令$\lambda \geq b \Rightarrow 1 - \lambda \leq 1 - b$，即$1 - u_\lambda \leq 1 - u_b$。
+    
+    $0 \leq a^*(1 - u_\lambda)a \leq a^*(1 - u_b)a$。
+    
+    由已证$\|a^*(1 - u_\lambda)a\| \leq \|a^*(1 - u_b)a\|$，由$a \in \Lambda$，$\|a\| < 1$。
+    
+    故
+    \begin{equation*}
+      \|a^*(1 - u_b)a\| \leq \|a\|\cdot\|(1 - u_b)a\| = \|a\|\cdot\|a - u_b a\| < \|a - u_b a\| < \varepsilon^2.
+    \end{equation*}
+    从而$\|a - u_\lambda a\| < \varepsilon$。
+    
+    即$u_\lambda a \to a$，$\forall a \in \Lambda$。
+  \end{proof}
+
+  \begin{lemma}\label{lem:left-ideal-approx}
+    若 $A$ 为 $C^*$ 代数，$L$ 为闭左理想，则存在 $L$ 中的上升正元网 $(u_\lambda)_{\lambda}$，满足
+    \begin{enumerate}
+      \item $\|u_\lambda\|\le 1$；
+      \item $\lim_{\lambda} au_\lambda=a$，$\forall a\in L$。
+    \end{enumerate}
+  \end{lemma}
+
+  \begin{proof}
+    考虑 $L^*\triangleq\{x^*:x\in L\}$ 与 $L\cap L^*$。
+    由于 $L$ 为左理想，若 $x,y\in L\cap L^*$，则 $xy\in L$ 且 $(xy)^*=y^*x^*\in L$，从而 $xy\in L\cap L^*$。
+    因此 $L\cap L^*$ 为闭 $*$ 子代数，故其为 $C^*$ 代数。
+
+    取 $(u_\lambda)$ 为 $L\cap L^*$ 的上升正元逼近单位元，并满足 $\|u_\lambda\|\le 1$。
+    任取 $a\in L$，则 $a^*a\in L\cap L^*$，从而 $(a^*a)u_\lambda\to a^*a$。
+    又因为 $0\le u_\lambda\le 1$，故 $0\le (1-u_\lambda)^2\le 1-u_\lambda$，从而
+    \begin{equation*}
+      \|a-au_\lambda\|^2=\|(a-au_\lambda)^*(a-au_\lambda)\|=\|a^*(1-u_\lambda)^2a\|\le \|a^*(1-u_\lambda)a\|.
+    \end{equation*}
+    而
+    \begin{equation*}
+      \|a^*(1-u_\lambda)a\|=\|a^*a-a^*au_\lambda\|=\|a^*a-(a^*a)u_\lambda\|\to 0.
+    \end{equation*}
+    故 $\|a-au_\lambda\|\to 0$，即 $au_\lambda\to a$。
+  \end{proof}
+
+  \begin{theorem}\label{thm:closed-ideal-star}
+    若 $A$ 为 $C^*$ 代数，$I$ 为闭理想，则 $I$ 为 $*$ 理想。
+  \end{theorem}
+
+  \begin{proof}
+    由引理~\ref{lem:left-ideal-approx}，存在 $(u_\lambda)\subset I$ 使得 $au_\lambda\to a$，$\forall a\in I$。
+    任取 $a\in I$，则
+    \begin{equation*}
+      a^*=\lim_{\lambda}(au_\lambda)^*=\lim_{\lambda}u_\lambda a^*.
+    \end{equation*}
+    因为 $u_\lambda\in I$ 且 $I$ 为理想，故 $u_\lambda a^*\in I$。
+    由 $I$ 闭知 $a^*\in I$。
+  \end{proof}
+
+  \begin{remark}
+    若 $I\triangleleft J\triangleleft A$，其中 $J$ 为 $A$ 的闭理想，$I$ 为 $J$ 的闭理想，则 $I$ 为 $A$ 的闭理想。
+  \end{remark}
+
+  \begin{proof}
+    由 $J$ 为 $C^*$ 代数中的闭理想，存在 $J$ 中的逼近单位元 $(e_\lambda)$。
+    任取 $x\in I$，$a\in A$，则 $ae_\lambda\in J$，故 $(ae_\lambda)x\in I$。
+    又 $e_\lambda x\to x$，从而
+    \begin{equation*}
+      ax=a\lim_{\lambda}(e_\lambda x)=\lim_{\lambda}(ae_\lambda)x\in I.
+    \end{equation*}
+    同理，$xa\in I$。
+    因而 $I$ 为 $A$ 的理想。由 $I$ 在 $J$ 中闭且 $J$ 在 $A$ 中闭知 $I$ 在 $A$ 中闭。
+  \end{proof}
+
+  \begin{lemma}\label{lem:quotient-norm}
+    若 $A$ 为 $C^*$ 代数，$I$ 为闭理想，则在商代数 $A/I$ 中，对任意 $a\in A$ 有
+    \[
+      \|[a]\|=\lim_{\lambda}\|a-u_\lambda a\|=\lim_{\lambda}\|a-au_\lambda\|,
+    \]
+    其中 $(u_\lambda)$ 为 $I$ 中的逼近单位元且满足 $0\le u_\lambda\le 1$。
+  \end{lemma}
+
+  \begin{proof}
+    由商范数定义，$\|[a]\|=\inf\{\|a+b\|:b\in I\}$。
+    因为 $u_\lambda a\in I$，故 $[a]=[a-u_\lambda a]$，从而
+    \begin{equation*}
+      \|[a]\|\le \|a-u_\lambda a\|,\qquad \forall\lambda.
+    \end{equation*}
+    因此 $\|[a]\|\le \liminf_{\lambda}\|a-u_\lambda a\|$。
+
+    反之，任取 $\varepsilon>0$，由定义可取 $b\in I$ 使得 $\|a+b\|\le \|[a]\|+\varepsilon$。
+    注意到 $\|1-u_\lambda\|\le 1$，且
+    \begin{equation*}
+      a-u_\lambda a=a(1-u_\lambda)=(a+b)(1-u_\lambda)-b(1-u_\lambda),
+    \end{equation*}
+    故
+    \begin{equation*}
+      \|a-u_\lambda a\|\le \|(a+b)(1-u_\lambda)\|+\|b(1-u_\lambda)\|\le \|a+b\|+\|b-bu_\lambda\|.
+    \end{equation*}
+    由 $bu_\lambda\to b$，得 $\limsup_{\lambda}\|a-u_\lambda a\|\le \|a+b\|\le \|[a]\|+\varepsilon$。
+    令 $\varepsilon\downarrow 0$ 得 $\limsup_{\lambda}\|a-u_\lambda a\|\le \|[a]\|$。
+    综上 $\lim_{\lambda}\|a-u_\lambda a\|=\|[a]\|$。
+
+    同理，因为 $au_\lambda\in I$，故 $[a]=[a-au_\lambda]$。
+    用相同论证（或对 $a^*$ 应用上式后取 $*$）得到 $\lim_{\lambda}\|a-au_\lambda\|=\|[a]\|$。
+  \end{proof}
+
+  \begin{theorem}
+    若 $A$ 为 $C^*$ 代数，$I$ 为闭理想，则 $A/I$ 在商范数与商 $*$ 运算下仍为 $C^*$ 代数。
+  \end{theorem}
+
+  \begin{proof}
+    由定理~\ref{thm:closed-ideal-star}，$I$ 为 $*$ 理想，故 $A/I$ 上 $[a]^*\triangleq [a^*]$ 良定义。
+    作为 Banach 代数的商，$A/I$ 为 Banach 代数。
+
+    任取 $a\in A$，取 $I$ 中满足 $0\le u_\lambda\le 1$ 的逼近单位元 $(u_\lambda)$。
+    由引理~\ref{lem:quotient-norm}，$\|[a]\|=\lim_{\lambda}\|a-au_\lambda\|=\lim_{\lambda}\|a(1-u_\lambda)\|$，从而
+    \begin{equation*}
+      \|[a]\|^2=\lim_{\lambda}\|a(1-u_\lambda)\|^2=\lim_{\lambda}\|(a(1-u_\lambda))^*(a(1-u_\lambda))\|=\lim_{\lambda}\|(1-u_\lambda)a^*a(1-u_\lambda)\|.
+    \end{equation*}
+    注意到
+    \begin{equation*}
+      a^*a-(1-u_\lambda)a^*a(1-u_\lambda)=u_\lambda a^*a+a^*a u_\lambda-u_\lambda a^*a u_\lambda\in I,
+    \end{equation*}
+    因而 $[a^*a]=[(1-u_\lambda)a^*a(1-u_\lambda)]$，从而
+    \begin{equation*}
+      \|[a^*a]\|\le \|(1-u_\lambda)a^*a(1-u_\lambda)\|,\qquad \forall\lambda.
+    \end{equation*}
+    取下极限得 $\|[a^*a]\|\le \liminf_{\lambda}\|(1-u_\lambda)a^*a(1-u_\lambda)\|$。
+
+    反之，任取 $\varepsilon>0$，由商范数定义可取 $b\in I$ 使得 $\|a^*a+b\|\le \|[a^*a]\|+\varepsilon$。
+    则
+    \begin{equation*}
+      (1-u_\lambda)a^*a(1-u_\lambda)=(1-u_\lambda)(a^*a+b)(1-u_\lambda)-(1-u_\lambda)b(1-u_\lambda),
+    \end{equation*}
+    故
+    \begin{equation*}
+      \|(1-u_\lambda)a^*a(1-u_\lambda)\|\le \|a^*a+b\|+\|(1-u_\lambda)b(1-u_\lambda)\|.
+    \end{equation*}
+    由于 $bu_\lambda\to b$ 且 $u_\lambda b\to b$，故 $(1-u_\lambda)b(1-u_\lambda)\to 0$。
+    因此 $\limsup_{\lambda}\|(1-u_\lambda)a^*a(1-u_\lambda)\|\le \|a^*a+b\|\le \|[a^*a]\|+\varepsilon$。
+    令 $\varepsilon\downarrow 0$ 得 $\limsup_{\lambda}\|(1-u_\lambda)a^*a(1-u_\lambda)\|\le \|[a^*a]\|$。
+    于是
+    \begin{equation*}
+      \|[a]\|^2=\lim_{\lambda}\|(1-u_\lambda)a^*a(1-u_\lambda)\|=\|[a^*a]\|=\|[a]^*[a]\|.
+    \end{equation*}
+    即 $A/I$ 满足 $C^*$ 等式，从而为 $C^*$ 代数。
+  \end{proof}
+
+  \begin{proposition}\label{prop:star-hom-norm}
+    若 $A,B$ 为 $C^*$ 代数，$\varphi:A\to B$ 为 $*$ 同态，则 $\|\varphi(a)\|\le \|a\|$，$\forall a\in A$。
+    若 $\varphi$ 单射，则 $\varphi$ 为保范嵌入，即 $\|\varphi(a)\|=\|a\|$。
+  \end{proposition}
+
+  \begin{proof}
+    任取 $a\in A$，则
+    \begin{equation*}
+      \|\varphi(a)\|^2=\|\varphi(a)^*\varphi(a)\|=\|\varphi(a^*a)\|\le \|a^*a\|=\|a\|^2,
+    \end{equation*}
+    从而 $\|\varphi(a)\|\le \|a\|$。
+
+    若 $\varphi$ 单射，则 $\varphi:A\to \varphi(A)$ 为 $*$ 同构。
+    上述结论同样适用于其逆映射 $\varphi^{-1}:\varphi(A)\to A$，故 $\|a\|\le \|\varphi(a)\|$。
+    因而 $\|\varphi(a)\|=\|a\|$。
+  \end{proof}
+
+  \begin{corollary}
+    若 $A,B$ 为 $C^*$ 代数，$\varphi:A\to B$ 为 $*$ 同态，则 $\varphi(A)$ 为 $B$ 的 $C^*$ 子代数。
+  \end{corollary}
+
+  \begin{proof}
+    由于 $\varphi$ 为 $*$ 同态，$\varphi(A)$ 显然为 $B$ 的 $*$ 子代数。
+    并且 $\ker\varphi$ 为闭 $*$ 理想，故 $A/\ker\varphi$ 为 $C^*$ 代数。
+
+    定义 $\tilde\varphi:A/\ker\varphi\to B$ 为 $\tilde\varphi([a])\triangleq\varphi(a)$。
+    则 $\tilde\varphi$ 为 $*$ 同态且单射，并且 $\tilde\varphi(A/\ker\varphi)=\varphi(A)$。
+    由命题~\ref{prop:star-hom-norm} 知 $\tilde\varphi$ 保范，从而 $\varphi(A)$ 为 Banach 空间，故为闭子代数。
+    综上 $\varphi(A)$ 为 $B$ 的 $C^*$ 子代数。
+
+    交换图为
+    \[
+      \begin{tikzcd}
+        A \arrow[r,"\varphi"] \arrow[d,"\pi"'] & B \\
+        A/\ker\varphi \arrow[ur,"\tilde\varphi"'] &
+      \end{tikzcd}
+    \]
+    其中 $\pi$ 为商映射。
+  \end{proof}
+
+  \section{表示与模}
+
+  \begin{definition}
+    若 $A$ 为 $*$ 代数，$H$ 为 Hilbert 空间，$\varphi:A\to B(H)$ 为 $*$ 同态，则称 $\varphi$ 为 $A$ 的一个表示（或 $*$ 表示），并称 $H$ 为表示空间。
+  \end{definition}
+
+  \begin{definition}
+    若 $A$ 为 $*$ 代数，$H$ 为 Hilbert 空间，若对每个 $a\in A$ 与 $x\in H$ 定义了 $ax\in H$，且满足
+    \begin{enumerate}
+      \item 对任意 $a\in A$，定义 $\ell_a:H\to H$，$\ell_a(x)\triangleq ax$，则 $\ell_a\in B(H)$；
+      \item $(a+b)x=ax+bx$；
+      \item $(ab)x=a(bx)$；
+      \item $\langle ax,y\rangle=\langle x,a^*y\rangle$；
+      \item $(\lambda a)x=\lambda(ax)$，$\forall\lambda\in\mathbb{C}$，
+    \end{enumerate}
+    则称 $H$ 为一个 $A$ 模。
+  \end{definition}
+
+  \begin{proposition}
+    $A$ 的一个表示（$*$ 表示）等价于一个 $A$ 模。
+  \end{proposition}
+
+  \begin{proof}
+    若 $\varphi:A\to B(H)$ 为表示，定义 $ax\triangleq\varphi(a)(x)$。
+    则 $\ell_a=\varphi(a)\in B(H)$。
+    并且
+    \begin{equation*}
+      (a+b)x=\varphi(a+b)x=(\varphi(a)+\varphi(b))x=ax+bx,
+    \end{equation*}
+    \begin{equation*}
+      (ab)x=\varphi(ab)x=(\varphi(a)\varphi(b))x=a(bx),
+    \end{equation*}
+    \begin{equation*}
+      \langle ax,y\rangle=\langle \varphi(a)x,y\rangle=\langle x,\varphi(a)^*y\rangle=\langle x,\varphi(a^*)y\rangle=\langle x,a^*y\rangle,
+    \end{equation*}
+    且 $(\lambda a)x=\varphi(\lambda a)x=\lambda\varphi(a)x=\lambda(ax)$。
+    因而 $H$ 为 $A$ 模。
+
+    反之，若 $H$ 为 $A$ 模，令 $\varphi:A\to B(H)$ 定义为 $\varphi(a)\triangleq \ell_a$。
+    则由 (2)(3)(5) 知 $\varphi$ 线性且 $\varphi(ab)=\varphi(a)\varphi(b)$。
+    由 (4) 知 $\varphi(a)^*=\varphi(a^*)$。
+    故 $\varphi$ 为 $*$ 同态，即为表示。
+  \end{proof}
+
+  \begin{definition}
+    设 $A$ 为 $*$ 代数，$H_1,H_2$ 为 $A$ 模。
+    若 $f:H_1\to H_2$ 为有界线性算子且满足 $f(ax)=af(x)$，$\forall a\in A,\forall x\in H_1$，则称 $f$ 为一个 $A$ 模同态（亦称表示同态）。
+  \end{definition}
+
+  \begin{definition}
+    设 $A$ 为 $*$ 代数，$H$ 为 $A$ 模。若 $M$ 为 $H$ 的闭线性子空间且满足 $AM\subset M$，则称 $M$ 为 $H$ 的闭子模（亦称子表示空间）。
+  \end{definition}
+
+  \begin{remark}
+    设 $H$ 为 $A$ 模，$M$ 为闭子模。记 $\ell_a:H\to H$，$\ell_a(x)=ax$，并记其在 $M$ 上的限制为 $\tilde\ell_a:M\to M$。
+    则对每个 $a\in A$，有交换图
+    \[
+      \begin{tikzcd}
+        H \arrow[r,"\ell_a"] & H \\
+        M \arrow[u,hook] \arrow[r,"\tilde\ell_a"'] & M \arrow[u,hook]
+      \end{tikzcd}
+    \]
+    从而得到诱导表示 $A\to B(M)$，$a\mapsto \tilde\ell_a$。
+  \end{remark}
+
+  \begin{definition}
+    设 $H$ 为 Hilbert 空间，$(H_\alpha)_{\alpha}$ 为一族闭子空间。
+    若
+    \begin{enumerate}
+      \item $(H_\alpha)_{\alpha}$ 两两正交；
+      \item $H=\overline{\sum_{\alpha} H_\alpha}=\overline{\mathrm{span}\bigl(\cup_{\alpha}H_\alpha\bigr)}$，
+    \end{enumerate}
+    则称 $H$ 为 $(H_\alpha)_{\alpha}$ 的正交直和，记为 $H=\bigoplus_{\alpha} H_\alpha$。
+    其中
+    \[
+      \sum_{\alpha} H_\alpha\triangleq \left\{\sum_{k=1}^n x_{\alpha_k}: n\in\mathbb{N}^*,\ x_{\alpha_k}\in H_{\alpha_k}\right\}.
+    \]
+  \end{definition}
+
+  \begin{definition}
+    设 $A$ 为 $*$ 代数，$H$ 为 $A$ 模，$H_1,H_2$ 为闭子模。
+    若 $H=H_1\oplus H_2$（Hilbert 空间正交直和），则称 $H$ 为 $H_1$ 与 $H_2$ 的 $A$ 模直和。
+  \end{definition}
+
+  \begin{proposition}\label{prop:perp-submod}
+    若 $H$ 为 $A$ 模，$M$ 为闭子模，则 $M^{\perp}$ 亦为闭子模。
+  \end{proposition}
+
+  \begin{proof}
+    取 $x\in M^{\perp}$。任取 $y\in M$，则由 $M$ 为子模知 $a^*y\in M$。
+    因而
+    \begin{equation*}
+      \langle ax,y\rangle=\langle x,a^*y\rangle=0.
+    \end{equation*}
+    故 $ax\in M^{\perp}$。又 $M^{\perp}$ 为闭线性子空间，故为闭子模。
+  \end{proof}
+
+  \begin{definition}
+    若 $H$ 为 $A$ 模，称 $H$ 为循环模，若存在 $x\in H$ 使得 $H$ 为包含 $x$ 的最小闭子模。
+  \end{definition}
+
+  \begin{remark}
+    设 $H$ 为 $A$ 模，$\Omega\subset H$。
+    令 $[\Omega]$ 为所有包含 $\Omega$ 的闭子模的交，则 $[\Omega]$ 为包含 $\Omega$ 的最小闭子模。
+  \end{remark}
+
+  \begin{exercise}\label{exer:cyclic-decomp}
+    设 $H$ 为 $A$ 模，证明 $H$ 可以表示为一族循环子模的正交直和。
+    \begin{proof}
+      设 $\mathcal{F}$ 为所有满足下述条件的集合族 $\{H_\alpha\}_{\alpha\in\Lambda}$ 的全体：
+      
+      \begin{enumerate}
+        \item 每个 $H_\alpha$ 都是 $H$ 的循环闭子模；
+        \item $\alpha\ne\beta$ 时 $H_\alpha\perp H_\beta$。
+      \end{enumerate}
+      以包含关系作为偏序。
+      若 $\mathcal{C}\subset\mathcal{F}$ 为一条链，令 $\mathcal{U}=\bigcup_{\{H_\alpha\}\in\mathcal{C}}\{H_\alpha\}$。
+      因为 $\mathcal{C}$ 为链，任取 $\mathcal{U}$ 中两个子模总同属于某个链中的元素，故仍两两正交，且均为循环闭子模。
+      因此 $\mathcal{U}\in\mathcal{F}$，从而 $\mathcal{C}$ 有上界。
+      由 Zorn 引理，存在极大元 $\{H_\alpha\}_{\alpha\in\Lambda}\in\mathcal{F}$。
+
+      令
+      \[
+        M\triangleq \overline{\sum_{\alpha\in\Lambda} H_\alpha}.
+      \]
+      则 $M$ 为闭线性子空间，并且对任意 $a\in A$，由于每个 $H_\alpha$ 为子模，故 $a\bigl(\sum H_\alpha\bigr)\subset\sum H_\alpha$，从而 $aM\subset M$。
+      因此 $M$ 为闭子模。
+      由命题~\ref{prop:perp-submod} 知 $M^{\perp}$ 亦为闭子模。
+
+      若 $M^{\perp}\ne\{0\}$，取 $0\ne x\in M^{\perp}$。
+      由 $M^{\perp}$ 为闭子模且 $x\in M^{\perp}$，由 $[\Omega]$ 的最小性知 $[\{x\}]\subset M^{\perp}$。
+      于是 $[\{x\}]$ 为循环闭子模，且对任意 $\alpha$ 有 $[\{x\}]\perp H_\alpha$。
+      从而 $\{H_\alpha\}_{\alpha\in\Lambda}\cup\{[\{x\}]\}$ 仍属于 $\mathcal{F}$，与极大性矛盾。
+      故 $M^{\perp}=\{0\}$，从而 $M=H$。
+
+      综上，$H=\overline{\sum_{\alpha\in\Lambda} H_\alpha}$ 且 $H_\alpha$ 两两正交，因此按正交直和的定义有
+      \[
+        H=\bigoplus_{\alpha\in\Lambda} H_\alpha,
+      \]
+      即 $H$ 可表示为一族循环子模的正交直和。
+    \end{proof}
+  \end{exercise}
+
+\subsection{单 $*$-同态保范}
+
+\begin{theorem}
+  若 $A\xrightarrow{\varphi}B$ 为单 $*$-同态，其中 $A,B$ 为 $C^{*}$ 代数，则 $\varphi$ 保范。
+\end{theorem}
+
+\begin{proof}
+  设 $\widetilde{A},\widetilde{B}$ 分别为 $A,B$ 的单位化，则存在含幺 $*$-同态 $\widetilde{\varphi}:\widetilde{A}\to\widetilde{B}$ 使得下图交换：
+  \[
+    \begin{tikzcd}
+      \widetilde{A} \arrow[r, "\widetilde{\varphi}"] & \widetilde{B} \\
+      A \arrow[u, hook] \arrow[r, "\varphi"'] & B \arrow[u, hook]
+    \end{tikzcd}
+  \]
+  由 $\widetilde{B}=B\oplus\mathbb{C}1$ 可知：若 $\widetilde{\varphi}(a+\lambda 1)=0$，则 $\varphi(a)+\lambda 1=0$，从而 $\varphi(a)=0$ 且 $\lambda=0$；由 $\varphi$ 单知 $a=0$，故 $\widetilde{\varphi}$ 亦为单同态。
+  因此只需证明含幺情形：对任意含幺 $C^{*}$ 代数 $A,B$，若 $\varphi:A\to B$ 为单的保幺 $*$-同态，则 $\varphi$ 保范。
+
+  任取 $a\in A$，由 $C^{*}$ 恒等式有
+  \[
+    \|\varphi(a)\|^{2}=\|\varphi(a)^{*}\varphi(a)\|=\|\varphi(a^{*}a)\|.
+  \]
+  因此只需对任意自伴元 $x\in A$ 证明 $\|\varphi(x)\|=\|x\|$。
+
+  考虑交换的含幺 $C^{*}$ 子代数 $C^{*}(1,x)$，则 $\varphi\bigl(C^{*}(1,x)\bigr)\subset C^{*}(1,\varphi(x))$，从而得到限制同态
+  \[
+    C^{*}(1,x)\xrightarrow{\ \varphi\ \mid\ } C^{*}(1,\varphi(x)).
+  \]
+  设 $X=\sigma(x)$，$Y=\sigma(\varphi(x))$，则由 Gelfand 变换有 $*$-同构 $C^{*}(1,x)\cong C(X)$、$C^{*}(1,\varphi(x))\cong C(Y)$，并存在连续映射 $f:Y\to X$ 使得下图交换：
+  \[
+    \begin{tikzcd}
+      C^{*}(1,x) \arrow[r, "\varphi\mid"] \arrow[d, "\cong"'] & C^{*}(1,\varphi(x)) \arrow[d, "\cong"] \\
+      C(X) \arrow[r, "f^{*}"'] & C(Y)
+    \end{tikzcd}
+  \]
+  其中 $f^{*}(g)=g\circ f$。也即对任意 $g\in C(X)$ 有交换图
+  \[
+    \begin{tikzcd}
+      Y \arrow[r, "f"] \arrow[dr, "g\circ f"'] & X \arrow[d, "g"] \\
+      & \mathbb{C}
+    \end{tikzcd}
+  \]
+
+  下面证明 $f$ 为满射。由 $\varphi$ 单知 $f^{*}$ 单。
+  若 $f$ 非满，则可取 $z\in X\setminus f(Y)$。
+  因为 $f(Y)$ 在 $X$ 中为紧从而闭，由 Urysohn 引理可取 $g\in C(X)$ 使得 $g\mid_{f(Y)}\equiv 0$ 且 $g(z)=1$。
+  于是 $f^{*}(g)=g\circ f\equiv 0$，与 $f^{*}$ 单矛盾。
+  故 $f$ 为满射。
+
+  因此对任意 $g\in C(X)$，
+  \[
+    \|f^{*}(g)\|=\sup_{y\in Y}|g(f(y))|=\sup_{x\in X}|g(x)|=\|g\|,
+  \]
+  从而 $f^{*}$ 保范，进而 $\varphi\mid_{C^{*}(1,x)}$ 保范，特别地 $\|\varphi(x)\|=\|x\|$。
+  由此对任意 $a\in A$ 有 $\|\varphi(a)\|^{2}=\|\varphi(a^{*}a)\|=\|a^{*}a\|=\|a\|^{2}$，故 $\varphi$ 保范。
+\end{proof}
+
+\subsection{非退化模}
+
+\begin{definition}
+  设 $A$ 为 $*$-代数，$H$ 为 Hilbert 空间且 $H$ 为 $A$-模。
+  称 $H$ 为 \emph{非退化} 的，若 $\overline{\operatorname{span}}(AH)=H$。
+\end{definition}
+
+\begin{remark}
+  对任意 $\Omega\subset H$，$\overline{\operatorname{span}}(A\Omega)$ 为闭子模，但一般不必包含 $\Omega$。
+  若 $\Omega\subset\overline{\operatorname{span}}(A\Omega)$，则 $\overline{\operatorname{span}}(A\Omega)$ 为 $\Omega$ 生成的闭子模：若 $M$ 为含 $\Omega$ 的闭子模，则 $A\Omega\subset M$，从而 $\overline{\operatorname{span}}(A\Omega)\subset M$。
+\end{remark}
+
+\begin{proposition}\label{prop:H1perp-zero}
+  设 $H_{1}\triangleq\overline{\operatorname{span}}(AH)$，则对任意 $a\in A$ 与任意 $x\in H_{1}^{\perp}$，有 $ax=0$。
+\end{proposition}
+
+\begin{proof}
+  任取 $a\in A$、$x\in H_{1}^{\perp}$。
+  因为 $a^{*}ax\in AH\subset H_{1}$，故 $\langle x,a^{*}ax\rangle=0$。
+  从而
+  \[
+    \|ax\|^{2}=\langle ax,ax\rangle=\langle x,a^{*}ax\rangle=0,
+  \]
+  即 $ax=0$。
+\end{proof}
+
+\begin{proposition}
+  令 $H_{1}=\overline{\operatorname{span}}(AH)$，则 $H_{1}$ 为非退化的 $A$-子模。
+\end{proposition}
+
+\begin{proof}
+  设 $H_{2}=H_{1}^{\perp}$，则 $H=H_{1}\oplus H_{2}$。
+  由命题~\ref{prop:H1perp-zero} 知 $AH_{2}=\{0\}$。
+  因此对任意 $a\in A$、$\xi\in H$，写 $\xi=\xi_{1}+\xi_{2}$（$\xi_{1}\in H_{1},\ \xi_{2}\in H_{2}$），则
+  \[
+    a\xi=a\xi_{1}+a\xi_{2}=a\xi_{1}\in AH_{1}.
+  \]
+  故 $AH\subset AH_{1}$，从而
+  \[
+    H_{1}=\overline{\operatorname{span}}(AH)\subset\overline{\operatorname{span}}(AH_{1})\subset H_{1},
+  \]
+  即 $\overline{\operatorname{span}}(AH_{1})=H_{1}$，故 $H_{1}$ 非退化。
+\end{proof}
+
+\begin{proposition}\label{prop:nondegen-equiv}
+  设 $H$ 为 $A$-模，则 $H$ 非退化当且仅当对任意 $x\in H$，若 $Ax=\{0\}$ 则 $x=0$。
+\end{proposition}
+
+\begin{proof}
+  设 $M\triangleq\{x\in H:Ax=\{0\}\}$。
+  显然 $M$ 为子模。
+  若 $x_{n}\in M$ 且 $x_{n}\to x$，则对任意 $a\in A$ 有 $ax_{n}\to ax$，但 $ax_{n}=0$，故 $ax=0$，从而 $x\in M$，即 $M$ 为闭子模。
+
+  先证 $(\Rightarrow)$。
+  由 $x\in M$ 得 $a^{*}x=0$（任意 $a\in A$），因此对任意 $a\in A$、$\xi\in H$ 有
+  \[
+    \langle a\xi,x\rangle=\langle \xi,a^{*}x\rangle=0,
+  \]
+  即 $AH\subset M^{\perp}$，从而 $\overline{\operatorname{span}}(AH)\subset M^{\perp}$。
+  若 $H$ 非退化，则 $H=\overline{\operatorname{span}}(AH)\subset M^{\perp}$，故 $M\subset H^{\perp}=\{0\}$，即 $M=\{0\}$。
+
+  再证 $(\Leftarrow)$。
+  令 $H_{1}\triangleq\overline{\operatorname{span}}(AH)$，并取正交分解 $H=H_{1}\oplus H_{1}^{\perp}$。
+  由命题~\ref{prop:H1perp-zero} 知对任意 $a\in A$ 与任意 $x\in H_{1}^{\perp}$ 有 $ax=0$，故 $H_{1}^{\perp}\subset M$。
+  若假设对任意 $x$ 有 $Ax=\{0\}\Rightarrow x=0$，则 $M=\{0\}$，从而 $H_{1}^{\perp}=\{0\}$，即 $H=H_{1}=\overline{\operatorname{span}}(AH)$，故 $H$ 非退化。
+\end{proof}
+
+\begin{corollary}\label{cor:submod-nondegen}
+  若 $H$ 为非退化 $A$-模，$M$ 为 $H$ 的闭子模，则 $M$ 为非退化 $A$-模。
+\end{corollary}
+
+\begin{proof}
+  若 $x\in M$ 且 $Ax=\{0\}$，则在 $H$ 中亦有 $Ax=\{0\}$，由命题~\ref{prop:nondegen-equiv} 知 $x=0$。
+\end{proof}
+
+\begin{theorem}
+  若 $A\curvearrowright H$ 为非退化 $A$-模，则 $H$ 可表示为一族非退化循环子模的正交直和。
+\end{theorem}
+
+\begin{proof}
+  由习题~\ref{exer:cyclic-decomp} 知 $H$ 可表示为一族循环闭子模的正交直和。
+  由推论~\ref{cor:submod-nondegen}，每个直和分量作为 $H$ 的闭子模均为非退化。
+\end{proof}
+
+\subsection{循环向量}
+
+\begin{theorem}
+  设 $H$ 为 $A$-模，$x\in H$，则下列条件等价：
+  \begin{enumerate}
+    \item $H$ 为非退化循环模且 $x$ 为循环向量；
+    \item $H=\overline{Ax}$.
+  \end{enumerate}
+\end{theorem}
+
+\begin{remark}
+  集合 $Ax=\{ax:a\in A\}$ 为线性子空间，因此 $\overline{Ax}=\overline{\operatorname{span}}(Ax)$。
+\end{remark}
+
+\begin{proof}
+  $(2)\Rightarrow(1)$。
+  由 $H=\overline{Ax}$ 可知 $H$ 为包含 $x$ 的最小闭子模，故 $H$ 为循环模且 $x$ 为循环向量。
+  又因为 $AH\supset A(Ax)\subset Ax$，从而
+  \[
+    \overline{\operatorname{span}}(AH)\supset\overline{\operatorname{span}}(Ax)=\overline{Ax}=H,
+  \]
+  故 $H$ 非退化。
+
+  $(1)\Rightarrow(2)$。
+  设 $H_{1}\triangleq\overline{Ax}$。
+  只需证明 $AH\subset H_{1}$。
+  定义
+  \[
+    M\triangleq\{y\in H:Ay\subset H_{1}\}.
+  \]
+  易见 $M$ 为闭子模，且由于 $Ax\subset H_{1}$，有 $x\in M$。
+  由 $x$ 为循环向量知 $H$ 是包含 $x$ 的最小闭子模，故 $M=H$，于是 $AH\subset H_{1}$。
+  因此
+  \[
+    H=\overline{\operatorname{span}}(AH)\subset H_{1}=\overline{Ax}\subset H,
+  \]
+  从而 $H=\overline{Ax}$。
+\end{proof}
+
+\subsection{正线性映射与正泛函}
+
+\begin{definition}
+  设 $A,B$ 为 $C^{*}$ 代数，$f:A\to B$ 为线性映射。
+  若对任意 $a\in A^{+}$ 有 $f(a)\in B^{+}$，则称 $f$ 为一个\emph{正线性映射}。
+\end{definition}
+
+\begin{proposition}\label{prop:pos-map-sa}
+  若 $f:A\to B$ 为正线性映射，则 $f(A_{\mathrm{sa}})\subset B_{\mathrm{sa}}$。
+  并且 $f$ 保序：若 $x\le y$（即 $y-x\in A^{+}$），则 $f(x)\le f(y)$。
+\end{proposition}
+
+\begin{proof}
+  任取 $x\in A_{\mathrm{sa}}$。
+  由连续函数演算的正负部分解可写 $x=x^{+}-x^{-}$，其中 $x^{\pm}\in A^{+}$。
+  因为 $f$ 为正映射，$f(x^{\pm})\in B^{+}\subset B_{\mathrm{sa}}$，从而 $f(x)=f(x^{+})-f(x^{-})\in B_{\mathrm{sa}}$。
+  若 $x\le y$，则 $y-x\in A^{+}$，故 $f(y)-f(x)=f(y-x)\in B^{+}$，即 $f(x)\le f(y)$。
+\end{proof}
+
+\begin{theorem}
+  若 $f:A\to B$ 为正线性映射，则 $f$ 有界。
+\end{theorem}
+
+\begin{proof}
+  只需证明 $f$ 在 $\{a\in A^{+}:\|a\|\le 1\}$ 上有界。
+  反设不然，则对每个 $n\in\mathbb{N}$ 可取 $a_{n}\in A^{+}$ 使得 $\|a_{n}\|\le 1$ 且 $\|f(a_{n})\|>n\,2^{n}$。
+  令
+  \[
+    a\triangleq\sum_{n=1}^{\infty}\frac{a_{n}}{2^{n}},
+  \]
+  则级数在 $A$ 中绝对收敛，且每个部分和均为正元，从而 $a\in A^{+}$ 且 $\|a\|\le 1$。
+  对任意固定的 $n$，有
+  \[
+    a-\frac{a_{n}}{2^{n}}=\sum_{k\ne n}\frac{a_{k}}{2^{k}}\in A^{+},
+  \]
+  由 $f$ 保序知 $0\le f\bigl(\frac{a_{n}}{2^{n}}\bigr)\le f(a)$。
+  由正元范数的单调性得
+  \[
+    \|f(a)\|\ge\Bigl\|f\Bigl(\frac{a_{n}}{2^{n}}\Bigr)\Bigr\|=\frac{\|f(a_{n})\|}{2^{n}}>n.
+  \]
+  这对一切 $n$ 成立，矛盾。
+
+  因此存在常数 $M>0$ 使得对任意 $a\in A^{+}$ 且 $\|a\|\le 1$ 有 $\|f(a)\|\le M$。
+  若 $x\in A_{\mathrm{sa}}$ 且 $\|x\|\le 1$，写 $x=x^{+}-x^{-}$，其中 $x^{\pm}\in A^{+}$，并且 $\|x^{\pm}\|\le 1$。
+  从而
+  \[
+    \|f(x)\|\le \|f(x^{+})\|+\|f(x^{-})\|\le 2M.
+  \]
+  对一般的 $a\in A$，写 $a=b+ic$，其中 $b,c\in A_{\mathrm{sa}}$ 且 $\|b\|,\|c\|\le\|a\|$。
+  若 $a\ne 0$，则
+  \[
+    \|f(a)\|\le \|f(b)\|+\|f(c)\|=\|a\|\Bigl(\Bigl\|f\Bigl(\frac{b}{\|a\|}\Bigr)\Bigr\|+\Bigl\|f\Bigl(\frac{c}{\|a\|}\Bigr)\Bigr\|\Bigr)\le 4M\,\|a\|.
+  \]
+  故 $f$ 有界。
+\end{proof}
+
+\begin{proposition}\label{prop:pos-map-star}
+  若 $f:A\to B$ 为正线性映射，则对任意 $a\in A$ 有 $f(a^{*})=f(a)^{*}$。
+\end{proposition}
+
+\begin{proof}
+  任取 $a\in A$，写 $a=b+ic$，其中 $b,c\in A_{\mathrm{sa}}$。
+  由命题~\ref{prop:pos-map-sa} 知 $f(b),f(c)\in B_{\mathrm{sa}}$，故
+  \[
+    f(a^{*})=f(b-ic)=f(b)-if(c)=\bigl(f(b)+if(c)\bigr)^{*}=f(a)^{*}.
+  \]
+\end{proof}
+
+\begin{definition}
+  设 $\tau:A\to\mathbb{C}$ 为正泛函。
+  定义
+  \[
+    \langle a,b\rangle_{\tau}\triangleq\tau(b^{*}a),\qquad a,b\in A.
+  \]
+\end{definition}
+
+\begin{proposition}
+  设 $\tau$ 为正泛函，则对任意 $a,b\in A$ 有
+  \[
+    |\tau(b^{*}a)|^{2}\le \tau(a^{*}a)\,\tau(b^{*}b).
+  \]
+\end{proposition}
+
+\begin{proof}
+  若 $\tau(b^{*}b)=0$，则对任意 $t\in\mathbb{R}$ 有
+  \[
+    0\le \tau\bigl((a+tb)^{*}(a+tb)\bigr)=\tau(a^{*}a)+t\,\tau(b^{*}a)+t\,\tau(a^{*}b),
+  \]
+  从而 $\tau(b^{*}a)+\tau(a^{*}b)=0$。
+  同理取 $t\in\mathbb{R}$ 代入 $a+itb$ 得 $\tau(b^{*}a)-\tau(a^{*}b)=0$。
+  故 $\tau(b^{*}a)=0$，不等式成立。
+
+  现设 $\tau(b^{*}b)>0$。
+  对任意 $\lambda\in\mathbb{C}$，由 $\tau$ 为正泛函有
+  \[
+    0\le \tau\bigl((a+\lambda b)^{*}(a+\lambda b)\bigr)
+    =\tau(a^{*}a)+\lambda\,\tau(b^{*}a)+\overline{\lambda}\,\tau(a^{*}b)+|\lambda|^{2}\tau(b^{*}b).
+  \]
+  由命题~\ref{prop:pos-map-star}（取 $f=\tau$）知 $\tau(a^{*}b)=\overline{\tau(b^{*}a)}$。
+  取 $\lambda=-\tau(b^{*}a)/\tau(b^{*}b)$，得到
+  \[
+    0\le \tau(a^{*}a)-\frac{|\tau(b^{*}a)|^{2}}{\tau(b^{*}b)},
+  \]
+  即 $|\tau(b^{*}a)|^{2}\le \tau(a^{*}a)\,\tau(b^{*}b)$。
+\end{proof}
+
+\subsection{GNS 构造}
+
+\begin{definition}
+  设 $\tau$ 为 $A$ 上的正泛函。
+  定义
+  \[
+    N_{\tau}\triangleq\{a\in A:\tau(a^{*}a)=0\}.
+  \]
+  令 $A/N_{\tau}$ 为商线性空间，对 $[a],[b]\in A/N_{\tau}$ 定义
+  \[
+    \langle[a],[b]\rangle\triangleq\langle a,b\rangle_{\tau}=\tau(b^{*}a).
+  \]
+  记 $H_{\tau}$ 为 $A/N_{\tau}$ 关于此内积的完备化。
+\end{definition}
+
+\begin{proposition}
+  上述内积在 $A/N_{\tau}$ 上良定义。
+\end{proposition}
+
+\begin{proof}
+  由 Cauchy--Schwarz 不等式可知：若 $a\in N_{\tau}$，则对任意 $b\in A$ 有
+  \[
+    |\tau(b^{*}a)|^{2}\le \tau(a^{*}a)\,\tau(b^{*}b)=0,
+  \]
+  从而 $\tau(b^{*}a)=0$。
+  因此若 $[a]=[a']$ 且 $[b]=[b']$，即 $a-a'\in N_{\tau}$、$b-b'\in N_{\tau}$，则
+  \[
+    \tau(b^{*}a)=\tau(b'^{*}a'),
+  \]
+  内积良定义。
+\end{proof}
+
+\begin{definition}
+  对任意 $a\in A$，定义线性算子
+  \[
+    L_{a}:A/N_{\tau}\to A/N_{\tau},\qquad L_{a}([x])=[ax].
+  \]
+\end{definition}
+
+\begin{proposition}
+  对任意 $a\in A$，算子 $L_{a}$ 良定义。
+\end{proposition}
+
+\begin{proof}
+  只需验证良定义：若 $x\in N_{\tau}$，则 $ax\in N_{\tau}$。
+  由 Cauchy--Schwarz 不等式有
+  \[
+    \tau(x^{*}a^{*}ax)\le \|a^{*}a\|\,\tau(x^{*}x).
+  \]
+  若 $x\in N_{\tau}$，则 $\tau(x^{*}x)=0$，故 $\tau(x^{*}a^{*}ax)=0$，即 $ax\in N_{\tau}$。
+\end{proof}
+
+\begin{proposition}
+  对任意 $a\in A$，算子 $L_{a}$ 有界且 $\|L_{a}\|\le\|a\|$。
+\end{proposition}
+
+\begin{proof}
+  任取 $[b]\in A/N_{\tau}$，则
+  \[
+    \|L_{a}([b])\|^{2}=\|[ab]\|^{2}=\tau((ab)^{*}(ab))=\tau(b^{*}a^{*}ab)
+    \le \|a^{*}a\|\,\tau(b^{*}b)=\|a\|^{2}\,\|[b]\|^{2}.
+  \]
+  因此 $\|L_{a}\|\le\|a\|$。
+\end{proof}
+
+\begin{definition}
+  由 $L_{a}$ 有界可唯一延拓为 $\widehat{L}_{a}\in B(H_{\tau})$。
+  定义
+  \[
+    \pi_{\tau}:A\to B(H_{\tau}),\qquad \pi_{\tau}(a)\triangleq\widehat{L}_{a},
+  \]
+  称 $\pi_{\tau}$ 为由 $\tau$ 诱导的 GNS 表示。
+\end{definition}
+
+\begin{remark}
+  有交换图
+  \[
+    \begin{tikzcd}
+      A/N_{\tau} \arrow[r, "L_{a}"] \arrow[d, hook] & A/N_{\tau} \arrow[d, hook] \\
+      H_{\tau} \arrow[r, "\pi_{\tau}(a)"'] & H_{\tau}
+    \end{tikzcd}
+  \]
+  以及表示映射
+  \[
+    \begin{tikzcd}
+      A \arrow[r, "\pi_{\tau}"] & B(H_{\tau}) \\
+      a \arrow[r, mapsto] & \pi_{\tau}(a)
+    \end{tikzcd}
+  \]
+  并且 $\|\pi_{\tau}(a)\|\le\|a\|$。
+\end{remark}
+
+\begin{proposition}
+  映射 $\pi_{\tau}:A\to B(H_{\tau})$ 为 $*$-表示，即
+  \[
+    \pi_{\tau}(ab)=\pi_{\tau}(a)\pi_{\tau}(b),\qquad \pi_{\tau}(a^{*})=\pi_{\tau}(a)^{*}.
+  \]
+\end{proposition}
+
+\begin{proof}
+  乘法保持性由 $L_{ab}=L_{a}L_{b}$ 直接得出。
+  对任意 $[x],[y]\in A/N_{\tau}$，有
+  \[
+    \langle L_{a}([x]),[y]\rangle=\tau(y^{*}ax)=\tau((a^{*}y)^{*}x)=\langle[x],L_{a^{*}}([y])\rangle,
+  \]
+  故 $L_{a}^{*}=L_{a^{*}}$。延拓后得 $\pi_{\tau}(a)^{*}=\pi_{\tau}(a^{*})$。
+\end{proof}
+
+\begin{theorem}[Gelfand--Naimark--Segal]\label{thm:GNS}
+  设 $A$ 为 $C^{*}$ 代数。
+  全体正泛函诱导的 GNS 表示可分离 $A$ 中的点：对任意 $0\ne a\in A$，存在正泛函 $\tau$ 使得 $\pi_{\tau}(a)\ne 0$。
+\end{theorem}
+
+\begin{proof}
+  取 $b=a^{*}a\in A^{+}$ 且 $b\ne 0$。
+  由正锥的性质可取正泛函 $\tau$ 使 $\tau(b)>0$。
+  则在 $A/N_{\tau}$ 中 $\|[a]\|^{2}=\tau(a^{*}a)=\tau(b)>0$，故 $[a]\ne 0$。
+  于是 $\pi_{\tau}(a)([1])=[a]\ne 0$（若 $A$ 非含幺，可在单位化中理解该向量），从而 $\pi_{\tau}(a)\ne 0$。
+\end{proof}
+
+\begin{corollary}
+  令 $\mathcal{T}$ 为所有正泛函的集合，并定义
+  \[
+    \Phi:A\to B\Bigl(\bigoplus_{\tau\in\mathcal{T}} H_{\tau}\Bigr),\qquad
+    \Phi(a)\triangleq\bigoplus_{\tau\in\mathcal{T}}\pi_{\tau}(a).
+  \]
+  则 $\Phi$ 为单 $*$-同态。
+\end{corollary}
+
+\begin{remark}
+  对任意 $(\xi_{\tau})_{\tau}\in\bigoplus_{\tau\in\mathcal{T}} H_{\tau}$，有
+  \[
+    \bigl(\Phi(a)(\xi_{\tau})_{\tau}\bigr)_{\tau}=\bigl(\pi_{\tau}(a)\xi_{\tau}\bigr)_{\tau}.
+  \]
+\end{remark}
+
+\begin{proof}
+  由 $\pi_{\tau}$ 为 $*$-表示知 $\Phi$ 为 $*$-同态。
+  若 $a\ne 0$，由定理~\ref{thm:GNS} 存在 $\tau$ 使 $\pi_{\tau}(a)\ne 0$，从而 $\Phi(a)\ne 0$，故 $\Phi$ 单。
 \end{proof}
 
 \end{document}

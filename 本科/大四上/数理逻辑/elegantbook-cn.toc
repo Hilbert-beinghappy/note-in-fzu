@@ -1,0 +1,39 @@
+\contentsline {chapter}{\numberline {1}一阶语言与结构}{1}{chapter.1}%
+\contentsline {section}{\numberline {1.1}一阶语言}{1}{section.1.1}%
+\contentsline {section}{\numberline {1.2}结构（解释）}{1}{section.1.2}%
+\contentsline {section}{\numberline {1.3}例子}{1}{section.1.3}%
+\contentsline {chapter}{\numberline {2}词、项与公式}{3}{chapter.2}%
+\contentsline {section}{\numberline {2.1}词与项}{3}{section.2.1}%
+\contentsline {section}{\numberline {2.2}公式}{4}{section.2.2}%
+\contentsline {chapter}{\numberline {3}一阶语义：满足关系}{7}{chapter.3}%
+\contentsline {section}{\numberline {3.1}满足关系}{7}{section.3.1}%
+\contentsline {chapter}{\numberline {4}项代数、同态与商结构}{10}{chapter.4}%
+\contentsline {section}{\numberline {4.1}项代数与生成子代数}{10}{section.4.1}%
+\contentsline {section}{\numberline {4.2}同态与商结构}{14}{section.4.2}%
+\contentsline {chapter}{\numberline {5}超滤子、超积与超幂}{18}{chapter.5}%
+\contentsline {section}{\numberline {5.1}滤子}{18}{section.5.1}%
+\contentsline {subsection}{\numberline {5.1.1}超滤子}{19}{subsection.5.1.1}%
+\contentsline {subsection}{\numberline {5.1.2}超积与超幂}{20}{subsection.5.1.2}%
+\contentsline {chapter}{\numberline {6}紧致性定理与应用}{28}{chapter.6}%
+\contentsline {section}{\numberline {6.1}可满足性与紧致性}{28}{section.6.1}%
+\contentsline {section}{\numberline {6.2}自由变量与语句}{29}{section.6.2}%
+\contentsline {section}{\numberline {6.3}初等等价与初等子结构}{31}{section.6.3}%
+\contentsline {section}{\numberline {6.4}理论与模型}{33}{section.6.4}%
+\contentsline {section}{\numberline {6.5}Tarski--Vaught 判别法}{36}{section.6.5}%
+\contentsline {chapter}{\numberline {7}Löwenheim--Skolem 定理}{38}{chapter.7}%
+\contentsline {section}{\numberline {7.1}Löwenheim--Skolem 定理}{38}{section.7.1}%
+\contentsline {section}{\numberline {7.2}子语言与结构约化}{40}{section.7.2}%
+\contentsline {section}{\numberline {7.3}项与公式的代换}{43}{section.7.3}%
+\contentsline {section}{\numberline {7.4}参数扩张与完全图示}{47}{section.7.4}%
+\contentsline {section}{\numberline {7.5}代数闭域的模型论}{50}{section.7.5}%
+\contentsline {chapter}{\numberline {8}初等嵌入与量词消去}{54}{chapter.8}%
+\contentsline {section}{\numberline {8.1}初等嵌入与量词消去}{54}{section.8.1}%
+\contentsline {section}{\numberline {8.2}量词消去的判别准则}{54}{section.8.2}%
+\contentsline {chapter}{\numberline {9}代数闭域的量词消去}{57}{chapter.9}%
+\contentsline {section}{\numberline {9.1}代数闭域的量词消去}{57}{section.9.1}%
+\contentsline {section}{\numberline {9.2}Hilbert 零点定理}{58}{section.9.2}%
+\contentsline {section}{\numberline {9.3}无量词公式的标准形}{59}{section.9.3}%
+\contentsline {chapter}{\numberline {10}生成子结构与类型}{62}{chapter.10}%
+\contentsline {section}{\numberline {10.1}生成子结构与类型}{62}{section.10.1}%
+\contentsline {section}{\numberline {10.2}类型与完全型}{64}{section.10.2}%
+\contentsline {section}{\numberline {10.3}Stone 空间}{65}{section.10.3}%

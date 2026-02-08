@@ -1,0 +1,6055 @@
+\documentclass[lang=cn,a4paper,newtx]{elegantbook}
+
+\title{抽象代数}
+
+
+\author{h}
+
+\date{April 9, 2022}
+
+
+\setcounter{tocdepth}{3}
+
+\logo{logo-blue.jpg}
+\cover{cover.jpg}
+
+% 本文档命令
+\usepackage{array}
+\usepackage{tikz-cd}
+\newcommand{\ccr}[1]{\makecell{{\color{#1}\rule{1cm}{1cm}}}}
+
+% 修改标题页的橙色带
+% \definecolor{customcolor}{RGB}{32,178,170}
+% \colorlet{coverlinecolor}{customcolor}
+
+\begin{document}
+
+\maketitle
+\frontmatter
+
+\tableofcontents
+
+\mainmatter
+
+\chapter{代数系统基础}
+
+\section{运算与代数系统}
+
+\begin{definition}[$n$ 元运算]
+设 $X$ 为集合，$n\in\mathbb N^{*}=\mathbb N\setminus\{0\}$。
+若 $\sigma:X^{n}\to X$ 为映射，则称 $\sigma$ 为 $X$ 上的一个 $n$ 元运算（或 $n$ 元函数）。
+\end{definition}
+
+\begin{example}
+\leavevmode
+\begin{enumerate}
+  \item $\mathbb R\to\mathbb R,\ x\mapsto -x$ 是 $\mathbb R$ 上的一元运算；
+  \item $\mathbb R\times\mathbb R\to\mathbb R,\ (x,y)\mapsto x+y$ 是 $\mathbb R$ 上的二元运算；
+  \item $\mathbb Z\times\mathbb Z\times\mathbb Z\to\mathbb Z,\ (x,y,z)\mapsto xy+z$ 是 $\mathbb Z$ 上的三元运算；
+  \item $M_n(\mathbb R)\times M_n(\mathbb R)\to M_n(\mathbb R),\ (A,B)\mapsto AB$ 是矩阵集合上的二元运算。
+\end{enumerate}
+\end{example}
+
+\begin{definition}[作用]
+设 $A,X$ 为集合。若给定映射 $\sigma:A\times X\to X$，并约定记号 $\sigma(a,x)=a\cdot x$，则称 $\sigma$ 给出了 $A$ 在 $X$ 上的一个（左）作用，并称 $X$ 为一个 $A$-集合。
+\end{definition}
+
+\begin{example}
+实数域 $\mathbb R$ 在向量空间 $\mathbb R^n$ 上的数乘给出一个作用：
+\[
+  \mathbb R\times\mathbb R^n\to\mathbb R^n,\qquad (r,v)\mapsto rv.
+\]
+\end{example}
+
+\noindent 由作用的定义，给定 $\sigma:A\times X\to X$ 后，对每个 $a\in A$ 都得到一个 $X$ 上的一元运算
+\[
+  \ell_a:X\to X,\qquad x\mapsto a\cdot x=\sigma(a,x).
+\]
+因此，$A$ 在 $X$ 上的作用等价于一族以 $A$ 为指标的一元运算 $(\ell_a)_{a\in A}$；反之，若给定 $(\ell_a)_{a\in A}$，则可定义 $\sigma(a,x)=\ell_a(x)$ 以恢复原来的作用。
+
+\medskip
+\noindent 特别地，$\mathbb R^n$ 的数乘可看作一族一元运算 $(\ell_r)_{r\in\mathbb R}$，其中 $\ell_r(v)=rv$。因此向量空间也可视为一个带有二元运算 $+$、常元 $0$ 以及一族一元运算 $(\ell_r)_{r\in\mathbb R}$ 的结构。
+
+\medskip
+\begin{definition}[幂与函数集]
+设 $X,Y$ 为集合。记
+\[
+  Y^{X}=\{f\mid f:X\to Y\text{ 为映射 }\}.
+\]
+若 $I$ 为有限集合，则 $X^{I}$ 可理解为以 $I$ 为指标的 $X$-值族。特别地，当 $n\in\mathbb N^{*}$ 时，我们将 $n$ 视作集合 $\{0,1,\dots,n-1\}$，从而 $X^{n}=X^{\{0,1,\dots,n-1\}}$。
+\end{definition}
+
+\begin{definition}[代数系统]
+设 $\Lambda$ 为指标集，并为每个 $\alpha\in\Lambda$ 指定一个自然数 $n_{\alpha}\in\mathbb N^{*}$（称为 $\alpha$ 的元数）。若 $X$ 为非空集合，并且对每个 $\alpha\in\Lambda$ 给定一个 $n_{\alpha}$ 元运算
+\[
+  \sigma_{\alpha}:X^{n_{\alpha}}\to X,
+\]
+则称 $\bigl(X,(\sigma_{\alpha})_{\alpha\in\Lambda}\bigr)$ 为一个（$\Lambda$-型）代数系统（或代数结构）。
+\end{definition}
+
+\begin{definition}[型与同型]
+设 $\bigl(X,(\sigma_{\alpha})_{\alpha\in\Lambda}\bigr)$ 为代数系统。称族 $(n_{\alpha})_{\alpha\in\Lambda}$ 为其型（或签名）。
+若另一个代数系统 $\bigl(Y,(\tau_{\alpha})_{\alpha\in\Lambda}\bigr)$ 具有同一指标集 $\Lambda$ 且对应元数相同，则称它们同型。
+\end{definition}
+
+\begin{example}
+\leavevmode
+\begin{enumerate}
+  \item 若 $\Lambda=\{\cdot\}$ 且 $n_{\cdot}=2$，则半群 $(S,\cdot)$ 与群 $(G,\cdot)$ 同型（它们都只有一个二元运算符号 $\cdot$）；
+  \item 若 $\Lambda=\{\cdot\}$ 而另一结构取 $\Lambda'=\{+\}$，则 $(G,\cdot)$ 与 $(\mathbb R,+)$ 不同型（运算符号集合不同）；
+  \item 对向量空间 $\mathbb R^n$，可把其结构记为 $\bigl(\mathbb R^n,+,(\ell_r)_{r\in\mathbb R}\bigr)$，其中 $+$ 为二元运算，$\ell_r$ 为一元运算。此时可取 $\Lambda=\mathbb R\cup\{+\}$，并约定 $n_{+}=2$、$n_{r}=1$（$r\in\mathbb R$）。
+\end{enumerate}
+\end{example}
+
+\begin{definition}[交换图]
+设给定映射 $f:X\to Y$、$g:Y\to Z$、$h:X\to Z$。若满足 $g\circ f=h$，则称下图交换：
+\[
+\begin{tikzcd}
+X \arrow[r,"f"] \arrow[dr,"h"'] & Y \arrow[d,"g"] \\
+& Z
+\end{tikzcd}
+\]
+类似地，更一般的图形称为交换图，意为从同一出发点到同一终点的任意两条路径复合映射相同。
+\end{definition}
+
+\begin{definition}[同态与交换图]
+设 $\bigl(X,(\sigma_{\alpha})_{\alpha\in\Lambda}\bigr)$ 与 $\bigl(Y,(\tau_{\alpha})_{\alpha\in\Lambda}\bigr)$ 为同型的代数系统。映射 $f:X\to Y$ 称为它们之间的同态，若对任意 $\alpha\in\Lambda$，下图交换：
+\[
+\begin{tikzcd}
+X^{n_{\alpha}} \arrow[r,"\sigma_{\alpha}"] \arrow[d,"f^{n_{\alpha}}"'] & X \arrow[d,"f"] \\
+Y^{n_{\alpha}} \arrow[r,"\tau_{\alpha}"'] & Y
+\end{tikzcd}
+\]
+其中 $f^{n_{\alpha}}:X^{n_{\alpha}}\to Y^{n_{\alpha}}$ 由逐分量作用给出。
+等价地，对任意 $\alpha\in\Lambda$ 以及任意 $x_1,\dots,x_{n_{\alpha}}\in X$，有
+\[
+  f\bigl(\sigma_{\alpha}(x_1,\dots,x_{n_{\alpha}})\bigr)=\tau_{\alpha}\bigl(f(x_1),\dots,f(x_{n_{\alpha}})\bigr).
+\]
+\end{definition}
+
+\section{群、环与域}
+
+\begin{definition}[原群]
+设 $X$ 为非空集合，$\sigma:X\times X\to X$ 为二元运算。称 $(X,\sigma)$ 为一个原群，并记 $x\cdot y=\sigma(x,y)$。
+\end{definition}
+
+\begin{definition}[半群]
+若原群 $(X,\cdot)$ 满足结合律：对任意 $x,y,z\in X$，有
+\[
+  (x\cdot y)\cdot z=x\cdot (y\cdot z),
+\]
+则称 $(X,\cdot)$ 为半群。
+\end{definition}
+
+\begin{definition}[幺半群]
+若半群 $(X,\cdot)$ 中存在元素 $e\in X$ 使得对任意 $x\in X$，有
+\[
+  e\cdot x=x,\qquad x\cdot e=x,
+\]
+则称 $(X,\cdot)$ 为幺半群，元素 $e$ 称为单位元。
+\end{definition}
+
+\noindent 在幺半群中单位元唯一：若 $e_1,e_2$ 都是单位元，则 $e_1=e_1\cdot e_2=e_2$。
+
+\begin{definition}[群]
+若幺半群 $(X,\cdot)$ 中对每个 $x\in X$ 都存在 $y\in X$ 使得
+\[
+  x\cdot y=e,\qquad y\cdot x=e,
+\]
+则称 $(X,\cdot)$ 为群，并称这样的 $y$ 为 $x$ 的逆元，记为 $x^{-1}$。
+\end{definition}
+
+\noindent 在群中逆元唯一：若 $y_1,y_2$ 都满足 $x\cdot y_i=e$ 且 $y_i\cdot x=e$，则
+\[
+  y_1=y_1\cdot e=y_1\cdot (x\cdot y_2)=(y_1\cdot x)\cdot y_2=e\cdot y_2=y_2.
+\]
+
+\begin{example}
+矩阵乘法给出幺半群 $\bigl(M_n(\mathbb R),\cdot\bigr)$，其中单位元为单位矩阵 $I_n$。其可逆元素构成一般线性群
+\[
+  \mathrm{GL}_n(\mathbb R)=\{A\in M_n(\mathbb R)\mid A\text{ 可逆}\},
+\]
+并且 $\bigl(\mathrm{GL}_n(\mathbb R),\cdot\bigr)$ 是一个群。
+\end{example}
+
+\begin{proposition}
+设 $(X,\cdot)$ 为幺半群，记 $X^{\times}=\{x\in X\mid x\text{ 可逆}\}$。则 $X^{\times}$ 对乘法封闭，并且对任意 $x,y\in X^{\times}$ 有
+\[
+  (x\cdot y)^{-1}=y^{-1}\cdot x^{-1}.
+\]
+因此 $\bigl(X^{\times},\cdot\bigr)$ 在乘法下构成一个群。
+\end{proposition}
+
+\medskip
+\begin{definition}[$\mathbb Z_n$]
+取 $n\in\mathbb N^{*}$。在整数集 $\mathbb Z$ 上定义关系：对 $x,y\in\mathbb Z$，称 $x$ 与 $y$ 模 $n$ 同余，记 $x\equiv y\pmod n$，若 $n\mid (y-x)$。对 $x\in\mathbb Z$，记其同余类
+\[
+  [x]=\{y\in\mathbb Z\mid y\equiv x\pmod n\}=x+n\mathbb Z.
+\]
+记
+\[
+  \mathbb Z_n=\{[x]\mid x\in\mathbb Z\}.
+\]
+并且有分解 $\mathbb Z=[0]\cup[1]\cup\cdots\cup[n-1]$。
+\end{definition}
+
+\begin{proposition}
+在 $\mathbb Z_n$ 上定义
+\[
+  [x]+[y]=[x+y],\qquad [x]\cdot[y]=[xy].
+\]
+则上述定义是良定义的（即与代表元选择无关）。
+\end{proposition}
+
+\begin{proof}
+若 $[x]=[x']$ 且 $[y]=[y']$，则 $n\mid (x-x')$ 且 $n\mid (y-y')$。
+于是 $n\mid\bigl((x+y)-(x'+y')\bigr)$，从而 $[x+y]=[x'+y']$。
+又有
+\[
+  xy-x'y'=x(y-y')+(x-x')y',
+\]
+右端两项均被 $n$ 整除，故 $n\mid (xy-x'y')$，从而 $[xy]=[x'y']$。
+\end{proof}
+
+\begin{example}
+带有上述加法的 $\bigl(\mathbb Z_n,+\bigr)$ 是阿贝尔群，其零元为 $[0]$，且 $[x]$ 的逆元为 $[-x]$。
+另外，连同乘法 $\cdot$，$\mathbb Z_n$ 成为带单位元 $[1]$ 的交换环。
+\end{example}
+
+\begin{proposition}
+设 $n\in\mathbb N^{*}$ 且 $x\in\mathbb Z$。则 $[x]\in\mathbb Z_n$ 在乘法下可逆当且仅当 $\gcd(x,n)=1$。
+此时存在 $u,v\in\mathbb Z$ 使得 $ux+vn=1$，从而 $[u]\cdot[x]=[1]$，即 $[u]=[x]^{-1}$。
+\end{proposition}
+
+\begin{proof}
+若 $[x]$ 可逆，则存在 $[y]\in\mathbb Z_n$ 使得 $[x]\cdot[y]=[1]$，即 $xy\equiv 1\pmod n$，于是存在 $k\in\mathbb Z$ 使得 $xy-1=kn$。
+从而 $1=xy-kn$，故 $\gcd(x,n)=1$。
+
+反之，若 $\gcd(x,n)=1$，则由 Bézout 等式存在 $u,v\in\mathbb Z$ 使得 $ux+vn=1$。
+取同余类得 $[u]\cdot[x]=[ux]=[1]$，故 $[x]$ 可逆。
+\end{proof}
+
+\begin{example}
+在 $\mathbb Z_7$ 中，除 $[0]$ 外的所有元素都可逆，并且
+\[
+  [1]^{-1}=[1],\qquad [2]^{-1}=[4],\qquad [3]^{-1}=[5],\qquad [6]^{-1}=[6].
+\]
+（其余逆元由对称性得到：$[4]^{-1}=[2]$、$[5]^{-1}=[3]$。）
+\end{example}
+
+\begin{definition}[环]
+设 $X$ 为非空集合，$+,\cdot$ 为 $X$ 上的二元运算。
+若满足：
+\begin{enumerate}
+  \item $\bigl(X,+\bigr)$ 为阿贝尔群；
+  \item $\bigl(X,\cdot\bigr)$ 为半群；
+  \item 对任意 $x,y,z\in X$，分配律成立：
+  \[
+    x\cdot (y+z)=x\cdot y+x\cdot z,\qquad (x+y)\cdot z=x\cdot z+y\cdot z.
+  \]
+\end{enumerate}
+则称 $\bigl(X,+,\cdot\bigr)$ 为环。
+若乘法交换，则称为交换环；若存在单位元 $1$ 使得 $1\cdot x=x=x\cdot 1$，则称为带单位元的环。
+\end{definition}
+
+\begin{example}
+\leavevmode
+\begin{enumerate}
+  \item $\bigl(\mathbb Z,+,\cdot\bigr)$ 与 $\bigl(\mathbb R,+,\cdot\bigr)$ 是带单位元的交换环；
+  \item 对任意 $n\in\mathbb N^{*}$，$\bigl(M_n(\mathbb R),+,\cdot\bigr)$（矩阵加法与乘法）是带单位元的环，但一般不是交换环；
+  \item $\mathbb Z_n$ 在上述加法与乘法下是带单位元的交换环。
+\end{enumerate}
+\end{example}
+
+\section{同构与子系统}
+
+\begin{definition}[同构]
+设 $\bigl(X,(\sigma_{\alpha})_{\alpha\in\Lambda}\bigr)$ 与 $\bigl(Y,(\tau_{\alpha})_{\alpha\in\Lambda}\bigr)$ 为同型的代数系统。
+若映射 $f:X\to Y$ 既是同态又是双射，则称 $f$ 为它们之间的同构，并记 $X\cong Y$。
+\end{definition}
+
+\begin{example}
+设 $X,Y$ 为域 $\mathbb R$ 上的向量空间，并把它们视为代数系统 $\bigl(X,+,(\ell_{\lambda})_{\lambda\in\mathbb R}\bigr)$ 与 $\bigl(Y,+,(\ell_{\lambda})_{\lambda\in\mathbb R}\bigr)$，其中 $\ell_{\lambda}(x)=\lambda x$。
+则映射 $f:X\to Y$ 为同态当且仅当满足：
+\begin{enumerate}
+  \item 对任意 $x_1,x_2\in X$，有 $f(x_1+x_2)=f(x_1)+f(x_2)$；
+  \item 对任意 $\lambda\in\mathbb R$ 以及任意 $x\in X$，有 $f(\lambda x)=\lambda f(x)$。
+\end{enumerate}
+因此向量空间意义下的线性映射恰为上述代数系统的同态。
+\end{example}
+
+\begin{example}
+\leavevmode
+\begin{enumerate}
+  \item 对任意 $\lambda\in\mathbb R$，映射 $\ell_{\lambda}:(\mathbb R,+)\to(\mathbb R,+)$，$x\mapsto \lambda x$ 为同态；
+  \item 对任意 $A\in M_n(\mathbb R)$，映射 $\varphi_A:(\mathbb R^n,+)\to(\mathbb R^n,+)$，$x\mapsto Ax$ 为同态；
+  \item 指数映射 $\exp:(\mathbb R,+)\to(\mathbb R_{>0},\cdot)$ 满足 $\exp(x+y)=\exp(x)\exp(y)$，因此为同态；
+  \item 行列式映射 $\det:(M_n(\mathbb R),\cdot)\to(\mathbb R,\cdot)$ 满足 $\det(AB)=\det(A)\det(B)$，因此为同态；
+  \item 若 $R$ 为环，则对任意 $a\in R$，左乘映射 $\ell_a:(R,+)\to(R,+)$，$x\mapsto ax$ 为同态，因为 $\ell_a(x+y)=ax+ay$。
+\end{enumerate}
+\end{example}
+
+\begin{definition}[子系统]
+设 $\bigl(X,(\sigma_{\alpha})_{\alpha\in\Lambda}\bigr)$ 为代数系统，其中 $\sigma_{\alpha}:X^{n_{\alpha}}\to X$。
+令 $\Omega\subseteq X$ 为非空子集。
+若对任意 $\alpha\in\Lambda$ 以及任意 $x_1,\dots,x_{n_{\alpha}}\in\Omega$，都有
+\[
+  \sigma_{\alpha}(x_1,\dots,x_{n_{\alpha}})\in\Omega,
+\]
+则可定义限制运算
+\[
+  \sigma_{\alpha}^{\Omega}:=\sigma_{\alpha}\big|_{\Omega^{n_{\alpha}}}:\Omega^{n_{\alpha}}\to\Omega.
+\]
+此时称 $\bigl(\Omega,(\sigma_{\alpha}^{\Omega})_{\alpha\in\Lambda}\bigr)$ 为 $\bigl(X,(\sigma_{\alpha})_{\alpha\in\Lambda}\bigr)$ 的子系统（或子代数系统），并称 $\Omega$ 为 $X$ 的一个子系统。
+\end{definition}
+
+\begin{example}
+\leavevmode
+\begin{enumerate}
+  \item 群的子系统不一定为群：$(\mathbb Z,+)$ 为群，$\mathbb N\subseteq\mathbb Z$ 在加法下封闭，因此 $(\mathbb N,+)$ 是其子系统，但不是群；
+  \item 同理，$(\mathbb R,+)$ 为群，$[0,+\infty)\subseteq\mathbb R$ 在加法下封闭，因此 $\bigl([0,+\infty),+\bigr)$ 是其子系统，但不是群；
+  \item 半群的子系统可能是群：$(M_n(\mathbb R),\cdot)$ 为半群，可逆矩阵集合 $GL_n(\mathbb R)\subseteq M_n(\mathbb R)$ 在乘法下封闭，因此 $(GL_n(\mathbb R),\cdot)$ 为其子系统；并且 $(GL_n(\mathbb R),\cdot)$ 实际上是群。
+\end{enumerate}
+\end{example}
+
+\begin{example}
+\leavevmode
+\begin{enumerate}
+  \item 幺半群的子系统不一定为幺半群：$(\mathbb N,+)$ 为幺半群（单位元为 $0$），但 $\mathbb N^{*}=\mathbb N\setminus\{0\}$ 在加法下封闭，因此 $(\mathbb N^{*},+)$ 是其子系统，却不是幺半群；
+  \item 设 $(A,\cdot)$ 为幺半群，单位元为 $e$。若 $B\subseteq A$ 非空且对任意 $x,y\in B$ 都有 $x\cdot y\in B$，则 $(B,\cdot)$ 为子系统；但一般地 $B$ 未必含有 $e$，因此 $(B,\cdot)$ 不一定是幺半群。
+\end{enumerate}
+\end{example}
+
+\begin{example}
+设 $X$ 为集合，$P(X)$ 为其幂集。定义二元运算
+\[
+  \cap:P(X)\times P(X)\to P(X),\qquad (A,B)\mapsto A\cap B.
+\]
+则 $(P(X),\cap)$ 为交换幺半群，其单位元为 $X$。
+若 $\varnothing\neq Y\subseteq X$，则 $P(Y)\subseteq P(X)$ 在交运算下封闭，从而 $(P(Y),\cap)$ 为 $(P(X),\cap)$ 的子系统；其单位元为 $Y$。
+\end{example}
+
+\begin{definition}[子群、子环、子空间]
+\leavevmode
+\begin{enumerate}
+  \item 若 $G$ 为群，$H\subseteq G$ 为 $G$ 的一个子系统，并且在运算限制下 $(H,\cdot)$ 仍为群，则称 $H$ 为 $G$ 的一个子群；
+  \item 若 $R$ 为环，$A\subseteq R$ 为 $R$ 的一个子系统，并且在加法、乘法限制下 $(A,+,\cdot)$ 仍为环，则称 $A$ 为 $R$ 的一个子环；
+  \item 若 $X$ 为 $\mathbb R$ 上向量空间，$Y\subseteq X$ 为 $X$ 的一个子系统，并且在加法与数乘限制下 $Y$ 仍为 $\mathbb R$ 上向量空间，则称 $Y$ 为 $X$ 的一个子空间。
+\end{enumerate}
+\end{definition}
+
+\begin{proposition}
+设 $G$ 为群，$x\in G$。则
+\[
+  x\cdot x=x\iff x\text{ 为单位元}.
+\]
+\end{proposition}
+
+\begin{proof}
+若 $x$ 为单位元，则显然 $x\cdot x=x$。
+反之，若 $x\cdot x=x$，设 $x^{-1}$ 为 $x$ 在 $G$ 中的逆元，则
+\[
+  (x\cdot x)\cdot x^{-1}=x\cdot x^{-1}=e.
+\]
+由结合律，左边等于 $x\cdot (x\cdot x^{-1})=x\cdot e=x$，故 $x=e$。
+\end{proof}
+
+\begin{proposition}
+设 $G$ 为群，$H$ 为 $G$ 的子群。
+则 $H$ 的单位元等于 $G$ 的单位元，并且对任意 $x\in H$，$x$ 在 $H$ 中的逆元等于 $x$ 在 $G$ 中的逆元。
+\end{proposition}
+
+\begin{proof}
+设 $e$ 为 $G$ 的单位元。
+取任意 $x\in H$。由于 $H$ 为子群，$x$ 在 $H$ 中存在逆元 $x^{-1}\in H$，从而 $x\cdot x^{-1}=e\in H$。
+因此 $e\in H$，且对任意 $h\in H$，有 $e\cdot h=h=h\cdot e$，故 $e$ 为 $H$ 的单位元。
+由单位元唯一性知 $H$ 的单位元 $e_H=e$。
+
+再取任意 $x\in H$。
+设 $y\in H$ 为 $x$ 在 $H$ 中的逆元，则 $x\cdot y=e_H=e=y\cdot x$。
+由 $G$ 中逆元唯一性，$y=x^{-1}$（即 $x$ 在 $G$ 中的逆元）。
+\end{proof}
+
+\begin{proposition}[子群判别]
+设 $G$ 为群，$H\subseteq G$ 为非空子集。
+则 $H$ 为 $G$ 的子群当且仅当对任意 $x,y\in H$，有 $x\cdot y^{-1}\in H$。
+\end{proposition}
+
+\begin{proof}
+若 $H$ 为子群，则 $y^{-1}\in H$，故 $x\cdot y^{-1}\in H$。
+
+反之，设对任意 $x,y\in H$ 都有 $x\cdot y^{-1}\in H$。
+取任意 $x\in H$，令 $y=x$ 得 $x\cdot x^{-1}=e\in H$。
+再令 $x=e$，可得对任意 $y\in H$，有 $y^{-1}=e\cdot y^{-1}\in H$。
+最后对任意 $x,y\in H$，因 $y^{-1}\in H$，由条件得 $x\cdot (y^{-1})^{-1}=x\cdot y\in H$。
+因此 $H$ 含单位元并对乘法与取逆封闭，故为子群。
+\end{proof}
+
+\begin{corollary}[交换群的子群判别]
+设 $(G,+)$ 为交换群，$H\subseteq G$ 为非空子集。
+则 $H$ 为 $G$ 的子群当且仅当对任意 $x,y\in H$，有 $x-y\in H$。
+\end{corollary}
+
+\begin{proposition}[子环判别]
+设 $R$ 为环，$A\subseteq R$ 为非空子集。
+则 $A$ 为 $R$ 的子环当且仅当满足：
+\begin{enumerate}
+  \item 对任意 $a,b\in A$，有 $a-b\in A$；
+  \item 对任意 $a,b\in A$，有 $a\cdot b\in A$。
+\end{enumerate}
+\end{proposition}
+
+\begin{proof}
+若 $A$ 为子环，则在加法与乘法下封闭，从而对差与乘积封闭。
+
+反之，设 $A$ 对差与乘积封闭。
+由 $a-a=0$ 得 $0\in A$。
+由 $0-a=-a$ 得 $A$ 对取负封闭。
+又因 $a+b=a-(0-b)$，故 $A$ 对加法封闭，从而 $(A,+)$ 为阿贝尔群。
+乘法封闭保证 $(A,\cdot)$ 为半群；分配律由 $R$ 中的分配律限制得到。
+因此 $(A,+,\cdot)$ 为环，即 $A$ 为子环。
+\end{proof}
+
+\begin{proposition}
+设 $R$ 为环，$x,y\in R$。
+则
+\[
+  x\cdot 0=0=0\cdot x,
+\]
+并且
+\[
+  (-x)\cdot y=-(x\cdot y)=x\cdot (-y),\qquad (-x)\cdot (-y)=x\cdot y.
+\]
+\end{proposition}
+
+\begin{proof}
+由分配律，$x\cdot 0=x\cdot(0+0)=x\cdot 0+x\cdot 0$。
+两边加上 $-(x\cdot 0)$ 得 $0=x\cdot 0$。
+同理 $0\cdot x=(0+0)\cdot x=0\cdot x+0\cdot x$，从而 $0\cdot x=0$。
+
+再由 $x+(-x)=0$，有
+\[
+  0=(x+(-x))\cdot y=x\cdot y+(-x)\cdot y,
+\]
+故 $(-x)\cdot y=-(x\cdot y)$。
+同理由 $y+(-y)=0$ 得 $x\cdot (-y)=-(x\cdot y)$。
+最后
+\[
+  (-x)\cdot (-y)=-\bigl((-x)\cdot y\bigr)=-\bigl(-(x\cdot y)\bigr)=x\cdot y.
+\]
+\end{proof}
+
+\begin{proposition}
+设 $\bigl(X,(\sigma_{\alpha})_{\alpha\in\Lambda}\bigr)$ 与 $\bigl(Y,(\tau_{\alpha})_{\alpha\in\Lambda}\bigr)$ 为同型的代数系统，$f:X\to Y$ 为同态。
+若 $A\subseteq X$ 为 $X$ 的子系统，$B\subseteq Y$ 为 $Y$ 的子系统，则 $f(A)\subseteq Y$ 为 $Y$ 的子系统；并且若 $f^{-1}(B)\neq\varnothing$，则 $f^{-1}(B)\subseteq X$ 为 $X$ 的子系统。
+\end{proposition}
+
+\begin{proof}
+先证 $f(A)$ 为子系统。
+任取 $\alpha\in\Lambda$，以及 $y_1,\dots,y_{n_{\alpha}}\in f(A)$。
+则存在 $x_1,\dots,x_{n_{\alpha}}\in A$ 使得 $y_i=f(x_i)$。
+由同态条件有
+\[
+  \tau_{\alpha}(y_1,\dots,y_{n_{\alpha}})=\tau_{\alpha}(f(x_1),\dots,f(x_{n_{\alpha}}))=f\bigl(\sigma_{\alpha}(x_1,\dots,x_{n_{\alpha}})\bigr)\in f(A),
+\]
+其中最后一步用到 $A$ 对 $\sigma_{\alpha}$ 封闭。
+故 $f(A)$ 对每个 $\tau_{\alpha}$ 封闭，即为子系统。
+
+再证：若 $f^{-1}(B)\neq\varnothing$，则 $f^{-1}(B)$ 为子系统。
+任取 $\alpha\in\Lambda$，以及 $x_1,\dots,x_{n_{\alpha}}\in f^{-1}(B)$。
+则 $f(x_i)\in B$。
+由 $B$ 对 $\tau_{\alpha}$ 封闭知
+\[
+  \tau_{\alpha}(f(x_1),\dots,f(x_{n_{\alpha}}))\in B.
+\]
+又由同态条件
+\[
+  f\bigl(\sigma_{\alpha}(x_1,\dots,x_{n_{\alpha}})\bigr)=\tau_{\alpha}(f(x_1),\dots,f(x_{n_{\alpha}}))\in B,
+\]
+从而 $\sigma_{\alpha}(x_1,\dots,x_{n_{\alpha}})\in f^{-1}(B)$。
+故 $f^{-1}(B)$ 为子系统。
+\end{proof}
+
+\begin{proposition}\label{hom-preserves-inv}
+设 $G,H$ 为群，$f:G\to H$ 为群同态。
+设 $e_G,e_H$ 分别为 $G,H$ 的单位元，则
+\[
+  f(e_G)=e_H,
+\]
+并且对任意 $x\in G$，有
+\[
+  f(x^{-1})=f(x)^{-1}.
+\]
+\end{proposition}
+
+\begin{proof}
+由 $e_G\cdot e_G=e_G$ 得
+\[
+  f(e_G)\cdot f(e_G)=f(e_G\cdot e_G)=f(e_G).
+\]
+两边右乘 $f(e_G)^{-1}$ 得 $f(e_G)=e_H$。
+再由 $x\cdot x^{-1}=e_G$ 得
+\[
+  f(x)\cdot f(x^{-1})=f(x\cdot x^{-1})=f(e_G)=e_H,
+\]
+故 $f(x^{-1})$ 为 $f(x)$ 的逆元，即 $f(x^{-1})=f(x)^{-1}$。
+\end{proof}
+
+\begin{proposition}
+设 $G,H$ 为群，$f:G\to H$ 为群同态。若 $A\le G$、$B\le H$，则 $f(A)\le H$ 且 $f^{-1}(B)\le G$。
+\end{proposition}
+
+\begin{proof}
+先证 $f(A)\le H$。
+显然 $f(A)$ 非空。
+任取 $u,v\in f(A)$，则存在 $a,b\in A$ 使得 $u=f(a)$、$v=f(b)$。
+由命题~\ref{pro:hom-preserves-inv} 知 $f(b)^{-1}=f(b^{-1})$，故
+\[
+  u\cdot v^{-1}=f(a)\cdot f(b)^{-1}=f(a)\cdot f(b^{-1})=f(a\cdot b^{-1})\in f(A),
+\]
+其中用到 $A\le G$ 从而 $a\cdot b^{-1}\in A$。
+由子群判别知 $f(A)$ 为子群。
+
+再证 $f^{-1}(B)\le G$。
+由 $e_H\in B$ 且 $f(e_G)=e_H$，知 $e_G\in f^{-1}(B)$，故 $f^{-1}(B)$ 非空。
+任取 $x,y\in f^{-1}(B)$，则 $f(x),f(y)\in B$。
+由 $B\le H$ 得 $f(x)\cdot f(y)^{-1}\in B$。
+又由同态与上一命题
+\[
+  f(x\cdot y^{-1})=f(x)\cdot f(y^{-1})=f(x)\cdot f(y)^{-1}\in B,
+\]
+故 $x\cdot y^{-1}\in f^{-1}(B)$。
+由子群判别知 $f^{-1}(B)$ 为子群。
+\end{proof}
+
+\begin{proposition}
+设 $R_1,R_2$ 为环，$f:R_1\to R_2$ 为环同态，即对任意 $a,b\in R_1$，有
+\[
+  f(a+b)=f(a)+f(b),\qquad f(a\cdot b)=f(a)\cdot f(b).
+\]
+若 $A\le R_1$ 为子环、$B\le R_2$ 为子环，则 $f(A)\le R_2$ 且 $f^{-1}(B)\le R_1$。
+\end{proposition}
+
+\begin{proof}
+先证 $f(A)\le R_2$。
+显然 $f(A)$ 非空。
+任取 $u,v\in f(A)$，则存在 $a,b\in A$ 使得 $u=f(a)$、$v=f(b)$。
+由加法同态性质 $f(-b)=-f(b)$，从而 $f(a-b)=f(a)+f(-b)=f(a)-f(b)$。
+故
+\[
+  u-v=f(a)-f(b)=f(a-b)\in f(A),
+\]
+且
+\[
+  u\cdot v=f(a)\cdot f(b)=f(a\cdot b)\in f(A),
+\]
+其中用到 $A$ 为子环从而 $a-b\in A$、$a\cdot b\in A$。
+由子环判别知 $f(A)$ 为子环。
+
+再证 $f^{-1}(B)\le R_1$。
+由于 $0\in B$ 且 $f(0)=0$，有 $0\in f^{-1}(B)$，故 $f^{-1}(B)$ 非空。
+任取 $x,y\in f^{-1}(B)$，则 $f(x),f(y)\in B$。
+由 $B$ 为子环得 $f(x)-f(y)\in B$ 以及 $f(x)\cdot f(y)\in B$。
+从而
+\[
+  f(x-y)=f(x)-f(y)\in B,\qquad f(x\cdot y)=f(x)\cdot f(y)\in B,
+\]
+故 $x-y\in f^{-1}(B)$ 且 $x\cdot y\in f^{-1}(B)$。
+由子环判别知 $f^{-1}(B)$ 为子环。
+\end{proof}
+
+\chapter{商结构与同构定理}
+
+\section{同余关系与商结构}
+
+\begin{definition}[同余关系]
+设 $\bigl(X,(\sigma_{\alpha})_{\alpha\in\Lambda}\bigr)$ 为代数系统，其中 $\sigma_{\alpha}:X^{n_{\alpha}}\to X$。
+令 $\sim$ 为 $X$ 上的等价关系。
+若对任意 $\alpha\in\Lambda$ 以及任意 $x_1,\dots,x_{n_{\alpha}},y_1,\dots,y_{n_{\alpha}}\in X$，由
+\[
+  x_1\sim y_1,\ \dots,\ x_{n_{\alpha}}\sim y_{n_{\alpha}}
+\]
+可推出
+\[
+  \sigma_{\alpha}(x_1,\dots,x_{n_{\alpha}})\sim \sigma_{\alpha}(y_1,\dots,y_{n_{\alpha}}),
+\]
+则称 $\sim$ 为该代数系统上的同余关系（或与运算相容的等价关系）。
+\end{definition}
+
+\begin{definition}[商结构]
+设 $\sim$ 为 $\bigl(X,(\sigma_{\alpha})_{\alpha\in\Lambda}\bigr)$ 上的同余关系。
+记 $X/\!\sim$ 为等价类集合，并对 $x\in X$ 记
+\[
+  [x]=\{y\in X: y\sim x\}.
+\]
+对每个 $\alpha\in\Lambda$，在 $X/\!\sim$ 上定义 $n_{\alpha}$ 元运算
+\[
+  \bar{\sigma}_{\alpha}:\bigl(X/\!\sim\bigr)^{n_{\alpha}}\to X/\!\sim,\qquad \bar{\sigma}_{\alpha}([x_1],\dots,[x_{n_{\alpha}}])=[\sigma_{\alpha}(x_1,\dots,x_{n_{\alpha}})].
+\]
+若上述定义良好，则称 $\bigl(X/\!\sim,(\bar{\sigma}_{\alpha})_{\alpha\in\Lambda}\bigr)$ 为商结构。
+\end{definition}
+
+\begin{proposition}
+若 $\sim$ 为同余关系，则上式定义的 $\bar{\sigma}_{\alpha}$ 良好，从而 $\bigl(X/\!\sim,(\bar{\sigma}_{\alpha})_{\alpha\in\Lambda}\bigr)$ 为代数系统。
+\end{proposition}
+
+\begin{proof}
+任取 $\alpha\in\Lambda$。
+若 $[x_i]=[y_i]$（$1\le i\le n_{\alpha}$），则 $x_i\sim y_i$。
+由同余关系的相容性知
+\[
+  \sigma_{\alpha}(x_1,\dots,x_{n_{\alpha}})\sim \sigma_{\alpha}(y_1,\dots,y_{n_{\alpha}}),
+\]
+从而
+\[
+  [\sigma_{\alpha}(x_1,\dots,x_{n_{\alpha}})]=[\sigma_{\alpha}(y_1,\dots,y_{n_{\alpha}})].
+\]
+这说明 $\bar{\sigma}_{\alpha}([x_1],\dots,[x_{n_{\alpha}}])$ 与代表元选择无关，故定义良好。
+\end{proof}
+
+\begin{proposition}
+设 $\sim$ 为同余关系。
+令 $\pi:X\to X/\!\sim$ 为自然映射 $x\mapsto [x]$。
+则 $\pi$ 为代数系统同态。
+\end{proposition}
+
+\begin{proof}
+任取 $\alpha\in\Lambda$ 以及 $x_1,\dots,x_{n_{\alpha}}\in X$。
+由定义
+\[
+  \pi\bigl(\sigma_{\alpha}(x_1,\dots,x_{n_{\alpha}})\bigr)=[\sigma_{\alpha}(x_1,\dots,x_{n_{\alpha}})]=\bar{\sigma}_{\alpha}([x_1],\dots,[x_{n_{\alpha}}])=\bar{\sigma}_{\alpha}(\pi(x_1),\dots,\pi(x_{n_{\alpha}})).
+\]
+故 $\pi$ 为同态。
+\end{proof}
+
+\begin{proposition}
+设 $\bigl(X,(\sigma_{\alpha})_{\alpha\in\Lambda}\bigr)$ 与 $\bigl(Y,(\tau_{\alpha})_{\alpha\in\Lambda}\bigr)$ 为同型代数系统，$f:X\to Y$ 为同态。
+在 $X$ 上定义关系 $\sim_f$：对 $x,x'\in X$，
+\[
+  x\sim_f x'\iff f(x)=f(x').
+\]
+则 $\sim_f$ 为 $X$ 上的同余关系。
+\end{proposition}
+
+\begin{proof}
+显然 $\sim_f$ 为等价关系。
+任取 $\alpha\in\Lambda$，并设 $x_i\sim_f y_i$（$1\le i\le n_{\alpha}$），即 $f(x_i)=f(y_i)$。
+由同态性质
+\[
+  f\bigl(\sigma_{\alpha}(x_1,\dots,x_{n_{\alpha}})\bigr)=\tau_{\alpha}(f(x_1),\dots,f(x_{n_{\alpha}}))=\tau_{\alpha}(f(y_1),\dots,f(y_{n_{\alpha}}))=f\bigl(\sigma_{\alpha}(y_1,\dots,y_{n_{\alpha}})\bigr),
+\]
+因此 $\sigma_{\alpha}(x_1,\dots,x_{n_{\alpha}})\sim_f \sigma_{\alpha}(y_1,\dots,y_{n_{\alpha}})$。
+故 $\sim_f$ 与运算相容，为同余关系。
+\end{proof}
+
+\begin{proposition}[因子分解（商结构的泛性质）]
+设 $\bigl(X,(\sigma_{\alpha})_{\alpha\in\Lambda}\bigr)$ 与 $\bigl(Y,(\tau_{\alpha})_{\alpha\in\Lambda}\bigr)$ 为同型代数系统，$f:X\to Y$ 为同态。
+令 $\sim_f$ 为核同余：$x\sim_f x'\iff f(x)=f(x')$。
+设 $\pi_f:X\to X/\!\sim_f$ 为自然映射。
+则存在唯一同态 $\bar f:X/\!\sim_f\to Y$ 使得
+\[
+  f=\bar f\circ \pi_f.
+\]
+并且可取
+\[
+  \bar f([x])=f(x)\qquad (x\in X).
+\]
+此外有如下交换图：
+\[
+\begin{tikzcd}
+ X \arrow[r,"f"] \arrow[d,"\pi_f"'] & Y \\
+ X/\!\sim_f \arrow[ur,"\bar f"']
+\end{tikzcd}
+\]
+\end{proposition}
+
+\begin{proof}
+定义 $\bar f:X/\!\sim_f\to Y$ 为 $\bar f([x])=f(x)$。
+先证其良定义：若 $[x]=[x']$，则 $x\sim_f x'$，从而 $f(x)=f(x')$，故 $\bar f([x])=\bar f([x'])$。
+
+再证 $\bar f$ 为同态。
+任取 $\alpha\in\Lambda$ 以及 $[x_1],\dots,[x_{n_{\alpha}}]\in X/\!\sim_f$。
+由商结构中诱导运算的定义，
+\[
+  \bar\sigma_{\alpha}([x_1],\dots,[x_{n_{\alpha}}])=[\sigma_{\alpha}(x_1,\dots,x_{n_{\alpha}})].
+\]
+因此
+\[
+  \bar f\bigl(\bar\sigma_{\alpha}([x_1],\dots,[x_{n_{\alpha}}])\bigr)=\bar f\bigl([\sigma_{\alpha}(x_1,\dots,x_{n_{\alpha}})]\bigr)=f\bigl(\sigma_{\alpha}(x_1,\dots,x_{n_{\alpha}})\bigr)=\tau_{\alpha}(f(x_1),\dots,f(x_{n_{\alpha}})).
+\]
+另一方面，由 $\bar f([x_i])=f(x_i)$，有
+\[
+  \tau_{\alpha}(f(x_1),\dots,f(x_{n_{\alpha}}))=\tau_{\alpha}(\bar f([x_1]),\dots,\bar f([x_{n_{\alpha}}])).
+\]
+故 $\bar f$ 保持各基本运算，为同态。
+
+最后证分解与唯一性。
+对任意 $x\in X$，有
+\[
+  (\bar f\circ\pi_f)(x)=\bar f([x])=f(x),
+\]
+故 $f=\bar f\circ\pi_f$。
+若 $g:X/\!\sim_f\to Y$ 亦为同态且 $f=g\circ\pi_f$，则对任意 $[x]\in X/\!\sim_f$，有
+\[
+  g([x])=g(\pi_f(x))=f(x)=\bar f([x]),
+\]
+故 $g=\bar f$，从而 $\bar f$ 唯一。
+\end{proof}
+
+\begin{proposition}[同态基本定理（第一同构定理）]
+设 $\bigl(X,(\sigma_{\alpha})_{\alpha\in\Lambda}\bigr)$ 与 $\bigl(Y,(\tau_{\alpha})_{\alpha\in\Lambda}\bigr)$ 为同型代数系统，$f:X\to Y$ 为同态。
+令 $\sim_f$ 为核同余，$\pi_f:X\to X/\!\sim_f$ 为自然映射。
+则映射
+\[
+  \tilde f:X/\!\sim_f\to f(X),\qquad \tilde f([x])=f(x)
+\]
+为同构。
+特别地，若 $f$ 为满射，则 $X/\!\sim_f\cong Y$。
+并且有如下交换图：
+\[
+\begin{tikzcd}
+ X \arrow[r,"f"] \arrow[d,"\pi_f"'] & f(X) \\
+ X/\!\sim_f \arrow[ur,"\tilde f"']
+\end{tikzcd}
+\]
+\end{proposition}
+
+\begin{proof}
+先证 $\tilde f$ 良定义：若 $[x]=[x']$，则 $x\sim_f x'$，从而 $f(x)=f(x')$，故 $\tilde f([x])=\tilde f([x'])$。
+
+再证 $\tilde f$ 为同态。
+对任意 $\alpha\in\Lambda$ 以及 $[x_1],\dots,[x_{n_{\alpha}}]\in X/\!\sim_f$，有
+\[
+  \tilde f\bigl(\bar\sigma_{\alpha}([x_1],\dots,[x_{n_{\alpha}}])\bigr)=\tilde f\bigl([\sigma_{\alpha}(x_1,\dots,x_{n_{\alpha}})]\bigr)=f\bigl(\sigma_{\alpha}(x_1,\dots,x_{n_{\alpha}})\bigr)=\tau_{\alpha}(f(x_1),\dots,f(x_{n_{\alpha}})),
+\]
+而 $\tau_{\alpha}(f(x_1),\dots,f(x_{n_{\alpha}}))=\tau_{\alpha}(\tilde f([x_1]),\dots,\tilde f([x_{n_{\alpha}}]))$，故 $\tilde f$ 为同态。
+
+下面证 $\tilde f$ 为双射。
+对任意 $y\in f(X)$，存在 $x\in X$ 使得 $y=f(x)=\tilde f([x])$，故 $\tilde f$ 为满射。
+若 $\tilde f([x])=\tilde f([x'])$，则 $f(x)=f(x')$，即 $x\sim_f x'$，从而 $[x]=[x']$，故 $\tilde f$ 为单射。
+因此 $\tilde f$ 为同构。
+若 $f$ 为满射，则 $f(X)=Y$，从而 $X/\!\sim_f\cong Y$。
+
+最后，任取 $x\in X$，有 $(\tilde f\circ\pi_f)(x)=\tilde f([x])=f(x)$，故交换图成立。
+\end{proof}
+
+\begin{proposition}
+设 $\sim$ 为代数系统 $\bigl(X,(\sigma_{\alpha})_{\alpha\in\Lambda}\bigr)$ 上的同余关系，$\pi:X\to X/\!\sim$ 为自然映射。
+在 $X$ 上定义关系 $\sim_{\pi}$：对 $x,y\in X$，
+\[
+  x\sim_{\pi} y\iff \pi(x)=\pi(y).
+\]
+则 $\sim_{\pi}=\sim$。
+\end{proposition}
+
+\begin{proof}
+任取 $x,y\in X$。
+由定义 $\pi(x)=[x]$，故
+\[
+  \pi(x)=\pi(y)\iff [x]=[y]\iff x\sim y.
+\]
+因此 $x\sim_{\pi} y\iff x\sim y$，即 $\sim_{\pi}=\sim$。
+\end{proof}
+
+\begin{proposition}
+设 $\bigl(X,(\sigma_{\alpha})_{\alpha\in\Lambda}\bigr)$ 与 $\bigl(Y,(\tau_{\alpha})_{\alpha\in\Lambda}\bigr)$ 为同型代数系统，$f:X\to Y$ 为同构。
+则 $f^{-1}:Y\to X$ 亦为同构。
+\end{proposition}
+
+\begin{proof}
+只需证 $f^{-1}$ 为同态。
+任取 $\alpha\in\Lambda$ 以及 $y_1,\dots,y_{n_{\alpha}}\in Y$。
+令 $x_i=f^{-1}(y_i)$，则 $y_i=f(x_i)$。
+由 $f$ 为同态知
+\[
+  f\bigl(\sigma_{\alpha}(x_1,\dots,x_{n_{\alpha}})\bigr)=\tau_{\alpha}(f(x_1),\dots,f(x_{n_{\alpha}}))=\tau_{\alpha}(y_1,\dots,y_{n_{\alpha}}).
+\]
+两边作用 $f^{-1}$ 得
+\[
+  \sigma_{\alpha}(x_1,\dots,x_{n_{\alpha}})=f^{-1}\bigl(\tau_{\alpha}(y_1,\dots,y_{n_{\alpha}})\bigr).
+\]
+即
+\[
+  f^{-1}\bigl(\tau_{\alpha}(y_1,\dots,y_{n_{\alpha}})\bigr)=\sigma_{\alpha}(f^{-1}(y_1),\dots,f^{-1}(y_{n_{\alpha}})),
+\]
+故 $f^{-1}$ 为同态。
+又 $f$ 双射，则 $f^{-1}$ 亦双射，因此 $f^{-1}$ 为同构。
+\end{proof}
+
+\section{陪集与 Lagrange 定理}
+
+\begin{definition}
+设 $G$ 为群，$H\le G$ 为子群。
+在 $G$ 上定义两个关系：对 $x,y\in G$，令
+\[
+  x\sim_H y\iff x^{-1}y\in H,\qquad x\sim^{H} y\iff xy^{-1}\in H.
+\]
+\end{definition}
+
+\begin{proposition}\label{coset-equiv-class}
+在上述记号下，$\sim_H$ 与 $\sim^{H}$ 均为 $G$ 上的等价关系。
+并且对任意 $x\in G$，其在 $\sim_H$ 下的等价类为左陪集 $xH$，即
+\[
+  [x]_{\sim_H}=xH;
+\]
+其在 $\sim^{H}$ 下的等价类为右陪集 $Hx$，即
+\[
+  [x]_{\sim^{H}}=Hx.
+\]
+\end{proposition}
+
+\begin{proof}
+先证 $\sim_H$ 为等价关系。
+对任意 $x\in G$，有 $x^{-1}x=e\in H$，故 $x\sim_H x$。
+若 $x\sim_H y$，则 $x^{-1}y\in H$，从而 $(x^{-1}y)^{-1}=y^{-1}x\in H$，故 $y\sim_H x$。
+若 $x\sim_H y$ 且 $y\sim_H z$，则 $x^{-1}y\in H$ 且 $y^{-1}z\in H$。
+由于 $H$ 为子群，得 $x^{-1}z=(x^{-1}y)(y^{-1}z)\in H$，故 $x\sim_H z$。
+因此 $\sim_H$ 为等价关系。
+同理可证 $\sim^{H}$ 为等价关系。
+
+再证等价类与陪集的对应。
+对任意 $y\in G$，有
+\[
+  y\in [x]_{\sim_H}\iff x\sim_H y\iff x^{-1}y\in H\iff y\in xH.
+\]
+故 $[x]_{\sim_H}=xH$。
+同理
+\[
+  y\in [x]_{\sim^{H}}\iff x\sim^{H} y\iff xy^{-1}\in H\iff y\in Hx,
+\]
+故 $[x]_{\sim^{H}}=Hx$。
+\end{proof}
+
+\begin{proposition}
+设 $G$ 为群，$H\le G$。
+对任意 $x\in G$，定义映射 $\ell_x:H\to xH$ 为
+\[
+  \ell_x(h)=xh.
+\]
+则 $\ell_x$ 为双射。
+\end{proposition}
+
+\begin{proof}
+任取 $h\in H$，显然 $\ell_x(h)=xh\in xH$，故 $\ell_x$ 合法。
+若 $\ell_x(h_1)=\ell_x(h_2)$，则 $xh_1=xh_2$。
+左乘 $x^{-1}$ 得 $h_1=h_2$，故 $\ell_x$ 为单射。
+任取 $y\in xH$，则存在 $h\in H$ 使得 $y=xh=\ell_x(h)$，故 $\ell_x$ 为满射。
+因此 $\ell_x$ 为双射。
+\end{proof}
+
+\begin{proposition}[拉格朗日定理]
+设 $G$ 为有限群，$H\le G$。
+记 $G/\!\sim_H$ 为 $\sim_H$ 的商集（即全体左陪集 $\{xH:x\in G\}$）。
+则
+\[
+  |G|=|H|\,|G/\!\sim_H|.
+\]
+\end{proposition}
+
+\begin{proof}
+由前一命题，任意左陪集 $xH$ 与 $H$ 等势，故对任意 $x\in G$ 有 $|xH|=|H|$。
+另一方面，不同左陪集两两不交，且其并为 $G$。
+因此 $G$ 可分解为 $|G/\!\sim_H|$ 个互不相交的子集，每个大小均为 $|H|$，从而 $|G|=|H|\,|G/\!\sim_H|$。
+\end{proof}
+
+\begin{proposition}
+设 $G$ 为群，$H\le G$。
+定义映射
+\[
+  \Phi:G/\!\sim_H\to G/\!\sim^{H},\qquad \Phi(xH)=Hx^{-1}.
+\]
+则 $\Phi$ 为双射。
+并且有如下交换图：
+\[
+\begin{tikzcd}
+ G \arrow[r,"i"] \arrow[d,"\rho"'] & G \arrow[d,"\lambda"] \\
+ G/\!\sim_H \arrow[r,"\Phi"'] & G/\!\sim^{H}
+\end{tikzcd}
+\]
+其中 $i(x)=x^{-1}$，$\rho(x)=xH$，$\lambda(x)=Hx$。
+\end{proposition}
+
+\begin{proof}
+先证 $\Phi$ 良定义：若 $xH=yH$，则 $y^{-1}x\in H$。
+取逆得 $x^{-1}y\in H$，从而
+\[
+  (Hx^{-1})=(H(x^{-1}y))y^{-1}=Hy^{-1},
+\]
+即 $Hx^{-1}=Hy^{-1}$，故 $\Phi(xH)=\Phi(yH)$。
+
+定义 $\Psi:G/\!\sim^{H}\to G/\!\sim_H$ 为 $\Psi(Hx)=x^{-1}H$。
+与上同理可证 $\Psi$ 良定义。
+并且对任意 $x\in G$，有
+\[
+  (\Psi\circ\Phi)(xH)=\Psi(Hx^{-1})=(x^{-1})^{-1}H=xH,
+\]
+以及
+\[
+  (\Phi\circ\Psi)(Hx)=\Phi(x^{-1}H)=H(x^{-1})^{-1}=Hx.
+\]
+故 $\Phi$ 与 $\Psi$ 互为逆映射，从而 $\Phi$ 为双射。
+
+最后对任意 $x\in G$，有 $\Phi(\rho(x))=\Phi(xH)=Hx^{-1}=\lambda(i(x))$，故交换图成立。
+\end{proof}
+
+\begin{proposition}
+设 $G$ 为群，$A\subseteq G$。
+定义
+\[
+  A^{-1}=\{a^{-1}:a\in A\}.
+\]
+则 $A\mapsto A^{-1}$ 给出 $\mathcal P(G)$ 上的双射，且对任意子群 $H\le G$ 有 $H^{-1}=H$。
+\end{proposition}
+
+\begin{proof}
+由于取逆映射 $i:G\to G$，$i(x)=x^{-1}$ 为双射，故其诱导的映射
+\[
+  \mathcal P(G)\to\mathcal P(G),\qquad A\mapsto i(A)=A^{-1}
+\]
+亦为双射。
+若 $H\le G$，则 $H$ 对取逆封闭，从而 $H^{-1}\subseteq H$。
+又由 $(H^{-1})^{-1}=H$ 得 $H\subseteq H^{-1}$，故 $H^{-1}=H$。
+\end{proof}
+
+\begin{definition}
+设 $G$ 为群，$H\le G$。
+记
+\[
+  G/H=\{xH:x\in G\},\qquad H\backslash G=\{Hx:x\in G\}.
+\]
+并记 $[G:H]=|G/H|$（当该基数为有限数时），称为 $H$ 在 $G$ 中的指数。
+\end{definition}
+
+\begin{proposition}
+在上述记号下，有集合恒等式
+\[
+  G/H=G/\!\sim_H,\qquad H\backslash G=G/\!\sim^{H}.
+\]
+\end{proposition}
+
+\begin{proof}
+由命题~\ref{pro:coset-equiv-class} 知 $[x]_{\sim_H}=xH$、$[x]_{\sim^{H}}=Hx$，故两边均为同一族等价类之集合。
+\end{proof}
+
+\begin{corollary}
+设 $G$ 为有限群，$H\le G$。
+则
+\[
+  |G|=|H|\,|G/H|=|H|\,|H\backslash G|.
+\]
+\end{corollary}
+
+\begin{proof}
+由拉格朗日定理与 $G/H=G/\!\sim_H$ 得 $|G|=|H|\,|G/H|$。
+又由 $\Phi:G/\!\sim_H\to G/\!\sim^{H}$ 为双射，知 $|G/\!\sim_H|=|G/\!\sim^{H}|$。
+结合 $H\backslash G=G/\!\sim^{H}$ 即得 $|G|=|H|\,|H\backslash G|$。
+\end{proof}
+
+\section{正规子群与商群}
+
+\begin{definition}[正规子群]
+设 $G$ 为群，$H\le G$。
+若对任意 $x\in G$，有
+\[
+  xH=Hx,
+\]
+则称 $H$ 为 $G$ 的正规子群（或不变子群），记为 $H\trianglelefteq G$。
+\end{definition}
+
+\begin{proposition}\label{normal-subgroup-equiv}
+设 $G$ 为群，$H\le G$。
+下列条件等价：
+\begin{enumerate}
+  \item $H\trianglelefteq G$；
+  \item 对任意 $x\in G$，有 $xHx^{-1}\subseteq H$；
+  \item 对任意 $x\in G$，有 $xHx^{-1}=H$。
+\end{enumerate}
+\end{proposition}
+
+\begin{proof}
+(1)$\Rightarrow$(3)：任取 $x\in G$。
+由 $xH=Hx$，两边右乘 $x^{-1}$ 得 $xHx^{-1}=H$。
+
+(3)$\Rightarrow$(2) 显然。
+
+(2)$\Rightarrow$(1)：任取 $x\in G$。
+由 (2) 对 $x^{-1}$ 亦成立，得
+\[
+  x^{-1}Hx\subseteq H.
+\]
+两边左乘 $x$、右乘 $x^{-1}$，得
+\[
+  H\subseteq xHx^{-1}.
+\]
+于是 $xHx^{-1}=H$，从而 $xH=Hx$。
+故 $H\trianglelefteq G$。
+\end{proof}
+
+\begin{proposition}
+设 $f:G\to H$ 为群同态，$e_H$ 为 $H$ 的单位元。
+则
+\[
+  \ker f=f^{-1}(e_H)=\{x\in G:f(x)=e_H\}
+\]
+为 $G$ 的正规子群。
+\end{proposition}
+
+\begin{proof}
+由于 $\ker f$ 是子群 $\{e_H\}$ 在同态 $f$ 下的逆像，故 $\ker f\le G$。
+任取 $x\in G$ 与 $y\in \ker f$。
+由同态性质及 $f(y)=e_H$，有
+\[
+  f(xyx^{-1})=f(x)f(y)f(x)^{-1}=f(x)e_H f(x)^{-1}=e_H,
+\]
+故 $xyx^{-1}\in \ker f$。
+于是对任意 $x\in G$，有 $x(\ker f)x^{-1}\subseteq \ker f$。
+由命题~\ref{pro:normal-subgroup-equiv} 知 $\ker f\trianglelefteq G$。
+\end{proof}
+
+\begin{proposition}
+设 $f:G\to H$ 为群同态。
+对 $x,y\in G$，定义关系
+\[
+  x\sim_f y\iff f(x)=f(y).
+\]
+则对任意 $x\in G$，有
+\[
+  [x]_{\sim_f}=x\ker f.
+\]
+\end{proposition}
+
+\begin{proof}
+任取 $y\in G$。
+有
+\[
+  y\in [x]_{\sim_f}\iff f(y)=f(x)\iff f(y^{-1}x)=e_H\iff y^{-1}x\in \ker f\iff y\in x\ker f.
+\]
+故 $[x]_{\sim_f}=x\ker f$。
+\end{proof}
+
+\begin{proposition}[商群 $G/\ker f$]
+设 $f:G\to H$ 为群同态。
+则商集 $G/\!\sim_f$ 可记为
+\[
+  G/\ker f=\{x\ker f:x\in G\}.
+\]
+并可在其上定义二元运算
+\[
+  (x\ker f)\cdot (y\ker f)=(xy)\ker f.
+\]
+此运算定义良好，且使 $G/\ker f$ 成为群。
+\end{proposition}
+
+\begin{proof}
+先证运算良好。
+设 $x\ker f=x'\ker f$、$y\ker f=y'\ker f$。
+则存在 $a,b\in \ker f$ 使得 $x'=xa$、$y'=yb$。
+于是
+\[
+  x'y'=xayb=xy\,(y^{-1}ay)\,b.
+\]
+由于 $\ker f\trianglelefteq G$，有 $y^{-1}ay\in \ker f$，又 $b\in \ker f$，故 $(y^{-1}ay)b\in \ker f$。
+从而 $x'y'\in (xy)\ker f$，即 $(x'y')\ker f=(xy)\ker f$。
+故运算定义良好。
+
+再证群公理。
+结合律由 $G$ 的结合律直接推出。
+单位元为 $e\ker f=\ker f$。
+对任意 $x\ker f$，其逆元为 $x^{-1}\ker f$，因为
+\[
+  (x\ker f)(x^{-1}\ker f)=(xx^{-1})\ker f=e\ker f,\qquad (x^{-1}\ker f)(x\ker f)=e\ker f.
+\]
+因此 $G/\ker f$ 为群。
+\end{proof}
+
+\section{群同构定理}
+
+\begin{proposition}[群的第一同构定理（像的形式）]
+设 $f:G\to H$ 为群同态。
+定义映射
+\[
+  \tilde f:G/\ker f\to f(G),\qquad \tilde f(x\ker f)=f(x).
+\]
+则 $\tilde f$ 为群同构。
+并且有如下交换图：
+\[
+\begin{tikzcd}
+ G \arrow[r,"f"] \arrow[d,"\pi"'] & H \\
+ G/\ker f \arrow[r,"\tilde f"'] & f(G) \arrow[u,hook,"\iota"']
+\end{tikzcd}
+\]
+其中 $\pi(x)=x\ker f$，$\iota:f(G)\hookrightarrow H$ 为包含映射。
+\end{proposition}
+
+\begin{proof}
+先证 $\tilde f$ 良定义。
+若 $x\ker f=y\ker f$，则 $y^{-1}x\in \ker f$，从而 $f(y^{-1}x)=e_H$，即 $f(x)=f(y)$。
+故 $\tilde f(x\ker f)=\tilde f(y\ker f)$。
+
+再证 $\tilde f$ 为同态：
+\[
+  \tilde f\bigl((x\ker f)(y\ker f)\bigr)=\tilde f((xy)\ker f)=f(xy)=f(x)f(y)=\tilde f(x\ker f)\,\tilde f(y\ker f).
+\]
+由定义 $\tilde f$ 满射。
+若 $\tilde f(x\ker f)=\tilde f(y\ker f)$，则 $f(x)=f(y)$，从而 $y^{-1}x\in \ker f$，即 $x\ker f=y\ker f$，故 $\tilde f$ 单射。
+因此 $\tilde f$ 为同构。
+
+最后对任意 $x\in G$，有 $(\iota\circ\tilde f\circ\pi)(x)=\iota(\tilde f(x\ker f))=f(x)$，故交换图成立。
+\end{proof}
+
+\section{理想与商环}
+
+\begin{definition}[理想]
+设 $R$ 为环，$I\subseteq R$ 为非空子集。
+若
+\begin{enumerate}
+  \item $I$ 为加法群 $(R,+)$ 的子群；
+  \item 对任意 $r\in R$ 与 $a\in I$，有 $ra\in I$ 且 $ar\in I$，
+\end{enumerate}
+则称 $I$ 为 $R$ 的（双边）理想。
+\end{definition}
+
+\begin{proposition}
+设 $f:R\to S$ 为环同态。
+则
+\[
+  \ker f=f^{-1}(0)=\{a\in R:f(a)=0\}
+\]
+为 $R$ 的理想。
+\end{proposition}
+
+\begin{proof}
+由于 $\{0\}$ 为 $S$ 的子环，故 $\ker f=f^{-1}(\{0\})$ 为 $R$ 的子环，从而为 $(R,+)$ 的子群。
+任取 $r\in R$ 与 $a\in \ker f$，则 $f(a)=0$。
+由乘法同态性
+\[
+  f(ra)=f(r)f(a)=f(r)\cdot 0=0,\qquad f(ar)=f(a)f(r)=0\cdot f(r)=0.
+\]
+故 $ra\in \ker f$ 且 $ar\in \ker f$。
+因此 $\ker f$ 为理想。
+\end{proof}
+
+\begin{proposition}[正规子群诱导的群同余]
+设 $G$ 为群，$N\trianglelefteq G$。
+对 $x,y\in G$ 定义关系
+\[
+  x\sim_N y\iff x^{-1}y\in N.
+\]
+则 $\sim_N$ 为 $G$ 上的同余关系，并且单位元 $e$ 的等价类满足 $[e]_{\sim_N}=N$。
+\end{proposition}
+
+\begin{proof}
+先证 $\sim_N$ 为等价关系。
+反身性：$x^{-1}x=e\in N$。
+对称性：若 $x^{-1}y\in N$，则 $(x^{-1}y)^{-1}=y^{-1}x\in N$。
+传递性：若 $x^{-1}y\in N$ 且 $y^{-1}z\in N$，则 $x^{-1}z=(x^{-1}y)(y^{-1}z)\in N$。
+
+再证相容性。
+若 $x_1\sim_N y_1$、$x_2\sim_N y_2$，则 $x_1^{-1}y_1\in N$、$x_2^{-1}y_2\in N$。
+由于 $N\trianglelefteq G$，有
+\[
+  y_2^{-1}(x_1^{-1}y_1)y_2\in N.
+\]
+于是
+\[
+  (x_1x_2)^{-1}(y_1y_2)=x_2^{-1}x_1^{-1}y_1y_2=\bigl(x_2^{-1}(x_1^{-1}y_1)x_2\bigr)\,(x_2^{-1}y_2)\in N,
+\]
+从而 $x_1x_2\sim_N y_1y_2$。
+
+另外若 $x\sim_N y$，则 $y^{-1}x\in N$。
+由正规性可得 $x(y^{-1}x)x^{-1}=xy^{-1}\in N$，从而 $x^{-1}\sim_N y^{-1}$。
+故 $\sim_N$ 与群运算（乘法与取逆）相容，是群上的同余关系。
+
+最后，$x\in [e]_{\sim_N}\iff e^{-1}x=x\in N$，故 $[e]_{\sim_N}=N$。
+\end{proof}
+
+\begin{proposition}[群同余的单位元等价类]
+设 $G$ 为群，$\sim$ 为 $G$ 上的同余关系。
+记 $N=[e]_{\sim}$。
+则 $N\trianglelefteq G$。
+并且对任意 $x,y\in G$，有
+\[
+  x\sim y\iff x^{-1}y\in N.
+\]
+即 $\sim=\sim_N$。
+\end{proposition}
+
+\begin{proof}
+先证 $N\le G$。
+显然 $e\in N$。
+若 $x,y\in N$，则 $x\sim e$ 且 $y\sim e$。
+由相容性得 $xy\sim ee=e$，故 $xy\in N$。
+又由 $x\sim e$ 得 $x^{-1}\sim e^{-1}=e$，故 $x^{-1}\in N$。
+于是 $N\le G$。
+
+再证 $N$ 正规。
+任取 $g\in G$ 与 $x\in N$。
+由 $x\sim e$ 与 $g\sim g$，得 $gx\sim ge=g$。
+再由 $g^{-1}\sim g^{-1}$，得 $(gx)g^{-1}\sim gg^{-1}=e$，即 $gxg^{-1}\in N$。
+故 $N\trianglelefteq G$。
+
+最后证等价关系的刻画。
+若 $x\sim y$，则由 $x^{-1}\sim x^{-1}$ 得 $x^{-1}x\sim x^{-1}y$，即 $e\sim x^{-1}y$，从而 $x^{-1}y\in N$。
+反之若 $x^{-1}y\in N$，则 $e\sim x^{-1}y$。
+由 $x\sim x$，得 $xe\sim x(x^{-1}y)$，即 $x\sim y$。
+故 $x\sim y\iff x^{-1}y\in N$，即 $\sim=\sim_N$。
+\end{proof}
+
+\begin{corollary}
+设 $G$ 为群。
+则 $G$ 的正规子群与 $G$ 上的群同余关系一一对应。
+\end{corollary}
+
+\begin{proposition}[理想诱导的环同余]\label{ideal-congruence}
+设 $R$ 为环，$I\subseteq R$ 为理想。
+对 $x,y\in R$ 定义关系
+\[
+  x\sim_I y\iff y-x\in I.
+\]
+则 $\sim_I$ 为 $R$ 上的同余关系。
+并且对任意 $x\in R$，其等价类满足
+\[
+  [x]_{\sim_I}=x+I=\{x+a:a\in I\},\qquad [0]_{\sim_I}=I.
+\]
+\end{proposition}
+
+\begin{proof}
+先证 $\sim_I$ 为等价关系。
+反身性：$x-x=0\in I$。
+对称性：若 $y-x\in I$，则 $x-y=-(y-x)\in I$。
+传递性：若 $y-x\in I$ 且 $z-y\in I$，则 $z-x=(z-y)+(y-x)\in I$。
+
+再证相容性。
+若 $x_1\sim_I y_1$、$x_2\sim_I y_2$，则 $y_1-x_1\in I$、$y_2-x_2\in I$。
+于是
+\[
+  (y_1+y_2)-(x_1+x_2)=(y_1-x_1)+(y_2-x_2)\in I,
+\]
+故 $x_1+x_2\sim_I y_1+y_2$。
+并且
+\[
+  y_1y_2-x_1x_2=y_1(y_2-x_2)+(y_1-x_1)x_2\in I,
+\]
+其中用到 $I$ 为理想从而 $y_1(y_2-x_2)\in I$、$(y_1-x_1)x_2\in I$。
+故 $x_1x_2\sim_I y_1y_2$。
+因此 $\sim_I$ 与 $+$、$\cdot$ 相容，为环上的同余关系。
+
+最后对任意 $y\in R$，有
+\[
+  y\in [x]_{\sim_I}\iff y-x\in I\iff y=x+(y-x)\in x+I,
+\]
+且反过来若 $y\in x+I$，则 $y=x+a$（某个 $a\in I$），从而 $y-x=a\in I$，即 $y\sim_I x$。
+故 $[x]_{\sim_I}=x+I$。
+取 $x=0$ 即得 $[0]_{\sim_I}=I$。
+\end{proof}
+
+\begin{proposition}[商环 $R/I$]
+设 $R$ 为环，$I\subseteq R$ 为理想。
+记 $R/I=\{x+I:x\in R\}$。
+定义
+\[
+  (x+I)+(y+I)=(x+y)+I,\qquad (x+I)(y+I)=(xy)+I.
+\]
+则上述运算定义良好，且使 $R/I$ 成为环。
+\end{proposition}
+
+\begin{proof}
+由命题~\ref{pro:ideal-congruence} 知 $\sim_I$ 为同余关系。
+因此商结构 $R/\!\sim_I$ 上的诱导运算良定义。
+又由 $[x]_{\sim_I}=x+I$，可将 $R/\!\sim_I$ 记作 $R/I$，其诱导运算即为所给公式。
+故 $R/I$ 为环。
+\end{proof}
+
+\begin{proposition}[环同余的零元等价类]
+设 $R$ 为环，$\sim$ 为 $R$ 上的同余关系。
+记 $I=[0]_{\sim}$。
+则 $I$ 为 $R$ 的理想。
+并且对任意 $x,y\in R$，有
+\[
+  x\sim y\iff y-x\in I,
+\]
+即 $\sim=\sim_I$。
+\end{proposition}
+
+\begin{proof}
+先证 $I$ 为加法群 $(R,+)$ 的子群。
+显然 $0\in I$。
+若 $a,b\in I$，则 $a\sim 0$ 且 $b\sim 0$。
+由加法相容性得 $a+b\sim 0+0=0$，故 $a+b\in I$。
+又由 $a\sim 0$ 得 $-a\sim -0=0$，故 $-a\in I$。
+于是 $I\le (R,+)$。
+
+再证吸收性。
+任取 $r\in R$ 与 $a\in I$。
+由 $a\sim 0$ 与 $r\sim r$，乘法相容性推出
+\[
+  ra\sim r\cdot 0=0,\qquad ar\sim 0\cdot r=0.
+\]
+故 $ra\in I$ 且 $ar\in I$，从而 $I$ 为理想。
+
+最后证等价关系的刻画。
+若 $x\sim y$，则由加法相容性得 $-x\sim -x$ 且 $y\sim x$，从而
+\[
+  y-x=y+(-x)\sim x+(-x)=0,
+\]
+故 $y-x\in I$。
+反之若 $y-x\in I$，则 $y-x\sim 0$。
+又 $x\sim x$，由加法相容性得
+\[
+  y=x+(y-x)\sim x+0=x,
+\]
+故 $y\sim x$，即 $x\sim y$。
+因此 $x\sim y\iff y-x\in I$，即 $\sim=\sim_I$。
+\end{proof}
+
+\begin{corollary}
+设 $R$ 为环。
+则 $R$ 的（双边）理想与 $R$ 上的环同余关系一一对应。
+\end{corollary}
+
+\section{环同构定理}
+
+\begin{proposition}[环同态基本定理（第一同构定理）]
+设 $f:R\to S$ 为环同态。
+记 $\pi:R\to R/\ker f$ 为自然映射 $\pi(x)=x+\ker f$。
+定义映射
+\[
+  \tilde f:R/\ker f\to f(R),\qquad \tilde f(x+\ker f)=f(x).
+\]
+则 $\tilde f$ 为环同构。
+并且有如下交换图：
+\[
+\begin{tikzcd}
+ R \arrow[r,"f"] \arrow[d,"\pi"'] & S \\
+ R/\ker f \arrow[r,"\tilde f"'] & f(R) \arrow[u,hook,"\iota"']
+\end{tikzcd}
+\]
+其中 $\iota:f(R)\hookrightarrow S$ 为包含映射。
+\end{proposition}
+
+\begin{proof}
+先证 $\tilde f$ 良定义。
+若 $x+\ker f=y+\ker f$，则 $y-x\in \ker f$，从而 $f(y-x)=0$，即 $f(x)=f(y)$。
+故 $\tilde f(x+\ker f)=\tilde f(y+\ker f)$。
+
+再证 $\tilde f$ 为环同态。
+对任意 $x,y\in R$，有
+\[
+  \tilde f\bigl((x+\ker f)+(y+\ker f)\bigr)=\tilde f((x+y)+\ker f)=f(x+y)=f(x)+f(y)
+\]
+以及
+\[
+  \tilde f\bigl((x+\ker f)(y+\ker f)\bigr)=\tilde f((xy)+\ker f)=f(xy)=f(x)f(y).
+\]
+由定义 $\tilde f$ 满射。
+若 $\tilde f(x+\ker f)=\tilde f(y+\ker f)$，则 $f(x)=f(y)$，从而 $y-x\in \ker f$，即 $x+\ker f=y+\ker f$，故 $\tilde f$ 单射。
+因此 $\tilde f$ 为同构。
+
+最后对任意 $x\in R$，有 $(\iota\circ\tilde f\circ\pi)(x)=\iota(\tilde f(x+\ker f))=f(x)$，故交换图成立。
+\end{proof}
+
+\begin{proposition}[线性映射基本定理（第一同构定理）]
+设 $V,W$ 为域 $\mathbb{F}$ 上的线性空间，$f:V\to W$ 为线性映射。
+记
+\[
+  \ker f=\{v\in V:f(v)=0\},\qquad \operatorname{Im}f=f(V)\subseteq W.
+\]
+记 $\pi:V\to V/\ker f$ 为自然映射 $\pi(v)=v+\ker f$。
+则存在唯一线性映射
+\[
+  \tilde f:V/\ker f\to \operatorname{Im}f,\qquad \tilde f(v+\ker f)=f(v)
+\]
+使得 $f=\iota\circ\tilde f\circ\pi$（其中 $\iota:\operatorname{Im}f\hookrightarrow W$ 为包含映射）。
+并且 $\tilde f$ 为线性同构。
+相应交换图为：
+\[
+\begin{tikzcd}
+ V \arrow[r,"f"] \arrow[d,"\pi"'] & W \\
+ V/\ker f \arrow[r,"\tilde f"'] & \operatorname{Im}f \arrow[u,hook,"\iota"']
+\end{tikzcd}
+\]
+\end{proposition}
+
+\begin{proof}
+由于 $\ker f$ 为 $V$ 的子空间，$V/\ker f$ 可按商加法群构造，并定义数量乘
+\[
+  \lambda\,(v+\ker f)=(\lambda v)+\ker f\qquad (\lambda\in \mathbb{F},\ v\in V).
+\]
+该定义良好，从而 $V/\ker f$ 成为线性空间。
+
+定义 $\tilde f(v+\ker f)=f(v)$。
+若 $v+\ker f=w+\ker f$，则 $w-v\in \ker f$，从而 $f(w-v)=0$，即 $f(v)=f(w)$，故 $\tilde f$ 良定义。
+并且对任意 $v,w\in V$ 与 $\lambda\in \mathbb{F}$，有
+\[
+  \tilde f\bigl((v+\ker f)+(w+\ker f)\bigr)=\tilde f((v+w)+\ker f)=f(v+w)=f(v)+f(w),
+\]
+\[
+  \tilde f\bigl(\lambda(v+\ker f)\bigr)=\tilde f((\lambda v)+\ker f)=f(\lambda v)=\lambda f(v),
+\]
+故 $\tilde f$ 为线性映射。
+
+由定义 $\tilde f$ 值域为 $\operatorname{Im}f$，故满射。
+若 $\tilde f(v+\ker f)=0$，则 $f(v)=0$，即 $v\in \ker f$，从而 $v+\ker f=\ker f$，故 $\tilde f$ 单射。
+因此 $\tilde f$ 为线性同构。
+
+最后对任意 $v\in V$，有 $(\iota\circ\tilde f\circ\pi)(v)=\iota(\tilde f(v+\ker f))=f(v)$，故交换图成立。
+\end{proof}
+
+\chapter{生成结构与环论初步}
+
+\section{生成子群与生成理想}
+
+\begin{definition}[集合族的交]
+设 $X$ 为集合，$\mathcal F\subseteq \mathcal P(X)$ 为非空集合族。
+定义
+\[
+  \bigcap\mathcal F=\{x\in X:\forall A\in \mathcal F,\ x\in A\}.
+\]
+\end{definition}
+
+\begin{proposition}\label{intersection-subgroups}
+设 $G$ 为群，$\mathcal F$ 为 $G$ 的非空子群族，即对任意 $H\in \mathcal F$ 有 $H\le G$。
+则 $\bigcap\mathcal F$ 为 $G$ 的子群。
+\end{proposition}
+
+\begin{proof}
+由于对任意 $H\le G$ 都有 $e\in H$，故 $e\in \bigcap\mathcal F$，从而 $\bigcap\mathcal F\neq\varnothing$。
+任取 $x,y\in \bigcap\mathcal F$。
+则对任意 $H\in \mathcal F$，有 $x,y\in H$。
+由于 $H$ 为子群，故 $xy^{-1}\in H$。
+于是 $xy^{-1}\in \bigcap\mathcal F$。
+由子群判别法知 $\bigcap\mathcal F\le G$。
+\end{proof}
+
+\begin{definition}[生成子群]
+设 $G$ 为群，$\Omega\subseteq G$。
+令
+\[
+  \mathcal A=\{H\le G:\Omega\subseteq H\}.
+\]
+由于 $G\in \mathcal A$，故 $\mathcal A\neq\varnothing$。
+定义
+\[
+  \langle\Omega\rangle=\bigcap\mathcal A,
+\]
+称为由 $\Omega$ 生成的子群。
+\end{definition}
+
+\begin{proposition}
+在上述记号下，$\langle\Omega\rangle\le G$ 且 $\Omega\subseteq \langle\Omega\rangle$。
+并且若 $K\le G$ 且 $\Omega\subseteq K$，则 $\langle\Omega\rangle\subseteq K$。
+因此 $\langle\Omega\rangle$ 是包含 $\Omega$ 的最小子群。
+\end{proposition}
+
+\begin{proof}
+由 $\mathcal A$ 为非空子群族，命题~\ref{pro:intersection-subgroups} 给出 $\langle\Omega\rangle=\bigcap\mathcal A\le G$。
+任取 $\omega\in \Omega$。
+对任意 $H\in \mathcal A$，有 $\Omega\subseteq H$，从而 $\omega\in H$。
+故 $\omega\in \bigcap\mathcal A=\langle\Omega\rangle$，即 $\Omega\subseteq \langle\Omega\rangle$。
+
+若 $K\le G$ 且 $\Omega\subseteq K$，则 $K\in \mathcal A$。
+由交集的定义立得 $\bigcap\mathcal A\subseteq K$，即 $\langle\Omega\rangle\subseteq K$。
+\end{proof}
+
+\begin{proposition}
+设 $G$ 为群，$\mathcal F$ 为 $G$ 的非空正规子群族，即对任意 $N\in \mathcal F$ 有 $N\trianglelefteq G$。
+则 $\bigcap\mathcal F\trianglelefteq G$。
+\end{proposition}
+
+\begin{proof}
+由命题~\ref{pro:intersection-subgroups} 知 $\bigcap\mathcal F\le G$。
+任取 $g\in G$ 与 $x\in \bigcap\mathcal F$。
+则对任意 $N\in \mathcal F$，有 $x\in N$。
+由于 $N\trianglelefteq G$，故 $gxg^{-1}\in N$。
+于是 $gxg^{-1}\in \bigcap\mathcal F$。
+因此 $\bigcap\mathcal F\trianglelefteq G$。
+\end{proof}
+
+\begin{definition}[生成理想]
+设 $R$ 为环，$\Omega\subseteq R$。
+令
+\[
+  \mathcal A=\{I\subseteq R: I\text{ 为 }R\text{ 的（双边）理想且 }\Omega\subseteq I\}.
+\]
+由于 $R\in \mathcal A$，故 $\mathcal A\neq\varnothing$。
+定义
+\[
+  (\Omega)=\bigcap\mathcal A,
+\]
+称为由 $\Omega$ 生成的（双边）理想。
+\end{definition}
+
+\begin{proposition}
+在上述记号下，$(\Omega)$ 为 $R$ 的理想且 $\Omega\subseteq (\Omega)$。
+并且若 $J$ 为 $R$ 的理想且 $\Omega\subseteq J$，则 $(\Omega)\subseteq J$。
+因此 $(\Omega)$ 是包含 $\Omega$ 的最小理想。
+\end{proposition}
+
+\begin{proof}
+由于 $\mathcal A$ 为非空理想族，且理想作为加法群的子群族满足交仍为子群，
+再由交集对左右乘封闭性可逐一验证，故 $(\Omega)=\bigcap\mathcal A$ 为理想。
+任取 $\omega\in \Omega$。
+对任意 $I\in \mathcal A$，有 $\Omega\subseteq I$，从而 $\omega\in I$。
+故 $\omega\in \bigcap\mathcal A=(\Omega)$，即 $\Omega\subseteq (\Omega)$。
+若 $J$ 为理想且 $\Omega\subseteq J$，则 $J\in \mathcal A$，由交集定义得 $\bigcap\mathcal A\subseteq J$，即 $(\Omega)\subseteq J$。
+\end{proof}
+
+\section{幺环、除环与域}
+
+\begin{definition}[幺环与交换幺环]
+设 $R$ 为环。
+若存在元素 $1\in R$ 使得对任意 $x\in R$，有 $1x=x=x1$，则称 $R$ 为幺环（或有单位元的环），并称 $1$ 为单位元。
+若进一步 $R$ 为交换环，则称 $R$ 为交换幺环。
+\end{definition}
+
+\begin{definition}[可逆元]
+设 $R$ 为幺环。
+若 $x\in R$ 存在 $y\in R$ 使得 $xy=1=yx$，则称 $x$ 为可逆元，并称 $y$ 为 $x$ 的逆元，记为 $x^{-1}$。
+\end{definition}
+
+\begin{proposition}
+设 $R$ 为幺环。
+则 $0$ 为可逆元当且仅当 $R$ 为零环（即 $1=0$）。
+\end{proposition}
+
+\begin{proof}
+若 $0$ 可逆，则存在 $x\in R$ 使得 $0x=1$。
+但 $0x=0$，故 $1=0$，从而 $R$ 为零环。
+反之若 $1=0$，则 $0=1$，显然可逆。
+\end{proof}
+
+\begin{definition}[除环与域]
+设 $R$ 为非零幺环。
+若对任意 $0\ne x\in R$，元素 $x$ 都可逆，则称 $R$ 为除环。
+若 $R$ 还是交换环，则称 $R$ 为域（即交换除环）。
+\end{definition}
+
+\begin{example}
+$\mathbb{C}$、$\mathbb{R}$、$\mathbb{Q}$ 以及素数 $p$ 下的有限域 $\mathbb{Z}_p$ 均为域。
+\end{example}
+
+\begin{proposition}
+设 $n\ge 1$。
+自然映射
+\[
+  \pi:\mathbb{Z}\to \mathbb{Z}_n,\qquad \pi(x)=[x]
+\]
+为满射环同态，其中 $\mathbb{Z}_n=\{[0],[1],\dots,[n-1]\}$。
+\end{proposition}
+
+\begin{proof}
+这是模 $n$ 的自然投影。
+显然 $\pi(x+y)=[x+y]=[x]+[y]$ 且 $\pi(xy)=[xy]=[x][y]$，故为环同态。
+任取 $[k]\in \mathbb{Z}_n$（$0\le k\le n-1$），有 $\pi(k)=[k]$，故满射。
+\end{proof}
+
+\begin{proposition}
+设 $n\ge 1$。
+则元素 $[x]\in \mathbb{Z}_n$ 可逆当且仅当 $\gcd(x,n)=1$。
+\end{proposition}
+
+\begin{proof}
+若 $\gcd(x,n)=1$，则存在整数 $u,v$ 使得 $ux+vn=1$。
+在 $\mathbb{Z}_n$ 中有 $[u][x]=[ux]=[1]$，故 $[x]$ 可逆。
+反之若 $[x]$ 可逆，则存在 $[y]$ 使得 $[x][y]=[1]$，即 $xy\equiv 1\pmod n$。
+于是存在整数 $k$ 使得 $xy-1=kn$。
+因此 $1=xy-kn$ 为 $x$ 与 $n$ 的整数线性组合，故 $\gcd(x,n)=1$。
+\end{proof}
+
+\begin{definition}[单群]
+设 $G$ 为群。
+若 $G$ 的正规子群只有 $\{e\}$ 与 $G$，则称 $G$ 为单群。
+\end{definition}
+
+\begin{definition}[单环]
+设 $R$ 为环。
+若 $R$ 的（双边）理想只有 $\{0\}$ 与 $R$，则称 $R$ 为单环。
+\end{definition}
+
+\begin{example}
+任一域都是单环。
+此外，设 $F$ 为域，$n\ge 1$，则矩阵环 $M_n(F)$ 是单环。
+\end{example}
+
+\begin{definition}[主理想]
+设 $R$ 为交换环，$I\subseteq R$ 为理想。
+若存在 $x\in R$ 使得 $I=Rx=\{rx:r\in R\}$，则称 $I$ 为主理想，并记 $I=(x)$。
+\end{definition}
+
+\begin{definition}[主理想整环]
+设 $R$ 为整环。
+若 $R$ 的每个理想都是主理想，则称 $R$ 为主理想整环（PID）。
+\end{definition}
+
+\begin{proposition}
+设 $R$ 为交换环，$x\in R$。
+则由 $x$ 生成的理想满足
+\[
+  (x)=Rx.
+\]
+并且若 $I$ 为理想且 $x\in I$，则 $Rx\subseteq I$。
+\end{proposition}
+
+\begin{proof}
+显然 $Rx$ 为理想且 $x=1\cdot x\in Rx$。
+若 $I$ 为理想且 $x\in I$，则对任意 $r\in R$，有 $rx\in I$。
+故 $Rx\subseteq I$。
+于是 $Rx$ 是包含 $x$ 的最小理想，按生成理想的定义即 $(x)=Rx$。
+\end{proof}
+
+\begin{proposition}
+设 $R$ 为交换环，$x_1,\dots,x_n\in R$。
+则
+\[
+  (x_1,\dots,x_n)=Rx_1+\cdots+Rx_n.
+\]
+特别地，$(x,y)=Rx+Ry$。
+\end{proposition}
+
+\begin{proof}
+记 $J=Rx_1+\cdots+Rx_n$。
+对任意 $i$ 有 $x_i\in J$，故 $(x_1,\dots,x_n)\subseteq J$。
+反之任取 $a\in J$，则存在 $r_1,\dots,r_n\in R$ 使得 $a=r_1x_1+\cdots+r_nx_n$。
+由于 $(x_1,\dots,x_n)$ 为理想且包含每个 $x_i$，从而包含每个 $r_ix_i$，亦包含其和 $a$。
+故 $J\subseteq (x_1,\dots,x_n)$。
+\end{proof}
+
+\section{循环群}
+
+\begin{definition}[循环群]
+设 $G$ 为群。
+若存在 $x\in G$ 使得 $G=\langle x\rangle$，则称 $G$ 为循环群。
+\end{definition}
+
+\begin{proposition}
+设 $G$ 为群，$x\in G$。
+则
+\[
+  \langle x\rangle=\{x^n:n\in \mathbb{Z}\}.
+\]
+其中约定 $x^0=e$，对 $n\ge 0$ 令 $x^n=\underbrace{x\cdot\ldots\cdot x}_{n\text{ 次}}$，并令 $x^{-n}=(x^n)^{-1}$。
+\end{proposition}
+
+\begin{proof}
+记 $S=\{x^n:n\in \mathbb{Z}\}$。
+由定义 $x\in S$ 且 $e=x^0\in S$。
+若 $x^m,x^n\in S$，则 $(x^m)(x^n)^{-1}=x^mx^{-n}=x^{m-n}\in S$，故 $S\le G$。
+由于 $S$ 是包含 $x$ 的子群，故 $\langle x\rangle\subseteq S$。
+另一方面，对任意 $n\in \mathbb{Z}$，由 $x\in \langle x\rangle$ 且 $\langle x\rangle$ 为子群，得 $x^n\in \langle x\rangle$，从而 $S\subseteq \langle x\rangle$。
+\end{proof}
+
+\begin{proposition}
+设 $R$ 为交换幺环，$\Omega\subseteq R$。
+则由 $\Omega$ 生成的理想满足
+\[
+  (\Omega)=\Bigl\{\sum_{i=1}^n r_ix_i: n\ge 1,\ r_i\in R,\ x_i\in \Omega\Bigr\}.
+\]
+\end{proposition}
+
+\begin{proof}
+记
+\[
+  J=\Bigl\{\sum_{i=1}^n r_ix_i: n\ge 1,\ r_i\in R,\ x_i\in \Omega\Bigr\}.
+\]
+易见 $J$ 对加法封闭且对取负封闭，故 $J\le (R,+)$。
+任取 $a\in J$ 与 $s\in R$。
+设 $a=\sum_{i=1}^n r_ix_i$，则
+\[
+  sa=\sum_{i=1}^n (sr_i)x_i\in J.
+\]
+因此 $J$ 为理想。
+并且对任意 $x\in \Omega$，有 $x=1\cdot x\in J$，故 $\Omega\subseteq J$。
+由生成理想的最小性得 $(\Omega)\subseteq J$。
+
+反之若 $I$ 为理想且 $\Omega\subseteq I$，则对任意 $r\in R$ 与 $x\in \Omega$ 有 $rx\in I$，从而 $J\subseteq I$。
+这给出 $J$ 的最小性。
+
+综上 $(\Omega)=J$。
+\end{proof}
+
+\begin{definition}[左理想与右理想]
+设 $R$ 为环。
+若 $I\le (R,+)$ 且对任意 $r\in R,\ a\in I$ 有 $ra\in I$，则称 $I$ 为 $R$ 的左理想。
+若 $I\le (R,+)$ 且对任意 $r\in R,\ a\in I$ 有 $ar\in I$，则称 $I$ 为 $R$ 的右理想。
+若 $I$ 同时为左理想与右理想，则称 $I$ 为（双边）理想。
+\end{definition}
+
+\begin{definition}[由子集生成的左/右/双边理想]
+设 $R$ 为幺环，$\Omega\subseteq R$。
+定义
+\[
+  R\Omega=\Bigl\{\sum_{i=1}^n r_ix_i: n\ge 1,\ r_i\in R,\ x_i\in \Omega\Bigr\},
+\qquad
+  \Omega R=\Bigl\{\sum_{i=1}^n x_ir_i: n\ge 1,\ r_i\in R,\ x_i\in \Omega\Bigr\},
+\]
+以及
+\[
+  R\Omega R=\Bigl\{\sum_{i=1}^n r_ix_is_i: n\ge 1,\ r_i,s_i\in R,\ x_i\in \Omega\Bigr\}.
+\]
+其中 $R\Omega$ 称为由 $\Omega$ 生成的左理想，$\Omega R$ 称为由 $\Omega$ 生成的右理想，$R\Omega R$ 称为由 $\Omega$ 生成的双边理想。
+当 $\Omega=\{x\}$ 时，分别记为 $Rx$、$xR$ 与 $RxR$。
+\end{definition}
+
+\begin{proposition}
+设 $R$ 为幺环，$\Omega\subseteq R$。
+则 $R\Omega$ 为左理想且包含 $\Omega$，并且对任意左理想 $L$，若 $\Omega\subseteq L$，则 $R\Omega\subseteq L$。
+类似地，$\Omega R$ 为右理想且包含 $\Omega$，并在所有包含 $\Omega$ 的右理想中最小；
+而 $R\Omega R$ 为双边理想且包含 $\Omega$，并在所有包含 $\Omega$ 的双边理想中最小。
+\end{proposition}
+
+\begin{proof}
+先证关于 $R\Omega$ 的结论。
+由定义 $R\Omega$ 对加法封闭且对取负封闭，故 $R\Omega\le (R,+)$。
+任取 $a\in R\Omega$ 与 $s\in R$。
+设 $a=\sum_{i=1}^n r_ix_i$，则
+\[
+  sa=\sum_{i=1}^n (sr_i)x_i\in R\Omega.
+\]
+故 $R\Omega$ 为左理想。
+对任意 $x\in \Omega$，有 $x=1\cdot x\in R\Omega$，故 $\Omega\subseteq R\Omega$。
+
+若 $L$ 为左理想且 $\Omega\subseteq L$，则对任意 $r\in R$ 与 $x\in \Omega$ 有 $rx\in L$，从而 $R\Omega\subseteq L$。
+这给出 $R\Omega$ 的最小性。
+
+关于 $\Omega R$ 与 $R\Omega R$ 的结论同理可证。
+\end{proof}
+
+\begin{proposition}
+设 $R$ 为幺环，$I\subseteq R$ 为理想。
+则 $I\subsetneq R$ 当且仅当 $1\notin I$。
+并且若 $I$ 中含有可逆元，则 $I=R$。
+\end{proposition}
+
+\begin{proof}
+若 $1\in I$，则对任意 $r\in R$ 有 $r=r\cdot 1\in I$，故 $I=R$。
+因此 $I\subsetneq R$ 推出 $1\notin I$。
+反之若 $1\notin I$，则 $I\ne R$，即 $I\subsetneq R$。
+
+若 $x\in I$ 可逆，则 $1=x^{-1}x\in I$，从而 $I=R$。
+\end{proof}
+
+\begin{proposition}
+设 $F$ 为域，$I$ 为 $F$ 的理想。
+则 $I=\{0\}$ 或 $I=F$。
+\end{proposition}
+
+\begin{proof}
+若 $I\ne\{0\}$，取 $0\ne a\in I$。
+由于 $a$ 可逆，故 $1=a^{-1}a\in I$，从而 $I=F$。
+\end{proof}
+
+\begin{proposition}
+设 $R$ 为交换幺环。
+若 $R$ 的理想只有 $\{0\}$ 与 $R$，则 $R$ 为域。
+\end{proposition}
+
+\begin{proof}
+任取 $0\ne a\in R$。
+则主理想 $(a)$ 非零，故 $(a)=R$。
+于是 $1\in (a)$，从而存在 $r\in R$ 使得 $ra=1$。
+因此每个非零元都可逆，$R$ 为域。
+\end{proof}
+
+\begin{definition}[偏序与全序]
+设 $\Omega$ 为集合，$\le$ 为 $\Omega$ 上的二元关系。
+若满足
+\begin{enumerate}
+\item 对任意 $x\in \Omega$，有 $x\le x$（反身性）；
+\item 对任意 $x,y,z\in \Omega$，若 $x\le y$ 且 $y\le z$，则 $x\le z$（传递性）；
+\item 对任意 $x,y\in \Omega$，若 $x\le y$ 且 $y\le x$，则 $x=y$（反对称性），
+\end{enumerate}
+则称 $\le$ 为 $\Omega$ 上的偏序，$(\Omega,\le)$ 称为偏序集。
+若 $\le$ 为偏序且对任意 $x,y\in \Omega$ 均有 $x\le y$ 或 $y\le x$，则称 $\le$ 为全序（或线性序）。
+\end{definition}
+
+\begin{example}
+对任意集合 $X$，$(\mathcal P(X),\subseteq)$ 为偏序集。
+\end{example}
+
+\begin{definition}[上界与极大元]
+设 $(\Omega,\le)$ 为偏序集，$X\subseteq \Omega$。
+若 $y\in \Omega$ 满足对任意 $x\in X$ 都有 $x\le y$，则称 $y$ 为 $X$ 的上界。
+若 $x\in \Omega$ 满足：对任意 $y\in \Omega$，由 $x\le y$ 可推出 $y=x$，则称 $x$ 为 $(\Omega,\le)$ 的极大元。
+\end{definition}
+
+\begin{definition}[链]
+设 $(\Omega,\le)$ 为偏序集，$C\subseteq \Omega$。
+若 $C$ 在 $\le$ 下为全序集，即对任意 $x,y\in C$ 均有 $x\le y$ 或 $y\le x$，则称 $C$ 为 $(\Omega,\le)$ 的一条链。
+\end{definition}
+
+\section{极大理想与 Zorn 引理}
+
+\begin{lemma}[Zorn 引理]
+设 $(\Omega,\le)$ 为非空偏序集。
+若 $\Omega$ 的每一条链都有上界，则 $(\Omega,\le)$ 存在极大元。
+\end{lemma}
+
+\begin{definition}[极大理想]
+设 $R$ 为幺环，$I\subseteq R$ 为理想。
+若 $I\subsetneq R$ 且对任意理想 $J$，由 $I\subseteq J\subsetneq R$ 可推出 $J=I$，则称 $I$ 为 $R$ 的极大理想。
+\end{definition}
+
+\begin{proposition}\label{chain-union-ideal}
+设 $R$ 为幺环，$\mathcal C$ 为 $R$ 的一族理想，并且 $\mathcal C$ 在包含关系 $\subseteq$ 下为一条链。
+则
+\[
+  J=\bigcup_{I\in \mathcal C} I
+\]
+为 $R$ 的理想。
+并且若对任意 $I\in \mathcal C$ 都有 $I\subsetneq R$，则 $J\subsetneq R$。
+\end{proposition}
+
+\begin{proof}
+先证 $J$ 为加法群 $(R,+)$ 的子群。
+任取 $a,b\in J$。
+则存在 $I_a,I_b\in \mathcal C$ 使得 $a\in I_a$、$b\in I_b$。
+由于 $\mathcal C$ 为链，故 $I_a\subseteq I_b$ 或 $I_b\subseteq I_a$。
+不妨设 $I_a\subseteq I_b$，则 $a,b\in I_b$。
+于是 $a-b\in I_b\subseteq J$，从而 $J\le (R,+)$。
+
+再证吸收性。
+任取 $r\in R$ 与 $a\in J$。
+取 $I\in \mathcal C$ 使得 $a\in I$。
+由于 $I$ 为理想，得 $ra,ar\in I\subseteq J$。
+故 $J$ 为理想。
+
+最后证 $J\subsetneq R$。
+反设 $J=R$，则 $1\in J$。
+于是存在 $I\in \mathcal C$ 使得 $1\in I$，从而 $I=R$，与 $I\subsetneq R$ 矛盾。
+\end{proof}
+
+\begin{proposition}[极大理想存在性]
+设 $R$ 为非零幺环。
+则 $R$ 存在极大理想。
+\end{proposition}
+
+\begin{proof}
+令
+\[
+  \Omega=\{I\subseteq R: I\text{ 为理想且 }I\subsetneq R\}
+\]
+并按包含关系 $\subseteq$ 作为偏序。
+由于 $R$ 为非零幺环，故 $1\ne 0$，从而 $\{0\}\subsetneq R$，因此 $\Omega\ne\varnothing$。
+
+任取 $\Omega$ 的一条链 $\mathcal C$。
+由命题~\ref{pro:chain-union-ideal} 知 $J=\bigcup_{I\in \mathcal C} I$ 仍为真理想，且显然对任意 $I\in \mathcal C$ 有 $I\subseteq J$。
+故 $J$ 为该链的上界。
+由 Zorn 引理，$\Omega$ 存在极大元 $M$。
+这意味着 $M$ 是包含关系下的极大真理想，即 $M$ 为极大理想。
+\end{proof}
+
+\begin{lemma}
+设 $f:G\to H$ 为群同态，$\Omega\le G$。
+则
+\[
+  f^{-1}(f(\Omega))=\Omega\ker f.
+\]
+\end{lemma}
+
+\begin{proof}
+先证 $\Omega\ker f\subseteq f^{-1}(f(\Omega))$。
+任取 $\omega\in \Omega$ 与 $k\in \ker f$。
+则 $f(\omega k)=f(\omega)f(k)=f(\omega)\in f(\Omega)$，故 $\omega k\in f^{-1}(f(\Omega))$。
+于是 $\Omega\ker f\subseteq f^{-1}(f(\Omega))$。
+
+再证 $f^{-1}(f(\Omega))\subseteq \Omega\ker f$。
+任取 $z\in f^{-1}(f(\Omega))$，则存在 $a\in \Omega$ 使得 $f(z)=f(a)$。
+于是 $f(a^{-1}z)=f(a)^{-1}f(z)=e$，故 $a^{-1}z\in \ker f$。
+从而 $z=a(a^{-1}z)\in \Omega\ker f$。
+\end{proof}
+
+\begin{corollary}
+设 $f:G\to H$ 为群同态，$A\le G$。
+若 $\ker f\subseteq A$，则 $f^{-1}(f(A))=A$。
+\end{corollary}
+
+\begin{proof}
+由上引理，$f^{-1}(f(A))=A\ker f$。
+又因 $\ker f\subseteq A$，故 $A\ker f=A$。
+\end{proof}
+
+\begin{corollary}
+设 $f:G\to H$ 为满同态，$B\le H$。
+则 $f(f^{-1}(B))=B$。
+\end{corollary}
+
+\begin{proof}
+显然 $f(f^{-1}(B))\subseteq B$。
+反之任取 $b\in B$。
+由满射性，存在 $g\in G$ 使得 $f(g)=b$。
+于是 $g\in f^{-1}(B)$，从而 $b=f(g)\in f(f^{-1}(B))$。
+\end{proof}
+
+\begin{proposition}[满同态下的子群对应]
+设 $f:G\twoheadrightarrow H$ 为满同态。
+记
+\[
+  \mathcal S=\{A\le G:\ker f\subseteq A\},\qquad \mathcal T=\{B\le H\}.
+\]
+定义映射
+\[
+  \Theta:\mathcal S\to \mathcal T,\ A\mapsto f(A),
+\qquad
+  \Psi:\mathcal T\to \mathcal S,\ B\mapsto f^{-1}(B).
+\]
+则 $\Theta$ 与 $\Psi$ 互为逆映射，且都保持包含关系。
+并且有如下对应图：
+\[
+\begin{tikzcd}
+ \mathcal S \arrow[r,shift left=1.2ex,"\Theta"] & \mathcal T \arrow[l,shift left=1.2ex,"\Psi"]
+\end{tikzcd}
+\]
+\end{proposition}
+
+\begin{proof}
+先证 $\Theta$ 与 $\Psi$ 的值域正确。
+对 $A\in \mathcal S$，显然 $f(A)\le H$，故 $\Theta(A)\in \mathcal T$。
+对 $B\in \mathcal T$，有 $f^{-1}(B)\le G$。
+且对任意 $k\in \ker f$，有 $f(k)=e\in B$，故 $k\in f^{-1}(B)$。
+于是 $\ker f\subseteq f^{-1}(B)$，即 $\Psi(B)\in \mathcal S$。
+
+再证互逆。
+任取 $A\in \mathcal S$，由前一推论得
+\[
+  (\Psi\circ\Theta)(A)=f^{-1}(f(A))=A.
+\]
+任取 $B\in \mathcal T$，由满射性推论得
+\[
+  (\Theta\circ\Psi)(B)=f(f^{-1}(B))=B.
+\]
+因此 $\Theta$ 与 $\Psi$ 互为逆映射。
+
+最后证保包含。
+若 $A_1\subseteq A_2$（$A_1,A_2\in \mathcal S$），则 $f(A_1)\subseteq f(A_2)$。
+若 $B_1\subseteq B_2$（$B_1,B_2\in \mathcal T$），则 $f^{-1}(B_1)\subseteq f^{-1}(B_2)$。
+\end{proof}
+
+\begin{corollary}
+在上述命题条件下，映射 $\Theta$ 与 $\Psi$ 诱导正规子群之间的一一对应：
+\[
+  \{A\trianglelefteq G:\ker f\subseteq A\}\longleftrightarrow\{B\trianglelefteq H\}.
+\]
+\end{corollary}
+
+\begin{proof}
+若 $A\trianglelefteq G$ 且 $\ker f\subseteq A$，任取 $h\in H$。
+由满射性取 $g\in G$ 使得 $f(g)=h$。
+对任意 $a\in A$，有
+\[
+  h f(a) h^{-1}=f(g)f(a)f(g)^{-1}=f(gag^{-1})\in f(A),
+\]
+故 $f(A)\trianglelefteq H$。
+反之若 $B\trianglelefteq H$，则对任意 $g\in G$ 与 $x\in f^{-1}(B)$，有
+\[
+  f(gxg^{-1})=f(g)f(x)f(g)^{-1}\in B,
+\]
+故 $gxg^{-1}\in f^{-1}(B)$，从而 $f^{-1}(B)\trianglelefteq G$。
+\end{proof}
+
+\begin{proposition}[理想与商环理想的对应]\label{ideal-quotient-correspondence}
+设 $R$ 为幺环，$I\subseteq R$ 为（双边）理想。
+记自然映射
+\[
+  \pi:R\to R/I,\qquad \pi(x)=x+I.
+\]
+则 $\ker\pi=I$。
+并且映射
+\[
+  \Phi:\{J\subseteq R: J\text{ 为理想且 }I\subseteq J\}\to\{K\subseteq R/I:K\text{ 为理想}\},\qquad \Phi(J)=J/I
+\]
+为包含关系下的双射，其逆映射为 $\Psi(K)=\pi^{-1}(K)$。
+\end{proposition}
+
+\begin{proof}
+对任意 $x\in R$，有 $\pi(x)=0+I$ 当且仅当 $x\in I$，故 $\ker\pi=I$。
+
+任取理想 $J\supseteq I$。
+定义
+\[
+  J/I=\{x+I:x\in J\}\subseteq R/I.
+\]
+易验证 $J/I$ 在 $R/I$ 中为理想，且对包含关系满足：若 $J_1\subseteq J_2$，则 $J_1/I\subseteq J_2/I$。
+
+反之任取 $R/I$ 的理想 $K$。
+则 $\pi^{-1}(K)\le (R,+)$，并且对任意 $r\in R$ 与 $x\in \pi^{-1}(K)$，有
+\[
+  \pi(rx)=\pi(r)\pi(x)\in K,\qquad \pi(xr)=\pi(x)\pi(r)\in K,
+\]
+故 $\pi^{-1}(K)$ 为 $R$ 的理想。
+并且 $I=\ker\pi\subseteq \pi^{-1}(K)$。
+同样若 $K_1\subseteq K_2$，则 $\pi^{-1}(K_1)\subseteq \pi^{-1}(K_2)$。
+
+最后验证互逆。
+对 $J\supseteq I$，有
+\[
+  \Psi(\Phi(J))=\pi^{-1}(J/I)=J.
+\]
+对理想 $K\subseteq R/I$，有
+\[
+  \Phi(\Psi(K))=\pi^{-1}(K)/I=K.
+\]
+故为双射。
+\end{proof}
+
+\begin{proposition}\label{maximal-iff-simple}
+设 $R$ 为幺环，$I\subseteq R$ 为理想。
+则 $I$ 为极大理想当且仅当商环 $R/I$ 为单环。
+\end{proposition}
+
+\begin{proof}
+由命题~\ref{pro:ideal-quotient-correspondence}，包含 $I$ 的理想与 $R/I$ 的理想一一对应。
+其中 $I$ 对应零理想 $\{0\}$，而 $R$ 对应整个环 $R/I$。
+
+若 $I$ 为极大理想，则不存在真包含关系 $I\subsetneq J\subsetneq R$。
+由对应可知 $R/I$ 不存在非平凡理想，从而 $R/I$ 为单环。
+
+反之若 $R/I$ 为单环，则其理想只有 $\{0\}$ 与 $R/I$。
+由对应可知包含 $I$ 的理想只有 $I$ 与 $R$，因此 $I$ 为极大理想。
+\end{proof}
+
+\begin{corollary}
+设 $R$ 为交换幺环，$I\subseteq R$ 为理想。
+则 $I$ 为极大理想当且仅当 $R/I$ 为域。
+\end{corollary}
+
+\begin{proof}
+由命题~\ref{pro:maximal-iff-simple}，$I$ 极大当且仅当 $R/I$ 为单环。
+而 $R/I$ 为交换幺环。
+由前述命题“交换幺环若理想只有 $\{0\}$ 与 $R$ 则为域”，知 $R/I$ 为单环当且仅当 $R/I$ 为域。
+\end{proof}
+
+\begin{proposition}
+设 $f:G\to H$ 为群同态，$\Omega\subseteq G$。
+则
+\[
+  f(\langle\Omega\rangle)=\langle f(\Omega)\rangle.
+\]
+\end{proposition}
+
+\begin{proof}
+由于 $\langle\Omega\rangle\le G$，故 $f(\langle\Omega\rangle)\le H$。
+并且对任意 $\omega\in \Omega$，有 $\omega\in \langle\Omega\rangle$，从而 $f(\omega)\in f(\langle\Omega\rangle)$。
+故 $f(\Omega)\subseteq f(\langle\Omega\rangle)$。
+由生成子群的最小性，得
+\[
+  \langle f(\Omega)\rangle\subseteq f(\langle\Omega\rangle).
+\]
+
+另一方面，$f^{-1}(\langle f(\Omega)\rangle)\le G$。
+且对任意 $\omega\in \Omega$，有 $f(\omega)\in f(\Omega)\subseteq \langle f(\Omega)\rangle$，故 $\omega\in f^{-1}(\langle f(\Omega)\rangle)$。
+从而 $\Omega\subseteq f^{-1}(\langle f(\Omega)\rangle)$。
+由生成子群的最小性，$\langle\Omega\rangle\subseteq f^{-1}(\langle f(\Omega)\rangle)$。
+对两侧取像得
+\[
+  f(\langle\Omega\rangle)\subseteq \langle f(\Omega)\rangle.
+\]
+综上两侧相等。
+\end{proof}
+
+\begin{proposition}
+设 $f:R\to S$ 为环同态，$\Omega\subseteq R$。
+记 $f(R)$ 为 $S$ 的子环。
+则在环 $f(R)$ 中由集合 $f(\Omega)$ 生成的理想记为 $(f(\Omega))_{f(R)}$，并且
+\[
+  f((\Omega))=(f(\Omega))_{f(R)}.
+\]
+特别地，若 $f$ 为满射，则 $f((\Omega))=(f(\Omega))$（右端为 $S$ 中由 $f(\Omega)$ 生成的理想）。
+\end{proposition}
+
+\begin{proof}
+先证 $f((\Omega))$ 为 $f(R)$ 的理想，且包含 $f(\Omega)$。
+任取 $a\in (\Omega)$，则 $f(a)\in f((\Omega))$。
+若 $\omega\in \Omega$，则 $\omega\in (\Omega)$，故 $f(\omega)\in f((\Omega))$，从而 $f(\Omega)\subseteq f((\Omega))$。
+任取 $t\in f(R)$ 与 $y\in f((\Omega))$。
+可取 $t=f(r)$（某个 $r\in R$）与 $y=f(a)$（某个 $a\in (\Omega)$）。
+则
+\[
+  ty=f(r)f(a)=f(ra)\in f((\Omega)),\qquad yt=f(a)f(r)=f(ar)\in f((\Omega)),
+\]
+其中用到 $(\Omega)$ 为理想。
+故 $f((\Omega))$ 为 $f(R)$ 的理想且包含 $f(\Omega)$。
+由最小性得 $(f(\Omega))_{f(R)}\subseteq f((\Omega))$。
+
+反过来，$f^{-1}((f(\Omega))_{f(R)})$ 为 $R$ 的理想，且包含 $\Omega$（因为 $f(\Omega)\subseteq (f(\Omega))_{f(R)}$）。
+由生成理想的最小性，$(\Omega)\subseteq f^{-1}((f(\Omega))_{f(R)})$。
+两侧取像得 $f((\Omega))\subseteq (f(\Omega))_{f(R)}$。
+综上二者相等。
+
+若 $f$ 满射，则 $f(R)=S$，于是 $(f(\Omega))_{f(R)}=(f(\Omega))$。
+\end{proof}
+
+\begin{corollary}
+设 $f:G\to H$ 为群同态。
+若 $G$ 为循环群，且 $G=\langle x\rangle$，则 $f(G)=\langle f(x)\rangle$，从而 $f(G)$ 亦为循环群。
+\end{corollary}
+
+\begin{proof}
+由 $f(G)=f(\langle x\rangle)$ 及命题 $f(\langle\Omega\rangle)=\langle f(\Omega)\rangle$（取 $\Omega=\{x\}$），立得 $f(G)=\langle f(x)\rangle$。
+\end{proof}
+
+\begin{proposition}
+设 $G$ 为群，$x\in G$。
+定义映射
+\[
+  \theta:(\mathbb{Z},+)\to \langle x\rangle,\qquad \theta(n)=x^n.
+\]
+则 $\theta$ 为满同态，且
+\[
+  \ker\theta=\{n\in \mathbb{Z}:x^n=e\}.
+\]
+从而由第一同构定理有
+\[
+  \mathbb{Z}/\ker\theta\cong \langle x\rangle.
+\]
+并且有如下交换图：
+\[
+\begin{tikzcd}
+ \mathbb{Z} \arrow[r,"\theta"] \arrow[d,"\pi"'] & \langle x\rangle \\
+ \mathbb{Z}/\ker\theta \arrow[ur,"\tilde\theta"']
+\end{tikzcd}
+\]
+其中 $\pi$ 为自然映射，$\tilde\theta([n])=x^n$。
+\end{proposition}
+
+\begin{proof}
+对任意 $m,n\in \mathbb{Z}$，有
+\[
+  \theta(m+n)=x^{m+n}=x^mx^n=\theta(m)\theta(n),
+\]
+故 $\theta$ 为群同态。
+由 $\langle x\rangle=\{x^n:n\in \mathbb{Z}\}$ 知 $\theta$ 满射。
+并且
+\[
+  n\in \ker\theta\iff \theta(n)=e\iff x^n=e,
+\]
+故 $\ker\theta=\{n\in \mathbb{Z}:x^n=e\}$。
+由群第一同构定理，得 $\mathbb{Z}/\ker\theta\cong \langle x\rangle$，且交换图成立。
+\end{proof}
+
+\begin{corollary}
+设 $G$ 为群，$x\in G$。
+若 $x$ 的阶为 $m<\infty$，则 $\langle x\rangle\cong \mathbb{Z}_m$。
+若 $x$ 的阶为 $\infty$，则 $\langle x\rangle\cong \mathbb{Z}$。
+\end{corollary}
+
+\begin{proposition}\label{subgroup-of-Z}
+设 $H\le (\mathbb{Z},+)$。
+则存在 $n\in \mathbb{N}$ 使得
+\[
+  H=n\mathbb{Z}=\{nk:k\in \mathbb{Z}\}.
+\]
+\end{proposition}
+
+\begin{proof}
+若 $H=\{0\}$，则 $H=0\mathbb{Z}$。
+
+设 $H\ne\{0\}$。
+则 $H$ 中存在非零元 $a$，从而 $|a|\in H$，故 $H\cap \mathbb{N}^*\ne\varnothing$。
+由良序原理，$H\cap \mathbb{N}^*$ 存在最小元，记为 $n$。
+
+先证 $n\mathbb{Z}\subseteq H$。
+由于 $n\in H$ 且 $H$ 为加法群的子群，故对任意 $k\in \mathbb{Z}$ 有 $kn\in H$。
+
+再证 $H\subseteq n\mathbb{Z}$。
+任取 $x\in H$。
+由带余除法，存在整数 $q,r$ 使得
+\[
+  x=qn+r,\qquad 0\le r<n.
+\]
+于是 $r=x-qn\in H$。
+若 $r>0$，则 $r\in H\cap \mathbb{N}^*$ 且 $0<r<n$，与 $n$ 的最小性矛盾。
+故 $r=0$，从而 $x\in n\mathbb{Z}$。
+综上 $H=n\mathbb{Z}$。
+\end{proof}
+
+\begin{proposition}
+设 $n\ge 1$。
+则
+\[
+  \mathbb{Z}/n\mathbb{Z}=\{x+n\mathbb{Z}:x\in \mathbb{Z}\}=\{k+n\mathbb{Z}:k=0,1,\dots,n-1\}.
+\]
+并且映射
+\[
+  \varphi:\mathbb{Z}/n\mathbb{Z}\to \mathbb{Z}_n,\qquad \varphi(x+n\mathbb{Z})=[x]
+\]
+为加法群同构。
+若 $\rho:\mathbb{Z}\to \mathbb{Z}_n$ 为自然投影 $\rho(x)=[x]$，$\pi:\mathbb{Z}\to \mathbb{Z}/n\mathbb{Z}$ 为自然映射 $\pi(x)=x+n\mathbb{Z}$，则有交换图：
+\[
+\begin{tikzcd}
+ \mathbb{Z} \arrow[r,"\pi"] \arrow[dr,"\rho"'] & \mathbb{Z}/n\mathbb{Z} \arrow[d,"\varphi"] \\
+ & \mathbb{Z}_n
+\end{tikzcd}
+\]
+\end{proposition}
+
+\begin{proof}
+对任意 $x\in \mathbb{Z}$，由带余除法存在整数 $q,r$ 使得 $x=qn+r$ 且 $0\le r<n$。
+于是 $x+n\mathbb{Z}=r+n\mathbb{Z}$，从而 $\mathbb{Z}/n\mathbb{Z}=\{k+n\mathbb{Z}:k=0,\dots,n-1\}$。
+
+下面证 $\varphi$ 为同构。
+若 $x+n\mathbb{Z}=y+n\mathbb{Z}$，则 $x-y\in n\mathbb{Z}$，即 $n\mid (x-y)$，从而 $[x]=[y]$，故 $\varphi$ 良定义。
+并且
+\[
+  \varphi\bigl((x+n\mathbb{Z})+(y+n\mathbb{Z})\bigr)=\varphi((x+y)+n\mathbb{Z})=[x+y]=[x]+[y].
+\]
+因此 $\varphi$ 为群同态。
+对任意 $[x]\in \mathbb{Z}_n$，有 $\varphi(x+n\mathbb{Z})=[x]$，故 $\varphi$ 满射。
+若 $\varphi(x+n\mathbb{Z})=[0]$，则 $[x]=[0]$，即 $n\mid x$，从而 $x\in n\mathbb{Z}$，故 $x+n\mathbb{Z}=n\mathbb{Z}$。
+因此 $\varphi$ 单射。
+最后对任意 $x\in \mathbb{Z}$，有 $(\varphi\circ\pi)(x)=\varphi(x+n\mathbb{Z})=[x]=\rho(x)$，故交换图成立。
+\end{proof}
+
+\begin{proposition}
+设 $G=\langle x\rangle$ 为循环群，$H\le G$。
+则 $H$ 亦为循环群。
+更具体地，存在 $n\in \mathbb{N}$ 使得
+\[
+  H=\langle x^n\rangle.
+\]
+并且令 $\theta:(\mathbb{Z},+)\to G$，$\theta(k)=x^k$。
+则有
+\[
+  H=\theta(\theta^{-1}(H)).
+\]
+以及如下交换图：
+\[
+\begin{tikzcd}
+ \theta^{-1}(H) \arrow[r,"\theta|_{\theta^{-1}(H)}"] \arrow[d,hook] & H \arrow[d,hook] \\
+ \mathbb{Z} \arrow[r,"\theta"] & G
+\end{tikzcd}
+\]
+\end{proposition}
+
+\begin{proof}
+考虑满同态 $\theta:(\mathbb{Z},+)\twoheadrightarrow G$，$\theta(k)=x^k$。
+由满同态下子群对应，子群 $H\le G$ 对应于子群 $\theta^{-1}(H)\le \mathbb{Z}$，并且 $H=\theta(\theta^{-1}(H))$。
+
+由命题~\ref{pro:subgroup-of-Z}，$\theta^{-1}(H)=n\mathbb{Z}$（某个 $n\in \mathbb{N}$）。
+因此
+\[
+  H=\theta(n\mathbb{Z})=\{\theta(nk):k\in \mathbb{Z}\}=\{x^{nk}:k\in \mathbb{Z}\}=\langle x^n\rangle.
+\]
+交换图由限制映射的定义显然成立。
+\end{proof}
+
+\chapter{有限群理论}
+
+\section{元素的阶}
+
+\begin{definition}[元素的阶]
+设 $G$ 为群，$x\in G$。
+若存在最小正整数 $n$ 使得 $x^n=e$，则称 $x$ 的阶为 $n$，记为 $o(x)=n$。
+若对任意正整数 $n$ 都有 $x^n\ne e$，则称 $x$ 的阶为无穷，记为 $o(x)=\infty$。
+并规定 $o(e)=1$。
+\end{definition}
+
+\begin{proposition}\label{order-equals-cyclic-size}
+设 $G$ 为群，$x\in G$。
+则
+\[
+  o(x)=|\langle x\rangle|.
+\]
+\end{proposition}
+
+\begin{proof}
+取满同态 $\theta:(\mathbb{Z},+)\to \langle x\rangle$，$\theta(n)=x^n$。
+则 $\ker\theta=\{n\in \mathbb{Z}:x^n=e\}$。
+若 $o(x)=\infty$，则 $\ker\theta=\{0\}$，从而 $\mathbb{Z}/\ker\theta\cong \mathbb{Z}$。
+由第一同构定理得 $\langle x\rangle\cong \mathbb{Z}$，故 $|\langle x\rangle|=\infty=o(x)$。
+
+若 $o(x)=m<\infty$，则 $\ker\theta=m\mathbb{Z}$。
+由上面的命题知 $\mathbb{Z}/m\mathbb{Z}$ 恰有 $m$ 个陪集。
+由第一同构定理 $\langle x\rangle\cong \mathbb{Z}/m\mathbb{Z}$，故 $|\langle x\rangle|=m=o(x)$。
+\end{proof}
+
+\begin{proposition}
+设 $G$ 为有限群，$|G|=n$。
+则对任意 $x\in G$，有 $o(x)\mid n$。
+\end{proposition}
+
+\begin{proof}
+由于 $\langle x\rangle\le G$，由拉格朗日定理得 $|\langle x\rangle|\mid |G|$。
+又由命题~\ref{pro:order-equals-cyclic-size} 知 $|\langle x\rangle|=o(x)$，故 $o(x)\mid n$。
+\end{proof}
+
+\begin{example}
+设 $n\ge 1$。
+则加法群 $(\mathbb{Z}_n,+)$ 为循环群，且
+\[
+  \mathbb{Z}_n=\langle [1]\rangle,
+\qquad
+  o([1])=n.
+\]
+\end{example}
+
+\begin{proposition}
+  设 $G$ 为群，$a\in G$。
+  则
+  \[
+    o(a)=o(a^{-1}).
+  \]
+\end{proposition}
+
+\begin{proof}
+  若 $o(a)=\infty$。
+  反设 $o(a^{-1})=n<\infty$，则 $(a^{-1})^n=e$，从而 $a^n=e$，矛盾。
+  故 $o(a^{-1})=\infty=o(a)$。
+
+  若 $o(a)=n<\infty$。
+  则 $a^n=e$，从而 $(a^{-1})^n=e$，故 $o(a^{-1})\mid n$。
+  同理由 $(a^{-1})^{o(a^{-1})}=e$ 得 $a^{o(a^{-1})}=e$，故 $o(a)\mid o(a^{-1})$。
+  因此 $o(a)=o(a^{-1})$。
+\end{proof}
+
+\begin{proposition}\label{order-divides}
+  设 $G$ 为群，$a\in G$，且 $o(a)=n<\infty$。
+  若 $\ell\ge 1$ 且 $a^{\ell}=e$，则 $n\mid \ell$。
+\end{proposition}
+
+\begin{proof}
+  由带余除法可写 $\ell=qn+r$，其中 $q\in\mathbb{N}$，$0\le r<n$。
+  则
+  \[
+    e=a^{\ell}=a^{qn+r}=(a^n)^q\,a^r=e\cdot a^r=a^r.
+  \]
+  由 $n=o(a)$ 的最小性知 $r=0$，从而 $n\mid \ell$。
+\end{proof}
+
+\begin{proposition}\label{order-of-power}
+  设 $G$ 为群，$a\in G$，且 $o(a)=n<\infty$。
+  令 $k\ge 1$，记 $d=(n,k)$。
+  则
+  \[
+    o(a^k)=\frac{n}{d}=\frac{\mathrm{lcm}(k,n)}{k}.
+  \]
+\end{proposition}
+
+\begin{proof}
+  设 $d=(n,k)$，写 $n=dn_1$，$k=dk_1$，其中 $(n_1,k_1)=1$。
+  则
+  \[
+    (a^k)^{n_1}=a^{kn_1}=a^{dk_1n_1}=a^{k_1\cdot dn_1}=a^{k_1n}=(a^n)^{k_1}=e,
+  \]
+  故 $o(a^k)\mid n_1$。
+
+  反之设 $(a^k)^m=e$。
+  则 $a^{km}=e$，由命题~\ref{pro:order-divides} 知 $n\mid km$。
+  即 $dn_1\mid dk_1m$，从而 $n_1\mid k_1m$。
+  由于 $(n_1,k_1)=1$，故 $n_1\mid m$。
+  因此 $o(a^k)=n_1=\frac{n}{d}$。
+
+  又由于 $\mathrm{lcm}(k,n)=\dfrac{kn}{(k,n)}=\dfrac{k n}{d}$，从而
+  \[
+    \frac{\mathrm{lcm}(k,n)}{k}=\frac{n}{d}.
+  \]
+\end{proof}
+
+\begin{proposition}\label{order-of-product}
+  设 $G$ 为群，$a,b\in G$，且 $ab=ba$。
+  若 $o(a)=n<\infty$，$o(b)=m<\infty$，并且 $\langle a\rangle\cap \langle b\rangle=\{e\}$，则
+  \[
+    o(ab)=\mathrm{lcm}(n,m).
+  \]
+\end{proposition}
+
+\begin{proof}
+  由交换性与 $a^n=e$、$b^m=e$ 知
+  \[
+    (ab)^{\mathrm{lcm}(n,m)}=a^{\mathrm{lcm}(n,m)}b^{\mathrm{lcm}(n,m)}=e\cdot e=e.
+  \]
+  故 $o(ab)\mid \mathrm{lcm}(n,m)$。
+
+  反之设 $(ab)^\ell=e$。
+  则 $a^\ell b^\ell=e$，从而 $a^\ell=b^{-\ell}$。
+  因此 $a^\ell\in \langle a\rangle\cap\langle b\rangle=\{e\}$，故 $a^\ell=e$。
+  同理亦有 $b^\ell=e$。
+  由命题~\ref{pro:order-divides} 知 $n\mid \ell$ 且 $m\mid \ell$，因此 $\mathrm{lcm}(n,m)\mid \ell$。
+  于是 $o(ab)\ge \mathrm{lcm}(n,m)$。
+
+  综上 $o(ab)=\mathrm{lcm}(n,m)$。
+\end{proof}
+
+\begin{corollary}\label{coprime-order-product}
+  设 $G$ 为群，$a,b\in G$，且 $ab=ba$。
+  若 $o(a)=n<\infty$，$o(b)=m<\infty$，并且 $(n,m)=1$，则
+  \[
+    o(ab)=nm=o(a)o(b).
+  \]
+\end{corollary}
+
+\begin{proof}
+  由于 $(n,m)=1$，任取 $x\in\langle a\rangle\cap\langle b\rangle$。
+  则 $o(x)\mid n$ 且 $o(x)\mid m$，从而 $o(x)\mid (n,m)=1$，故 $x=e$。
+  因此 $\langle a\rangle\cap\langle b\rangle=\{e\}$。
+  由命题~\ref{pro:order-of-product} 得 $o(ab)=\mathrm{lcm}(n,m)=nm$。
+\end{proof}
+
+\begin{proposition}\label{max-order-divides-all}
+  设 $G$ 为有限交换群。
+  取 $a\in G$ 使得 $o(a)$ 在集合 $\{o(x):x\in G\}$ 中最大。
+  则对任意 $x\in G$，都有
+  \[
+    o(x)\mid o(a).
+  \]
+\end{proposition}
+
+\begin{proof}
+  设 $o(a)=n$。
+  反设存在 $x\in G$ 使 $o(x)=m$ 且 $m\nmid n$。
+  则存在素数 $p$ 使得 $p$ 在 $m$ 的分解中的指数严格大于其在 $n$ 的分解中的指数。
+  写 $m=p^s m_1$，$n=p^t n_1$，其中 $s>t$，并且 $(p,m_1)=(p,n_1)=1$。
+
+  令 $g=x^{m_1}$。
+  由命题~\ref{pro:order-of-power} 知 $o(g)=o(x^{m_1})=\dfrac{m}{(m,m_1)}=\dfrac{p^s m_1}{m_1}=p^s$。
+  又令 $h=a^{p^t}$。
+  同理由命题~\ref{pro:order-of-power} 得
+  \[
+    o(h)=o(a^{p^t})=\frac{n}{(n,p^t)}=\frac{p^t n_1}{p^t}=n_1.
+  \]
+
+  由于 $G$ 交换，故 $gh=hg$。
+  且 $(o(g),o(h))=(p^s,n_1)=1$。
+  由推论~\ref{cor:coprime-order-product} 得
+  \[
+    o(gh)=o(g)o(h)=p^s n_1>p^t n_1=n=o(a),
+  \]
+  这与 $o(a)$ 的最大性矛盾。
+  因此对任意 $x\in G$，必有 $o(x)\mid o(a)$。
+\end{proof}
+
+\begin{proposition}[有限交换群的循环判别]\label{cyclic-criterion}
+  设 $G$ 为有限交换群。
+  则 $G$ 为循环群当且仅当对任意 $m\ge 1$，集合
+  \[
+    \Omega_m:=\{x\in G:x^m=e\}
+  \]
+  满足 $|\Omega_m|\le m$。
+\end{proposition}
+
+\begin{proof}
+  ($\Rightarrow$)
+  设 $G=\langle a\rangle$，且 $|G|=n$。
+  任取 $m\ge 1$。
+  由于每个 $x\in G$ 可写为 $x=a^k$（$0\le k\le n-1$），故
+  \[
+    x^m=e\iff (a^k)^m=e\iff a^{km}=e\iff n\mid km.
+  \]
+  在 $k\in\{0,1,\dots,n-1\}$ 中使得 $n\mid km$ 的个数为 $(n,m)$。
+  从而 $|\Omega_m|=(n,m)\le m$。
+
+  ($\Leftarrow$)
+  设对任意 $m\ge 1$ 均有 $|\Omega_m|\le m$。
+  取 $a\in G$ 使得 $o(a)$ 在 $\{o(x):x\in G\}$ 中最大，并记 $o(a)=m$。
+  则由命题~\ref{pro:max-order-divides-all} 知对任意 $x\in G$，有 $o(x)\mid m$，从而 $x^m=e$，即 $G\subseteq \Omega_m$。
+  由于 $G$ 交换，$\Omega_m$ 为子群。
+  由假设 $|\Omega_m|\le m$，从而
+  \[
+    |G|\le |\Omega_m|\le m.
+  \]
+  另一方面 $|\langle a\rangle|=o(a)=m\le |G|$。
+  因此 $|G|=m$，从而 $G=\langle a\rangle$ 为循环群。
+\end{proof}
+
+\begin{proposition}[域上多项式的根数界]\label{root-bound}
+  设 $F$ 为域，$0\ne f(x)\in F[x]$，且 $\deg f=n$。
+  则 $f$ 在 $F$ 中至多有 $n$ 个根。
+\end{proposition}
+
+\begin{proof}
+  对 $n$ 作归纳。
+  若 $n=0$，则 $f$ 为非零常数多项式，显然无根。
+  设 $n\ge 1$。
+  若 $f$ 在 $F$ 中无根，则结论显然成立。
+  否则取 $\alpha\in F$ 使 $f(\alpha)=0$。
+  由多项式除法知存在 $g(x)\in F[x]$ 使得
+  \[
+    f(x)=(x-\alpha)g(x),\qquad \deg g=n-1.
+  \]
+  因此 $f$ 的根恰为 $\alpha$ 与 $g$ 的根的并集。
+  由归纳假设 $g$ 至多有 $n-1$ 个根，从而 $f$ 至多有 $n$ 个根。
+\end{proof}
+
+\begin{corollary}
+  设 $F$ 为有限域。
+  则乘法群 $F^\times=F\setminus\{0\}$ 为循环群。
+\end{corollary}
+
+\begin{proof}
+  由于域的乘法交换，故 $F^\times$ 为有限交换群。
+  任取 $m\ge 1$，集合
+  \[
+    \{x\in F^\times:x^m=1\}
+  \]
+  为多项式 $x^m-1\in F[x]$ 在 $F$ 中的根的集合。
+  由命题~\ref{pro:root-bound} 知其基数至多为 $m$。
+  由命题~\ref{pro:cyclic-criterion}（有限交换群的循环判别）可知 $F^\times$ 为循环群。
+\end{proof}
+
+\begin{definition}[整除]
+  设 $R$ 为环，$a,b\in R$。
+  若存在 $c\in R$ 使得 $b=ac$，则称 $a$ 整除 $b$，记作 $a\mid b$。
+\end{definition}
+
+\begin{proposition}[因式定理]
+  设 $F$ 为域，$f(x)\in F[x]$，$a\in F$。
+  则
+  \[
+    f(a)=0\iff (x-a)\mid f(x).
+  \]
+\end{proposition}
+
+\begin{proof}
+  ($\Leftarrow$)
+  若 $f(x)=(x-a)g(x)$，则 $f(a)=(a-a)g(a)=0$。
+
+  ($\Rightarrow$)
+  由带余除法，存在 $p(x),r(x)\in F[x]$ 使得
+  \[
+    f(x)=p(x)(x-a)+r(x),\qquad \deg r<\deg(x-a)=1.
+  \]
+  故 $r\in F$。
+  代入 $x=a$ 得 $f(a)=r$。
+  若 $f(a)=0$，则 $r=0$，从而 $f(x)=p(x)(x-a)$，即 $(x-a)\mid f(x)$。
+\end{proof}
+
+\begin{corollary}
+  设 $F$ 为域，$f(x)\in F[x]$，并设 $a_1,\dots,a_m\in F$ 两两不同且均为 $f$ 的根。
+  则
+  \[
+    (x-a_1)(x-a_2)\cdots (x-a_m)\mid f(x).
+  \]
+\end{corollary}
+
+\begin{proof}
+  对 $m$ 作归纳。
+  当 $m=1$ 时结论由上命题成立。
+  设 $m\ge 2$。
+  由因式定理知存在 $g(x)\in F[x]$ 使得 $f(x)=(x-a_1)g(x)$。
+  对 $i=2,\dots,m$，由 $0=f(a_i)=(a_i-a_1)g(a_i)$ 且 $a_i\ne a_1$ 得 $g(a_i)=0$。
+  由归纳假设
+  \[
+    (x-a_2)\cdots(x-a_m)\mid g(x),
+  \]
+  从而 $(x-a_1)\cdots(x-a_m)\mid f(x)$。
+\end{proof}
+
+\section{群作用}
+
+\begin{definition}[群作用]
+  设 $G$ 为群，$\Omega$ 为集合。
+  若映射
+  \[
+    \varphi:G\times\Omega\to\Omega,\qquad (g,x)\mapsto g\cdot x
+  \]
+  满足对任意 $x\in\Omega$ 与任意 $a,b\in G$ 有
+  \[
+    e\cdot x=x,\qquad (ab)\cdot x=a\cdot (b\cdot x),
+  \]
+  则称 $\varphi$ 为 $G$ 在 $\Omega$ 上的（左）作用，称 $\Omega$ 为一个 $G$-集。
+\end{definition}
+
+\begin{remark}
+  设 $G$ 作用在 $\Omega$ 上。
+  对每个 $g\in G$ 定义映射
+  \[
+    \ell_g:\Omega\to\Omega,\qquad x\mapsto g\cdot x.
+  \]
+  则由作用公理可得
+  \[
+    \ell_{ab}=\ell_a\circ\ell_b,\qquad \ell_e=\mathrm{id}_{\Omega}.
+  \]
+  特别地，$\ell_g$ 为双射且 $(\ell_g)^{-1}=\ell_{g^{-1}}$。
+  因而得到群同态
+  \[
+    \ell:G\to\mathrm{Sym}(\Omega),\qquad g\mapsto \ell_g,
+  \]
+  其中 $\mathrm{Sym}(\Omega)$ 为 $\Omega$ 上全体双射在复合运算下所成的群。
+\end{remark}
+
+\begin{definition}[轨道]
+  设 $G$ 作用在 $\Omega$ 上。
+  对 $x\in\Omega$，称集合
+  \[
+    G\cdot x=\{g\cdot x:g\in G\}
+  \]
+  为 $x$ 的轨道。
+  更一般地，对 $A\subseteq G$ 与 $E\subseteq\Omega$，记
+  \[
+    A\cdot E=\{a\cdot x:a\in A,\ x\in E\}.
+  \]
+\end{definition}
+
+\begin{proposition}\label{orbit-equiv-class}
+  设 $G$ 作用在 $\Omega$ 上。
+  在 $\Omega$ 上定义关系 $\sim$：对 $x,y\in\Omega$，令
+  \[
+    x\sim y\iff \exists\, g\in G\ \text{使得}\ g\cdot x=y.
+  \]
+  则 $\sim$ 为等价关系，且对任意 $x\in\Omega$ 有 $[x]=G\cdot x$。
+\end{proposition}
+
+\begin{proof}
+  由 $e\cdot x=x$ 知 $x\sim x$。
+  若 $x\sim y$，则存在 $g\in G$ 使 $y=g\cdot x$。
+  于是 $g^{-1}\cdot y=g^{-1}\cdot(g\cdot x)=(g^{-1}g)\cdot x=e\cdot x=x$，故 $y\sim x$。
+  若 $x\sim y$ 且 $y\sim z$，则存在 $a,b\in G$ 使 $y=a\cdot x$ 且 $z=b\cdot y$。
+  从而 $z=b\cdot(a\cdot x)=(ba)\cdot x$，故 $x\sim z$。
+  因此 $\sim$ 为等价关系。
+
+  由定义，$y\in [x]$ 当且仅当存在 $g\in G$ 使 $y=g\cdot x$，即 $[x]=G\cdot x$。
+\end{proof}
+
+\begin{corollary}
+  设 $G$ 作用在 $\Omega$ 上。
+  则 $\Omega$ 可分解为若干轨道的不交并。
+\end{corollary}
+
+\begin{proof}
+  由命题~\ref{pro:orbit-equiv-class} 知等价类恰为轨道。
+  而 $\Omega$ 是其等价类的并，且不同等价类不交，故结论成立。
+\end{proof}
+
+\begin{example}
+  设 $\sigma\in\mathrm{Sym}(\Omega)$。
+  定义 $(\mathbb Z,+)$ 在 $\Omega$ 上的作用为
+  \[
+    n\cdot x=\sigma^n(x)\qquad (n\in\mathbb Z,\ x\in\Omega),
+  \]
+  其中 $\sigma^0=\mathrm{id}_{\Omega}$，$\sigma^{-n}=(\sigma^{-1})^n$（$n\ge 1$）。
+  则这是一个群作用。
+  反过来，任给 $(\mathbb Z,+)$ 在 $\Omega$ 上的作用，令 $\sigma=\ell_1$，则对任意 $n\in\mathbb Z$ 有 $\ell_n=\sigma^n$。
+\end{example}
+
+\begin{definition}[对称群]
+  设 $\Omega$ 为集合，记
+  \[
+    S_{\Omega}=\mathrm{Sym}(\Omega)=\{f:\Omega\to\Omega\mid f\text{ 为双射}\}.
+  \]
+  则 $S_{\Omega}$ 在复合运算 $\circ$ 下构成群，单位元为 $\mathrm{id}_{\Omega}$，逆元为 $f^{-1}$。
+  若 $|\Omega|=n$，则常记 $S_{\Omega}$ 为 $S_n$。
+\end{definition}
+
+\begin{proposition}
+  设 $G$ 为群，$\Omega$ 为集合。
+  则给定 $G$ 在 $\Omega$ 上的作用等价于给定群同态 $\psi:G\to S_{\Omega}$。
+\end{proposition}
+
+\begin{proof}
+  若 $G$ 作用在 $\Omega$ 上，则由上面的说明，映射 $\ell:G\to\mathrm{Sym}(\Omega)=S_{\Omega}$ 为群同态。
+  反之，给定群同态 $\psi:G\to S_{\Omega}$，定义
+  \[
+    g\cdot x=\psi(g)(x)\qquad (g\in G,\ x\in\Omega).
+  \]
+  则 $e\cdot x=\psi(e)(x)=\mathrm{id}_{\Omega}(x)=x$。
+  且对任意 $a,b\in G$ 有
+  \[
+    (ab)\cdot x=\psi(ab)(x)=(\psi(a)\circ\psi(b))(x)=\psi(a)(\psi(b)(x))=a\cdot(b\cdot x).
+  \]
+  故这确为一个群作用。
+\end{proof}
+
+\begin{definition}[稳定子]
+  设 $G$ 作用在 $\Omega$ 上，取 $x\in\Omega$。
+  记
+  \[
+    G_x=\{g\in G:g\cdot x=x\},
+  \]
+  称 $G_x$ 为 $x$ 的稳定子（或不动子群）。
+\end{definition}
+
+\begin{proposition}
+  设 $G$ 作用在 $\Omega$ 上，取 $x\in\Omega$。
+  则 $G_x\le G$。
+\end{proposition}
+
+\begin{proof}
+  由 $e\cdot x=x$ 知 $e\in G_x$。
+  若 $g,h\in G_x$，则 $g\cdot x=x$ 且 $h\cdot x=x$，从而
+  \[
+    (gh)\cdot x=g\cdot(h\cdot x)=g\cdot x=x,
+  \]
+  故 $gh\in G_x$。
+  若 $g\in G_x$，则
+  \[
+    x=e\cdot x=(g^{-1}g)\cdot x=g^{-1}\cdot(g\cdot x)=g^{-1}\cdot x,
+  \]
+  故 $g^{-1}\in G_x$。
+  因此 $G_x$ 为子群。
+\end{proof}
+
+\begin{definition}[轨道映射]
+  设 $G$ 作用在 $\Omega$ 上，取 $x\in\Omega$。
+  定义映射
+  \[
+    \sigma_x:G\to G\cdot x,\qquad g\mapsto g\cdot x.
+  \]
+  则 $\sigma_x$ 为满射。
+\end{definition}
+
+\begin{proposition}[轨道与陪集的对应]\label{orbit-coset-bijection}
+  设 $G$ 作用在 $\Omega$ 上，取 $x\in\Omega$。
+  定义映射
+  \[
+    \theta:G/G_x\to G\cdot x,\qquad gG_x\mapsto g\cdot x.
+  \]
+  则 $\theta$ 良定义且为双射，并且下图交换：
+  \[
+    \begin{tikzcd}
+      G \arrow[r,"\sigma_x"] \arrow[d,"\pi"'] & G\cdot x \\
+      G/G_x \arrow[ru,"\theta"'] &
+    \end{tikzcd}
+  \]
+  其中 $\pi:G\to G/G_x$ 为自然投影。
+\end{proposition}
+
+\begin{proof}
+  先证良定义。
+  若 $gG_x=hG_x$，则 $h^{-1}g\in G_x$，从而
+  \[
+    (h^{-1}g)\cdot x=x\implies g\cdot x=h\cdot x.
+  \]
+  故 $\theta(gG_x)=\theta(hG_x)$。
+
+  再证单射。
+  若 $\theta(gG_x)=\theta(hG_x)$，即 $g\cdot x=h\cdot x$，则
+  \[
+    (h^{-1}g)\cdot x=h^{-1}\cdot(g\cdot x)=h^{-1}\cdot(h\cdot x)=(h^{-1}h)\cdot x=x,
+  \]
+  故 $h^{-1}g\in G_x$，即 $gG_x=hG_x$。
+
+  最后证满射。
+  任取 $y\in G\cdot x$，则存在 $g\in G$ 使 $y=g\cdot x$，从而 $y=\theta(gG_x)$。
+
+  交换性由
+  \[
+    (\theta\circ\pi)(g)=\theta(gG_x)=g\cdot x=\sigma_x(g)
+  \]
+  立得。
+\end{proof}
+
+\begin{corollary}[轨道--稳定子公式]
+  设 $G$ 作用在 $\Omega$ 上，取 $x\in\Omega$。
+  若 $G$ 为有限群，则
+  \[
+    |G|=|G_x|\,|G\cdot x|.
+  \]
+\end{corollary}
+
+\begin{proof}
+  由命题~\ref{pro:orbit-coset-bijection} 的双射 $\theta:G/G_x\to G\cdot x$ 知 $|G\cdot x|=[G:G_x]$。
+  于是 $|G|=|G_x|[G:G_x]=|G_x|\,|G\cdot x|$。
+\end{proof}
+
+\begin{definition}[$p$-群]
+  设 $G$ 为有限群，$p$ 为素数。
+  若存在 $n\in\mathbb N$ 使得 $|G|=p^n$，则称 $G$ 为 $p$-群。
+\end{definition}
+
+\begin{definition}[中心]
+  设 $G$ 为群。
+  记
+  \[
+    Z(G)=\{g\in G:\forall x\in G,\ gx=xg\},
+  \]
+  称 $Z(G)$ 为 $G$ 的中心。
+\end{definition}
+
+\section{共轭与类方程}
+
+\begin{definition}[自同构群与内自同构群]
+  设 $G$ 为群。
+  记 $\mathrm{Aut}(G)$ 为 $G$ 的全体自同构在复合运算下所成的群。
+  对 $g\in G$ 定义映射
+  \[
+    \mathrm{ad}_g:G\to G,\qquad x\mapsto gxg^{-1}.
+  \]
+  称 $\mathrm{ad}_g$ 为由 $g$ 诱导的内自同构。
+  记
+  \[
+    \mathrm{Inn}(G)=\{\mathrm{ad}_g:g\in G\}\subseteq \mathrm{Aut}(G),
+  \]
+  称 $\mathrm{Inn}(G)$ 为 $G$ 的内自同构群。
+\end{definition}
+
+\begin{proposition}\label{ad-homomorphism}
+  设 $G$ 为群。
+  则对任意 $g\in G$，映射 $\mathrm{ad}_g$ 为 $G$ 的自同构。
+  且映射
+  \[
+    \mathrm{ad}:G\to\mathrm{Aut}(G),\qquad g\mapsto \mathrm{ad}_g,
+  \]
+  为群同态，满足 $\mathrm{Im}(\mathrm{ad})=\mathrm{Inn}(G)$ 与 $\ker(\mathrm{ad})=Z(G)$。
+\end{proposition}
+
+\begin{proof}
+  对任意 $x,y\in G$，有
+  \[
+    \mathrm{ad}_g(xy)=g(xy)g^{-1}=(gxg^{-1})(gyg^{-1})=\mathrm{ad}_g(x)\,\mathrm{ad}_g(y),
+  \]
+  故 $\mathrm{ad}_g$ 为群同态。
+  且 $\mathrm{ad}_{g^{-1}}$ 为其逆映射，因为
+  \[
+    \mathrm{ad}_{g^{-1}}(\mathrm{ad}_g(x))=g^{-1}(gxg^{-1})g=x.
+  \]
+  因而 $\mathrm{ad}_g\in\mathrm{Aut}(G)$。
+
+  对任意 $g,h\in G$ 与任意 $x\in G$，有
+  \[
+    (\mathrm{ad}_g\circ\mathrm{ad}_h)(x)=g(hxh^{-1})g^{-1}=(gh)x(gh)^{-1}=\mathrm{ad}_{gh}(x),
+  \]
+  故 $\mathrm{ad}$ 为群同态，且 $\mathrm{Im}(\mathrm{ad})=\mathrm{Inn}(G)$ 由定义立得。
+
+  最后，$g\in\ker(\mathrm{ad})$ 当且仅当 $\mathrm{ad}_g=\mathrm{id}_G$，即对任意 $x\in G$ 有 $gxg^{-1}=x$，等价于 $gx=xg$。
+  因而 $\ker(\mathrm{ad})=Z(G)$。
+\end{proof}
+
+\begin{corollary}
+  设 $G$ 为群。
+  则
+  \[
+    G/Z(G)\cong \mathrm{Inn}(G).
+  \]
+\end{corollary}
+
+\begin{proof}
+  由命题~\ref{pro:ad-homomorphism}，$\ker(\mathrm{ad})=Z(G)$ 且 $\mathrm{Im}(\mathrm{ad})=\mathrm{Inn}(G)$。
+  由第一同构定理得 $G/Z(G)\cong \mathrm{Inn}(G)$。
+\end{proof}
+
+\begin{remark}[共轭作用]
+  设 $G$ 为群。
+  定义 $G$ 在自身上的作用为
+  \[
+    g\cdot x=gxg^{-1}\qquad (g,x\in G).
+  \]
+  此时 $x$ 的轨道 $G\cdot x$ 称为 $x$ 的共轭类。
+\end{remark}
+
+\begin{proposition}\label{conjugacy-center}
+  设 $G$ 为群，$G$ 在自身上作共轭作用。
+  则对任意 $x\in G$，有
+  \[
+    G\cdot x=\{gxg^{-1}:g\in G\}.
+  \]
+  且以下命题等价：
+  \[
+    |G\cdot x|=1\iff G\cdot x=\{x\}\iff x\in Z(G).
+  \]
+\end{proposition}
+
+\begin{proof}
+  第一式由共轭作用的定义即得。
+  若 $x\in Z(G)$，则对任意 $g\in G$ 有 $gxg^{-1}=x$，故 $G\cdot x=\{x\}$。
+  反之，若 $G\cdot x=\{x\}$，则对任意 $g\in G$ 有 $gxg^{-1}=x$，等价于 $gx=xg$，故 $x\in Z(G)$。
+\end{proof}
+
+\begin{definition}[中心化子]
+  设 $G$ 为群，$x\in G$。
+  记
+  \[
+    C_G(x)=\{g\in G:gx=xg\},
+  \]
+  称 $C_G(x)$ 为 $x$ 的中心化子。
+\end{definition}
+
+\begin{proposition}[类方程]
+  设 $G$ 为有限群。
+  在共轭作用下，取 $x_1,\dots,x_r\in G\setminus Z(G)$ 使得 $G\cdot x_1,\dots,G\cdot x_r$ 两两不同且覆盖所有非中心的共轭类。
+  则
+  \[
+    |G|=|Z(G)|+\sum_{i=1}^r |G\cdot x_i|=|Z(G)|+\sum_{i=1}^r [G:C_G(x_i)].
+  \]
+\end{proposition}
+
+\begin{proof}
+  由命题~\ref{pro:conjugacy-center}，中心元素的共轭类均为单点，且它们的并为 $Z(G)$。
+  非中心元素按共轭类划分为不交并 $\bigsqcup_{i=1}^r G\cdot x_i$。
+  于是 $G=Z(G)\sqcup\bigsqcup_{i=1}^r G\cdot x_i$，取基数得
+  \[
+    |G|=|Z(G)|+\sum_{i=1}^r |G\cdot x_i|.
+  \]
+  又由轨道--稳定子公式（有限群情形）知
+  \[
+    |G\cdot x_i|=[G:G_{x_i}].
+  \]
+  在共轭作用下，稳定子 $G_{x_i}=\{g\in G:gx_ig^{-1}=x_i\}$ 恰为 $C_G(x_i)$，故 $|G\cdot x_i|=[G:C_G(x_i)]$。
+\end{proof}
+
+\begin{corollary}
+  设 $G$ 为非平凡有限 $p$-群。
+  则 $Z(G)$ 非平凡。
+\end{corollary}
+
+\begin{proof}
+  设 $|G|=p^n$（$n\ge 1$）。
+  由类方程
+  \[
+    |G|=|Z(G)|+\sum_{i=1}^r [G:C_G(x_i)].
+  \]
+  对每个 $i$，有 $C_G(x_i)$ 为 $G$ 的真子群（因 $x_i\notin Z(G)$），从而
+  \[
+    [G:C_G(x_i)]>1.
+  \]
+  且 $[G:C_G(x_i)]\mid |G|=p^n$，故 $p\mid [G:C_G(x_i)]$。
+  因此 $|Z(G)|\equiv |G|\pmod p$，从而 $p\mid |Z(G)|$。
+  故 $|Z(G)|\ge p\ge 2$，即 $Z(G)$ 非平凡。
+\end{proof}
+
+\begin{corollary}\label{prime-order-cyclic}
+  设 $G$ 为阶为素数 $p$ 的群。
+  则 $G$ 为循环群。
+\end{corollary}
+
+\begin{proof}
+  任取 $a\in G$ 且 $a\ne e$。
+  则 $|\langle a\rangle|$ 为 $|G|=p$ 的正因子。
+  又 $|\langle a\rangle|\ne 1$，故 $|\langle a\rangle|=p$，从而 $G=\langle a\rangle$。
+\end{proof}
+
+\begin{proposition}\label{cyclic-quotient-abelian}
+  设 $G$ 为群。
+  若商群 $G/Z(G)$ 为循环群，则 $G$ 为交换群。
+\end{proposition}
+
+\begin{proof}
+  设 $G/Z(G)=\langle gZ(G)\rangle$。
+  任取 $x,y\in G$。
+  则存在 $m,n\in\mathbb Z$ 及 $z_1,z_2\in Z(G)$ 使得
+  \[
+    x=g^m z_1,\qquad y=g^n z_2.
+  \]
+  由于 $z_1,z_2$ 与任意元素交换，故
+  \[
+    xy=g^{m+n}z_1z_2=g^{m+n}z_2z_1=yx.
+  \]
+  因此 $G$ 交换。
+\end{proof}
+
+\begin{corollary}
+  设 $G$ 为阶为 $p^2$ 的群，其中 $p$ 为素数。
+  则 $G$ 为交换群。
+\end{corollary}
+
+\begin{proof}
+  由于 $G$ 为非平凡有限 $p$-群，故 $Z(G)$ 非平凡。
+  因而 $|Z(G)|$ 为 $p^2$ 的正因子且 $|Z(G)|\ne 1$，故 $|Z(G)|=p$ 或 $|Z(G)|=p^2$。
+  若 $|Z(G)|=p^2$，则 $Z(G)=G$，从而 $G$ 交换。
+  若 $|Z(G)|=p$，则 $|G/Z(G)|=p$，由推论~\ref{cor:prime-order-cyclic} 知 $G/Z(G)$ 循环，故由命题~\ref{pro:cyclic-quotient-abelian} 得 $G$ 交换。
+\end{proof}
+
+\begin{proposition}
+  设 $G$ 为有限群，$\mathcal{F}\subseteq \mathcal{P}(G)$ 满足对任意 $A\in\mathcal{F}$ 与任意 $g\in G$ 均有 $gA\in\mathcal{F}$。
+  于是 $G$ 可通过左平移作用在 $\mathcal{F}$ 上：$g\cdot A=gA$。
+  对 $A\in\mathcal{F}$，记其稳定子
+  \[
+    G_A=\{g\in G:gA=A\}.
+  \]
+  若 $A$ 为有限集且 $A\ne\varnothing$，则 $|G_A|\le |A|$。
+\end{proposition}
+
+\begin{proof}
+  任取 $a\in A$。
+  定义映射 $\phi:G_A\to A$ 为 $\phi(g)=ga$。
+  由于 $g\in G_A$ 蕴含 $ga\in gA=A$，故 $\phi$ 良定义。
+  若 $\phi(g_1)=\phi(g_2)$，即 $g_1a=g_2a$，则 $(g_2^{-1}g_1)a=a$。
+  左乘在 $G$ 上的作用是自由的，故 $g_2^{-1}g_1=e$，即 $g_1=g_2$。
+  因此 $\phi$ 为单射，从而 $|G_A|\le |A|$。
+\end{proof}
+
+\section{Sylow 定理}
+
+\begin{lemma}\label{binomial-p-factor}
+  设 $p$ 为素数，$m\in\mathbb N^{*}$ 且 $(p,m)=1$。
+  若 $k\ge 1$ 且 $0\le \ell\le k$，则二项式系数
+  \[
+    \binom{p^k m}{p^{\ell}}
+  \]
+  恰含有 $k-\ell$ 个因子 $p$，即 $p^{k-\ell}\mid \binom{p^k m}{p^{\ell}}$ 且 $p^{k-\ell+1}\nmid \binom{p^k m}{p^{\ell}}$。
+\end{lemma}
+
+\begin{proof}
+  由
+  \[
+    \binom{p^k m}{p^{\ell}}=
+    \frac{(p^k m)(p^k m-1)\cdots (p^k m-p^{\ell}+1)}{(p^{\ell})(p^{\ell}-1)\cdots 1}
+  \]
+  得
+  \[
+    \binom{p^k m}{p^{\ell}}=p^{k-\ell}m\prod_{i=1}^{p^{\ell}-1}\frac{p^k m-i}{p^{\ell}-i}.
+  \]
+  因为 $(p,m)=1$，只需证明对每个 $1\le i\le p^{\ell}-1$，分数 $(p^k m-i)/(p^{\ell}-i)$ 不被 $p$ 整除。
+
+  取 $1\le i\le p^{\ell}-1$，写 $i=p^r s$，其中 $0\le r<\ell$ 且 $(p,s)=1$。
+  则
+  \[
+    \frac{p^k m-i}{p^{\ell}-i}=\frac{p^k m-p^r s}{p^{\ell}-p^r s}=\frac{p^r(p^{k-r}m-s)}{p^r(p^{\ell-r}-s)}=\frac{p^{k-r}m-s}{p^{\ell-r}-s}.
+  \]
+  注意到 $p\mid p^{k-r}m$ 与 $p\mid p^{\ell-r}$，而 $p\nmid s$，故 $p\nmid (p^{k-r}m-s)$ 且 $p\nmid (p^{\ell-r}-s)$。
+  因此上述分数不被 $p$ 整除。
+  于是 $\binom{p^k m}{p^{\ell}}$ 的 $p$-因子数恰为 $k-\ell$。
+\end{proof}
+
+\begin{theorem}[Sylow 定理(I)]
+  设 $G$ 为有限群，$|G|=p^k m$，其中 $p$ 为素数，$(p,m)=1$。
+  则对任意整数 $\ell$ 满足 $0\le \ell\le k$，$G$ 存在一个阶为 $p^{\ell}$ 的子群。
+\end{theorem}
+
+\begin{proof}
+  固定 $0\le \ell\le k$。
+  令
+  \[
+    \mathcal{F}=\{A\subseteq G:|A|=p^{\ell}\}.
+  \]
+  则 $|\mathcal{F}|=\binom{|G|}{p^{\ell}}=\binom{p^k m}{p^{\ell}}$。
+  $G$ 通过左平移作用在 $\mathcal{F}$ 上：对 $g\in G$ 与 $A\in\mathcal{F}$，令 $g\cdot A=gA$。
+  将 $\mathcal{F}$ 分解为若干轨道的不交并：
+  \[
+    \mathcal{F}=\bigsqcup_{j\in J} \mathcal{O}_j,
+    \qquad \mathcal{O}_j=G\cdot A_j.
+  \]
+
+  由引理~\ref{lem:binomial-p-factor}，$|\mathcal{F}|$ 被 $p^{k-\ell}$ 整除但不被 $p^{k-\ell+1}$ 整除。
+  若对所有 $j\in J$ 都有 $p^{k-\ell+1}\mid |\mathcal{O}_j|$，则 $p^{k-\ell+1}\mid |\mathcal{F}|$，矛盾。
+  故存在 $j_0\in J$ 使得 $p^{k-\ell+1}\nmid |\mathcal{O}_{j_0}|$。
+
+  取 $A=A_{j_0}$，其稳定子为
+  \[
+    G_A=\{g\in G:gA=A\}.
+  \]
+  由轨道--稳定子公式
+  \[
+    |G|=|\mathcal{O}_{j_0}|\,|G_A|.
+  \]
+  由 $|G|=p^k m$ 且 $p^{k-\ell+1}\nmid |\mathcal{O}_{j_0}|$ 得 $p^{\ell}\mid |G_A|$。
+  另一方面，由前一命题（对左平移作用的稳定子大小界）有 $|G_A|\le |A|=p^{\ell}$。
+  因而 $|G_A|=p^{\ell}$，从而 $G_A$ 为 $G$ 的一个阶为 $p^{\ell}$ 的子群。
+\end{proof}
+
+\begin{definition}[Sylow-$p$ 子群]
+  设 $G$ 为有限群，$|G|=p^k m$，其中 $p$ 为素数，$(p,m)=1$。
+  若子群 $P\le G$ 满足 $|P|=p^k$，则称 $P$ 为 $G$ 的一个 Sylow-$p$ 子群。
+  记 $n_p$ 为 $G$ 的 Sylow-$p$ 子群的个数。
+\end{definition}
+
+\begin{theorem}[Sylow 定理(II)]\label{sylow-II}
+  设 $G$ 为有限群，$|G|=p^k m$，其中 $p$ 为素数，$(p,m)=1$。
+  设 $P$ 为 $G$ 的一个 Sylow-$p$ 子群。
+  若 $H\le G$ 为任意 $p$-子群（即 $|H|=p^r$，某个 $r\ge 0$），则存在 $g\in G$ 使得
+  \[
+    H\subseteq gPg^{-1}.
+  \]
+\end{theorem}
+
+\begin{proof}
+  考虑 $H$ 在左陪集集 $G/P$ 上的左平移作用：
+  \[
+    h\cdot (gP)=(hg)P\qquad (h\in H,\ g\in G).
+  \]
+  由于 $|G/P|=[G:P]=m$ 且 $(p,m)=1$，故 $p\nmid |G/P|$。
+
+  将 $G/P$ 分解为 $H$-轨道的不交并。
+  对任意轨道 $\mathcal{O}$，由轨道--稳定子公式知 $|\mathcal{O}|=[H:H_{gP}]$，从而 $|\mathcal{O}|$ 为 $|H|$ 的因子，故 $|\mathcal{O}|$ 为 $p$ 的幂。
+  因此除单点轨道外，其余轨道大小均被 $p$ 整除。
+  设 $F\subseteq G/P$ 为 $H$ 的不动点集，则
+  \[
+    |G/P|\equiv |F|\pmod p.
+  \]
+  由于 $p\nmid |G/P|$，故 $|F|\ne 0$。
+  从而存在某个陪集 $gP\in G/P$ 满足对任意 $h\in H$ 都有 $h\cdot (gP)=gP$，即
+  \[
+    hgP=gP\quad (\forall h\in H).
+  \]
+  于是对任意 $h\in H$ 有 $g^{-1}hg\in P$，即 $H\subseteq gPg^{-1}$。
+\end{proof}
+
+\begin{corollary}\label{sylow-conjugate}
+  设 $G$ 为有限群，$|G|=p^k m$，其中 $p$ 为素数，$(p,m)=1$。
+  则 $G$ 的任意两个 Sylow-$p$ 子群共轭。
+\end{corollary}
+
+\begin{proof}
+  设 $P,Q$ 为 Sylow-$p$ 子群。
+  由定理~\ref{thm:sylow-II}，存在 $g\in G$ 使得 $Q\subseteq gPg^{-1}$。
+  由于 $|Q|=|gPg^{-1}|=p^k$，故 $Q=gPg^{-1}$。
+\end{proof}
+
+\begin{definition}[正规化子]
+  设 $G$ 为群，$H\le G$。
+  定义
+  \[
+    N_G(H)=\{g\in G:gHg^{-1}=H\}.
+  \]
+  称 $N_G(H)$ 为 $H$ 在 $G$ 中的正规化子。
+\end{definition}
+
+\begin{proposition}
+  设 $G$ 为群，$H\le G$。
+  则 $N_G(H)\le G$ 且 $H\trianglelefteq N_G(H)$。
+\end{proposition}
+
+\begin{proof}
+  由定义可知 $e\in N_G(H)$。
+  若 $g_1,g_2\in N_G(H)$，则
+  \[
+    (g_1g_2)H(g_1g_2)^{-1}=g_1(g_2Hg_2^{-1})g_1^{-1}=g_1Hg_1^{-1}=H,
+  \]
+  故 $g_1g_2\in N_G(H)$。
+  若 $g\in N_G(H)$，则 $gHg^{-1}=H$ 等价于 $g^{-1}Hg=H$，故 $g^{-1}\in N_G(H)$。
+  因而 $N_G(H)$ 为子群。
+
+  对任意 $n\in N_G(H)$ 有 $nHn^{-1}=H$，即 $H\trianglelefteq N_G(H)$。
+\end{proof}
+
+\begin{proposition}
+  设 $G$ 为有限群，$|G|=p^k m$，其中 $p$ 为素数，$(p,m)=1$。
+  设 $P$ 为 Sylow-$p$ 子群，记 $n_p$ 为 Sylow-$p$ 子群的个数。
+  则
+  \[
+    n_p=[G:N_G(P)].
+  \]
+\end{proposition}
+
+\begin{proof}
+  设 $\mathcal{S}$ 为 $G$ 的全体 Sylow-$p$ 子群的集合。
+  $G$ 通过共轭作用在 $\mathcal{S}$ 上：
+  \[
+    g\cdot Q=gQg^{-1}\qquad (g\in G,\ Q\in\mathcal{S}).
+  \]
+  由推论~\ref{cor:sylow-conjugate} 知任意两个 Sylow-$p$ 子群共轭，故该作用传递，从而 $|\mathcal{S}|=|G\cdot P|$。
+  另一方面，稳定子
+  \[
+    G_P=\{g\in G:gPg^{-1}=P\}=N_G(P).
+  \]
+  由轨道--稳定子公式得
+  \[
+    |G\cdot P|=[G:G_P]=[G:N_G(P)],
+  \]
+  即 $n_p=[G:N_G(P)]$。
+\end{proof}
+
+\begin{theorem}[Sylow 定理(III)]
+  设 $G$ 为有限群，$|G|=p^k m$，其中 $p$ 为素数，$(p,m)=1$。
+  设 $n_p$ 为 $G$ 的 Sylow-$p$ 子群个数。
+  则
+  \[
+    n_p\mid m,\qquad n_p\equiv 1\pmod p.
+  \]
+\end{theorem}
+
+\begin{proof}
+  取 Sylow-$p$ 子群 $P$。
+
+  由于 $P\le N_G(P)$，故 $p^k=|P|\mid |N_G(P)|$。
+  于是
+  \[
+    n_p=[G:N_G(P)]=\frac{|G|}{|N_G(P)|}
+  \]
+  为 $m$ 的因子，故 $n_p\mid m$。
+
+  再证同余。
+  令 $\mathcal{S}$ 为全体 Sylow-$p$ 子群的集合，则 $|\mathcal{S}|=n_p$。
+  令 $P$ 通过共轭作用在 $\mathcal{S}$ 上：$p\cdot Q=pQp^{-1}$。
+  将 $\mathcal{S}$ 分解为 $P$-轨道的不交并。
+  对任意轨道 $\mathcal{O}$，由轨道--稳定子公式知 $|\mathcal{O}|$ 为 $|P|$ 的因子，故 $|\mathcal{O}|$ 为 $p$ 的幂。
+  因而除不动点轨道（单点轨道）外，其余轨道的大小均被 $p$ 整除。
+  设 $F\subseteq \mathcal{S}$ 为 $P$ 的不动点集，则
+  \[
+    n_p=|\mathcal{S}|\equiv |F|\pmod p.
+  \]
+
+  下面证明 $F=\{P\}$。
+  显然 $P\in F$。
+  若 $Q\in F$，则对任意 $p\in P$ 有 $pQp^{-1}=Q$，从而 $P\subseteq N_G(Q)$。
+  于是 $P$ 为 $N_G(Q)$ 的 $p$-子群。
+  又 $Q$ 为 $G$ 的 Sylow-$p$ 子群，故 $Q$ 亦为 $N_G(Q)$ 的 Sylow-$p$ 子群。
+  由 Sylow 定理(II) 在群 $N_G(Q)$ 中的应用，存在 $n\in N_G(Q)$ 使得 $P\subseteq nQn^{-1}$。
+  由于 $n\in N_G(Q)$，有 $nQn^{-1}=Q$，从而 $P\subseteq Q$。
+  但 $|P|=|Q|=p^k$，故 $P=Q$。
+  因此 $F=\{P\}$，从而 $|F|=1$。
+
+  于是 $n_p\equiv 1\pmod p$。
+\end{proof}
+
+\section{Sylow 定理的应用}
+
+\begin{proposition}
+  设 $G$ 为群，$H\le G$ 且 $[G:H]=n<\infty$。
+  记 $\Omega=G/H$ 为 $H$ 的左陪集集，则 $G$ 通过左平移作用在 $\Omega$ 上，从而诱导群同态
+  \[
+    \varphi:G\to S_{\Omega},\qquad g\longmapsto \ell_g.
+  \]
+  记 $N=\ker(\varphi)$。
+  则 $N\trianglelefteq G$，且 $N\subseteq H$。
+  进一步地，
+  \[
+    [G:N]=|G/N|=|\mathrm{Im}(\varphi)|\mid |S_{\Omega}|=n!.
+  \]
+\end{proposition}
+
+\begin{proof}
+  由 $g\cdot (xH)=(gx)H$ 得到 $G$ 在 $\Omega$ 上的作用。
+  因此存在同态 $\varphi:G\to S_{\Omega}$。
+  令 $N=\ker(\varphi)$，则 $N\trianglelefteq G$。
+
+  若 $x\in N$，则 $\ell_x=\mathrm{id}_{\Omega}$。
+  取 $H\in\Omega$，有 $x\cdot H=H$，即 $xH=H$，从而 $x\in H$。
+  故 $N\subseteq H$。
+
+  又由第一同构定理，$G/N\cong \mathrm{Im}(\varphi)\le S_{\Omega}$。
+  因此 $|G/N|=|\mathrm{Im}(\varphi)|\mid |S_{\Omega}|$。
+  由于 $|\Omega|=[G:H]=n$，故 $|S_{\Omega}|=n!$，从而 $[G:N]\mid n!$。
+\end{proof}
+
+\begin{corollary}
+  设 $G$ 为群，$H\le G$ 且 $[G:H]=2$。
+  则 $H\trianglelefteq G$。
+\end{corollary}
+
+\begin{proof}
+  任取 $g\in G\setminus H$。
+  由于 $[G:H]=2$，故 $G$ 的左陪集只有 $H$ 与 $gH$ 两个，从而 $G=H\sqcup gH$。
+  同理，右陪集也只有 $H$ 与 $Hg$ 两个，从而 $G=H\sqcup Hg$。
+  由于 $g\notin H$，故 $gH\cap H=\varnothing$ 且 $Hg\cap H=\varnothing$。
+  因此 $gH=G\setminus H=Hg$。
+  于是对任意 $h\in H$，有 $gh\in gH=Hg$，从而存在 $h'\in H$ 使得 $gh=h'g$。
+  即 $gHg^{-1}\subseteq H$。
+  由对称性亦得 $H\subseteq gHg^{-1}$，故 $gHg^{-1}=H$。
+  因此 $H\trianglelefteq G$。
+\end{proof}
+
+\begin{proposition}
+  设 $G$ 为有限群，$p$ 为 $|G|$ 的最小素因子。
+  若 $H\le G$ 且 $[G:H]=p$，则 $H\trianglelefteq G$。
+\end{proposition}
+
+\begin{proof}
+  由于 $[G:H]=p$，陪集集 $\Omega=G/H$ 满足 $|\Omega|=p$。
+  考虑 $G$ 在 $\Omega$ 上的左平移作用，得到同态
+  \[
+    \varphi:G\to S_{\Omega}\cong S_p.
+  \]
+  令 $N=\ker(\varphi)$。
+  则 $N\trianglelefteq G$ 且 $N\subseteq H$。
+  又由同态基本定理，$G/N\cong \mathrm{Im}(\varphi)\le S_p$，从而
+  \[
+    [G:N]=|G/N|=|\mathrm{Im}(\varphi)|\mid |S_p|=p!.
+  \]
+  另一方面，$p\mid |G|$ 且 $p$ 为 $|G|$ 的最小素因子，因此 $|G|$ 的所有素因子均不小于 $p$。
+  而 $p!$ 的素因子均不大于 $p$，故 $\gcd(|G|,p!)=p$。
+  由于 $[G:N]$ 同时整除 $|G|$ 与 $p!$，可得 $[G:N]\mid p$。
+  又 $N\subseteq H$ 且 $H\ne G$，故 $N\ne G$，从而 $[G:N]\ne 1$。
+  因此 $[G:N]=p$。
+  由于 $N\subseteq H$，有 $[G:N]=[G:H]\cdot [H:N]$。
+  但 $[G:N]=[G:H]=p$，故 $[H:N]=1$，即 $N=H$。
+  因此 $H\trianglelefteq G$。
+\end{proof}
+
+\begin{corollary}
+  设 $|G|=3^2\cdot 5\cdot 7$。
+  若 $H\le G$ 且 $[G:H]=3$，则 $H\trianglelefteq G$。
+\end{corollary}
+
+\begin{proposition}
+  设 $G$ 为有限群，$P$ 为 $G$ 的 Sylow-$p$ 子群。
+  则
+  \[
+    N_G\bigl(N_G(P)\bigr)=N_G(P).
+  \]
+\end{proposition}
+
+\begin{proof}
+  记 $K=N_G(P)$。
+  显然 $K\subseteq N_G(K)$，故 $N_G(K)\supseteq K$。
+  下证反包含。
+
+  任取 $x\in N_G(K)$，则 $xKx^{-1}=K$。
+  因为 $P\le K$，故 $xPx^{-1}\le K$。
+  又 $|xPx^{-1}|=|P|$，从而 $xPx^{-1}$ 为 $K$ 的 Sylow-$p$ 子群。
+  但由 $K=N_G(P)$ 知 $P\trianglelefteq K$，因此 $P$ 为 $K$ 的唯一 Sylow-$p$ 子群。
+  于是 $xPx^{-1}=P$，从而 $x\in N_G(P)=K$。
+  故 $N_G(K)\subseteq K$，即 $N_G(N_G(P))=N_G(P)$。
+\end{proof}
+
+\begin{proposition}
+  56 阶群一定不是单群。
+\end{proposition}
+
+\begin{proof}
+  设 $|G|=56=7\cdot 2^3$。
+  令 $n_7$ 为 $G$ 的 Sylow-$7$ 子群个数。
+  由 Sylow 定理(III)，有 $n_7\mid 2^3$ 且 $n_7\equiv 1\pmod 7$，故 $n_7=1$ 或 $8$。
+
+  若 $n_7=1$，则 Sylow-$7$ 子群正规，$G$ 不是单群。
+
+  设 $n_7=8$。
+  由于不同的 Sylow-$7$ 子群交于单位元，故全体 Sylow-$7$ 子群的并集大小为
+  \[
+    8\cdot (7-1)+1=49.
+  \]
+  令 $X\subseteq G$ 为其补集，则 $|X|=56-49=7$。
+  取 $G$ 的 Sylow-$2$ 子群 $H$（由 Sylow 定理(I) 存在），则 $|H|=8$。
+  注意到 $H\setminus\{1\}$ 中任意元素的阶均为 $2$ 的幂，因而不可能属于任何阶为 $7$ 的子群。
+  故 $H\setminus\{1\}\subseteq X$。
+  由于 $|H\setminus\{1\}|=7=|X|$，于是 $H\setminus\{1\}=X$。
+  从而 $H$ 为 $G$ 的唯一 Sylow-$2$ 子群，因此 $H\trianglelefteq G$。
+  综上 $G$ 总含有非平凡正规子群，故不是单群。
+\end{proof}
+
+\begin{proposition}
+  72 阶群一定不是单群。
+\end{proposition}
+
+\begin{proof}
+  设 $|G|=72=2^3\cdot 3^2$。
+  令 $n_3$ 为 $G$ 的 Sylow-$3$ 子群个数。
+  由 Sylow 定理(III)，有 $n_3\mid 2^3$ 且 $n_3\equiv 1\pmod 3$，故 $n_3=1$ 或 $4$。
+
+  若 $n_3=1$，则 Sylow-$3$ 子群正规，故 $G$ 不是单群。
+
+  设 $n_3=4$。
+  令 $\mathcal{S}$ 为全体 Sylow-$3$ 子群的集合，则 $|\mathcal{S}|=4$。
+  $G$ 通过共轭作用在 $\mathcal{S}$ 上：$g\cdot P=gPg^{-1}$，从而诱导群同态
+  \[
+    \varphi:G\to S_{\mathcal{S}}\cong S_4.
+  \]
+  记 $K=\ker(\varphi)$，则 $K\trianglelefteq G$。
+
+  若 $K=\{e\}$，则 $\varphi$ 为单射，从而 $|G|\mid |S_4|=4!=24$，矛盾。
+  故 $K\ne \{e\}$。
+
+  又由 Sylow 定理(II) 知任意两个 Sylow-$3$ 子群共轭，故 $G$ 在 $\mathcal{S}$ 上的共轭作用是传递的。
+  因而 $\mathrm{Im}(\varphi)$ 在 $|\mathcal{S}|=4$ 个点上给出非平凡作用，从而 $K\ne G$。
+
+  因此 $K$ 为非平凡真正规子群，$G$ 不是单群。
+\end{proof}
+
+\chapter{交换环与多项式环}
+
+\section{理想的运算}
+
+\begin{remark}
+  设 $R$ 为交换环，$I\subseteq R$。
+  则 $I$ 为 $R$ 的理想当且仅当：
+  \begin{enumerate}
+    \item $I$ 是加法群 $(R,+)$ 的子群；
+    \item 对任意 $r\in R$ 与 $x\in I$，都有 $rx\in I$。
+  \end{enumerate}
+\end{remark}
+
+\begin{proposition}
+  设 $R$ 为交换环，$I,J$ 为 $R$ 的理想。
+  则 $I\cap J$ 与 $I+J$ 仍为 $R$ 的理想。
+  并且
+  \[
+    IJ=\left\{\sum_{i=1}^n x_i y_i\;\middle|\; n\in\mathbb{N},\ n\ge 1,\ x_i\in I,\ y_i\in J\right\}
+  \]
+  也是 $R$ 的理想。
+\end{proposition}
+
+\begin{proof}
+  由上条注记，只需验证它们为加法子群且对任意 $r\in R$ 具有吸收性。
+
+  $I\cap J$ 作为加法子群的交仍为加法子群，且若 $x\in I\cap J$，则 $rx\in I$ 且 $rx\in J$，故 $rx\in I\cap J$。
+
+  对 $I+J$，它是加法子群之和，仍为加法子群；且若 $x=a+b$，其中 $a\in I,b\in J$，则 $rx=ra+rb\in I+J$。
+
+  对 $IJ$，显然 $0\in IJ$。
+  若 $u=\sum_{i=1}^m x_i y_i$，$v=\sum_{j=1}^n x'_j y'_j$，则
+  \[
+    u+v=\sum_{i=1}^m x_i y_i+\sum_{j=1}^n x'_j y'_j\in IJ.
+  \]
+  又 $-u=\sum_{i=1}^m (-x_i)y_i\in IJ$，故 $IJ$ 为加法子群。
+  最后，对任意 $r\in R$，有
+  \[
+    r\cdot u=\sum_{i=1}^m (rx_i)y_i\in IJ,
+  \]
+  因为 $rx_i\in I$。
+  故 $IJ$ 为理想。
+\end{proof}
+
+\begin{definition}
+  设 $R$ 为交换环，$I_1,\dots,I_n$ 为 $R$ 的理想（$n\ge 2$）。
+  定义它们的乘积为
+  \[
+    I_1\cdots I_n=\left\{\sum_{j=1}^m x_{1j}\cdots x_{nj}\;\middle|\; m\in\mathbb{N},\ m\ge 1,\ x_{ij}\in I_i\right\}.
+  \]
+\end{definition}
+
+\begin{proposition}
+  在上述记号下，$I_1\cdots I_n$ 是 $R$ 的理想。
+\end{proposition}
+
+\begin{proof}
+  只需验证它为加法子群且对任意 $r\in R$ 具有吸收性。
+
+  任取
+  \[
+    u=\sum_{j=1}^m x_{1j}\cdots x_{nj},\qquad v=\sum_{k=1}^{m'} x'_{1k}\cdots x'_{nk}\in I_1\cdots I_n.
+  \]
+  则
+  \[
+    u+v=\sum_{j=1}^m x_{1j}\cdots x_{nj}+\sum_{k=1}^{m'} x'_{1k}\cdots x'_{nk}\in I_1\cdots I_n.
+  \]
+  又
+  \[
+    -u=\sum_{j=1}^m (-x_{1j})x_{2j}\cdots x_{nj}\in I_1\cdots I_n,
+  \]
+  因为 $-x_{1j}\in I_1$。
+  故 $I_1\cdots I_n$ 为加法子群。
+  最后，对任意 $r\in R$，有
+  \[
+    r\cdot u=\sum_{j=1}^m (rx_{1j})x_{2j}\cdots x_{nj}\in I_1\cdots I_n,
+  \]
+  因为 $rx_{1j}\in I_1$。
+  故 $I_1\cdots I_n$ 为理想。
+\end{proof}
+
+\begin{proposition}
+  设 $R$ 为交换环，$I,J$ 为 $R$ 的理想。
+  则
+  \[
+    I+J=\langle I\cup J\rangle.
+  \]
+\end{proposition}
+
+\begin{proof}
+  显然 $I\cup J\subseteq I+J$，且 $I+J$ 为理想，故 $\langle I\cup J\rangle\subseteq I+J$。
+  反之，由 $I\cup J\subseteq \langle I\cup J\rangle$ 得 $I\subseteq \langle I\cup J\rangle$ 与 $J\subseteq \langle I\cup J\rangle$。
+  因此对任意 $a\in I,b\in J$，有 $a+b\in \langle I\cup J\rangle$，从而 $I+J\subseteq \langle I\cup J\rangle$。
+\end{proof}
+
+\begin{proposition}
+  设 $R$ 为交换环，$I,J$ 为 $R$ 的理想。
+  则
+  \[
+    IJ=\bigl\langle\{xy\mid x\in I,\ y\in J\}\bigr\rangle.
+  \]
+\end{proposition}
+
+\begin{proof}
+  记 $S=\{xy\mid x\in I,\ y\in J\}$。
+  由 $S\subseteq IJ$ 且 $IJ$ 为理想，知 $\langle S\rangle\subseteq IJ$。
+
+  反过来，任取 $a\in IJ$，则存在 $x_i\in I,y_i\in J$ 使
+  \[
+    a=\sum_{i=1}^n x_i y_i.
+  \]
+  由于每个 $x_i y_i\in S\subseteq \langle S\rangle$，且 $\langle S\rangle$ 为理想（尤其为加法子群），故 $a\in \langle S\rangle$。
+  因此 $IJ\subseteq \langle S\rangle$。
+\end{proof}
+
+\begin{proposition}
+  设 $R$ 为交换环，$I,J,K$ 为 $R$ 的理想。
+  则
+  \[
+    (IJ)K=I(JK).
+  \]
+\end{proposition}
+
+\begin{proof}
+  任取 $a\in (IJ)K$。
+  则存在 $u_1,\dots,u_m\in IJ$ 与 $z_1,\dots,z_m\in K$ 使
+  \[
+    a=\sum_{t=1}^m u_t z_t.
+  \]
+  对每个 $t$，又存在 $x_{t\ell}\in I,y_{t\ell}\in J$ 使得
+  \[
+    u_t=\sum_{\ell=1}^{n_t} x_{t\ell}y_{t\ell}.
+  \]
+  于是
+  \[
+    a=\sum_{t=1}^m \sum_{\ell=1}^{n_t} x_{t\ell}(y_{t\ell}z_t).
+  \]
+  注意到 $y_{t\ell}z_t\in JK$，故每一项 $x_{t\ell}(y_{t\ell}z_t)\in I(JK)$。
+  从而 $a\in I(JK)$，即 $(IJ)K\subseteq I(JK)$。
+
+  反向包含同理可证，故 $(IJ)K=I(JK)$。
+\end{proof}
+
+\begin{proposition}\label{ideal-distrib}
+  设 $R$ 为交换环，$I,J,K$ 为 $R$ 的理想。
+  则
+  \[
+    (I+J)K=IK+JK.
+  \]
+\end{proposition}
+
+\begin{proof}
+  任取 $a\in (I+J)K$。
+  则存在 $u_1,\dots,u_m\in I+J$ 与 $z_1,\dots,z_m\in K$ 使
+  \[
+    a=\sum_{t=1}^m u_t z_t.
+  \]
+  对每个 $t$，可写 $u_t=x_t+y_t$，其中 $x_t\in I,\ y_t\in J$。
+  于是
+  \[
+    a=\sum_{t=1}^m x_tz_t+\sum_{t=1}^m y_tz_t\in IK+JK.
+  \]
+  因而 $(I+J)K\subseteq IK+JK$。
+
+  反过来，由 $I\subseteq I+J$ 与 $J\subseteq I+J$ 得 $IK\subseteq (I+J)K$ 与 $JK\subseteq (I+J)K$。
+  因此 $IK+JK\subseteq (I+J)K$。
+  故等式成立。
+\end{proof}
+
+\begin{proposition}
+  设 $R$ 为交换环，$I,J,K$ 为 $R$ 的理想。
+  则
+  \[
+    K(I+J)=KI+KJ.
+  \]
+\end{proposition}
+
+\begin{proof}
+  由于 $R$ 为交换环，有 $K(I+J)=(I+J)K$，$KI=IK$，$KJ=JK$。
+  故由命题~\ref{pro:ideal-distrib} 得到 $K(I+J)=KI+KJ$。
+\end{proof}
+
+\begin{definition}
+  设 $R$ 为交换环。
+  \begin{enumerate}
+    \item 若理想 $I\subseteq R$ 满足存在 $a\in R$ 使得 $I=(a)$，则称 $I$ 为\emph{主理想}。
+    \item 若 $R$ 的每个理想都是主理想，则称 $R$ 为\emph{主理想环}。
+    \item 若 $R$ 为整环且为主理想环，则称 $R$ 为\emph{主理想整环}（PID）。
+  \end{enumerate}
+\end{definition}
+
+\begin{example}
+  $\mathbb{Z}$ 的每个理想均形如 $(n)=n\mathbb{Z}$（其中 $n\ge 0$）。
+  因而 $\mathbb{Z}$ 为 PID。
+\end{example}
+
+\begin{definition}
+  设 $R$ 为整环，$a_1,\dots,a_n\in R$。
+  称 $d\in R$ 为 $a_1,\dots,a_n$ 的\emph{最大公因子}，若满足：
+  \begin{enumerate}
+    \item $d\mid a_i$（$i=1,\dots,n$）；
+    \item 若 $c\in R$ 且 $c\mid a_i$（$i=1,\dots,n$），则 $c\mid d$。
+  \end{enumerate}
+  称 $m\in R$ 为 $a_1,\dots,a_n$ 的\emph{最小公倍数}，若满足：
+  \begin{enumerate}
+    \item $a_i\mid m$（$i=1,\dots,n$）；
+    \item 若 $c\in R$ 且 $a_i\mid c$（$i=1,\dots,n$），则 $m\mid c$。
+  \end{enumerate}
+\end{definition}
+
+\begin{proposition}
+  设 $R$ 为 PID，$a_1,\dots,a_n\in R$（$n\ge 1$），且
+  \[
+    (a_1,\dots,a_n)=(b).
+  \]
+  则 $b$ 是 $a_1,\dots,a_n$ 的最大公因子（在相伴意义下唯一）。
+\end{proposition}
+
+\begin{proof}
+  由 $(a_1,\dots,a_n)=(b)$ 得 $a_i\in (b)$，故存在 $r_i\in R$ 使 $a_i=r_i b$，从而 $b\mid a_i$。
+
+  若 $c\mid a_i$（$i=1,\dots,n$），则 $a_i\in (c)$，从而 $(a_1,\dots,a_n)\subseteq (c)$。
+  于是 $(b)\subseteq (c)$，即 $b\in (c)$，故 $c\mid b$。
+\end{proof}
+
+\begin{proposition}
+  设 $R$ 为 PID，$a_1,\dots,a_n\in R$（$n\ge 1$），且
+  \[
+    (a_1)\cap\cdots\cap (a_n)=(b).
+  \]
+  则 $b$ 是 $a_1,\dots,a_n$ 的最小公倍数（在相伴意义下唯一）。
+\end{proposition}
+
+\begin{proof}
+  由 $(a_1)\cap\cdots\cap (a_n)=(b)$ 知 $b\in (a_i)$，故 $a_i\mid b$（$i=1,\dots,n$）。
+
+  若 $a_i\mid c$（$i=1,\dots,n$），则 $c\in (a_i)$（$i=1,\dots,n$），从而 $c\in (a_1)\cap\cdots\cap (a_n)=(b)$。
+  故 $b\mid c$。
+\end{proof}
+
+\begin{definition}
+  设 $R$ 为交换环，$I,J$ 为 $R$ 的理想。
+  若 $I+J=R$，则称 $I$ 与 $J$ \emph{互素}（或\emph{互补}）。
+\end{definition}
+
+\begin{remark}
+  在 PID 中，$a,b\in R$ 互素当且仅当 $(a,b)=R$。
+  特别地在 $\mathbb{Z}$ 中，$\gcd(a,b)=1$ 当且仅当 $(a)+(b)=\mathbb{Z}$。
+\end{remark}
+
+\begin{definition}
+  设 $R$ 为交换环。
+  定义多项式环 $R[x]$ 为全体满足\emph{有限支撑}的函数 $\varphi:\mathbb{N}\to R$ 的集合，
+  即
+  \[
+    \mathrm{supp}(\varphi)=\{i\in\mathbb{N}\mid \varphi(i)\ne 0\}
+  \]
+  为有限集。
+  对 $\varphi,\psi\in R[x]$，定义
+  \[
+    (\varphi+\psi)(n)=\varphi(n)+\psi(n),
+  \]
+  以及
+  \[
+    (\varphi\psi)(n)=\sum_{i=0}^n \varphi(i)\psi(n-i).
+  \]
+\end{definition}
+
+\begin{definition}
+  设 $R$ 为交换环，$I_1,\dots,I_n$ 为 $R$ 的理想。
+  若
+  \[
+    I_1+\cdots+I_n=R,
+  \]
+  则称 $I_1,\dots,I_n$ \emph{互素}。
+\end{definition}
+
+\begin{theorem}[费马小定理]
+  设 $p$ 为素数，$n\in\mathbb{Z}$。
+  则
+  \[
+    n^p\equiv n\pmod p.
+  \]
+\end{theorem}
+
+\begin{proof}
+  记 $\mathbb{Z}_p=\mathbb{Z}/p\mathbb{Z}$。
+  令 $[n]\in\mathbb{Z}_p$ 为 $n$ 在 $\mathbb{Z}_p$ 中的像。
+  若 $[n]=0$，则 $[n]^p=0=[n]$。
+  若 $[n]\ne 0$，则 $[n]\in\mathbb{Z}_p^{\times}$。
+  注意到 $\mathbb{Z}_p^{\times}$ 是阶为 $p-1$ 的群，故 $[n]^{p-1}=[1]$，从而
+  \[
+    [n]^p=[n]^{p-1}[n]=[1][n]=[n].
+  \]
+  因此 $[n^p]=[n]$，即 $n^p\equiv n\pmod p$。
+\end{proof}
+
+\section{中国剩余定理}
+
+\begin{theorem}[中国剩余定理（三模数情形）]
+  设 $r,s,t\in\mathbb{N}^{*}$ 两两互素。
+  则对任意 $a,b,c\in\mathbb{Z}$，同余方程组
+  \[
+    \begin{cases}
+      x\equiv a\pmod r,\\
+      x\equiv b\pmod s,\\
+      x\equiv c\pmod t
+    \end{cases}
+  \]
+  有解；并且任意两解模 $rst$ 同余。
+\end{theorem}
+
+\begin{remark}
+  例如取 $r=3,s=5,t=7$，则模 $105$ 的每个剩余类都可由上述同余方程组唯一刻画。
+\end{remark}
+
+\begin{definition}[有限直积环]
+  设 $R_1,\dots,R_n$ 为环。
+  定义集合
+  \[
+    R_1\times\cdots\times R_n=\{(x_1,\dots,x_n)\mid x_i\in R_i\}.
+  \]
+  对 $x=(x_1,\dots,x_n)$、$y=(y_1,\dots,y_n)$，定义
+  \[
+    x+y=(x_1+y_1,\dots,x_n+y_n),
+  \]
+  以及
+  \[
+    xy=(x_1y_1,\dots,x_ny_n).
+  \]
+\end{definition}
+
+\begin{proposition}
+  在上述运算下，$R_1\times\cdots\times R_n$ 成为环，称为 $R_1,\dots,R_n$ 的\emph{直积环}。
+\end{proposition}
+
+\begin{proof}
+  逐分量检验加法与乘法的结合律、分配律与单位元即可。
+\end{proof}
+
+\begin{definition}[一般直积环]
+  设 $(R_{\alpha})_{\alpha\in\Lambda}$ 为一族环。
+  定义
+  \[
+    \prod_{\alpha\in\Lambda} R_{\alpha}=\{(x_{\alpha})_{\alpha\in\Lambda}\mid x_{\alpha}\in R_{\alpha}\}.
+  \]
+  对 $(x_{\alpha}),(y_{\alpha})\in\prod_{\alpha\in\Lambda}R_{\alpha}$，定义
+  \[
+    (x_{\alpha})+(y_{\alpha})=(x_{\alpha}+y_{\alpha})_{\alpha},\qquad
+    (x_{\alpha})(y_{\alpha})=(x_{\alpha}y_{\alpha})_{\alpha}.
+  \]
+\end{definition}
+
+\begin{proposition}
+  在上述运算下，$\prod_{\alpha\in\Lambda}R_{\alpha}$ 成为环。
+\end{proposition}
+
+\begin{proof}
+  与有限直积情形相同，逐分量验证即可。
+\end{proof}
+
+\begin{definition}[直积群]
+  设 $(G_{\alpha})_{\alpha\in\Lambda}$ 为一族群。
+  定义
+  \[
+    \prod_{\alpha\in\Lambda} G_{\alpha}=\{(x_{\alpha})_{\alpha\in\Lambda}\mid x_{\alpha}\in G_{\alpha}\}.
+  \]
+  对 $(x_{\alpha}),(y_{\alpha})\in\prod_{\alpha\in\Lambda}G_{\alpha}$，定义
+  \[
+    (x_{\alpha})(y_{\alpha})=(x_{\alpha}y_{\alpha})_{\alpha}.
+  \]
+\end{definition}
+
+\begin{proposition}
+  在上述运算下，$\prod_{\alpha\in\Lambda} G_{\alpha}$ 成为群，其单位元为 $(e_{\alpha})_{\alpha}$，其中 $e_{\alpha}$ 为 $G_{\alpha}$ 的单位元；并且
+  \[
+    (x_{\alpha})^{-1}=(x_{\alpha}^{-1})_{\alpha}.
+  \]
+\end{proposition}
+
+\begin{proof}
+  逐分量验证结合律与单位元、逆元性质即可。
+\end{proof}
+
+\begin{definition}[直积向量空间（直积模）]
+  设 $F$ 为域，$(M_{\alpha})_{\alpha\in\Lambda}$ 为一族 $F$-向量空间（等价地，一族 $F$-模）。
+  定义
+  \[
+    \prod_{\alpha\in\Lambda} M_{\alpha}=\{(x_{\alpha})_{\alpha\in\Lambda}\mid x_{\alpha}\in M_{\alpha}\}.
+  \]
+  对 $(x_{\alpha}),(y_{\alpha})\in\prod_{\alpha\in\Lambda}M_{\alpha}$ 与 $\lambda\in F$，定义
+  \[
+    (x_{\alpha})+(y_{\alpha})=(x_{\alpha}+y_{\alpha})_{\alpha},\qquad
+    \lambda(x_{\alpha})=(\lambda x_{\alpha})_{\alpha}.
+  \]
+\end{definition}
+
+\begin{proposition}
+  在上述运算下，$\prod_{\alpha\in\Lambda} M_{\alpha}$ 成为 $F$-向量空间（从而是 $F$-模），称为 $(M_{\alpha})$ 的\emph{直积}。
+\end{proposition}
+
+\begin{proof}
+  所有向量空间（模）公理均可逐分量验证。
+\end{proof}
+
+\begin{theorem}[中国剩余定理（结构表述）]
+  设 $n_1,\dots,n_{\ell}\in\mathbb{N}^{*}$ 两两互素。
+  定义环同态
+  \[
+    \varphi:\mathbb{Z}\to\mathbb{Z}_{n_1}\times\cdots\times\mathbb{Z}_{n_{\ell}},\qquad
+    x\mapsto \bigl([x]_{n_1},\dots,[x]_{n_{\ell}}\bigr).
+  \]
+  则 $\varphi$ 为满射，并且
+  \[
+    \ker\varphi=(n_1)\cap\cdots\cap(n_{\ell})=(n_1\cdots n_{\ell}).
+  \]
+  从而由第一同构定理有环同构
+  \[
+    \mathbb{Z}/(n_1\cdots n_{\ell})\cong \mathbb{Z}_{n_1}\times\cdots\times\mathbb{Z}_{n_{\ell}}.
+  \]
+\end{theorem}
+
+\begin{proof}
+  由定义，$x\in\ker\varphi$ 当且仅当对每个 $i$ 都有 $[x]_{n_i}=0$，即 $n_i\mid x$。
+  因此
+  \[
+    \ker\varphi=\{x\in\mathbb{Z}\mid n_i\mid x\ (1\le i\le \ell)\}=(n_1)\cap\cdots\cap(n_{\ell}).
+  \]
+  在 $\mathbb{Z}$ 中，$(n_1)\cap\cdots\cap(n_{\ell})=(\mathrm{lcm}(n_1,\dots,n_{\ell}))$。
+  由于 $n_1,\dots,n_{\ell}$ 两两互素，故 $\mathrm{lcm}(n_1,\dots,n_{\ell})=n_1\cdots n_{\ell}$，从而 $\ker\varphi=(n_1\cdots n_{\ell})$。
+  由第一同构定理，$\varphi$ 诱导出单射环同态
+  \[
+    \bar\varphi: \mathbb{Z}/(n_1\cdots n_{\ell})\to \mathbb{Z}_{n_1}\times\cdots\times\mathbb{Z}_{n_{\ell}}.
+  \]
+  注意到 $\bigl|\mathbb{Z}/(n_1\cdots n_{\ell})\bigr|=n_1\cdots n_{\ell}$，并且
+  \[
+    \bigl|\mathbb{Z}_{n_1}\times\cdots\times\mathbb{Z}_{n_{\ell}}\bigr|=n_1\cdots n_{\ell}.
+  \]
+  因此 $\bar\varphi$ 是有限集合之间的单射，从而为双射。
+  特别地 $\varphi$ 为满射，并且
+  \[
+    \mathbb{Z}/(n_1\cdots n_{\ell})\cong \mathbb{Z}_{n_1}\times\cdots\times\mathbb{Z}_{n_{\ell}}.
+  \]
+\end{proof}
+
+\begin{lemma}
+  设 $R$ 为交换环，$I,J,K$ 为 $R$ 的理想。
+  若 $I+J=R$ 且 $I+K=R$，则 $I+JK=R$。
+\end{lemma}
+
+\begin{proof}
+  由 $I+J=R$，存在 $a\in I,\ b\in J$ 使得 $a+b=1$；由 $I+K=R$，存在 $c\in I,\ d\in K$ 使得 $c+d=1$。
+  因此
+  \[
+    1=(a+b)(c+d)=ac+ad+bc+bd.
+  \]
+  其中 $ac,ad,bc\in I$，并且 $bd\in JK$，故 $1\in I+JK$，即 $I+JK=R$。
+\end{proof}
+
+\begin{corollary}\label{coprime-ideal-product}
+  设 $R$ 为交换环，$I,J_1,\dots,J_m$ 为 $R$ 的理想。
+  若对每个 $t=1,\dots,m$ 都有 $I+J_t=R$，则
+  \[
+    I+J_1\cdots J_m=R.
+  \]
+\end{corollary}
+
+\begin{proof}
+  对 $m$ 归纳。
+  $m=1$ 时结论显然。
+  若结论对 $m-1$ 成立，则由归纳假设得 $I+J_1\cdots J_{m-1}=R$。
+  再由上引理（取 $J=J_1\cdots J_{m-1}$，$K=J_m$）得 $I+(J_1\cdots J_{m-1})J_m=R$，即 $I+J_1\cdots J_m=R$。
+\end{proof}
+
+\begin{lemma}
+  设 $R$ 为交换环，$I_1,\dots,I_n$ 为 $R$ 的理想，并且两两互素：对任意 $i\ne j$ 有 $I_i+I_j=R$。
+  对每个 $i$ 令
+  \[
+    J_i=\prod_{j\ne i} I_j.
+  \]
+  则 $J_1+\cdots+J_n=R$。
+\end{lemma}
+
+\begin{proof}
+  对 $n$ 归纳。
+  $n=2$ 时，$J_1=I_2,\ J_2=I_1$，故 $J_1+J_2=I_1+I_2=R$。
+  设结论对 $n$ 成立。
+  对两两互素的 $I_1,\dots,I_n,I_{n+1}$，记
+  \[
+    K_i=\prod_{\substack{1\le j\le n\\ j\ne i}} I_j\qquad (1\le i\le n).
+  \]
+  由归纳假设得 $K_1+\cdots+K_n=R$。
+  此时对 $1\le i\le n$ 有 $J_i=K_iI_{n+1}$，从而
+  \[
+    J_1+\cdots+J_n=I_{n+1}(K_1+\cdots+K_n)=I_{n+1}.
+  \]
+  又由推论~\ref{cor:coprime-ideal-product}（取 $I=I_{n+1}$，$J_t=I_t$）可得 $I_{n+1}+I_1\cdots I_n=R$，即 $I_{n+1}+J_{n+1}=R$。
+  因此
+  \[
+    J_1+\cdots+J_n+J_{n+1}=I_{n+1}+J_{n+1}=R.
+  \]
+\end{proof}
+
+\begin{theorem}[中国剩余定理（理想形式）]
+  设 $R$ 为交换环，$I_1,\dots,I_{\ell}$ 为 $R$ 的理想，并且两两互素：对任意 $i\ne j$ 有 $I_i+I_j=R$。
+  定义环同态
+  \[
+    \Phi:R\to R/I_1\times\cdots\times R/I_{\ell},\qquad
+    a\mapsto ([a]_1,\dots,[a]_{\ell}),
+  \]
+  其中 $[a]_i$ 表示 $a$ 在 $R/I_i$ 中的像。
+  则 $\Phi$ 为满射，并且
+  \[
+    \ker\Phi=I_1\cap\cdots\cap I_{\ell}.
+  \]
+  从而诱导出环同构
+  \[
+    R/(I_1\cap\cdots\cap I_{\ell})\cong R/I_1\times\cdots\times R/I_{\ell}.
+  \]
+\end{theorem}
+
+\begin{proof}
+  由定义，$a\in\ker\Phi$ 当且仅当对每个 $i$ 都有 $[a]_i=0$，即 $a\in I_i$，故
+  \[
+    \ker\Phi=I_1\cap\cdots\cap I_{\ell}.
+  \]
+  令 $J_i=\prod_{j\ne i} I_j$。
+  由上引理，$J_1+\cdots+J_{\ell}=R$，故存在 $e_1\in J_1,\dots,e_{\ell}\in J_{\ell}$ 使得
+  \[
+    e_1+\cdots+e_{\ell}=1.
+  \]
+  对任意 $i$，因为 $J_i\subseteq I_k$ 对每个 $k\ne i$ 成立，所以当 $k\ne i$ 时有 $[e_i]_k=0$。
+  同时
+  \[
+    1-e_i=\sum_{j\ne i} e_j\in I_i,
+  \]
+  从而 $[e_i]_i=[1]_i$。
+  于是对任意给定的 $([a_1]_1,\dots,[a_{\ell}]_{\ell})\in R/I_1\times\cdots\times R/I_{\ell}$，取
+  \[
+    a=a_1e_1+\cdots+a_{\ell}e_{\ell}\in R,
+  \]
+  则对每个 $k$ 有
+  \[
+    [a]_k=\sum_{i=1}^{\ell} [a_i]_k[e_i]_k=[a_k]_k,
+  \]
+  故 $\Phi(a)=([a_1]_1,\dots,[a_{\ell}]_{\ell})$，从而 $\Phi$ 为满射。
+  最后由第一同构定理即得结论。
+\end{proof}
+
+\begin{proposition}[循环群的自同构群]
+  设 $G=\langle a\rangle$ 为循环群。
+  \begin{enumerate}
+    \item 若 $o(a)=+\infty$，则 $\mathrm{Aut}(G)\cong \{\pm 1\}$。
+    \item 若 $o(a)=n$，则 $\mathrm{Aut}(G)\cong (\mathbb{Z}_n)^{\times}$。
+  \end{enumerate}
+\end{proposition}
+
+\begin{proof}
+  任意 $\varphi\in\mathrm{Aut}(G)$ 由 $\varphi(a)$ 唯一决定，因为对任意 $m\in\mathbb{Z}$，
+  \[
+    \varphi(a^m)=\varphi(a)^m.
+  \]
+  且 $\varphi(a)$ 必为生成元（否则 $\varphi(G)=\langle\varphi(a)\rangle\ne G$）。
+
+  (1) 若 $o(a)=+\infty$，则 $G$ 的生成元只有 $a$ 与 $a^{-1}$，故 $\varphi(a)=a$ 或 $\varphi(a)=a^{-1}$。
+  从而 $\mathrm{Aut}(G)\cong \{\pm 1\}$。
+
+  (2) 若 $o(a)=n$，则任意自同构满足 $\varphi(a)=a^k$，并且 $a^k$ 为生成元当且仅当 $\gcd(k,n)=1$。
+  定义
+  \[
+    \theta:(\mathbb{Z}_n)^{\times}\to \mathrm{Aut}(G),\qquad [k]\mapsto \varphi_k,
+  \]
+  其中 $\varphi_k(a)=a^k$。可验证 $\theta$ 为群同构。
+\end{proof}
+
+\section{基数初步}
+
+\begin{definition}[等势与基数]
+  设 $X,Y$ 为集合。
+  若存在双射 $f:X\to Y$，则称 $X$ 与 $Y$ \emph{等势}，记为 $X\sim Y$。
+  记 $[X]$ 为 $X$ 在关系 $\sim$ 下的等价类，称为 $X$ 的\emph{基数}。
+\end{definition}
+
+\begin{proposition}
+  关系 $\sim$ 是集合上的等价关系。
+\end{proposition}
+
+\begin{proof}
+  恒等映射给出自反性；双射可逆给出对称性；双射复合仍为双射给出传递性。
+\end{proof}
+
+\begin{definition}[基数的偏序]
+  对集合 $X,Y$，定义
+  \[
+    [X]\le [Y]\stackrel{\mathrm{def}}{\Longleftrightarrow}\exists\,f:X\to Y\ \text{为单射}.
+  \]
+\end{definition}
+
+\begin{theorem}[Cantor--Bernstein]
+  设 $X,Y$ 为集合。
+  若存在单射 $f:X\to Y$ 与单射 $g:Y\to X$，则存在双射 $h:X\to Y$，从而 $X\sim Y$。
+\end{theorem}
+
+\begin{proposition}
+  上述定义的 $\le$ 是基数上的偏序关系。
+\end{proposition}
+
+\begin{proof}
+  恒等映射是单射，故 $[X]\le [X]$。
+
+  若 $[X]\le [Y]$ 且 $[Y]\le [Z]$，则存在单射 $X\to Y$ 与 $Y\to Z$，复合得单射 $X\to Z$，故 $[X]\le [Z]$。
+
+  若 $[X]\le [Y]$ 且 $[Y]\le [X]$，则存在单射 $X\to Y$ 与 $Y\to X$。
+  由 Cantor--Bernstein 定理得 $X\sim Y$，从而 $[X]=[Y]$。
+\end{proof}
+  \begin{definition}[不交并]
+  设 $(X_{\alpha})_{\alpha\in\Lambda}$ 为一族集合，定义它们的\emph{不交并}为
+  \[
+    \bigsqcup_{\alpha\in\Lambda} X_{\alpha}
+    =\bigcup_{\alpha\in\Lambda}\bigl(X_{\alpha}\times\{\alpha\}\bigr).
+  \]
+  特别地，对集合 $X,Y$，可取
+  \[
+    X\sqcup Y=(X\times\{0\})\cup (Y\times\{1\}).
+  \]
+\end{definition}
+
+\begin{definition}[基数的加法与乘法]
+  对集合 $X,Y$ 的基数，定义
+  \[
+    [X]+[Y]\stackrel{\mathrm{def}}{=}[X\sqcup Y],\qquad
+    [X]\cdot [Y]\stackrel{\mathrm{def}}{=}[X\times Y].
+  \]
+\end{definition}
+
+\begin{proposition}
+  上述基数加法与乘法是良定义的：若 $X\sim X'$ 且 $Y\sim Y'$，则
+  \[
+    X\sqcup Y\sim X'\sqcup Y',\qquad X\times Y\sim X'\times Y'.
+  \]
+  因而 $[X]+[Y]=[X']+[Y']$ 且 $[X]\cdot [Y]=[X']\cdot [Y']$。
+\end{proposition}
+
+\begin{proof}
+  设 $f:X\to X'$、$g:Y\to Y'$ 为双射。
+
+  对不交并，定义
+  \[
+    f\sqcup g:X\sqcup Y\to X'\sqcup Y'
+  \]
+  为
+  \[
+    (f\sqcup g)(x,0)=(f(x),0),\qquad (f\sqcup g)(y,1)=(g(y),1).
+  \]
+  易知 $f\sqcup g$ 为双射，故 $X\sqcup Y\sim X'\sqcup Y'$。
+
+  对直积，定义
+  \[
+    f\times g:X\times Y\to X'\times Y',\qquad (x,y)\mapsto (f(x),g(y)).
+  \]
+  易知 $f\times g$ 为双射，故 $X\times Y\sim X'\times Y'$。
+\end{proof}
+
+\begin{theorem}[无限基数的运算]
+  设 $\alpha$ 为无限基数，$\beta$ 为基数。
+  \begin{enumerate}
+    \item $\alpha+\beta=\max\{\alpha,\beta\}$；
+    \item 若 $\beta\ne 0$，则 $\alpha\cdot\beta=\max\{\alpha,\beta\}$。
+  \end{enumerate}
+\end{theorem}
+
+\begin{proof}
+  取集合 $X,Y$ 使得 $[X]=\alpha$、$[Y]=\beta$。
+
+  (1) 由于 $X\hookrightarrow X\sqcup Y$ 且 $Y\hookrightarrow X\sqcup Y$，故
+  \[
+    \max\{\alpha,\beta\}\le [X\sqcup Y]=\alpha+\beta.
+  \]
+  反过来，不妨设 $\alpha\ge\beta$。
+  则存在单射 $Y\hookrightarrow X$，从而 $X\sqcup Y\hookrightarrow X\sqcup X$。
+  又由无限基数的经典结论（可用 Cantor--Bernstein 证明）知 $[X\sqcup X]=[X]$，因此
+  \[
+    \alpha+\beta=[X\sqcup Y]\le [X\sqcup X]=[X]=\alpha=\max\{\alpha,\beta\}.
+  \]
+  综上 $\alpha+\beta=\max\{\alpha,\beta\}$。
+
+  (2) 若 $\beta=0$，则 $\alpha\cdot\beta=0$。
+  以下设 $\beta\ne 0$。
+  同样不妨设 $\alpha\ge\beta$，则存在单射 $Y\hookrightarrow X$，从而 $X\times Y\hookrightarrow X\times X$。
+  对无限基数亦有经典结论 $[X\times X]=[X]$（可用 Cantor--Bernstein 证明），故
+  \[
+    \alpha\cdot\beta=[X\times Y]\le [X\times X]=[X]=\alpha.
+  \]
+  又因为 $X\hookrightarrow X\times Y$（取 $y_0\in Y$，令 $x\mapsto(x,y_0)$）所以 $\alpha\le \alpha\cdot\beta$。
+  因此 $\alpha\cdot\beta=\alpha=\max\{\alpha,\beta\}$。
+\end{proof}
+
+\begin{corollary}
+  若 $\alpha$ 为无限基数，则
+  \[
+    \alpha+\alpha=\alpha,\qquad \alpha\cdot\alpha=\alpha.
+  \]
+\end{corollary}
+
+\section{整环与多项式环}
+
+\begin{definition}[无零因子环]
+  设 $R$ 为环。
+  若对任意 $x,y\in R\setminus\{0\}$，均有 $xy\ne 0$（即 $xy\in R\setminus\{0\}$），则称 $R$ 为\emph{无零因子环}。
+\end{definition}
+
+\begin{definition}[整环]
+  若 $R$ 为无零因子的交换幺环，则称 $R$ 为\emph{整环}。
+\end{definition}
+
+\begin{example}
+  \begin{enumerate}
+    \item $\mathbb{Z}$、$\mathbb{R}$、$\mathbb{C}$、$\mathbb{Q}$ 均为整环（它们是域，亦为无零因子环）。
+    \item 设 $p$ 为素数，则 $\mathbb{Z}_p$ 为整环（实际上是域）。
+    \item $\mathbb{Z}_4$ 不是整环：$[2]\cdot[2]=[4]=[0]$，但 $[2]\ne[0]$，故 $\mathbb{Z}_4$ 有零因子。
+    \item 更一般地，设 $m,n>1$，则 $\mathbb{Z}_{mn}$ 有零因子：$[m]\cdot[n]=[mn]=[0]$，但 $[m]\ne[0]$ 且 $[n]\ne[0]$。
+  \end{enumerate}
+\end{example}
+
+\begin{proposition}\label{field-is-domain}
+  域为整环。
+\end{proposition}
+
+\begin{proof}
+  设 $F$ 为域。
+  $F$ 为交换幺环，故只需验证无零因子性。
+  设 $x,y\in F$ 且 $x\ne 0$、$y\ne 0$。
+  反设 $xy=0$，则
+  \[
+    y = 1\cdot y = (x^{-1}x)y = x^{-1}(xy) = x^{-1}\cdot 0 = 0,
+  \]
+  矛盾。故 $xy\ne 0$，即 $F$ 为无零因子环。
+\end{proof}
+
+\begin{proposition}
+  设 $F$ 为域，$R$ 为 $F$ 的含 $1$ 子环。
+  则 $R$ 为整环。
+\end{proposition}
+
+\begin{proof}
+  $R$ 继承 $F$ 的交换性与单位元。
+  又 $R\subseteq F$，而 $F$ 无零因子，故 $R$ 亦无零因子。
+  因此 $R$ 为整环。
+\end{proof}
+
+\begin{theorem}[分式域的存在性]
+  设 $R$ 为整环。
+  则存在域 $F$ 及单射环同态 $\iota\colon R\hookrightarrow F$，使得
+  \[
+    F=\Bigl\{\frac{x}{y}: x\in R,\ y\in R\setminus\{0\}\Bigr\}.
+  \]
+  称 $F$ 为 $R$ 的\emph{分式域}，记为 $F(R)$。
+\end{theorem}
+
+\begin{proof}
+  记 $R^{*}=R\setminus\{0\}$。
+  在集合 $R\times R^{*}$ 上定义关系 $\sim$：
+  \[
+    (x,y)\sim(x',y') \quad\stackrel{\mathrm{def}}{\iff}\quad xy'=x'y.
+  \]
+  可验证 $\sim$ 为等价关系。
+  记等价类 $[(x,y)]=\dfrac{x}{y}$，令 $F=R\times R^{*}/{\sim}$。
+
+  在 $F$ 上定义加法与乘法：
+  \[
+    \frac{x}{y}+\frac{x'}{y'}=\frac{xy'+x'y}{yy'},\qquad
+    \frac{x}{y}\cdot\frac{x'}{y'}=\frac{xx'}{yy'}.
+  \]
+  由 $R$ 为整环知 $yy'\ne 0$，故运算良定义。
+  可验证 $(F,+,\cdot)$ 构成域。
+
+  定义 $\iota\colon R\to F$，$\iota(x)=\dfrac{x}{1}$。
+  由于 $R$ 为整环，$\iota$ 为单射环同态，从而 $R$ 可嵌入 $F$。
+\end{proof}
+\chapter{域扩张}
+
+\section{域扩张与代数元}
+
+\begin{definition}[有限扩张与无限扩张]
+  设 $F$ 为域，$R$ 为 $F$ 的扩环。
+  \begin{enumerate}
+    \item 若 $\dim_F R<+\infty$，则称 $R$ 为 $F$ 的\emph{有限扩张}。
+    \item 若 $\dim_F R=+\infty$，则称 $R$ 为 $F$ 的\emph{无限扩张}。
+  \end{enumerate}
+\end{definition}
+ 
+\begin{definition}[代数元与超越元]
+  设 $F\subseteq E$ 为域扩张，$a\in E$。
+  \begin{enumerate}
+    \item 若存在非零多项式 $f(x)\in F[x]$ 使得 $f(a)=0$，则称 $a$ 为 $F$ 上的\emph{代数元}。
+    \item 若 $a$ 不是 $F$ 上的代数元，则称 $a$ 为 $F$ 上的\emph{超越元}。
+  \end{enumerate}
+\end{definition}
+ 
+\begin{remark}
+  若 $a\in F$，则 $a$ 为 $F$ 上的代数元（取 $f(x)=x-a\in F[x]$ 即可）。
+  反之，若 $a$ 的最小多项式为一次多项式，则 $a\in F$。
+\end{remark}
+ 
+\begin{definition}[代数扩张与超越扩张]
+  设 $F\subseteq E$ 为域扩张。
+  \begin{enumerate}
+    \item 若 $E$ 中每个元素均为 $F$ 上的代数元，则称 $E/F$ 为\emph{代数扩张}。
+    \item 若 $E/F$ 不是代数扩张（即存在 $E$ 中 $F$ 上的超越元），则称 $E/F$ 为\emph{超越扩张}。
+  \end{enumerate}
+\end{definition}
+ 
+\begin{proposition}
+  若 $F\subseteq R$ 为有限扩张，则 $R$ 为 $F$ 的代数扩张。
+\end{proposition}
+ 
+\begin{proof}
+  设 $\dim_F R=n$。
+  任取 $a\in R$，则 $1,a,a^2,\dots,a^n$ 共 $n+1$ 个元素，故关于 $F$ 线性相关。
+  从而存在 $\lambda_0,\lambda_1,\dots,\lambda_n\in F$ 不全为零，使得
+  \[
+    \lambda_0\cdot 1+\lambda_1 a+\cdots+\lambda_n a^n=0.
+  \]
+  令 $f(x)=\lambda_0+\lambda_1 x+\cdots+\lambda_n x^n\in F[x]$。
+  由于 $\lambda_0,\dots,\lambda_n$ 不全为零，故 $f\ne 0$，且 $f(a)=0$。
+  因此 $a$ 为 $F$ 上的代数元。
+\end{proof}
+ 
+\begin{definition}[$F[a]$ 与 $F(a)$]
+  设 $F\subseteq E$ 为域扩张，$a\in E$。
+  \begin{enumerate}
+    \item 记 $F[a]$ 为 $E$ 中包含 $F\cup\{a\}$ 的最小子环。
+    \item 记 $F(a)$ 为 $E$ 中包含 $F\cup\{a\}$ 的最小子域。
+  \end{enumerate}
+  显然 $F[a]\subseteq F(a)$。
+\end{definition}
+ 
+\begin{proposition}\label{F-a-evaluation}
+  设 $F\subseteq E$ 为域扩张，$a\in E$。
+  则
+  \[
+    F[a]=\{f(a): f(x)\in F[x]\}=\hat a\bigl(F[x]\bigr),
+  \]
+  其中 $\hat a\colon F[x]\to E$，$f\mapsto f(a)$ 为赋值同态。
+\end{proposition}
+ 
+\begin{proof}
+  记 $S=\{f(a):f\in F[x]\}=\hat a(F[x])$。
+  由 $\hat a$ 为环同态知 $S$ 为 $E$ 的子环。
+  又 $F\subseteq S$（取常数多项式）且 $a\in S$（取 $f(x)=x$），故 $F\cup\{a\}\subseteq S$。
+  因此 $F[a]\subseteq S$。
+ 
+  另一方面，任何包含 $F\cup\{a\}$ 的子环必包含一切 $f(a)$（$f\in F[x]$），故 $S\subseteq F[a]$。
+  从而 $F[a]=S$。
+\end{proof}
+ 
+\begin{proposition}
+  设 $F\subseteq E$ 为域扩张，$a\in E$ 为 $F$ 上代数元。
+  则有如下交换图：
+  \[
+    \begin{tikzcd}
+      F[x] \arrow[r,two heads,"\hat a"] \arrow[d,two heads] & F[a] \arrow[r,hook] & E \\
+      F[x]/\ker\hat a \arrow[ur,"\sim"']
+    \end{tikzcd}
+  \]
+  其中 $\ker\hat a=\{f\in F[x]:f(a)=0\}$ 为 $a$ 在 $F$ 上的全体零化多项式所成的理想，且 $F[x]/\ker\hat a\cong F[a]$。
+\end{proposition}
+ 
+\begin{proposition}
+  设 $F\subseteq E$ 为域扩张，$a\in E$ 为 $F$ 上代数元。
+  设 $p(x)\in F[x]$ 为 $a$ 的最小多项式（即 $\ker\hat a$ 的首一生成元）。
+  则 $p(x)$ 整除一切满足 $f(a)=0$ 的 $f(x)\in F[x]$。
+\end{proposition}
+ 
+\begin{proof}
+  设 $f(a)=0$。
+  由带余除法，存在 $q(x),r(x)\in F[x]$ 使得
+  \[
+    f(x)=p(x)q(x)+r(x),\qquad \deg r<\deg p.
+  \]
+  代入 $a$ 得
+  \[
+    0=f(a)=p(a)q(a)+r(a)=0\cdot q(a)+r(a)=r(a).
+  \]
+  若 $r\ne 0$，则 $r(a)=0$ 且 $\deg r<\deg p$，与 $p$ 为最小多项式矛盾。
+  故 $r=0$，即 $p(x)\mid f(x)$。
+\end{proof}
+ 
+\begin{proposition}
+  设 $F\subseteq E$ 为域扩张，$a\in E$ 为 $F$ 上代数元，$p(x)$ 为 $a$ 的最小多项式且 $n=\deg p$。
+  则 $F[a]$ 为 $F$ 的有限扩张，且
+  \[
+    \dim_F F[a]=n.
+  \]
+  具体地，$\{1,a,a^2,\dots,a^{n-1}\}$ 为 $F[a]$ 作为 $F$-向量空间的一组基。
+\end{proposition}
+ 
+\begin{proof}
+  由命题~\ref{pro:F-a-evaluation}，$F[a]=\{f(a):f\in F[x]\}$。
+  对任意 $f\in F[x]$，由带余除法 $f(x)=p(x)q(x)+r(x)$，其中 $\deg r<n$。
+  代入 $a$ 得 $f(a)=r(a)$，因此
+  \[
+    F[a]=\{g(a):g\in F[x],\ \deg g<n\}.
+  \]
+  即每个 $F[a]$ 中元素均可表为
+  \[
+    g(a)=\lambda_0\cdot 1+\lambda_1 a+\cdots+\lambda_{n-1}a^{n-1},\qquad \lambda_0,\dots,\lambda_{n-1}\in F.
+  \]
+  故 $\{1,a,\dots,a^{n-1}\}$ 生成 $F[a]$。
+ 
+  下证线性无关。
+  设 $\lambda_0,\dots,\lambda_{n-1}\in F$ 满足 $\lambda_0+\lambda_1 a+\cdots+\lambda_{n-1}a^{n-1}=0$。
+  令 $h(x)=\lambda_0+\lambda_1 x+\cdots+\lambda_{n-1}x^{n-1}$，则 $h(a)=0$ 且 $\deg h<n=\deg p$。
+  由 $p$ 为最小多项式知必有 $h=0$，即 $\lambda_0=\cdots=\lambda_{n-1}=0$。
+ 
+  综上，$\{1,a,\dots,a^{n-1}\}$ 为 $F[a]$ 的 $F$-基，故 $\dim_F F[a]=n$。
+\end{proof}
+ 
+\begin{proposition}
+  设 $F\subseteq E$ 为域扩张，$a\in E$ 为 $F$ 上代数元。
+  \begin{enumerate}
+    \item $F[a]$ 为 $F$ 的有限扩张（从而 $F[a]\subseteq F(a)$）。
+    \item $F(a)$ 为 $E$ 中包含 $F\cup\{a\}$ 的最小子域。
+    \item $F[a]=F(a)$（即 $F[a]$ 本身即为域）。
+  \end{enumerate}
+\end{proposition}
+
+\begin{proposition}
+  若 $R$ 为整环，则 $R[x]$ 为整环。
+\end{proposition}
+
+\begin{proof}
+  $R[x]$ 为交换幺环。
+  设 $f=a_n x^n+\cdots$（$a_n\ne 0$），$g=b_m x^m+\cdots$（$b_m\ne 0$）。
+  由 $R$ 无零因子知 $a_n b_m\ne 0$，故
+  \[
+    f\cdot g = a_n b_m\, x^{n+m}+\cdots \ne 0.
+  \]
+  因此 $R[x]$ 无零因子，从而 $R[x]$ 为整环。
+\end{proof}
+
+\begin{theorem}
+  设 $F$ 为域，则 $F[x]$ 为主理想整环。
+\end{theorem}
+
+\begin{proof}
+  由命题~\ref{pro:field-is-domain}，$F$ 为整环，故 $F[x]$ 为整环。
+  设 $I\trianglelefteq F[x]$。
+  若 $I=\{0\}=\langle 0\rangle$，则 $I$ 为主理想。
+  设 $I\ne\{0\}$ 且 $I\ne F[x]$，则 $I$ 中存在次数 $\ge 1$ 的多项式。
+  取 $I$ 中次数最小的首一多项式 $p(x)$，下证 $I=\langle p(x)\rangle$。
+
+  显然 $\langle p(x)\rangle\subseteq I$。
+  另一方面，对任意 $f(x)\in I$，由带余除法
+  \[
+    f(x)=p(x)q(x)+r(x),\qquad \deg r<\deg p.
+  \]
+  则 $r(x)=f(x)-p(x)q(x)\in I$。
+  若 $r\ne 0$，则首一化后得到 $I$ 中次数小于 $\deg p$ 的首一多项式，与 $p$ 的最小性矛盾。
+  故 $r=0$，即 $f(x)=p(x)q(x)\in\langle p(x)\rangle$。
+  因此 $I\subseteq\langle p(x)\rangle$，从而 $I=\langle p(x)\rangle$。
+\end{proof}
+
+\begin{definition}[多元多项式环]
+  设 $R$ 为交换幺环，$x_1,\dots,x_n$ 为不定元。
+  \emph{$n$ 元多项式环} $R[x_1,\dots,x_n]$ 递归定义为
+  \[
+    R[x_1,\dots,x_n]=R[x_1][x_2]\cdots[x_n].
+  \]
+  其元素为形如
+  \[
+    f=\sum_{(r_1,\dots,r_n)\in\Lambda}\lambda_{r_1,\dots,r_n}\,x_1^{r_1}\cdots x_n^{r_n}
+  \]
+  的有限和，其中 $\Lambda\subseteq\mathbb{N}^n$ 为有限集，$\lambda_{r_1,\dots,r_n}\in R$。
+\end{definition}
+
+\begin{example}
+  在 $R[x,y]\cong R[x][y]$ 中，
+  \[
+    f(x,y)=3x^3y+5xy^2+6x^2+4=(5x)\,y^2+(3x^3)\,y+(6x^2+4)\in R[x][y].
+  \]
+\end{example}
+
+\begin{corollary}
+  若 $F$ 为域，则 $F[x_1,\dots,x_n]$ 为整环。
+\end{corollary}
+
+\begin{proof}
+  $F$ 为域，故 $F$ 为整环。
+  归纳使用"$R$ 为整环 $\Rightarrow$ $R[x]$ 为整环"即得
+  \[
+    F[x_1,\dots,x_n]=F[x_1][x_2]\cdots[x_n]
+  \]
+  为整环。
+\end{proof}
+
+\begin{remark}
+  设 $F\subseteq E$ 为域扩张，$a_1,\dots,a_n\in E$。
+  映射
+  \[
+    \widehat{(a_1,\dots,a_n)}\colon F[x_1,\dots,x_n]\to E,\qquad f(x_1,\dots,x_n)\mapsto f(a_1,\dots,a_n)
+  \]
+  为环同态，称为\emph{多元赋值同态}。
+  这是单元赋值同态 $\hat a\colon F[x]\to E$，$f\mapsto f(a)$ 的自然推广。
+\end{remark}
+
+\begin{proposition}
+  设 $F$ 为域，$f(x)\in F[x]$ 为次数 $\ge 1$ 的不可约多项式。
+  则 $\langle f(x)\rangle$ 为 $F[x]$ 的极大理想。
+\end{proposition}
+
+\begin{proof}
+  因 $\deg f\ge 1$，$f$ 不是单位，故 $\langle f(x)\rangle\ne F[x]$。
+  设 $\langle f(x)\rangle\subseteq I\trianglelefteq F[x]$ 且 $I\ne\langle f(x)\rangle$。
+  由 $F[x]$ 为主理想整环，存在 $g(x)\in F[x]$ 使得 $I=\langle g(x)\rangle$。
+  则 $f(x)\in\langle g(x)\rangle$，故 $g(x)\mid f(x)$。
+  因 $f$ 不可约，要么 $g(x)\in F^{\times}$（从而 $I=F[x]$），要么 $g(x)=cf(x)$（$c\in F^{\times}$，从而 $\langle g(x)\rangle=\langle f(x)\rangle$）。
+  后者与 $I\ne\langle f(x)\rangle$ 矛盾，故 $I=F[x]$。
+  因此 $\langle f(x)\rangle$ 为极大理想。
+\end{proof}
+
+\begin{proposition}
+  设 $F\subseteq E$ 为域扩张，$a\in E$ 为 $F$ 上代数元，$p(x)$ 为 $a$ 在 $F$ 上的最小多项式。
+  则 $p(x)$ 在 $F[x]$ 中不可约。
+\end{proposition}
+
+\begin{proof}
+  反设 $p(x)=f(x)g(x)$，其中 $\deg f,\deg g<\deg p$。
+  代入 $a$ 得
+  \[
+    0=p(a)=f(a)\cdot g(a).
+  \]
+  由 $E$ 为域（从而为整环），知 $f(a)=0$ 或 $g(a)=0$。
+  但 $\deg f<\deg p$ 且 $\deg g<\deg p$，与 $p$ 为使 $p(a)=0$ 的最小次数首一多项式矛盾。
+  故 $p(x)$ 不可约。
+\end{proof}
+
+\begin{proof}[前述命题（$F[a]=F(a)$）的证明]
+  (1) 已由 $\dim_F F[a]=\deg p<+\infty$ 得证。
+
+  (2) 由 $F(a)$ 的定义即得。
+
+  (3) 由赋值同态 $\hat a\colon F[x]\to E$，$f\mapsto f(a)$ 的像为 $F[a]$，且
+  \[
+    \ker\hat a=\langle p(x)\rangle.
+  \]
+  由第一同构定理，有如下交换图：
+  \[
+    \begin{tikzcd}
+      F[x] \arrow[r,two heads,"\hat a"] \arrow[d,two heads,"\pi"'] & F[a] \\
+      F[x]/\langle p(x)\rangle \arrow[ur,"\sim"']
+    \end{tikzcd}
+  \]
+  即 $F[a]\cong F[x]/\langle p(x)\rangle$。
+  由 $p(x)$ 不可约知 $\langle p(x)\rangle$ 为 $F[x]$ 的极大理想，故 $F[x]/\langle p(x)\rangle$ 为域。
+  从而 $F[a]$ 为域。
+
+  因 $F[a]$ 为包含 $F\cup\{a\}$ 的子域，而 $F(a)$ 为包含 $F\cup\{a\}$ 的最小子域，故 $F(a)\subseteq F[a]$。
+  又 $F[a]\subseteq F(a)$ 恒成立，因此 $F[a]=F(a)$。
+\end{proof}
+
+\begin{remark}
+  设 $f(a)\in F[a]$ 且 $f(a)\ne 0$，则 $f(a)\in F[a]^{\times}$（即 $f(a)$ 为 $F[a]$ 中的可逆元）。
+  事实上，由 $f(a)\ne 0$ 知 $p(x)\nmid f(x)$。
+  又 $p(x)$ 不可约，故 $f(x)$ 与 $p(x)$ 互素，即存在 $u(x),v(x)\in F[x]$ 使得
+  \[
+    u(x)f(x)+v(x)p(x)=1.
+  \]
+  代入 $a$ 得
+  \[
+    u(a)f(a)+v(a)\underbrace{p(a)}_{=\,0}=1,
+  \]
+  即 $u(a)\cdot f(a)=1$，故 $f(a)$ 可逆。
+\end{remark}
+
+\begin{definition}[扩张次数]
+  设 $F\subseteq R$ 为域扩张。
+  称 $\dim_F R$ 为\emph{扩张次数}，记为 $[R:F]$。
+\end{definition}
+
+\begin{proposition}
+  设 $F\subseteq E$ 为域扩张，$a\in E$ 为 $F$ 上代数元。
+  则 $F\subseteq F(a)$ 为代数扩张。
+\end{proposition}
+
+\begin{proof}
+  由 $a$ 为代数元知 $F(a)=F[a]$ 为有限扩张，即 $[F(a):F]=\deg p<+\infty$（其中 $p$ 为 $a$ 的最小多项式）。
+  又有限扩张必为代数扩张，故 $F\subseteq F(a)$ 为代数扩张。
+\end{proof}
+
+\begin{lemma}[望远镜公式]
+  设 $F\subseteq K\subseteq E$ 为域扩张，则
+  \[
+    [E:F]=[E:K]\cdot[K:F].
+  \]
+\end{lemma}
+
+\begin{proof}
+  设 $A$ 为 $K$ 在 $F$ 上的一组基（$A\subseteq K$），$B$ 为 $E$ 在 $K$ 上的一组基（$B\subseteq E$）。
+  令
+  \[
+    AB=\{ab: a\in A,\, b\in B\}\subseteq E.
+  \]
+  下证 $AB$ 为 $E$ 在 $F$ 上的一组基。
+
+  \textbf{生成性：}
+  对任意 $x\in E$，由 $B$ 为 $E$ 的 $K$-基知存在 $\lambda_1,\dots,\lambda_n\in K$ 及 $b_1,\dots,b_n\in B$ 使得
+  \[
+    x=\lambda_1 b_1+\cdots+\lambda_n b_n.
+  \]
+  对每个 $i$，由 $A$ 为 $K$ 的 $F$-基知存在 $\mu_{i,1},\dots,\mu_{i,\ell}\in F$ 及 $a_1,\dots,a_{\ell}\in A$ 使得
+  \[
+    \lambda_i=\mu_{i,1}\,a_1+\cdots+\mu_{i,\ell}\,a_{\ell}.
+  \]
+  代入得
+  \[
+    x=\sum_{i=1}^{n}\sum_{j=1}^{\ell}\mu_{i,j}\,(a_j b_i),
+  \]
+  故 $\operatorname{span}_F(AB)=E$。
+
+  \textbf{线性无关性：}
+  设 $a_1 b_1,\dots,a_n b_n\in AB$ 两两不同，$c_1,\dots,c_n\in F$ 满足
+  \[
+    c_1(a_1 b_1)+\cdots+c_n(a_n b_n)=0.
+  \]
+  将具有相同 $b$ 分量的项合并，可改写为
+  \[
+    (c_1 a_1)\,b_1+\cdots+(c_n a_n)\,b_n=0.
+  \]
+  由 $c_i a_i\in K$ 且 $B$ 为 $K$-线性无关知，对每个 $i$ 有 $c_i a_i=0$。
+  又 $a_i\in A$ 为基元素，$a_i\ne 0$，故 $c_i=0$（$i=1,\dots,n$）。
+
+  综上，$AB$ 为 $E$ 在 $F$ 上的一组基，因此
+  \[
+    [E:F]=|AB|=|A\times B|=|A|\cdot|B|=[E:K]\cdot[K:F].
+  \]
+\end{proof}
+
+\begin{proposition}\label{composite-field}
+  设 $F\subseteq E$ 为域扩张，$A,B\subseteq E$。
+  则
+  \begin{enumerate}
+    \item $F(A\cup B)=F(A)(B)$；
+    \item $F[A\cup B]=F[A][B]$。
+  \end{enumerate}
+\end{proposition}
+
+\begin{proof}
+  (1) 显然 $F(A\cup B)\subseteq F(A)(B)$（因 $F(A)(B)$ 为包含 $F\cup A\cup B$ 的子域）。
+  反过来，$F(A\cup B)\supseteq F(A)$ 且 $F(A\cup B)\supseteq B$，故 $F(A\cup B)\supseteq F(A)(B)$。
+  因此 $F(A\cup B)=F(A)(B)$。
+
+  (2) 类似可证。
+\end{proof}
+
+\section{代数扩张的性质}
+
+\begin{proposition}\label{finite-algebraic-extension}
+  设 $F\subseteq E$ 为域扩张，$a_1,\dots,a_n\in E$ 均为 $F$ 上代数元。
+  则
+  \[
+    F(a_1,\dots,a_n)=F[a_1,\dots,a_n]=F[a_1][a_2]\cdots[a_n]
+  \]
+  为 $F$ 的有限扩张（从而为代数扩张）。
+\end{proposition}
+
+\begin{proof}
+  由命题~\ref{pro:composite-field} 反复使用得
+  \[
+    F(a_1,\dots,a_n)=F(a_1)(a_2)\cdots(a_n).
+  \]
+  由 $a_1$ 为 $F$ 上代数元知 $F\subseteq F(a_1)$ 为有限扩张。
+  由 $a_2$ 为 $F$ 上代数元知 $a_2$ 亦为 $F(a_1)$ 上代数元，故 $F(a_1)\subseteq F(a_1)(a_2)$ 为有限扩张。
+  如此逐步进行，每步均为有限扩张。
+  由维度公式反复使用知
+  \[
+    [F(a_1,\dots,a_n):F]=[F(a_1,\dots,a_n):F(a_1,\dots,a_{n-1})]\cdots[F(a_1):F]<+\infty.
+  \]
+  又每个 $F(a_i)=F[a_i]$（代数元情形），故 $F(a_1,\dots,a_n)=F[a_1,\dots,a_n]$。
+\end{proof}
+
+\begin{proposition}\label{directed-union}
+  设 $F\subseteq E$ 为域扩张，$\Omega\subseteq E$。
+  则
+  \begin{enumerate}
+    \item $\displaystyle F[\Omega]=\bigcup_{\substack{A\subseteq\Omega \\ A\text{ 有限}}} F[A]$；
+    \item $\displaystyle F(\Omega)=\bigcup_{\substack{A\subseteq\Omega \\ A\text{ 有限}}} F(A)$。
+  \end{enumerate}
+\end{proposition}
+
+\begin{proof}
+  以 (2) 为例。
+  "$\supseteq$"显然。
+
+  "$\subseteq$"：记右端为 $S$。
+  $S$ 包含 $F$（取 $A=\varnothing$）且包含 $\Omega$（对每个 $\omega\in\Omega$ 取 $A=\{\omega\}$）。
+  又若 $x\in F(A)$、$y\in F(B)$（$A,B$ 有限），则 $x,y\in F(A\cup B)$，故 $x\pm y,\,xy,\,x/y$（$y\ne 0$）均属于 $F(A\cup B)\subseteq S$。
+  因此 $S$ 为包含 $F\cup\Omega$ 的子域，从而 $F(\Omega)\subseteq S$。
+
+  (1) 类似可证。
+\end{proof}
+
+\begin{theorem}
+  设 $F\subseteq E$ 为域扩张，$\Omega\subseteq E$ 中每个元素均为 $F$ 上代数元。
+  则
+  \[
+    F(\Omega)=F[\Omega]
+  \]
+  为 $F$ 的代数扩张。
+\end{theorem}
+
+\begin{proof}
+  由命题~\ref{pro:directed-union}，
+  \[
+    F(\Omega)=\bigcup_{\substack{A\subseteq\Omega \\ A\text{ 有限}}} F(A)=\bigcup_{\substack{A\subseteq\Omega \\ A\text{ 有限}}} F[A]=F[\Omega].
+  \]
+  对任意 $c\in F(\Omega)$，存在有限子集 $A\subseteq\Omega$ 使得 $c\in F(A)$。
+  由 $A$ 中元素均为 $F$ 上代数元知 $F(A)/F$ 为有限扩张（从而为代数扩张），故 $c$ 为 $F$ 上代数元。
+\end{proof}
+
+\begin{theorem}[代数扩张的传递性]
+  设 $F\subseteq K\subseteq E$ 为域扩张。
+  若 $K/F$ 为代数扩张且 $E/K$ 为代数扩张，则 $E/F$ 为代数扩张。
+\end{theorem}
+
+\begin{proof}
+  任取 $a\in E$。
+  由 $a$ 为 $K$ 上代数元，存在 $\lambda_0,\dots,\lambda_n\in K$ 使得
+  \[
+    \lambda_n a^n+\cdots+\lambda_1 a+\lambda_0=0.
+  \]
+  则 $a$ 为 $F(\lambda_0,\dots,\lambda_n)$ 上代数元。
+
+  又 $\lambda_0,\dots,\lambda_n\in K$ 均为 $F$ 上代数元（因 $K/F$ 代数），故 $F\subseteq F(\lambda_0,\dots,\lambda_n)$ 为有限扩张。
+  再由 $a$ 为 $F(\lambda_0,\dots,\lambda_n)$ 上代数元知 $F(\lambda_0,\dots,\lambda_n)\subseteq F(\lambda_0,\dots,\lambda_n)(a)$ 亦为有限扩张。
+  由维度公式，
+  \[
+    [F(\lambda_0,\dots,\lambda_n)(a):F]=[F(\lambda_0,\dots,\lambda_n)(a):F(\lambda_0,\dots,\lambda_n)]\cdot[F(\lambda_0,\dots,\lambda_n):F]<+\infty.
+  \]
+  故 $F\subseteq F(\lambda_0,\dots,\lambda_n)(a)$ 为有限扩张，从而 $a$ 为 $F$ 上代数元。
+\end{proof}
+
+\section{代数闭域与代数闭包}
+
+\begin{definition}[代数闭域]
+  设 $F$ 为域。
+  若对任意非常数多项式 $f(x)\in F[x]$（即 $\deg f\ge 1$），均存在 $a\in F$ 使得 $f(a)=0$，则称 $F$ 为\emph{代数闭域}。
+\end{definition}
+
+\begin{example}
+  $\mathbb{C}$ 为代数闭域（代数学基本定理）。
+\end{example}
+
+\begin{proposition}
+  设 $F$ 为域。
+  则 $F$ 为代数闭域当且仅当 $F[x]$ 中每个次数 $\ge 1$ 的多项式均可分解为一次因式之积，即对任意 $f\in F[x]\setminus F$，存在 $c\in F^{\times}$ 及 $a_1,\dots,a_n\in F$ 使得
+  \[
+    f(x)=c(x-a_1)(x-a_2)\cdots(x-a_n).
+  \]
+\end{proposition}
+
+\begin{proof}
+  "$\Leftarrow$"显然（取任一根即可）。
+
+  "$\Rightarrow$"：设 $F$ 代数闭。
+  对 $\deg f$ 归纳。
+  若 $\deg f=1$ 则 $f$ 本身即为一次式。
+  若 $\deg f\ge 2$，由代数闭知存在 $a_1\in F$ 使得 $f(a_1)=0$，故 $(x-a_1)\mid f$。
+  令 $f=(x-a_1)f_1$，其中 $\deg f_1=\deg f-1$。
+  由归纳假设 $f_1=c(x-a_2)\cdots(x-a_n)$，故 $f=c(x-a_1)(x-a_2)\cdots(x-a_n)$。
+\end{proof}
+
+\begin{proposition}
+  有限域不是代数闭域。
+\end{proposition}
+
+\begin{proof}
+  设 $F=\{a_1,\dots,a_n\}$，$n\ge 1$。
+  考虑多项式
+  \[
+    g(x)=(x-a_1)(x-a_2)\cdots(x-a_n)+1\in F[x].
+  \]
+  则 $\deg g=n\ge 1$，但对任意 $a_i\in F$，$g(a_i)=0+1=1\ne 0$。
+  故 $g$ 在 $F$ 中无根，$F$ 不是代数闭域。
+\end{proof}
+
+\begin{proposition}\label{alg-closed-no-proper-ext}
+  代数闭域没有真的代数扩张。
+  即：若 $F$ 为代数闭域，$F\subseteq E$ 为代数扩张，则 $E=F$。
+\end{proposition}
+
+\begin{proof}
+  设 $F$ 为代数闭域，$F\subseteq E$ 为代数扩张。
+  任取 $a\in E$，则 $a$ 为 $F$ 上代数元。
+  设 $f(x)\in F[x]$ 满足 $f(a)=0$ 且 $\deg f\ge 1$。
+  由 $F$ 代数闭，$f$ 在 $F$ 中可完全分解：
+  \[
+    f(x)=c(x-\lambda_1)\cdots(x-\lambda_n),\qquad c\in F^{\times},\;\lambda_1,\dots,\lambda_n\in F.
+  \]
+  代入 $a$ 得
+  \[
+    0=f(a)=c(a-\lambda_1)\cdots(a-\lambda_n).
+  \]
+  由 $E$ 为整环知存在某个 $i$ 使得 $a=\lambda_i\in F$。
+  故 $E=F$。
+\end{proof}
+
+\begin{proposition}
+  设 $F$ 为域。
+  则 $F$ 为代数闭域当且仅当 $F$ 没有真的代数扩张。
+\end{proposition}
+
+\begin{proof}
+  "$\Rightarrow$"已由命题~\ref{pro:alg-closed-no-proper-ext} 得证。
+
+  "$\Leftarrow$"：设 $F$ 无真代数扩张。
+  对任意 $f\in F[x]$ 且 $\deg f\ge 1$，由引理~\ref{lem:root-existence} 知存在域扩张 $E\supseteq F$ 及 $a\in E$ 使得 $f(a)=0$。
+  则 $a$ 为 $F$ 上代数元，故 $F\subseteq F(a)$ 为代数扩张。
+  由假设知 $F(a)=F$，从而 $a\in F$。
+  因此 $f$ 在 $F$ 中有根，$F$ 为代数闭域。
+\end{proof}
+
+\begin{lemma}\label{root-existence}
+  设 $F$ 为域，$f(x)\in F[x]$ 且 $\deg f\ge 1$。
+  则存在域扩张 $E\supseteq F$ 及 $a\in E$ 使得 $f(a)=0$，且  $E$ = $F(a)$。
+\end{lemma}
+
+\begin{proof}
+  若 $f$ 在 $F$ 中已有根 $a$，取 $E=F$ 即可。
+
+  若 $f$ 在 $F$ 中无根，取 $f$ 的一个不可约因子 $p(x)$（$\deg p\ge 1$，且 $p$ 在 $F$ 中亦无根）。
+  由 $p(x)$ 不可约知 $\langle p(x)\rangle$ 为 $F[x]$ 的极大理想，故
+  \[
+    E=F[x]/\langle p(x)\rangle
+  \]
+  为域。
+  定义 $\sigma\colon F\hookrightarrow E$，$\lambda\mapsto [\lambda]$（常数类），则 $\sigma$ 为单射环同态，从而可视 $F\subseteq E$。
+  令 $a=[x]\in E$，则
+  \[
+    p(a)=p([x])=\bigl[\,p(x)\,\bigr]=[0]\in E,
+  \]
+  故 $p(a)=0$，从而 $f(a)=0$。
+\end{proof}
+
+\begin{definition}[代数闭包]
+  设 $F\subseteq E$ 为域扩张。
+  集合
+  \[
+    \bar{F}^E=\{a\in E: a\text{ 为 }F\text{ 上代数元}\}
+  \]
+  称为 $F$ 在 $E$ 中的\emph{代数闭包}。
+\end{definition}
+
+\begin{proposition}
+  设 $F\subseteq E$ 为域扩张，则 $\bar{F}^E$ 为 $E$ 的包含 $F$ 的子域。
+\end{proposition}
+
+\begin{proof}
+  显然 $F\subseteq\bar{F}^E$（$F$ 中元素均为 $F$ 上代数元）。
+  设 $a,b\in\bar{F}^E$，$0\ne c\in\bar{F}^E$。
+  则 $a,b,c$ 均为 $F$ 上代数元，故 $F(a,b,c)$ 为 $F$ 的代数扩张，从而
+  \[
+    F(a,b,c)\subseteq\bar{F}^E.
+  \]
+  于是 $a+b,\,ab,\,c^{-1}\in F(a,b,c)\subseteq\bar{F}^E$。
+  因此 $\bar{F}^E$ 为 $E$ 的子域。
+\end{proof}
+
+\begin{proposition}
+  设 $F\subseteq E$ 为域扩张，其中 $E$ 为代数闭域。
+  则 $\bar{F}^E$ 亦为代数闭域。
+\end{proposition}
+
+\begin{proof}
+  设 $f\in\bar{F}^E[x]$ 为非常数多项式。
+  由 $E$ 代数闭，存在 $a\in E$ 使得 $f(a)=0$。
+  则 $\bar{F}^E(a)$ 为 $\bar{F}^E$ 的代数扩张。
+  而 $\bar{F}^E$ 为 $F$ 的代数扩张（由定义）。
+  由代数扩张的传递性，$\bar{F}^E(a)$ 为 $F$ 的代数扩张，故 $a$ 为 $F$ 上代数元，即 $a\in\bar{F}^E$。
+  因此 $\bar{F}^E$ 为代数闭域。
+\end{proof}
+
+\begin{definition}[代数闭包]
+  设 $F\subseteq K$ 为域扩张，满足
+  \begin{enumerate}
+    \item $F\subseteq K$ 为代数扩张；
+    \item $K$ 为代数闭域。
+  \end{enumerate}
+  则称 $K$ 为 $F$ 的一个\emph{代数闭包}。
+\end{definition}
+
+\begin{theorem}
+  任何域都有代数闭包。
+\end{theorem}
+
+\begin{lemma}\label{alg-closure-iff-maximal}
+  设 $F$ 为域，$F\subseteq C$ 为域扩张。
+  则 $K$（$F\subseteq K\subseteq C$）为 $F$ 的代数闭包当且仅当 $K$ 为 $F$ 的极大代数扩张。
+\end{lemma}
+
+\begin{proof}
+  "$\Rightarrow$"：设 $F\subseteq K$ 满足 (1)(2)。
+  若 $F\subseteq K\subseteq E$ 且 $F\subseteq E$ 为代数扩张，则 $K\subseteq E$ 亦为代数扩张（由传递性）。
+  由 $K$ 代数闭知 $K$ 无真代数扩张，故 $K=E$。
+  因此 $K$ 为 $F$ 的极大代数扩张。
+
+  "$\Leftarrow$"：已知 $F\subseteq K$ 为极大代数扩张。
+  由 $F\subseteq K$ 代数，只需证 $K$ 为代数闭域。
+  反设 $K$ 不是代数闭域，则存在 $E\supsetneq K$ 为 $K$ 的真代数扩张。
+  由传递性，$F\subseteq E$ 为代数扩张，与 $K$ 的极大性矛盾。
+  故 $K$ 为代数闭域。
+\end{proof}
+
+\begin{definition}[域同态的诱导多项式映射]
+  设 $\theta\colon F\to E$ 为域同态（单射）。
+  定义\emph{诱导映射} $\bar\theta\colon F[x]\to E[x]$ 为
+  \[
+    \bar\theta\Bigl(\sum_{i=0}^{n}\lambda_i x^i\Bigr)=\sum_{i=0}^{n}\theta(\lambda_i)\,x^i.
+  \]
+  则 $\bar\theta$ 为单射环同态。
+\end{definition}
+
+\begin{remark}
+  设 $\theta\colon F\to E$ 为域同态。
+  则诱导映射 $\bar\theta\colon F[x]\to E[x]$ 保持次数不变，即 $\deg\bar\theta(f)=\deg f$。
+  从而 $\bar\theta$ 保持不可约性：$f\in F[x]$ 不可约当且仅当 $\bar\theta(f)\in\theta(F)[x]$ 不可约。
+\end{remark}
+
+\begin{remark}
+  设 $\pi\colon F[x]\twoheadrightarrow F[x]/\langle p(x)\rangle\cong E$ 为自然满射，则
+  \[
+    \pi\Bigl(\sum_{i=0}^{n}\lambda_i x^i\Bigr)=\sum_{i=0}^{n}\pi(\lambda_i)\,\pi(x)^i,
+  \]
+  即 $\pi(F[x])=\pi(F)[\pi(x)]$。
+\end{remark}
+
+\begin{theorem}\label{root-existence-iso}
+  设 $F$ 为域，$f\in F[x]\setminus F$。
+  则存在域 $E$ 及域同态 $\theta\colon F\hookrightarrow E$ 使得 $\bar\theta(f)$ 在 $E$ 中有根 $a$，且 $E=\theta(F)(a)$。
+\end{theorem}
+
+\begin{theorem}
+  设 $F$ 为域，$f\in F[x]\setminus F$。
+  则存在域扩张 $E\supseteq F$ 使得 $f$ 在 $E$ 中有根 $a$，且 $E=F(a)$。
+\end{theorem}
+
+\begin{proof}
+  由定理~\ref{thm:root-existence-iso} 即得。
+\end{proof}
+
+\begin{remark}
+  设 $\theta\colon F\hookrightarrow E$ 为域同态，$c$ 为 $f=\sum_{i=0}^{n}\lambda_i x^i\in F[x]$ 的根。
+  则
+  \[
+    \sum_{i=0}^{n}\lambda_i c^i=0.
+  \]
+  施以 $\theta$ 得
+  \[
+    \theta\Bigl(\sum_{i=0}^{n}\lambda_i c^i\Bigr)=\sum_{i=0}^{n}\theta(\lambda_i)\,\theta(c)^i=\theta(0)=0.
+  \]
+  因此 $\theta(c)$ 为 $\bar\theta(f)=\sum_{i=0}^{n}\theta(\lambda_i)\,x^i$ 的根。
+  即域同态将 $f$ 的根映为 $\bar\theta(f)$ 的根。
+\end{remark}
+
+\begin{proposition}
+  设 $F\subseteq E$ 为域扩张，$a\in E$ 为 $F$ 上代数元，$p(x)$ 为 $a$ 的最小多项式。
+  则 $E=F(a)$ 时有如下交换图给出的同构：
+  \[
+    \begin{tikzcd}
+      F[x] \arrow[r,"\hat a"] \arrow[d,two heads,"\pi"'] & F[a] \\
+      F[x]/\langle p(x)\rangle \arrow[ur,"\sim"']
+    \end{tikzcd}
+  \]
+  即 $F(a)=F[a]\cong F[x]/\langle p(x)\rangle$。
+\end{proposition}
+
+\begin{lemma}\label{field-iso-extension}
+  设 $\theta\colon F_1\xrightarrow{\sim} F_2$ 为域同构，$E_1=F_1(a)$，$E_2=F_2(b)$。
+  设 $p(x)$ 为 $a$ 在 $F_1$ 上的最小多项式，且 $b$ 为 $\bar\theta(p(x))$ 在 $F_2$ 上的根。
+  则存在域同构 $\tilde\theta\colon E_1\xrightarrow{\sim} E_2$ 使得 $\tilde\theta\big|_{F_1}=\theta$ 且 $\tilde\theta(a)=b$。
+  即有如下交换图：
+  \[
+    \begin{tikzcd}
+      F_1 \arrow[r,hook] \arrow[d,"\theta"',"\sim"] & E_1=F_1(a) \arrow[d,dashed,"\tilde\theta","\sim"'] \\
+      F_2 \arrow[r,hook] & E_2=F_2(b)
+    \end{tikzcd}
+  \]
+\end{lemma}
+
+\begin{proof}
+  由 $E_1=F_1(a)=F_1[a]$，$E_2=F_2(b)=F_2[b]$。
+  定义 $\tilde\theta\colon F_1[a]\to F_2[b]$ 为
+  \[
+    \tilde\theta\bigl(f(a)\bigr)=\bar\theta(f)(b),\qquad f\in F_1[x].
+  \]
+  即对 $f=\sum_{i=0}^{n}\lambda_i x^i\in F_1[x]$，
+  \[
+    \tilde\theta\Bigl(\sum_{i=0}^{n}\lambda_i a^i\Bigr)=\sum_{i=0}^{n}\theta(\lambda_i)\,b^i.
+  \]
+
+  \textbf{良定义性：}
+  设 $f(a)=g(a)$，即 $(f-g)(a)=0$。
+  则 $p(x)\mid f(x)-g(x)$，故 $\bar\theta(p)\mid\bar\theta(f)-\bar\theta(g)$。
+  由 $b$ 为 $\bar\theta(p)$ 的根知 $\bar\theta(f)(b)=\bar\theta(g)(b)$，即 $\tilde\theta(f(a))=\tilde\theta(g(a))$。
+
+  \textbf{环同态性：}
+  $\tilde\theta(f(a)\cdot g(a))=\tilde\theta((f\cdot g)(a))=\bar\theta(f\cdot g)(b)=\bigl(\bar\theta(f)\cdot\bar\theta(g)\bigr)(b)=\bar\theta(f)(b)\cdot\bar\theta(g)(b)$。
+  加法类似。
+
+  \textbf{同构性：}
+  等价地，由标准同构可得如下交换图：
+  \[
+    \begin{tikzcd}
+      F_1[x] \arrow[r,"\bar\theta","\sim"'] \arrow[d,two heads,"\pi_1"'] & F_2[x] \arrow[d,two heads,"\pi_2"] \\
+      F_1[x]/\langle p(x)\rangle \arrow[r,dashed,"\tilde\theta","\sim"'] & F_2[x]/\langle \bar\theta(p(x))\rangle \\
+      E_1 \arrow[u,"\sim"] & E_2 \arrow[u,"\sim"']
+    \end{tikzcd}
+  \]
+  其中 $\bar\theta$ 为同构，诱导的商映射 $\tilde\theta$ 亦为同构。
+  且 $\tilde\theta([x])=[x]$，对应 $\tilde\theta(a)=b$。
+\end{proof}
+
+\begin{proposition}\label{algebraic-ext-cardinality}
+  设 $F\subseteq E$ 为代数扩张，$\kappa=\max\{|F|,\,\omega\}$。
+  则 $|E|\le\kappa$。
+\end{proposition}
+
+\begin{proof}
+  $E$ 中每个元素均为 $F[x]$ 中某多项式的根。
+  而
+  \[
+    |F[x]|\le\text{$F$ 的有限序列数}\le\kappa\cdot\kappa\cdots=\kappa^{\omega}=\kappa
+  \]
+  （因 $\kappa\ge\omega$）。
+  每个多项式至多有有限个根，故
+  \[
+    |E|\le|F[x]|\cdot\omega\le\kappa\cdot\omega=\kappa.
+  \]
+\end{proof}
+
+\begin{proof}
+  设 $F$ 为域，$\kappa=\max\{|F|,\,\omega\}$。
+  取集合 $\Omega\supseteq F$ 使得 $|\Omega|=2^{\kappa}$。
+  令
+  \[
+    \mathcal{A}=\{E: E\text{ 为域},\;F\subseteq E\subseteq\Omega,\;E/F\text{ 为代数扩张}\}.
+  \]
+  以包含关系 $\subseteq$ 为偏序，$(\mathcal{A},\subseteq)$ 为偏序集。
+
+  对 $\mathcal{A}$ 中任意全序链 $(E_i)_{i\in I}$，其并 $\bigcup_{i\in I}E_i$ 仍为 $F$ 的代数扩张且含于 $\Omega$，故属于 $\mathcal{A}$。
+  由 Zorn 引理，$\mathcal{A}$ 有极大元，记为 $E$。
+
+  下证 $F\subseteq E$ 为 $F$ 的极大代数扩张（从而为代数闭包）。
+  反设存在真代数扩张 $L\supsetneq E$，$L/F$ 为代数。
+  由命题~\ref{pro:algebraic-ext-cardinality} 知 $|L|\le\kappa<2^{\kappa}=|\Omega|$，故 $L$ 可嵌入 $\Omega$，与 $E$ 在 $\mathcal{A}$ 中的极大性矛盾。
+  因此 $E$ 为 $F$ 的极大代数扩张，由引理~\ref{lem:alg-closure-iff-maximal} 知 $E$ 为 $F$ 的代数闭包。
+\end{proof}
+
+\begin{lemma}\label{extend-hom-to-algebraic}
+  设 $F\subseteq E$ 为代数扩张，$L$ 为代数闭域。
+  则对任意域同态 $f\colon F\to L$，存在域同态 $\tilde f\colon E\to L$ 使得 $\tilde f\big|_F=f$。
+  即有如下交换图：
+  \[
+    \begin{tikzcd}
+      F \arrow[r,hook] \arrow[d,"f"'] & E \arrow[dl,dashed,"\tilde f"] \\
+      L
+    \end{tikzcd}
+  \]
+\end{lemma}
+
+\begin{proof}
+  令
+  \[
+    \mathcal{A}=\bigl\{(K,\varphi): F\subseteq K\subseteq E\text{ 为子域},\;\varphi\colon K\to L\text{ 为域同态},\;\varphi\big|_F=f\bigr\}.
+  \]
+  定义偏序 $(K_1,\varphi_1)\le(K_2,\varphi_2)$ 当且仅当 $K_1\subseteq K_2$ 且 $\varphi_2\big|_{K_1}=\varphi_1$。
+  由 $(F,f)\in\mathcal{A}$ 知 $\mathcal{A}\ne\varnothing$。
+  对任意全序链，取并即得上界，故由 Zorn 引理，$\mathcal{A}$ 有极大元 $(K,\tilde f)$。
+
+  下证 $K=E$。
+  反设 $K\ne E$，则存在 $a\in E\setminus K$。
+  由 $E/F$ 代数知 $a$ 为 $K$ 上代数元，设其最小多项式为 $p(x)\in K[x]$。
+  则 $\bar{\tilde f}(p(x))\in\tilde f(K)[x]\subseteq L[x]$。
+  由 $L$ 代数闭，$\bar{\tilde f}(p)$ 在 $L$ 中有根 $b$。
+  由引理~\ref{lem:field-iso-extension}（域同构扩张），$\tilde f$ 可扩张为 $K(a)\to L$ 的域同态，与 $(K,\tilde f)$ 的极大性矛盾。
+  故 $K=E$。
+\end{proof}
+
+\begin{theorem}[代数闭包的唯一性]\label{alg-closure-uniqueness}
+  设 $E_1,E_2$ 均为 $F$ 的代数闭包。
+  则存在域同构 $\varphi\colon E_1\xrightarrow{\sim} E_2$ 使得 $\varphi\big|_F=\mathrm{id}_F$。
+  即有如下交换图：
+  \[
+    \begin{tikzcd}
+      & F \arrow[dl,hook'] \arrow[dr,hook] & \\
+      E_1 \arrow[rr,dashed,"\varphi","\sim"'] & & E_2
+    \end{tikzcd}
+  \]
+\end{theorem}
+
+\begin{proof}
+  由 $F\subseteq E_1$ 为代数扩张且 $E_2$ 为代数闭域，由引理~\ref{lem:extend-hom-to-algebraic} 知存在域同态
+  \[
+    \varphi\colon E_1\to E_2,\qquad \varphi\big|_F=\mathrm{id}_F.
+  \]
+  下证 $\varphi$ 为满射。
+  $\varphi(E_1)$ 为 $E_2$ 的子域。
+  由 $E_1$ 代数闭，$\varphi(E_1)$ 亦代数闭（域同态保持代数闭性）。
+  又 $E_2/F$ 为代数扩张，故 $E_2/\varphi(E_1)$ 亦为代数扩张。
+  由 $\varphi(E_1)$ 代数闭知 $\varphi(E_1)$ 无真代数扩张，故 $\varphi(E_1)=E_2$。
+  因此 $\varphi$ 为同构。
+\end{proof}
+
+\begin{theorem}
+  设 $\sigma\colon F\xrightarrow{\sim} F'$ 为域同构，$\bar F,\bar F'$ 分别为 $F,F'$ 的代数闭包。
+  则存在域同构 $\tilde\sigma\colon\bar F\xrightarrow{\sim}\bar F'$ 使得 $\tilde\sigma\big|_F=\sigma$。
+  即有如下交换图：
+  \[
+    \begin{tikzcd}
+      F \arrow[r,"\sigma","\sim"'] \arrow[d,hook] & F' \arrow[d,hook] \\
+      \bar F \arrow[r,dashed,"\tilde\sigma","\sim"'] & \bar F'
+    \end{tikzcd}
+  \]
+\end{theorem}
+
+\begin{proof}
+  视 $\sigma$ 为 $F\to F'\hookrightarrow\bar F'$ 的域同态。
+  由 $F\subseteq\bar F$ 为代数扩张且 $\bar F'$ 为代数闭域，由引理~\ref{lem:extend-hom-to-algebraic} 知存在域同态 $\tilde\sigma\colon\bar F\to\bar F'$ 使得 $\tilde\sigma\big|_F=\sigma$。
+  与定理~\ref{thm:alg-closure-uniqueness} 类似可证 $\tilde\sigma$ 为满射，从而为同构。
+\end{proof}
+
+\section{超越基与超越次数}
+
+\begin{definition}[代数无关集]
+  设 $F\subseteq E$ 为域扩张，$\Omega\subseteq E$。
+  若对任意 $a_1,\dots,a_n\in\Omega$（两两不同），任意 $n\ge 1$，任意 $f\in F[x_1,\dots,x_n]$，
+  \[
+    f(a_1,\dots,a_n)=0\implies f=0,
+  \]
+  则称 $\Omega$ 为 $F$ 上的\emph{代数无关集}。
+\end{definition}
+
+\begin{definition}[超越基]
+  设 $F\subseteq E$ 为域扩张，$\Omega\subseteq E$ 满足
+  \begin{enumerate}
+    \item $\Omega$ 为 $F$ 上代数无关集；
+    \item $F(\Omega)\subseteq E$ 为代数扩张。
+  \end{enumerate}
+  则称 $\Omega$ 为 $E$ 在 $F$ 上的一个\emph{超越基}。
+\end{definition}
+
+\begin{remark}
+  若 $\Omega_1,\Omega_2$ 均为 $E$ 在 $F$ 上的超越基，则 $|\Omega_1|=|\Omega_2|$。
+\end{remark}
+
+\begin{proposition}
+  设 $F\subseteq E$ 为域扩张，则存在超越基。
+\end{proposition}
+
+\begin{proof}
+  令
+  \[
+    \mathcal{A}=\{\Omega\subseteq E: \Omega\text{ 为 }F\text{ 上代数无关集}\}.
+  \]
+  以包含关系为偏序，$\varnothing\in\mathcal{A}$ 故 $\mathcal{A}\ne\varnothing$。
+  对任意全序链取并仍为代数无关集，故由 Zorn 引理，$\mathcal{A}$ 有极大元 $\Omega$。
+
+  下证 $F(\Omega)\subseteq E$ 为代数扩张。
+  任取 $a\in E$。若 $a\in F(\Omega)$ 则 $a$ 显然为 $F(\Omega)$ 上代数元。
+  若 $a\notin F(\Omega)$，由 $\Omega$ 的极大性知 $\Omega\cup\{a\}$ 不是代数无关集。
+  故存在 $b_1,\dots,b_n\in\Omega$ 及非零多项式 $f\in F[x_1,\dots,x_n,x_{n+1}]$ 使得
+  \[
+    f(b_1,\dots,b_n,a)=0.
+  \]
+  将 $f$ 视为 $x_{n+1}$ 的多项式：$f=\sum_{i=0}^{d}g_i(x_1,\dots,x_n)\,x_{n+1}^i$。
+  由 $f\ne 0$ 且 $b_1,\dots,b_n$ 为代数无关知，存在某个 $g_i$ 使得 $g_i(b_1,\dots,b_n)\ne 0$。
+  代入得
+  \[
+    \sum_{i=0}^{d}g_i(b_1,\dots,b_n)\,a^i=0,
+  \]
+  其中系数 $g_i(b_1,\dots,b_n)\in F(\Omega)$ 且不全为零。
+  故 $a$ 为 $F(\Omega)$ 上代数元。
+\end{proof}
+
+\begin{proposition}
+  设 $F\subseteq E$ 为域扩张，$\{a_1,\dots,a_n\}\subseteq E$ 为 $F$ 上代数无关集。
+  则赋值同态
+  \[
+    \theta\colon F[x_1,\dots,x_n]\to F[a_1,\dots,a_n],\qquad f(x_1,\dots,x_n)\mapsto f(a_1,\dots,a_n)
+  \]
+  为 $F$-代数同构。
+\end{proposition}
+
+\begin{proof}
+  $\theta$ 显然为满射的 $F$-代数同态。
+  由 $\{a_1,\dots,a_n\}$ 代数无关知 $\ker\theta=\{0\}$，故 $\theta$ 为单射。
+  因此 $\theta$ 为同构。
+\end{proof}
+
+\begin{definition}[$F$-代数]
+  设 $F$ 为域，$A$ 为 $F$-向量空间。
+  若有双线性映射 $m\colon A\times A\to A$（即 $A$ 上的乘法），满足
+  \begin{enumerate}
+    \item $m(a+b,\,c)=m(a,c)+m(b,c)$；
+    \item $m(c,\,a+b)=m(c,a)+m(c,b)$；
+    \item $m(\lambda a,\,b)=\lambda\,m(a,b)=m(a,\,\lambda b)$，$\forall\,\lambda\in F$；
+  \end{enumerate}
+  则称 $(A,m)$ 为一个 \emph{$F$-代数}。
+  记 $m(a,b)=ab$。
+  若 $m$ 还满足结合律，则称 $A$ 为\emph{结合 $F$-代数}。
+\end{definition}
+
+\begin{example}
+  $F[x]$ 为 $F$-代数，$F[x_1,\dots,x_n]$ 为 $F$-代数。
+\end{example}
+
+\begin{example}
+  设 $F\subseteq R$，其中 $F$ 为域，$R$ 为交换幺环。
+  则 $R$ 自然成为 $F$-代数：$F$ 的标量乘法由环乘法继承，
+  且对 $\lambda\in F$，$a,b\in R$ 有 $\lambda(ab)=(\lambda a)b=a(\lambda b)$。
+\end{example}
+
+\begin{proposition}[多元多项式环的泛性质]
+  包含映射 $\{x_1,\dots,x_n\}\hookrightarrow F[x_1,\dots,x_n]$ 满足如下泛性质：
+  对任意交换 $F$-代数 $A$，及任意映射 $\varphi\colon\{x_1,\dots,x_n\}\to A$，
+  存在唯一的 $F$-代数同态 $\tilde\varphi\colon F[x_1,\dots,x_n]\to A$ 使得 $\tilde\varphi\big|_{\{x_1,\dots,x_n\}}=\varphi$。
+  即有如下交换图：
+  \[
+    \begin{tikzcd}
+      \{x_1,\dots,x_n\} \arrow[r,hook] \arrow[d,"\varphi"'] & F[x_1,\dots,x_n] \arrow[dl,dashed,"\exists!\,\tilde\varphi"] \\
+      A
+    \end{tikzcd}
+  \]
+  具体地，
+  \[
+    \tilde\varphi\Bigl(\sum\lambda_{r_1,\dots,r_n}\,x_1^{r_1}\cdots x_n^{r_n}\Bigr)
+    =\sum\lambda_{r_1,\dots,r_n}\,\varphi(x_1)^{r_1}\cdots\varphi(x_n)^{r_n}.
+  \]
+\end{proposition}
+
+\begin{remark}
+  因此 $F[x_1,\dots,x_n]$ 为由 $x_1,\dots,x_n$ 自由生成的交换 $F$-代数。
+\end{remark}
+
+\begin{corollary}
+  设 $\theta\colon\{x_1,\dots,x_n\}\xrightarrow{\sim}\{y_1,\dots,y_n\}$ 为双射。
+  则存在唯一的 $F$-代数同构 $\tilde\theta\colon F[x_1,\dots,x_n]\xrightarrow{\sim} F[y_1,\dots,y_n]$ 使得 $\tilde\theta(x_i)=\theta(x_i)$。
+\end{corollary}
+
+\begin{proof}
+  由泛性质，$\theta$ 诱导 $F$-代数同态 $\tilde\theta\colon F[x_1,\dots,x_n]\to F[y_1,\dots,y_n]$，$\theta^{-1}$ 诱导 $\tilde\psi\colon F[y_1,\dots,y_n]\to F[x_1,\dots,x_n]$。
+  则 $\tilde\psi\circ\tilde\theta$ 与 $\mathrm{id}$ 在生成元上一致，由唯一性知 $\tilde\psi\circ\tilde\theta=\mathrm{id}$。
+  同理 $\tilde\theta\circ\tilde\psi=\mathrm{id}$，故 $\tilde\theta$ 为同构。
+\end{proof}
+
+\begin{proposition}
+  设 $F\subseteq E$ 为域扩张，$\Omega\subseteq E$ 为 $F$ 上代数无关集。
+  则包含映射 $\Omega\hookrightarrow F[\Omega]$ 满足如下泛性质：
+  对任意交换 $F$-代数 $A$，及任意映射 $\varphi\colon\Omega\to A$，
+  存在唯一的 $F$-代数同态 $\tilde\varphi\colon F[\Omega]\to A$ 使得 $\tilde\varphi\big|_{\Omega}=\varphi$。
+  即有如下交换图：
+  \[
+    \begin{tikzcd}
+      \Omega \arrow[r,hook] \arrow[d,"\varphi"'] & F[\Omega] \arrow[dl,dashed,"\exists!\,\tilde\varphi"] \\
+      A
+    \end{tikzcd}
+  \]
+\end{proposition}
+
+\begin{proof}
+  由 $F[\Omega]=\bigcup_{\substack{B\subseteq\Omega \\ B\text{ 有限}}}F[B]$，
+  对每个有限子集 $B=\{b_1,\dots,b_n\}\subseteq\Omega$，由多元多项式环的泛性质存在唯一的 $F$-代数同态
+  $\tilde\varphi_B\colon F[B]\to A$ 使得 $\tilde\varphi_B(b_i)=\varphi(b_i)$。
+
+  若 $B\subseteq C$，则 $\tilde\varphi_C\big|_{F[B]}=\tilde\varphi_B$（由唯一性）。
+  对任意 $a\in F[\Omega]$，存在有限 $B\subseteq\Omega$ 使得 $a\in F[B]$，定义 $\tilde\varphi(a)=\tilde\varphi_B(a)$。
+  由相容性知 $\tilde\varphi$ 良定义，且为 $F$-代数同态，满足 $\tilde\varphi\big|_{\Omega}=\varphi$。
+  唯一性由生成性保证。
+\end{proof}
+
+\begin{corollary}
+  设 $F\subseteq E$ 为域扩张，$\Omega,\Omega'\subseteq E$ 均为 $F$ 上代数无关集。
+  若 $\theta\colon\Omega\xrightarrow{\sim}\Omega'$ 为双射，
+  则存在唯一的 $F$-代数同构 $\tilde\theta\colon F[\Omega]\xrightarrow{\sim} F[\Omega']$ 使得 $\tilde\theta\big|_{\Omega}=\theta$。
+  即有如下交换图：
+  \[
+    \begin{tikzcd}
+      \Omega \arrow[r,hook] \arrow[d,"\theta"',"\sim"] & F[\Omega] \arrow[d,dashed,"\tilde\theta","\sim"'] \\
+      \Omega' \arrow[r,hook] & F[\Omega']
+    \end{tikzcd}
+  \]
+\end{corollary}
+
+\begin{proof}
+  由泛性质，$\theta$ 诱导 $F$-代数同态 $\tilde\theta\colon F[\Omega]\to F[\Omega']$，$\theta^{-1}$ 诱导 $\tilde\psi\colon F[\Omega']\to F[\Omega]$。
+  则 $\tilde\psi\circ\tilde\theta$ 与 $\mathrm{id}_{F[\Omega]}$ 在 $\Omega$ 上一致，由唯一性知 $\tilde\psi\circ\tilde\theta=\mathrm{id}$。
+  同理 $\tilde\theta\circ\tilde\psi=\mathrm{id}$，故 $\tilde\theta$ 为同构。
+\end{proof}
+
+\begin{proposition}
+  设 $F\subseteq E$ 为域扩张，$\Omega\subseteq E$。
+  则 $F(\Omega)$ 为 $F[\Omega]$ 的分式域。
+\end{proposition}
+
+\begin{proposition}
+  设 $\psi\colon R_1\xrightarrow{\sim} R_2$ 为环同构，$F_1,F_2$ 分别为 $R_1,R_2$ 的分式域。
+  则存在唯一的域同构 $\tilde\psi\colon F_1\xrightarrow{\sim} F_2$ 使得 $\tilde\psi\big|_{R_1}=\psi$。
+  即有如下交换图：
+  \[
+    \begin{tikzcd}
+      R_1 \arrow[r,hook] \arrow[d,"\psi"',"\sim"] & F_1 \arrow[d,dashed,"\tilde\psi","\sim"'] \\
+      R_2 \arrow[r,hook] & F_2
+    \end{tikzcd}
+  \]
+\end{proposition}
+
+\begin{corollary}
+  设 $F\subseteq E$，$F\subseteq E'$ 为域扩张，$\Omega\subseteq E$，$\Omega'\subseteq E'$ 均为 $F$ 上代数无关集。
+  若 $\theta\colon\Omega\xrightarrow{\sim}\Omega'$ 为双射，则有如下交换图中的同构链：
+  \[
+    \begin{tikzcd}
+      \Omega \arrow[r,hook] \arrow[d,"\theta"',"\sim"] & F[\Omega] \arrow[r,hook] \arrow[d,"\tilde\theta","\sim"'] & F(\Omega) \arrow[d,dashed,"\tilde\theta","\sim"'] \\
+      \Omega' \arrow[r,hook] & F[\Omega'] \arrow[r,hook] & F(\Omega')
+    \end{tikzcd}
+  \]
+  即 $\theta$ 可唯一扩张为 $F$-代数同构 $F[\Omega]\cong F[\Omega']$，进而扩张为域同构 $F(\Omega)\cong F(\Omega')$。
+\end{corollary}
+
+\begin{definition}[特征]
+  设 $R$ 为含幺环，$1$ 为其单位元。
+  $1$ 在加法群 $(R,+)$ 中的阶称为 $R$ 的\emph{特征}，记为 $\mathrm{char}(R)$。
+  若 $1$ 的加法阶为无穷，则定义 $\mathrm{char}(R)=0$。
+\end{definition}
+
+\begin{remark}
+  若 $\mathrm{char}(R)=n$，则对任意 $a\in R$ 有 $n\cdot a=\underbrace{a+\cdots+a}_{n}=a\cdot\underbrace{(1+\cdots+1)}_{n}=a\cdot 0=0$。
+\end{remark}
+
+\begin{example}
+  $\mathrm{char}(\mathbb{Z}_p)=p$。
+\end{example}
+
+\begin{proposition}
+  设 $R$ 为无零因子环（整环）。
+  则 $\mathrm{char}(R)=0$ 或 $\mathrm{char}(R)$ 为素数。
+\end{proposition}
+
+\begin{proof}
+  若 $\mathrm{char}(R)=0$ 则结论成立。
+  设 $\mathrm{char}(R)=n\ne 0$，即 $\underbrace{1+\cdots+1}_{n}=0$。
+  下证 $n$ 为素数。
+  反设 $n=kl$，$1<k,l<n$。
+  则
+  \[
+    \underbrace{(1+\cdots+1)}_{k}\cdot\underbrace{(1+\cdots+1)}_{l}=\underbrace{1+\cdots+1}_{kl}=\underbrace{1+\cdots+1}_{n}=0.
+  \]
+  由 $R$ 无零因子知 $\underbrace{1+\cdots+1}_{k}=0$ 或 $\underbrace{1+\cdots+1}_{l}=0$，
+  与 $n$ 为 $1$ 的最小正阶矛盾。
+  故 $n$ 为素数。
+\end{proof}
+
+\begin{proposition}
+  设 $F$ 为域，则
+  \begin{enumerate}
+    \item 若 $\mathrm{char}(F)=0$，则存在唯一的域嵌入 $\mathbb{Q}\hookrightarrow F$；
+    \item 若 $\mathrm{char}(F)=p$（素数），则存在唯一的域嵌入 $\mathbb{Z}_p\hookrightarrow F$。
+  \end{enumerate}
+\end{proposition}
+
+\begin{proof}
+  定义环同态 $\sigma\colon\mathbb{Z}\to F$，$n\mapsto n\cdot 1$。
+
+  (1) 若 $\mathrm{char}(F)=0$，则 $\sigma$ 为单射。
+  故 $\mathbb{Z}\cong\sigma(\mathbb{Z})\subseteq F$。
+  由 $F$ 为域，$\sigma(\mathbb{Z})$ 的分式域嵌入 $F$，即 $\mathbb{Q}\cong\mathrm{Frac}(\sigma(\mathbb{Z}))\hookrightarrow F$，$n/m\mapsto (n\cdot 1)/(m\cdot 1)$。
+
+  (2) 若 $\mathrm{char}(F)=p$（素数），则 $\ker\sigma=\{n\in\mathbb{Z}:n\cdot 1=0\}=p\mathbb{Z}$。
+  由第一同构定理，$\mathbb{Z}/p\mathbb{Z}\cong\sigma(\mathbb{Z})\subseteq F$，即 $\mathbb{Z}_p\hookrightarrow F$，$[n]\mapsto n\cdot 1$。
+\end{proof}
+
+\begin{remark}
+  设 $F\subseteq E$ 为域扩张（嵌入），则 $\mathrm{char}(F)=\mathrm{char}(E)$（因 $1_F=1_E$）。
+\end{remark}
+
+\begin{proposition}
+  设 $E$ 为不可数域，$\Delta$ 为 $E$ 的素域。
+  则 $E$ 在 $\Delta$ 上存在超越基 $\Omega$，且 $|\Omega|=|E|$。
+\end{proposition}
+
+\begin{proof}
+  $E$ 在 $\Delta$ 上有超越基 $\Omega$。
+  令 $\kappa=\max\{|\Omega|,\,|\Delta|,\,\omega\}$。
+  由命题~\ref{pro:algebraic-ext-cardinality} 知 $|E|\le\kappa$。
+  而 $|E|\ge|\Omega|$（因 $\Omega\subseteq E$）且 $|E|>\omega$（因 $E$ 不可数），故 $|E|\ge\kappa$。
+  因此 $|E|=\kappa=|\Omega|$。
+\end{proof}
+
+\begin{theorem}
+  设 $E,F$ 为两个等势的不可数代数闭域，且 $\mathrm{char}(E)=\mathrm{char}(F)$。
+  则 $E\cong F$（域同构）。
+\end{theorem}
+
+\begin{proof}
+  设 $\Delta$ 为 $E,F$ 的共同素域（因特征相同）。
+  设 $\Omega,\Omega'$ 分别为 $E,F$ 在 $\Delta$ 上的超越基。
+  由命题~\ref{pro:algebraic-ext-cardinality} 知 $|\Omega|=|E|=|F|=|\Omega'|$。
+  故存在双射 $\theta\colon\Omega\xrightarrow{\sim}\Omega'$，
+  可扩张为域同构 $\Delta(\Omega)\cong\Delta(\Omega')$，
+  再扩张为代数闭包的同构 $E\cong F$。
+\end{proof}
+
+\begin{definition}[自同构群]
+  设 $F\subseteq K$ 为域扩张。
+  定义
+  \[
+    \mathrm{Aut}(K\mid F):=\bigl\{\varphi\in\mathrm{Aut}(K):\varphi\big|_F=\mathrm{id}\bigr\}\le\mathrm{Aut}(K).
+  \]
+  即 $\mathrm{Aut}(K\mid F)$ 为所有固定 $F$ 中每个元素的 $K$ 的自同构组成的群。
+\end{definition}
+
+\chapter{Galois 理论}
+
+\section{正规扩张与分裂域}
+
+\begin{definition}[正规扩张]
+  设 $F\subseteq E$ 为域扩张，$E/F$ 称为\emph{正规扩张}，若满足
+  \begin{enumerate}
+    \item $F\subseteq E$ 为代数扩张；
+    \item 对任意 $\sigma\in\mathrm{Aut}(\bar F\mid F)$（其中 $\bar F$ 为 $F$ 的代数闭包），有 $\sigma(E)\subseteq E$。
+  \end{enumerate}
+  由条件 (2) 及 $\sigma^{-1}$ 亦属 $\mathrm{Aut}(\bar F\mid F)$ 知，实际上 $\sigma(E)=E$。
+\end{definition}
+
+\begin{proposition}
+  设 $F\subseteq E\subseteq K$ 为域扩张，$\sigma\in\mathrm{Aut}(K\mid F)$。
+  则
+  \[
+    \sigma\,\mathrm{Aut}(K\mid E)\,\sigma^{-1}=\mathrm{Aut}(K\mid\sigma(E)).
+  \]
+\end{proposition}
+
+\begin{proof}
+  "$\subseteq$"：设 $\psi\in\mathrm{Aut}(K\mid E)$，$\sigma(a)\in\sigma(E)$（$a\in E$）。
+  则
+  \[
+    (\sigma\psi\sigma^{-1})(\sigma(a))=\sigma\psi(a)=\sigma(a),
+  \]
+  故 $\sigma\psi\sigma^{-1}\in\mathrm{Aut}(K\mid\sigma(E))$。
+
+  "$\supseteq$"：设 $\psi\in\mathrm{Aut}(K\mid\sigma(E))$，则 $\sigma^{-1}\psi\sigma\in\mathrm{Aut}(K\mid E)$。
+  实际上，对 $a\in E$：$\sigma^{-1}\psi\sigma(a)=\sigma^{-1}(\psi(\sigma(a)))=\sigma^{-1}(\sigma(a))=a$（因 $\sigma(a)\in\sigma(E)$，$\psi$ 固定 $\sigma(E)$）。
+  故 $\psi=\sigma(\sigma^{-1}\psi\sigma)\sigma^{-1}\in\sigma\,\mathrm{Aut}(K\mid E)\,\sigma^{-1}$。
+\end{proof}
+
+\begin{proposition}
+  设 $F\subseteq E\subseteq\bar F$，其中 $\bar F$ 为 $F$ 的代数闭包。
+  则 $F\subseteq E$ 为正规扩张当且仅当
+  \begin{enumerate}
+    \item[(a)] $F\subseteq E$ 为代数扩张；
+    \item[(b)] 对任意 $\sigma\in\mathrm{Aut}(\bar F\mid F)$，有 $\sigma(E)\subseteq E$。
+  \end{enumerate}
+  此定义与代数闭包 $\bar F$ 的选取无关。
+\end{proposition}
+
+\begin{proof}
+  设 $\bar F'$ 为 $F$ 的另一代数闭包，$\varphi\colon\bar F\xrightarrow{\sim}\bar F'$ 为固定 $F$ 的同构。
+  对任意 $\sigma\in\mathrm{Aut}(\bar F'\mid F)$，考虑 $\varphi^{-1}\sigma\varphi\in\mathrm{Aut}(\bar F\mid F)$。
+  由已知 $\varphi^{-1}\sigma\varphi(E)=E$，故 $\sigma(\varphi(E))=\varphi(E)$。
+  而 $\varphi\big|_E$ 为恒等（因 $\varphi$ 固定 $F$，$E\subseteq\bar F$），故 $\varphi(E)=E$，从而 $\sigma(E)=E$。
+\end{proof}
+
+\begin{lemma}
+  设 $F\subseteq E$ 为代数扩张。
+  则 $F\subseteq E$ 为正规扩张当且仅当：对任意不可约多项式 $p(x)\in F[x]$，若 $p(x)$ 在 $E$ 中有根，则 $p(x)$ 在 $E[x]$ 中分裂（即可分解为一次因式之积）。
+\end{lemma}
+
+\begin{proof}
+  "$\Rightarrow$"：设 $p(x)\in F[x]$ 不可约，且 $a\in E$ 为 $p(x)$ 的根。
+  在 $\bar F$ 中，$p(x)=c(x-a)(x-a_1)\cdots(x-a_n)$，$c\ne 0$，$a_1,\dots,a_n\in\bar F$。
+  对每个 $a_i$，$p(x)$ 亦为 $a_i$ 在 $F$ 上的最小多项式（因 $p$ 不可约）。
+  由引理~\ref{lem:field-iso-extension}（域同构扩张），存在域同构 $\psi\colon F(a)\xrightarrow{\sim} F(a_i)$ 使得 $\psi\big|_F=\mathrm{id}$，$\psi(a)=a_i$。
+  由 $\bar F$ 代数闭，$\psi$ 可扩张为 $\sigma\colon\bar F\to\bar F$，即 $\sigma\in\mathrm{Aut}(\bar F\mid F)$。
+  由正规性知 $\sigma(E)\subseteq E$，故 $a_i=\sigma(a)\in E$。
+  因此 $p(x)$ 的所有根均在 $E$ 中，即 $p(x)$ 在 $E$ 中分裂。
+
+  "$\Leftarrow$"：设 $F\subseteq E\subseteq\bar F$，需证对任意 $\sigma\in\mathrm{Aut}(\bar F\mid F)$，$\sigma(E)\subseteq E$。
+  任取 $a\in E$，设 $p(x)$ 为 $a$ 在 $F$ 上的最小多项式，$p(x)\in F[x]$ 不可约。
+  由假设，$p(x)$ 在 $E$ 中分裂：$p(x)=c(x-a)(x-a_1)\cdots(x-a_n)$，$a_1,\dots,a_n\in E$。
+  由 $\sigma\big|_F=\mathrm{id}$ 知 $\sigma(a)$ 亦为 $p(x)$ 的根（域同态将根映为根）。
+  故 $\sigma(a)\in\{a,a_1,\dots,a_n\}\subseteq E$。
+  因此 $\sigma(E)\subseteq E$。
+\end{proof}
+
+\begin{definition}[分裂域]
+  设 $F\subseteq E$ 为域扩张，$f\in F[x]$。
+  若 $f$ 在 $E$ 中分裂：$f(x)=c(x-a_1)\cdots(x-a_n)$，
+  且 $E=F(a_1,\dots,a_n)$，则称 $E$ 为 $f$ 在 $F$ 上的\emph{分裂域}。
+
+  更一般地，设 $\mathcal{A}\subseteq F[x]\setminus\{0\}$。
+  对每个 $f\in\mathcal{A}$，设 $\Omega_f$ 为 $f$ 在 $E$ 中的全部根的集合。
+  若每个 $f\in\mathcal{A}$ 均在 $E$ 中分裂，且 $E=F\bigl(\bigcup_{f\in\mathcal{A}}\Omega_f\bigr)$，
+  则称 $E$ 为 $\mathcal{A}$ 在 $F$ 上的\emph{分裂域}。
+\end{definition}
+
+\begin{theorem}
+  设 $F\subseteq E$ 为代数扩张。
+  则 $F\subseteq E$ 为正规扩张当且仅当存在 $\mathcal{A}\subseteq F[x]\setminus\{0\}$ 使得 $E$ 为 $\mathcal{A}$ 在 $F$ 上的分裂域。
+\end{theorem}
+
+\begin{proof}
+  "$\Rightarrow$"：对每个 $a\in E$，设 $p_a(x)$ 为 $a$ 在 $F$ 上的最小多项式。
+  令 $\mathcal{A}=\{p_a(x):a\in E\}$。
+  由正规性知每个 $p_a(x)$ 在 $E$ 中分裂。
+  设 $\Omega_a$ 为 $p_a$ 在 $E$ 中的根集。
+  由 $a\in\Omega_a$ 知
+  \[
+    E\supseteq F\Bigl(\bigcup_{a\in E}\Omega_a\Bigr)\supseteq F(E)=E.
+  \]
+  故 $E$ 为 $\mathcal{A}$ 的分裂域。
+
+  "$\Leftarrow$"：设 $F\subseteq E\subseteq\bar F$，$E=F\bigl(\bigcup_{f\in\mathcal{A}}\Omega_f\bigr)$，其中每个 $f\in\mathcal{A}$ 在 $E$ 中分裂。
+  对任意 $\sigma\in\mathrm{Aut}(\bar F\mid F)$，需证 $\sigma(E)\subseteq E$。
+  由 $\sigma\big|_F=\mathrm{id}$ 知 $\sigma(F)=F$。
+  而
+  \[
+    \sigma(E)=\sigma\Bigl(F\Bigl(\bigcup_{f\in\mathcal{A}}\Omega_f\Bigr)\Bigr)=F\Bigl(\sigma\Bigl(\bigcup_{f\in\mathcal{A}}\Omega_f\Bigr)\Bigr).
+  \]
+  对每个 $f\in\mathcal{A}$，$\sigma(\Omega_f)\subseteq\Omega_f$：
+  因为若 $\alpha\in\Omega_f$（即 $f(\alpha)=0$），则 $f(\sigma(\alpha))=\sigma(f(\alpha))=\sigma(0)=0$（由 $\sigma\big|_F=\mathrm{id}$），
+  故 $\sigma(\alpha)$ 亦为 $f$ 的根。
+  而 $f$ 在 $E$ 中分裂，故 $f$ 的全部根均在 $\Omega_f\subseteq E$ 中，从而 $\sigma(\alpha)\in\Omega_f$。
+  因此
+  \[
+    \sigma\Bigl(\bigcup_{f\in\mathcal{A}}\Omega_f\Bigr)=\bigcup_{f\in\mathcal{A}}\sigma(\Omega_f)\subseteq\bigcup_{f\in\mathcal{A}}\Omega_f,
+  \]
+  故 $\sigma(E)\subseteq F\bigl(\bigcup_{f\in\mathcal{A}}\Omega_f\bigr)=E$。
+\end{proof}
+
+\begin{theorem}
+  设 $F\subseteq E$ 为代数扩张。
+  则 $F\subseteq E$ 为有限正规扩张当且仅当存在 $f\in F[x]\setminus\{0\}$ 使得 $E$ 为 $f$ 在 $F$ 上的分裂域。
+\end{theorem}
+
+\begin{proof}
+  "$\Leftarrow$"：由前一定理知 $F\subseteq E$ 为正规扩张。
+  又 $E$ 为 $f$ 的分裂域，故 $E$ 由 $f$ 的有限多个根生成，$[E:F]<\infty$。
+
+  "$\Rightarrow$"：由 $[E:F]<\infty$ 知存在 $a_1,\dots,a_n\in E$ 使得 $E=F(a_1,\dots,a_n)$。
+  设 $p_i(x)$ 为 $a_i$ 在 $F$ 上的最小多项式。
+  由正规性知每个 $p_i(x)$ 在 $E$ 中分裂。
+  设 $\Omega_{p_i}$ 为 $p_i$ 在 $E$ 中的根集，则 $a_i\in\Omega_{p_i}$，故
+  \[
+    E\supseteq F\Bigl(\bigcup_{i=1}^{n}\Omega_{p_i}\Bigr)\supseteq F(a_1,\dots,a_n)=E.
+  \]
+  因此 $E$ 为 $\{p_1,\dots,p_n\}$ 的分裂域，即 $E$ 为 $f=\prod_{i=1}^{n}p_i(x)$ 在 $F$ 上的分裂域。
+\end{proof}
+
+\begin{remark}
+  $E$ 为 $F$ 上 $f_1(x),\dots,f_n(x)$ 的分裂域当且仅当 $E$ 为 $f_1(x)\cdots f_n(x)$ 在 $F$ 上的分裂域。
+\end{remark}
+
+\begin{theorem}[分裂域的存在性]
+  设 $F$ 为域，$\mathcal{A}\subseteq F[x]\setminus F$。
+  则存在 $F$ 上 $\mathcal{A}$ 的分裂域。
+\end{theorem}
+
+\begin{proof}
+  取 $F$ 的代数闭包 $\bar F$。
+  对每个 $f\in\mathcal{A}$，设 $\Omega_f$ 为 $f$ 在 $\bar F$ 中的全部根集。
+  令 $E=F\bigl(\bigcup_{f\in\mathcal{A}}\Omega_f\bigr)$，
+  则 $E$ 为 $\mathcal{A}$ 在 $F$ 上的分裂域。
+\end{proof}
+
+\begin{theorem}[分裂域的唯一性]
+  设 $E,E'$ 均为 $\mathcal{A}\subseteq F[x]\setminus F$ 在 $F$ 上的分裂域。
+  则 $E$ 与 $E'$ 作为 $F$-扩张同构。
+  即有如下交换图：
+  \[
+    \begin{tikzcd}
+      E \arrow[r,dashed,"\varphi","\sim"'] & E' \\
+      E \arrow[u,dash] \arrow[r,dashed,"\sim"'] & E' \arrow[u,dash] \\
+      F \arrow[u,hook] \arrow[r,"\mathrm{id}"] & F \arrow[u,hook]
+    \end{tikzcd}
+  \]
+\end{theorem}
+
+\begin{proof}
+  $E,E'$ 均为 $F$ 的代数扩张。
+  由引理~\ref{lem:extend-hom-to-algebraic}（域同态扩张至代数闭域），存在 $F$-域同态 $\varphi\colon E\to E'$（取 $E'$ 的代数闭包为目标）。
+  下证 $\varphi(E)=E'$。
+
+  设 $E=F\bigl(\bigcup_{f\in\mathcal{A}}\Omega_f\bigr)$，$E'=F\bigl(\bigcup_{f\in\mathcal{A}}\Omega'_f\bigr)$，
+  其中 $\Omega_f,\Omega'_f$ 分别为 $f$ 在 $E,E'$ 中的根集。
+  由 $\varphi\big|_F=\mathrm{id}$ 知 $\varphi$ 将 $f$ 的根映为 $f$ 的根，
+  故 $\varphi(\Omega_f)\subseteq\Omega'_f$。
+  因此
+  \[
+    \varphi(E)=\varphi\Bigl(F\Bigl(\bigcup_{f\in\mathcal{A}}\Omega_f\Bigr)\Bigr)=F\Bigl(\bigcup_{f\in\mathcal{A}}\varphi(\Omega_f)\Bigr)\subseteq F\Bigl(\bigcup_{f\in\mathcal{A}}\Omega'_f\Bigr)=E'.
+  \]
+  同理，存在 $F$-域同态 $\psi\colon E'\to E$，且 $\psi(E')\subseteq E$。
+  故 $\psi\circ\varphi\colon E\to E$ 为 $F$-域同态，$\varphi\circ\psi\colon E'\to E'$ 亦然。
+  由 $\psi(\varphi(E))\subseteq E$ 及 $\varphi(\psi(E'))\subseteq E'$ 知 $\varphi(E)=E'$。
+  因此 $\varphi$ 为 $F$-同构。
+\end{proof}
+
+\begin{definition}[$\sigma$-同态]
+  设 $F\subseteq E$ 为域扩张，$\sigma\colon F\to K$ 为域同态。
+  域同态 $\varphi\colon E\to K$ 称为 $\sigma$-同态，若 $\varphi\big|_F=\sigma$。
+  即有如下交换图：
+  \[
+    \begin{tikzcd}
+      E \arrow[dr,"\varphi"] \\
+      F \arrow[u,hook] \arrow[r,"\sigma"'] & K
+    \end{tikzcd}
+  \]
+  记 $\mathrm{Hom}_{\sigma}(E,K)$ 为所有从 $E$ 到 $K$ 的 $\sigma$-同态组成的集合。
+\end{definition}
+
+\section{可分扩张}
+
+\begin{lemma}\label{hom-bound}
+  设如上图，$[E:F]<\infty$。
+  则 $|\mathrm{Hom}_{\sigma}(E,K)|\le[E:F]$。
+\end{lemma}
+
+\begin{proof}
+  对 $[E:F]$ 作归纳。
+
+  若 $[E:F]=1$，则 $E=F$，$\mathrm{Hom}_{\sigma}(E,K)=\{\sigma\}$，$|\mathrm{Hom}_{\sigma}(E,K)|=1\le 1$。
+
+  设 $[E:F]=n\ge 2$，且对 $[E:F]<n$ 时引理成立。
+  取 $a\in E\setminus F$，设 $p(x)$ 为 $a$ 在 $F$ 上的最小多项式，$d=\deg p\ge 2$。
+
+  考虑限制映射
+  \[
+    \theta\colon\mathrm{Hom}_{\sigma}(E,K)\to\mathrm{Hom}_{\sigma}(F(a),K),\qquad \varphi\mapsto\varphi\big|_{F(a)}.
+  \]
+  下证 $|\mathrm{Hom}_{\sigma}(F(a),K)|\le d$。
+  考虑赋值映射 $\tau\colon\mathrm{Hom}_{\sigma}(F(a),K)\to K$，$\psi\mapsto\psi(a)$。
+  $\tau$ 为单射（因 $F(a)=F[a]$，$\psi$ 由 $\psi(a)$ 唯一确定）。
+  而 $\psi(a)$ 必为 $\bar\sigma(p)(x)$ 的根（其中 $\bar\sigma(p)$ 为 $p$ 在 $\sigma$ 下的像多项式），
+  故 $\bar\sigma(p)$ 在 $K$ 中至多有 $d$ 个根，从而 $|\mathrm{Hom}_{\sigma}(F(a),K)|\le d$。
+
+  由望远镜公式知 $[E:F(a)]<n$。
+  对每个 $\psi\in\mathrm{Hom}_{\sigma}(F(a),K)$，由归纳假设知 $|\theta^{-1}(\psi)|\le[E:F(a)]$。
+  因此
+  \[
+    |\mathrm{Hom}_{\sigma}(E,K)|\le[E:F(a)]\cdot d=[E:F(a)]\cdot[F(a):F]=[E:F].
+  \]
+\end{proof}
+
+\begin{lemma}
+  设 $h,f,g\in K[x]$。
+  则 $h$ 为 $f,g$ 的最大公因子当且仅当 $h\mid f$，$h\mid g$，且存在 $u,v\in K[x]$ 使得 $h=uf+vg$。
+  即 $\langle h\rangle=\langle f,g\rangle=K[x]f+K[x]g$。
+\end{lemma}
+
+\begin{proposition}
+  设 $F\subseteq E$ 为域扩张，$f(x),g(x)\in F[x]$。
+  若 $h(x)$ 为 $f(x),g(x)$ 在 $F[x]$ 中的最大公因子，则 $h(x)$ 亦为 $f(x),g(x)$ 在 $E[x]$ 中的最大公因子。
+\end{proposition}
+
+\begin{proof}
+  在 $F[x]$ 中，存在 $u(x),v(x)\in F[x]$ 使得 $h=uf+vg$，且 $h\mid f$，$h\mid g$。
+  这些整除关系和等式在 $E[x]$ 中仍成立（因 $F[x]\subseteq E[x]$）。
+  故 $h$ 亦为 $f,g$ 在 $E[x]$ 中的最大公因子。
+\end{proof}
+
+\begin{definition}[形式导数]
+  设 $f\in F[x]$，$f(x)=\sum_{i=0}^{n}\lambda_i x^i$。
+  定义 $f$ 的\emph{形式导数}为
+  \[
+    f'(x)=\sum_{i=1}^{n}i\,\lambda_i\,x^{i-1}.
+  \]
+  形式导数满足：
+  \begin{enumerate}
+    \item $(f+g)'=f'+g'$；
+    \item $(\lambda f)'=\lambda f'$；
+    \item $(f\cdot g)'=f'\cdot g+f\cdot g'$（Leibniz 法则）。
+  \end{enumerate}
+\end{definition}
+
+\begin{definition}[重根]
+  设 $f(x)\in F[x]$，$a$ 为 $f$ 的根。
+  若 $f(x)=(x-a)^k\,g(x)$，其中 $g(a)\ne 0$，$k\ge 1$，
+  则称 $a$ 为 $f$ 的 $k$ 重根。
+  $k\ge 2$ 时称 $a$ 为\emph{重根}。
+\end{definition}
+
+\begin{theorem}
+  设 $f\in F[x]$。
+  则 $f$ 在 $\bar F$ 中无重根当且仅当 $\gcd(f,f')=1$（在 $F[x]$ 中）。
+\end{theorem}
+
+\begin{proof}
+  (I) 设 $f$ 在 $\bar F$ 中有重根 $a$，即 $f(x)=(x-a)^k\,g(x)$，$k\ge 2$，$g(a)\ne 0$。
+  则
+  \[
+    f'(x)=k(x-a)^{k-1}g(x)+(x-a)^k g'(x)=(x-a)^{k-1}\bigl(kg(x)+(x-a)g'(x)\bigr).
+  \]
+  故 $(x-a)\mid f$ 且 $(x-a)\mid f'$，即 $f$ 与 $f'$ 不互素。
+
+  (II) 设 $f$ 与 $f'$ 不互素，则在 $\bar F$ 中存在公共根 $a\in\bar F$，即 $(x-a)\mid f$ 且 $(x-a)\mid f'$。
+  下证 $a$ 为 $f$ 的重根。
+  设 $f(x)=(x-a)^k\,g(x)$，$g(a)\ne 0$。
+  若 $k=1$，则 $f'(x)=g(x)+(x-a)g'(x)$，代入 $a$ 得 $f'(a)=g(a)\ne 0$，故 $(x-a)\nmid f'$，矛盾。
+  因此 $k\ge 2$，即 $a$ 为重根。
+\end{proof}
+
+\begin{definition}[可分多项式]
+  设 $p(x)\in F[x]$ 为不可约多项式。
+  若 $p(x)$ 在 $\bar F$ 中无重根，则称 $p(x)$ 为\emph{可分不可约多项式}。
+
+  更一般地，若 $f(x)\in F[x]$ 的所有不可约因子均为可分的，则称 $f$ 为\emph{可分多项式}。
+\end{definition}
+
+\begin{definition}[可分元]
+  设 $F\subseteq E$ 为域扩张，$a\in E$。
+  称 $a$ 为 $F$ 上的\emph{可分元}，若满足
+  \begin{enumerate}
+    \item $a$ 为 $F$ 上代数元；
+    \item $a$ 在 $F$ 上的最小多项式为可分的。
+  \end{enumerate}
+\end{definition}
+
+\begin{definition}[可分扩张]
+  设 $F\subseteq E$ 为域扩张。
+  若 $\forall a\in E$，$a$ 均为 $F$ 上可分元，则称 $F\subseteq E$ 为\emph{可分扩张}。
+\end{definition}
+
+\begin{remark}
+  可分扩张必为代数扩张。
+\end{remark}
+
+\begin{remark}
+  若 $F$ 为有限域，则 $\mathrm{char}(F)\ne 0$。
+  设 $\mathrm{char}(F)=p$（素数），则 $\mathbb{Z}_p\subseteq F$。
+  $F$ 为 $\mathbb{Z}_p$ 上的有限维扩张，故存在 $n\ge 1$ 使得 $F\cong\mathbb{Z}_p^n$（作为向量空间），
+  从而 $|F|=p^n$。
+\end{remark}
+
+\begin{proposition}
+  若 $F,E$ 为有限域且 $|F|=|E|$，则 $E\cong F$。
+\end{proposition}
+
+\begin{proof}
+  设 $|F|=|E|=p^n$，$p$ 为素数，$n\ge 1$。
+  $\mathbb{Z}_p\subseteq F$。
+  $F^*$ 为 $p^n-1$ 阶乘法群，故 $\forall a\in F^*$，$a^{p^n-1}=1$，即 $a^{p^n}=a$。
+  对 $a=0$ 亦有 $0^{p^n}=0$，故 $F$ 中每个元素均为 $x^{p^n}-x$ 的根。
+  而 $\deg(x^{p^n}-x)=p^n=|F|$，故 $F$ 恰为 $x^{p^n}-x$ 在 $\mathbb{Z}_p$ 上的全部根集。
+  因此 $F=\mathbb{Z}_p(F)$ 为 $x^{p^n}-x$ 在 $\mathbb{Z}_p$ 上的分裂域。
+  同理 $E$ 亦为 $x^{p^n}-x$ 在 $\mathbb{Z}_p$ 上的分裂域。
+  由分裂域的唯一性知 $E\cong F$。
+\end{proof}
+
+\begin{proposition}
+  对任意素数 $p$ 及任意 $n\in\mathbb{N}^*$，存在有限域 $F$ 使得 $|F|=p^n$。
+\end{proposition}
+
+\begin{proof}
+  考虑 $\mathbb{Z}_p$ 及多项式 $x^{p^n}-x\in\mathbb{Z}_p[x]$。
+  取 $x^{p^n}-x$ 在 $\mathbb{Z}_p$ 上的分裂域 $F$。
+  由 $(x^{p^n}-x)'=p^n\,x^{p^n-1}-1=-1$（因 $\mathrm{char}=p$，$p^n\cdot 1=0$），
+  故 $\gcd(x^{p^n}-x,\,(x^{p^n}-x)')=\gcd(x^{p^n}-x,\,-1)=1$，
+  即 $x^{p^n}-x$ 无重根，在 $\bar{\mathbb{Z}}_p$ 中恰有 $p^n$ 个根。
+
+  令 $S=\{a\in\bar{\mathbb{Z}}_p:a^{p^n}=a\}$。
+  定义 Frobenius 映射 $\tau\colon\bar{\mathbb{Z}}_p\to\bar{\mathbb{Z}}_p$，$a\mapsto a^p$。
+  $\tau$ 为域自同态：
+  \begin{itemize}
+    \item $\tau(1)=1^p=1$；
+    \item $\tau(ab)=(ab)^p=a^p b^p=\tau(a)\tau(b)$；
+    \item $\tau(a+b)=(a+b)^p=a^p+b^p=\tau(a)+\tau(b)$（因 $\mathrm{char}=p$，$\binom{p}{i}\equiv 0\pmod{p}$，$0<i<p$）。
+  \end{itemize}
+  记 $\sigma=\underbrace{\tau\circ\tau\circ\cdots\circ\tau}_{n}$，即 $\sigma(a)=a^{p^n}$，$\sigma$ 亦为域自同态。
+  则 $S=\{a\in\bar{\mathbb{Z}}_p:\sigma(a)=a\}$ 为 $\bar{\mathbb{Z}}_p$ 的子域（因 $\sigma$ 为域同态，其不动点集为子域）。
+  又 $|S|=p^n$（因 $x^{p^n}-x$ 恰有 $p^n$ 个根）。
+
+  而 $\mathbb{Z}_p\subseteq S\subseteq F$（因 $S$ 中的根均在分裂域 $F$ 中）。
+  故 $|F|\le|S|... $ 实际上 $F=\mathbb{Z}_p(S)=S$（因 $S$ 本身为域且包含所有根）。
+  因此 $|F|=p^n$。
+\end{proof}
+
+\begin{proposition}\label{separable-passes-to-intermediate}
+  设 $F\subseteq L\subseteq E$ 为域扩张，且 $F\subseteq E$ 为可分扩张。
+  则 $F\subseteq L$ 与 $L\subseteq E$ 均为可分扩张。
+\end{proposition}
+
+\begin{proof}
+  $F\subseteq L$ 可分：任取 $a\in L\subseteq E$，由 $F\subseteq E$ 可分知 $a$ 为 $F$ 上可分元。
+
+  $L\subseteq E$ 可分：任取 $a\in E$，设 $q(x)$ 为 $a$ 在 $L$ 上的最小多项式，$p(x)$ 为 $a$ 在 $F$ 上的最小多项式。
+  则 $p(x)\in F[x]\subseteq L[x]$，且 $p(a)=0$，故 $q(x)\mid p(x)$（在 $L[x]$ 中）。
+  由 $F\subseteq E$ 可分知 $p(x)$ 无重根，而 $q(x)$ 的根均为 $p(x)$ 的根，故 $q(x)$ 亦无重根。
+  因此 $a$ 为 $L$ 上可分元。
+\end{proof}
+
+\begin{theorem}\label{separable-iff-hom-count}
+  已知 $F\subseteq E$ 为有限扩张，$K$ 为代数闭域，$\sigma\colon F\to K$ 为域同态。
+  即有如下图：
+  \[
+    \begin{tikzcd}
+      E \arrow[dr,dashed,"\varphi"] \\
+      F \arrow[u,hook] \arrow[r,"\sigma"'] & K
+    \end{tikzcd}
+  \]
+  则 $F\subseteq E$ 可分当且仅当 $|\mathrm{Hom}_{\sigma}(E,K)|=[E:F]$。
+\end{theorem}
+
+\begin{proof}
+  对 $[E:F]$ 作归纳。
+
+  (1) $[E:F]=1$ 时，$E=F$，$F\subseteq E$ 可分，$|\mathrm{Hom}_{\sigma}(E,K)|=|\{\sigma\}|=1=[E:F]$。
+
+  (2) 设 $[E:F]<n$ 时定理成立，下设 $[E:F]=n\ge 2$。
+  取 $a\in E\setminus F$，设 $p(x)$ 为 $a$ 在 $F$ 上的最小多项式，$d=\deg p\ge 2$。
+  考虑如下图：
+  \[
+    \begin{tikzcd}
+      E \arrow[ddr,bend left,dashed,"\varphi"] \\
+      F(a) \arrow[u,hook] \arrow[dr,dashed,"\psi"'] \\
+      F \arrow[u,hook] \arrow[r,"\sigma"'] & K
+    \end{tikzcd}
+  \]
+
+  考虑限制映射 $\theta\colon\mathrm{Hom}_{\sigma}(E,K)\to\mathrm{Hom}_{\sigma}(F(a),K)$，$\varphi\mapsto\varphi\big|_{F(a)}$。
+
+  "$\Rightarrow$"：设 $F\subseteq E$ 可分。
+  由命题~\ref{pro:separable-passes-to-intermediate} 知 $F\subseteq F(a)$ 与 $F(a)\subseteq E$ 均可分。
+  $p(x)$ 可分，故 $\bar\sigma(p)$ 在 $K$ 中有 $d$ 个不同的根（$K$ 代数闭），
+  从而 $|\mathrm{Hom}_{\sigma}(F(a),K)|=d$。
+  由 $[E:F(a)]<n$ 及 $F(a)\subseteq E$ 可分，归纳假设知对每个 $\psi\in\mathrm{Hom}_{\sigma}(F(a),K)$，
+  $|\theta^{-1}(\psi)|=|\mathrm{Hom}_{\psi}(E,K)|=[E:F(a)]$。
+  因此
+  \[
+    |\mathrm{Hom}_{\sigma}(E,K)|=[E:F(a)]\cdot d=[E:F(a)]\cdot[F(a):F]=[E:F].
+  \]
+
+  "$\Leftarrow$"：设 $|\mathrm{Hom}_{\sigma}(E,K)|=[E:F]$。
+  由引理~\ref{lem:hom-bound} 知 $|\mathrm{Hom}_{\sigma}(E,K)|\le|\mathrm{Hom}_{\sigma}(F(a),K)|\cdot[E:F(a)]\le\deg p\cdot[E:F(a)]=[E:F]$。
+  等号成立，故 $|\mathrm{Hom}_{\sigma}(F(a),K)|=d=\deg p$。
+  这意味着 $\bar\sigma(p)$ 在 $K$ 中有 $d$ 个不同的根，从而 $p(x)$ 无重根，即 $a$ 为 $F$ 上可分元。
+  由 $a\in E\setminus F$ 的任意性及 $F$ 中元素显然可分，知 $F\subseteq E$ 可分。
+\end{proof}
+
+\begin{corollary}\label{separable-element-extension}
+  设 $F\subseteq E$，$a\in E$ 为 $F$ 上可分元。
+  则 $F\subseteq F(a)$ 为可分扩张。
+\end{corollary}
+
+\begin{proof}
+  $F\subseteq F(a)$ 为有限代数扩张，$a$ 在 $F$ 上可分，$p(x)$ 为 $a$ 的最小多项式。
+  $p(x)$ 无重根，故 $b_1,\dots,b_d$（$p$ 的全部根）两两不同。
+  由定理~\ref{thm:separable-iff-hom-count} 知 $|\mathrm{Hom}_{\sigma}(F(a),\bar F)|=d=[F(a):F]$，故 $F\subseteq F(a)$ 可分。
+\end{proof}
+
+\begin{corollary}\label{separable-elements-extension}
+  设 $a_1,\dots,a_n$ 均为 $F$ 上可分元。
+  则 $F\subseteq F(a_1,\dots,a_n)$ 为可分扩张。
+\end{corollary}
+
+\begin{proof}
+  归纳：$F\subseteq F(a_1)$ 可分（由推论~\ref{cor:separable-element-extension}）。
+  $F\subseteq F(a_1)\subseteq F(a_1,a_2)$：$a_2$ 在 $F$ 上可分，故 $a_2$ 在 $F(a_1)$ 上亦可分（最小多项式整除 $F$ 上的最小多项式，无重根性继承），从而 $F(a_1)\subseteq F(a_1,a_2)$ 可分。
+  而 $F\subseteq F(a_1)$ 可分，$F(a_1)\subseteq F(a_1,a_2)$ 可分，逐步递推即得 $F\subseteq F(a_1,\dots,a_n)$ 可分。
+\end{proof}
+
+\section{Galois 对应}
+
+\begin{definition}[Galois 扩张]
+  设 $F\subseteq E$ 为域扩张。
+  若 $F\subseteq E$ 既可分又正规，则称 $F\subseteq E$ 为 \emph{Galois 扩张}。
+\end{definition}
+
+\begin{proposition}
+  若 $\mathrm{char}(F)=0$，则 $F$ 的任意代数扩张均为可分扩张。
+\end{proposition}
+
+\begin{proof}
+  设 $p(x)\in F[x]$ 不可约。
+  由 $\mathrm{char}(F)=0$ 知 $p'(x)\ne 0$（因 $\deg p'\ge 0$，各系数 $i\lambda_i$ 在特征 $0$ 下不全为零）。
+  又 $\deg p'<\deg p$ 且 $p$ 不可约，故 $\gcd(p,p')=1$，即 $p$ 可分。
+\end{proof}
+
+\begin{remark}
+  $\mathrm{char}(F)=0$ 时，$p(x)$ 不可约 $\Rightarrow$ $p(x)$ 可分。
+\end{remark}
+
+\begin{definition}[不动域]
+  设 $F\subseteq E$，$\Omega\subseteq\mathrm{Aut}(E\mid F)$。
+  定义 $\Omega$ 的\emph{不动域}为
+  \[
+    E^{\Omega}:=\{a\in E:\forall\varphi\in\Omega,\;\varphi(a)=a\}=\bigcap_{\varphi\in\Omega}\{a\in E:\varphi(a)=a\}.
+  \]
+  $E^{\Omega}$ 为 $E$ 的子域，且 $F\subseteq E^{\Omega}\subseteq E$。
+\end{definition}
+
+\begin{lemma}\label{galois-fixed-field}
+  设 $F\subseteq E$ 为可分且正规扩张（即 Galois 扩张）。
+  则 $E^{\mathrm{Aut}(E\mid F)}=F$。
+\end{lemma}
+
+\begin{proof}
+  已知 $F\subseteq E^{\mathrm{Aut}(E\mid F)}$。
+  需证：$\forall a\notin F$，$a\notin E^{\mathrm{Aut}(E\mid F)}$，即存在 $\varphi\in\mathrm{Aut}(E\mid F)$ 使得 $\varphi(a)\ne a$。
+
+  设 $a$ 在 $F$ 上的最小多项式为 $p(x)$，$\deg p\ge 2$（因 $a\notin F$）。
+  由 $F\subseteq E$ 正规知 $p(x)$ 在 $E$ 中分裂；由可分知 $p(x)$ 无重根。
+  故 $p(x)$ 在 $E$ 中至少有两个不同的根，设 $b\ne a$ 亦为 $p(x)$ 的根。
+  由引理~\ref{lem:field-iso-extension} 存在域同构 $\varphi_0\colon F(a)\xrightarrow{\sim} F(b)$，$\varphi_0\big|_F=\mathrm{id}$，$\varphi_0(a)=b$。
+  即有如下交换图：
+  \[
+    \begin{tikzcd}
+      E \arrow[r,dashed,"\psi","\sim"'] & E \\
+      F(a) \arrow[u,hook] \arrow[r,"\varphi_0","\sim"'] & F(b) \arrow[u,hook] \\
+      F \arrow[u,hook] \arrow[r,"\mathrm{id}"] & F \arrow[u,hook]
+    \end{tikzcd}
+  \]
+  由 $F\subseteq E$ 正规，$\varphi_0$ 可扩张为 $\psi\colon E\xrightarrow{\sim} E$，即 $\psi$ 为 $F$-同构。
+  故 $\psi\in\mathrm{Aut}(E\mid F)$，且 $\psi(a)=\varphi_0(a)=b\ne a$。
+  因此 $a\notin E^{\mathrm{Aut}(E\mid F)}$。
+\end{proof}
+
+\begin{definition}[Galois 对应]
+  设 $F\subseteq E$ 为域扩张。定义如下两个映射：
+  \begin{align*}
+    \sigma\colon\{L:L\text{ 为 }F\subseteq E\text{ 的中间域}\}&\to\{H:H\text{ 为 }\mathrm{Aut}(E\mid F)\text{ 的子群}\},\\
+    L&\mapsto\mathrm{Aut}(E\mid L);\\[6pt]
+    \tau\colon\{H:H\text{ 为 }\mathrm{Aut}(E\mid F)\text{ 的子群}\}&\to\{L:L\text{ 为 }F\subseteq E\text{ 的中间域}\},\\
+    H&\mapsto E^H.
+  \end{align*}
+\end{definition}
+
+\begin{proposition}[Galois 对应的基本性质]
+  $\sigma,\tau$ 均为反序映射：
+  \begin{enumerate}
+    \item $L_1\subseteq L_2\Rightarrow\sigma(L_1)\supseteq\sigma(L_2)$；
+    \item $H_1\le H_2\Rightarrow\tau(H_1)\supseteq\tau(H_2)$。
+  \end{enumerate}
+  且 $\tau\sigma(L)\supseteq L$，$\sigma\tau(H)\supseteq H$。
+\end{proposition}
+
+\begin{remark}
+  $\sigma\tau\sigma(L)=\sigma(L)$，$\tau\sigma\tau(H)=\tau(H)$。
+\end{remark}
+
+\begin{theorem}
+  设 $F\subseteq E$ 为可分且正规扩张（Galois 扩张）。
+  则 $\tau\circ\sigma=\mathrm{id}$（即 Galois 对应中 $\tau\sigma(L)=L$）。
+\end{theorem}
+
+\begin{proof}
+  设 $L$ 为 $F\subseteq E$ 的中间域。
+  需证 $\tau(\sigma(L))=E^{\mathrm{Aut}(E\mid L)}=L$。
+  由 $F\subseteq E$ 可分且正规知 $L\subseteq E$ 亦为可分且正规（由命题~\ref{pro:separable-passes-to-intermediate}），
+  故由引理~\ref{lem:galois-fixed-field} 知 $E^{\mathrm{Aut}(E\mid L)}=L$。
+\end{proof}
+
+\section{本原元定理与代数基本定理}
+
+\begin{definition}[本原元]
+  设 $F\subseteq E$，$a\in E$。
+  若 $E=F(a)$，则称 $a$ 为 $E$ 在 $F$ 上的\emph{本原元}。
+\end{definition}
+
+\begin{theorem}[本原元定理]
+  设 $F\subseteq E$ 为有限可分扩张。
+  则存在 $a\in E$ 使得 $E=F(a)$（即 $E$ 为 $F$ 的单扩张）。
+\end{theorem}
+\begin{proof}
+  由引理~\ref{lem:normal-closure} 知存在域 $K$ 使得 $F\subseteq E\subseteq K$，$F\subseteq K$ 为有限可分正规扩张（Galois 扩张）。
+  由 Galois 对应，$\{L:L\text{ 为 }F\subseteq K\text{ 的中间域}\}\overset{\sigma,\tau}{\longleftrightarrow}\{H:H\text{ 为 }\mathrm{Aut}(K\mid F)\text{ 的子群}\}$。
+  $|\mathrm{Aut}(K\mid F)|\le[K:F]<\infty$，故 $\mathrm{Aut}(K\mid F)$ 仅有有限多个子群，从而 $F\subseteq K$ 仅有有限多个中间域。
+  特别地，$F\subseteq E$ 亦仅有有限多个中间域。
+
+  (I) 若 $F$ 为有限域：$F\subseteq E$ 有限可分，故 $E$ 亦为有限域。
+  $E^*$ 为有限域的乘法群，故为循环群，设 $E^*=\langle a\rangle$。
+  则 $F(a)\supseteq E^*\cup\{0\}=E$，故 $E=F(a)$。
+
+  (II) 若 $F$ 为无限域：$F\subseteq E$ 有限可分。
+  对任意 $a\in E$，有 $F\subseteq F(a)\subseteq E$。
+  故 $E=\bigcup_{a\in E}F(a)\subseteq E$。
+  由已证知 $F\subseteq E$ 仅有有限多个中间域，
+  故 $\{F(a):a\in E\}$ 为有限集。
+  若每个 $F(a)$ 均为 $E$ 的真子空间，
+  则 $E=\bigcup_{a\in E}F(a)$ 为有限个真子空间之并，
+  与填不满定理矛盾（$F$ 无限）。
+  故存在 $a\in E$ 使得 $F(a)=E$。
+\end{proof}
+\begin{lemma}\label{normal-closure}
+  设 $F\subseteq E$ 为有限可分扩张。
+  则存在域 $K$ 使得 $F\subseteq E\subseteq K$（可取 $K$ 为正规闭包），
+  且 $F\subseteq K$ 为有限可分正规扩张（即 Galois 扩张）。
+\end{lemma}
+
+\begin{remark}
+  $F\subseteq E$ 可分 $\Rightarrow$ $F\subseteq E$ 仅有有限多个中间域。
+  因为 $\mathrm{Aut}(K\mid F)$ 为有限群（元素个数 $\le[K:F]$），其子群有限，
+  通过 Galois 对应知中间域亦有限。
+\end{remark}
+
+\begin{lemma}\label{finite-separable-tower}
+  设 $F\subseteq L$，$L\subseteq E$ 均为有限可分扩张。
+  则 $F\subseteq E$ 为可分扩张。
+\end{lemma}
+
+\begin{proof}
+  已知 $F\subseteq E$ 为有限扩张。
+  取代数闭域 $K$ 及域同态 $\sigma\colon F\to K$。
+  考虑如下图：
+  \[
+    \begin{tikzcd}
+      E \arrow[ddr,bend left,dashed,"\varphi"] \\
+      L \arrow[u,hook] \arrow[dr,dashed,"\psi"'] \\
+      F \arrow[u,hook] \arrow[r,"\sigma"'] & K
+    \end{tikzcd}
+  \]
+  考虑限制映射 $\theta\colon\mathrm{Hom}_{\sigma}(E,K)\to\mathrm{Hom}_{\sigma}(L,K)$，$\varphi\mapsto\varphi\big|_L$。
+
+  由 $F\subseteq L$ 有限可分知 $|\mathrm{Hom}_{\sigma}(L,K)|=[L:F]$。
+  对每个 $\psi\in\mathrm{Hom}_{\sigma}(L,K)$，由 $L\subseteq E$ 有限可分知
+  $|\theta^{-1}(\psi)|=|\mathrm{Hom}_{\psi}(E,K)|=[E:L]$。
+  因此
+  \[
+    |\mathrm{Hom}_{\sigma}(E,K)|=[E:L]\cdot[L:F]=[E:F].
+  \]
+  由定理~\ref{thm:separable-iff-hom-count} 知 $F\subseteq E$ 可分。
+\end{proof}
+
+\begin{theorem}
+  设 $F\subseteq L$，$L\subseteq E$ 均为可分扩张。
+  则 $F\subseteq E$ 为可分扩张。
+\end{theorem}
+
+\begin{proof}
+  任取 $a\in E$，需证 $a$ 为 $F$ 上可分元。
+  设 $p(x)$ 为 $a$ 在 $L$ 上的最小多项式，$p(x)=\sum_{i=0}^{n}\lambda_i x^i$，其中 $\lambda_0,\dots,\lambda_n\in L$。
+
+  考虑 $F\subseteq F(\lambda_0,\dots,\lambda_n)\subseteq F(\lambda_0,\dots,\lambda_n)(a)\ni a$。
+  由 $F\subseteq L$ 可分知各 $\lambda_i$ 为 $F$ 上可分元，
+  故 $F\subseteq F(\lambda_0,\dots,\lambda_n)$ 为有限可分扩张（由推论~\ref{cor:separable-elements-extension}）。
+
+  又 $a$ 在 $F(\lambda_0,\dots,\lambda_n)$ 上的最小多项式整除 $p(x)$（因 $p(x)\in F(\lambda_0,\dots,\lambda_n)[x]$ 且 $p(a)=0$），
+  而 $p(x)$ 无重根（$a$ 在 $L$ 上可分），
+  故 $a$ 在 $F(\lambda_0,\dots,\lambda_n)$ 上亦可分，
+  即 $F(\lambda_0,\dots,\lambda_n)\subseteq F(\lambda_0,\dots,\lambda_n)(a)$ 为有限可分扩张。
+
+  由引理~\ref{lem:finite-separable-tower} 知 $F\subseteq F(\lambda_0,\dots,\lambda_n)(a)$ 为有限可分扩张，
+  从而 $a$ 为 $F$ 上可分元。
+\end{proof}
+
+\begin{lemma}\label{normal-closure-2}
+  设 $F\subseteq E$ 为有限可分扩张。
+  则存在域 $K$ 使得 $E\subseteq K$，且 $F\subseteq K$ 为有限可分正规扩张（即 Galois 扩张）。
+\end{lemma}
+
+\begin{proof}
+  $F\subseteq E$ 有限可分，设 $E=F(a_1,\dots,a_n)$。
+  设 $p_1(x),\dots,p_n(x)$ 分别为 $a_1,\dots,a_n$ 在 $F$ 上的最小多项式（均可分）。
+  在 $\bar F$ 中，取 $K$ 为 $p_1(x),\dots,p_n(x)$ 在 $F$ 上的分裂域。
+  则 $E\subseteq K$。
+  $F\subseteq K$ 正规（$K$ 为分裂域），
+  且 $F\subseteq K$ 可分（$K$ 由各 $p_i$ 的根生成，这些根均为可分元）。
+\end{proof}
+
+\begin{theorem}[填不满定理]
+  设 $F$ 为无限域，$V$ 为有限维 $F$-向量空间，$W_1,\dots,W_k$ 为 $V$ 的真子空间。
+  则 $\bigcup_{i=1}^{k}W_i\ne V$。
+\end{theorem}
+
+\begin{proof}
+  不妨设 $V=F^n$。
+  反设 $F^n=W_1\cup\cdots\cup W_k$，其中 $W_1,\dots,W_k$ 为 $F^n$ 的真子空间。
+  $F$ 无限，取两两不同的元素 $a_1,a_2,a_3,\dots\in F$。
+  考虑 $n$ 阶 Vandermonde 向量组：对每个 $a_j$，令
+  \[
+    \mathbf{v}_j=(1,\,a_j,\,a_j^2,\,\dots,\,a_j^{n-1})^T\in F^n.
+  \]
+  由鸽巢原理，存在某个 $W_i$ 包含无穷多个 $\mathbf{v}_j$。
+  从中取 $n$ 个，设为 $\mathbf{v}_{j_1},\dots,\mathbf{v}_{j_n}$，
+  它们构成的矩阵为 Vandermonde 矩阵，行列式
+  \[
+    \det(\mathbf{v}_{j_1},\dots,\mathbf{v}_{j_n})=\prod_{1\le s<t\le n}(a_{j_t}-a_{j_s})\ne 0
+  \]
+  （因 $a_{j_1},\dots,a_{j_n}$ 两两不同）。
+  故 $\mathbf{v}_{j_1},\dots,\mathbf{v}_{j_n}$ 线性无关，张成 $F^n$，
+  从而 $W_i=F^n$，与 $W_i$ 为真子空间矛盾。
+\end{proof}
+
+
+
+\begin{example}[$\mathbb{R}$ 的有限单扩张]
+  $\mathbb{R}$ 的有限单扩张为偶数次扩张。
+
+  设 $\mathbb{R}\subseteq E$ 为有限扩张。
+  $\mathrm{char}(\mathbb{R})=0$，故 $\mathbb{R}\subseteq E$ 可分。
+  由本原元定理知存在 $a\in E$ 使得 $E=\mathbb{R}(a)$。
+  设 $p(x)$ 为 $a$ 在 $\mathbb{R}$ 上的最小多项式，$[E:\mathbb{R}]=\deg p(x)$。
+  若 $\deg p(x)$ 为奇数且 $\ge 2$，
+  由实分析知（$\lambda\ne 0$，$\lambda>0$ 时 $\lim_{x\to+\infty}p(x)=+\infty$，$\lim_{x\to-\infty}p(x)=-\infty$），
+  $p(x)$ 在 $\mathbb{R}$ 中有实根，与 $p(x)$ 不可约矛盾。
+  故 $\deg p(x)$ 为偶数。
+\end{example}
+
+\begin{lemma}[Artin 引理]
+  设 $E$ 为域，$G$ 为 $\mathrm{Aut}(E)$ 的一个有限子群。
+  记 $\mathrm{Inv}(G)=E^G=\{a\in E:\forall\sigma\in G,\;\sigma(a)=a\}$。
+  则 $[E:\mathrm{Inv}(G)]\le|G|$。
+\end{lemma}
+
+\begin{proof}
+  设 $G=\{\sigma_1,\dots,\sigma_n\}$（$\sigma_1=\mathrm{id}$），$|G|=n$。
+  需证：$\forall a_1,\dots,a_{n+1}\in E$，$(a_1,\dots,a_{n+1})$ 在 $\mathrm{Inv}(G)$ 上线性相关，
+  即 $[E:\mathrm{Inv}(G)]\le n$。
+
+  考虑 $n\times(n+1)$ 矩阵，其列向量 $\alpha_j\in E^n$ 定义为
+  \[
+    \alpha_j=\bigl(\sigma_1(a_j),\;\sigma_2(a_j),\;\dots,\;\sigma_n(a_j)\bigr)^T,\quad j=1,\dots,n+1.
+  \]
+  $n+1$ 个向量在 $E^n$ 中，故 $E$-线性相关。
+  设 $r\le n$ 使得 $\alpha_1,\dots,\alpha_r$ 为 $E$-线性无关，
+  而 $\alpha_1,\dots,\alpha_r,\alpha_{r+1}$ 为 $E$-线性相关。
+  则存在 $\lambda_1,\dots,\lambda_r\in E$（不全为零）使得
+  \begin{equation}\tag{$*$}
+    \alpha_{r+1}=\lambda_1\alpha_1+\cdots+\lambda_r\alpha_r.
+  \end{equation}
+
+  对任意 $\sigma\in G$，注意 $\sigma$ 作用在 $E^n$ 上的效果：
+  对 $\alpha=(c_1,\dots,c_n)^T\in E^n$，$\sigma(\alpha)=(\sigma(c_1),\dots,\sigma(c_n))^T$，
+  且 $\sigma(\lambda\alpha)=\sigma(\lambda)\sigma(\alpha)$。
+
+  对 $(*)$ 两端作用 $\sigma$：
+  \begin{equation}\tag{$**$}
+    \sigma(\alpha_{r+1})=\sigma(\lambda_1)\sigma(\alpha_1)+\cdots+\sigma(\lambda_r)\sigma(\alpha_r).
+  \end{equation}
+
+  另一方面，$\sigma\circ\sigma_i$ 遍历 $G$（$\sigma$ 置换 $G$ 的元素），
+  故 $\sigma(\alpha_j)$ 的各分量恰为 $\{\sigma_l(a_j):l=1,\dots,n\}$ 的某个排列。
+  由此可知 $(*)$ 中对 $\alpha_{r+1}$ 的 $E$-线性关系经 $\sigma$ 作用后仍对同一组列向量成立：
+  \[
+    \alpha_{r+1}=\sigma(\lambda_1)\alpha_1+\cdots+\sigma(\lambda_r)\alpha_r.
+  \]
+
+  由 $\alpha_1,\dots,\alpha_r$ 的 $E$-线性无关性，
+  比较 $(*)$ 与上式得 $\sigma(\lambda_i)=\lambda_i$，$\forall i,\;\forall\sigma\in G$。
+  故 $\lambda_1,\dots,\lambda_r\in\mathrm{Inv}(G)$，且不全为零。
+  从而 $a_{r+1}=\lambda_1 a_1+\cdots+\lambda_r a_r$ 为 $\mathrm{Inv}(G)$-线性组合，
+  即 $a_1,\dots,a_{n+1}$ 在 $\mathrm{Inv}(G)$ 上线性相关。
+  因此 $[E:\mathrm{Inv}(G)]\le n=|G|$。
+\end{proof}
+
+\begin{theorem}[Galois 对应定理]
+  已知 $F\subseteq E$ 为有限可分正规扩张（即有限 Galois 扩张）。
+  则有以下集合间的一一对应：
+  \[
+    \{L:L\text{ 为 }F\subseteq E\text{ 的中间域}\}
+    \overset{\sigma}{\underset{\tau}{\rightleftarrows}}
+    \{H:H\le\mathrm{Aut}(E\mid F)\}
+  \]
+  其中
+  \begin{align*}
+    \sigma\colon L&\longmapsto\mathrm{Aut}(E\mid L),\\
+    \tau\colon H&\longmapsto\mathrm{Inv}(H)=E^H.
+  \end{align*}
+  且对所有中间域 $L$，$|\mathrm{Aut}(E\mid L)|=[E:L]$。
+\end{theorem}
+
+\begin{proof}
+  已证 $\tau\circ\sigma=\mathrm{id}$（对中间域 $L$，$\tau\sigma(L)=E^{\mathrm{Aut}(E\mid L)}=L$）。
+  需再证 $\sigma\circ\tau=\mathrm{id}$，即对 $H\le\mathrm{Aut}(E\mid F)$，$H=\mathrm{Aut}(E\mid\mathrm{Inv}(H))$。
+
+  一方面，$H\subseteq\mathrm{Aut}(E\mid\mathrm{Inv}(H))$（$H$ 中元素固定 $\mathrm{Inv}(H)$，故属于 $\mathrm{Aut}(E\mid\mathrm{Inv}(H))$）。
+
+  另一方面，$\mathrm{Inv}(H)\subseteq E$ 为可分正规扩张（因 $\mathrm{Inv}(H)$ 为 $F\subseteq E$ 的中间域），故
+  \[
+    |\mathrm{Aut}(E\mid\mathrm{Inv}(H))|=[E:\mathrm{Inv}(H)].
+  \]
+  由 Artin 引理知 $[E:\mathrm{Inv}(H)]\le|H|$。
+  故 $|\mathrm{Aut}(E\mid\mathrm{Inv}(H))|\le|H|$。
+  结合 $H\subseteq\mathrm{Aut}(E\mid\mathrm{Inv}(H))$ 得 $H=\mathrm{Aut}(E\mid\mathrm{Inv}(H))$。
+  因此 $\sigma\circ\tau=\mathrm{id}$，$\sigma,\tau$ 互逆，为一一对应。
+
+  对所有中间域 $L$，$|\mathrm{Aut}(E\mid L)|=[E:L]$（因 $L\subseteq E$ 为有限可分正规扩张）。
+\end{proof}
+
+\begin{theorem}[代数基本定理]
+  $\mathbb{C}$ 为代数闭域。
+\end{theorem}
+
+\begin{proof}
+  反设 $\mathbb{C}$ 非代数闭。
+  则存在 $E\supsetneq\mathbb{C}$ 为 $\mathbb{C}$ 的有限扩张。
+  考虑 $\mathbb{R}\subset\mathbb{C}\subseteq E$。
+  由引理~\ref{lem:normal-closure-2} 知存在域 $K$ 使得 $E\subseteq K$，$\mathbb{R}\subseteq K$ 为有限可分正规扩张（Galois 扩张）。
+  即 $\mathbb{R}\subset\mathbb{C}\subseteq E\subseteq K$。
+
+  \textbf{第一步：$\mathbb{C}$ 无 $2$ 次扩张。}
+  若 $\mathbb{C}\subset E'$ 为 $2$ 次扩张，取 $a\in E'\setminus\mathbb{C}$，
+  则 $E'=\mathbb{C}(a)$，$a$ 的最小多项式 $p(x)=x^2+bx+c\in\mathbb{C}[x]$。
+  由配方 $x^2+bx+c=(x+\tfrac{b}{2})^2+c-(\tfrac{b}{2})^2$。
+  而 $\mathbb{C}$ 中每个元素均有平方根，故 $p(x)$ 在 $\mathbb{C}$ 中分裂，矛盾。
+
+  \textbf{第二步：$|\mathrm{Aut}(K\mid\mathbb{R})|$ 为 $2$ 的幂。}
+  考虑 Galois 对应：
+  \[
+    \{L:L\text{ 为 }\mathbb{R}\subseteq K\text{ 的中间域}\}
+    \overset{\sigma}{\underset{\tau}{\rightleftarrows}}
+    \{H:H\le\mathrm{Aut}(K\mid\mathbb{R})\}.
+  \]
+  设 $|\mathrm{Aut}(K\mid\mathbb{R})|=[K:\mathbb{R}]=2^n\cdot m$，其中 $m$ 为奇数，$n\ge 1$（因 $[K:\mathbb{R}]\ge[\mathbb{C}:\mathbb{R}]=2$）。
+
+  由 Sylow 定理，设 $H$ 为 $\mathrm{Aut}(K\mid\mathbb{R})$ 的一个 Sylow $2$-子群，$|H|=2^n$。
+  则 $|G/H|=m$（奇数），对应中间域 $L=\mathrm{Inv}(H)$，$[L:\mathbb{R}]=m$。
+  但 $\mathbb{R}$ 无奇数次（$\ge 3$）不可约多项式（由介值定理），故 $m=1$。
+  从而 $|\mathrm{Aut}(K\mid\mathbb{R})|=2^n$。
+
+  \textbf{第三步：$K=\mathbb{C}$。}
+  $\mathrm{Aut}(K\mid\mathbb{C})$ 为 $\mathrm{Aut}(K\mid\mathbb{R})$ 的子群，故 $|\mathrm{Aut}(K\mid\mathbb{C})|=2^l$，$l\ge 0$。
+  若 $l\ge 1$，则 $\mathrm{Aut}(K\mid\mathbb{C})$ 为非平凡 $2$-群，
+  由 Sylow 定理存在指数为 $2$ 的子群 $N$，
+  对应中间域 $\mathrm{Inv}(N)$，$[\mathrm{Inv}(N):\mathbb{C}]=2$。
+  但由第一步知 $\mathbb{C}$ 无 $2$ 次扩张，矛盾。
+  故 $l=0$，$\mathrm{Aut}(K\mid\mathbb{C})=\{\mathrm{id}\}$，即 $K=\mathbb{C}$。
+
+  但 $E\subseteq K=\mathbb{C}$，与 $E\supsetneq\mathbb{C}$ 矛盾。
+  故 $\mathbb{C}$ 为代数闭域。
+\end{proof}
+
+\end{document}

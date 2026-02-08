@@ -1,0 +1,5271 @@
+\documentclass[lang=cn,a4paper,newtx,section]{elegantbook}
+
+\title{泛函分析}
+
+
+\author{H}
+
+\date{April 9, 2022}
+
+
+\setcounter{tocdepth}{3}
+
+\logo{logo-blue.jpg}
+\cover{cover.jpg}
+
+% 本文档命令
+\usepackage{array}
+\usepackage{tikz-cd}
+\usepackage{mathtools}
+\newcommand{\ccr}[1]{\makecell{{\color{#1}\rule{1cm}{1cm}}}}
+
+% 修改标题页的橙色带
+% \definecolor{customcolor}{RGB}{32,178,170}
+% \colorlet{coverlinecolor}{customcolor}
+
+\begin{document}
+
+\maketitle
+\frontmatter
+
+\tableofcontents
+
+\mainmatter
+
+\chapter{度量空间}
+
+\section{度量空间的基本概念}
+
+\begin{definition}
+  设 $X$ 为非空集合，$d: X \times X \to \mathbb{R}$。若对任意 $x,y,z \in X$ 满足
+  \begin{enumerate}
+    \item $d(x,y) \ge 0$ 且 $d(x,x)=0$；
+    \item $d(x,y)=d(y,x)$；
+    \item $d(x,y) \le d(x,z)+d(z,y)$；
+  \end{enumerate}
+  则称 $d$ 为 $X$ 上的一个伪度量。若再满足 $d(x,y)=0 \Rightarrow x=y$，则称 $d$ 为 $X$ 上的一个度量，$(X,d)$ 称为度量空间。
+\end{definition}
+\begin{example}
+  在 $\mathbb{R}^n$ 上，
+  \[
+    d(\bar{x},\bar{y})=\Bigl((x_1-y_1)^2+\cdots+(x_n-y_n)^2\Bigr)^{\frac12}
+  \]
+  为欧氏度量；在 $\mathbb{R}$ 上，$d(x,y)=|x-y|$ 为通常度量。
+\end{example}
+
+\begin{example}
+  在 $\mathbb{N}$ 或 $\mathbb{Z}$ 上，$d(x,y)=|x-y|$ 是度量。
+\end{example}
+
+\begin{example}
+  对任意集合 $X$，定义
+  \[
+    d(x,y)=\begin{cases}
+      0, & x=y,\\
+      1, & x \ne y,
+    \end{cases}
+  \]
+  则 $d$ 为 $X$ 上的离散度量。
+\end{example}
+\begin{remark}
+  设 $d$ 为 $X$ 上的伪度量，定义关系 $\sim$ 为
+  \[
+    x\sim y \iff d(x,y)=0.
+  \]
+  则 $\sim$ 为 $X$ 上的等价关系。令 $X/\!\sim$ 为商集，对任意 $[x],[y]\in X/\!\sim$ 定义
+  \[
+    \bar d([x],[y])\triangleq d(x,y).
+  \]
+  若 $x\sim x'$ 且 $y\sim y'$，则由三角不等式知
+  \[
+    d(x,y)\le d(x,x')+d(x',y')+d(y',y)=d(x',y'),\qquad
+    d(x',y')\le d(x',x)+d(x,y)+d(y,y')=d(x,y),
+  \]
+  从而 $d(x,y)=d(x',y')$，故 $\bar d$ 良定义。并且 $\bar d$ 满足度量的四条公理，特别地
+  \[
+    \bar d([x],[y])=0 \Rightarrow d(x,y)=0 \Rightarrow x\sim y \Rightarrow [x]=[y],
+  \]
+  因而 $(X/\!\sim,\bar d)$ 为度量空间。
+\end{remark}
+
+\begin{definition}
+  设 $(X,d)$ 为（伪）度量空间，$x\in X$，$r>0$。定义开球与闭球
+  \[
+    B(x,r)\triangleq \{y\in X: d(x,y)<r\},\qquad
+    \overline{B}(x,r)\triangleq \{y\in X: d(x,y)\le r\}.
+  \]
+\end{definition}
+
+\begin{definition}
+  设 $\Omega\subset X$，$x\in X$。若存在 $r>0$ 使得 $B(x,r)\subset \Omega$，则称 $x$ 为 $\Omega$ 的内点。
+  若 $\Omega$ 的每个点都是内点，则称 $\Omega$ 为开集。
+\end{definition}
+
+\begin{remark}
+  $\varnothing$ 与 $X$ 都是开集。
+\end{remark}
+
+\begin{definition}
+  设 $\Omega\subset X$，$x\in X$。若对任意 $r>0$，都有 $(B(x,r)\setminus\{x\})\cap\Omega\ne\varnothing$，则称 $x$ 为 $\Omega$ 的聚点。
+  记 $d\Omega$ 为 $\Omega$ 的全体聚点的集合，并定义 $\overline{\Omega}\triangleq \Omega\cup d\Omega$，称为 $\Omega$ 的闭包。
+\end{definition}
+
+\begin{definition}
+  设 $\Omega\subset X$。若 $d\Omega\subset \Omega$，则称 $\Omega$ 为闭集。
+\end{definition}
+
+\begin{proposition}\label{prop:closure-ball-intersection}
+  设 $\Omega\subset X$，$x\in X$。则 $x\in\overline{\Omega}$ 当且仅当对任意 $\varepsilon>0$，都有
+  \[
+    B(x,\varepsilon)\cap\Omega\ne\varnothing.
+  \]
+\end{proposition}
+
+\begin{proof}
+  若 $x\in\Omega$，结论显然成立。若 $x\in d\Omega$，则对任意 $\varepsilon>0$，有 $(B(x,\varepsilon)\setminus\{x\})\cap\Omega\ne\varnothing$，从而 $B(x,\varepsilon)\cap\Omega\ne\varnothing$。
+  反之，设对任意 $\varepsilon>0$，$B(x,\varepsilon)\cap\Omega\ne\varnothing$。若 $x\in\Omega$，则 $x\in\overline{\Omega}$。若 $x\notin\Omega$，则对任意 $\varepsilon>0$，可取 $y\in B(x,\varepsilon)\cap\Omega$，此时 $y\ne x$，故 $(B(x,\varepsilon)\setminus\{x\})\cap\Omega\ne\varnothing$，即 $x\in d\Omega$。因此 $x\in\Omega\cup d\Omega=\overline{\Omega}$。
+\end{proof}
+
+\begin{proposition}\label{prop:closure-monotonicity}
+  若 $A\subset B\subset X$，则 $\overline{A}\subset \overline{B}$。
+\end{proposition}
+
+\begin{proof}
+  设 $x\in\overline{A}$。由命题~\ref{prop:closure-ball-intersection}，任取 $\varepsilon>0$，有 $B(x,\varepsilon)\cap A\ne\varnothing$。
+  因为 $A\subset B$，所以 $B(x,\varepsilon)\cap B\ne\varnothing$，再由命题~\ref{prop:closure-ball-intersection} 知 $x\in\overline{B}$。
+\end{proof}
+
+\begin{proposition}\label{prop:closed-set-closure}
+  设 $\Omega\subset X$，则 $\Omega$ 为闭集当且仅当 $\overline{\Omega}=\Omega$。
+\end{proposition}
+
+\begin{proof}
+  若 $\Omega$ 为闭集，则 $d\Omega\subset\Omega$，从而 $\overline{\Omega}=\Omega\cup d\Omega=\Omega$。
+  反之，若 $\overline{\Omega}=\Omega$，则 $d\Omega\subset\overline{\Omega}=\Omega$，故 $\Omega$ 为闭集。
+\end{proof}
+
+\begin{proposition}
+  对任意 $x\in X$ 与 $\varepsilon>0$，开球 $B(x,\varepsilon)$ 为开集。
+\end{proposition}
+
+\begin{proof}
+  任取 $y\in B(x,\varepsilon)$，则 $d(x,y)<\varepsilon$。令 $\delta\triangleq \varepsilon-d(x,y)>0$，对任意 $z\in B(y,\delta)$，由三角不等式有
+  \[
+    d(x,z)\le d(x,y)+d(y,z)<d(x,y)+\delta=\varepsilon,
+  \]
+  故 $z\in B(x,\varepsilon)$，即 $B(y,\delta)\subset B(x,\varepsilon)$。因此 $y$ 为 $B(x,\varepsilon)$ 的内点，从而 $B(x,\varepsilon)$ 为开集。
+\end{proof}
+
+\begin{proposition}
+  设 $\Omega\subset X$。则 $\overline{\Omega}$ 是包含 $\Omega$ 的最小闭集：对任意闭集 $F\subset X$，若 $\Omega\subset F$，则 $\overline{\Omega}\subset F$。
+\end{proposition}
+
+\begin{proof}
+  设 $F$ 为闭集且 $\Omega\subset F$。由命题~\ref{prop:closure-monotonicity} 知 $\overline{\Omega}\subset \overline{F}$。
+  又由命题~\ref{prop:closed-set-closure}，$F$ 闭当且仅当 $\overline{F}=F$，故 $\overline{\Omega}\subset \overline{F}=F$。
+\end{proof}
+
+\begin{proposition}
+  设 $(X,d)$ 为（伪）度量空间，令 $\mathcal{J}_d$ 为 $X$ 中全体开集的集合，则 $\mathcal{J}_d$ 满足
+  \begin{enumerate}
+    \item $\varnothing,\,X\in\mathcal{J}_d$；
+    \item 若 $U,V\in\mathcal{J}_d$，则 $U\cap V\in\mathcal{J}_d$；
+    \item 若 $\{U_\alpha\}_{\alpha\in A}\subset\mathcal{J}_d$，则 $\bigcup_{\alpha\in A}U_\alpha\in\mathcal{J}_d$。
+  \end{enumerate}
+  因而 $\mathcal{J}_d$ 给出 $X$ 上的一个拓扑。
+\end{proposition}
+
+\begin{proof}
+  (1) 已在前述 remark 中说明。
+  
+  (2) 设 $x\in U\cap V$。由于 $U,V$ 都是开集，分别存在 $r_1,r_2>0$ 使得 $B(x,r_1)\subset U$ 且 $B(x,r_2)\subset V$。
+  取 $r\triangleq\min\{r_1,r_2\}$，则 $B(x,r)\subset U\cap V$，故 $x$ 为 $U\cap V$ 的内点，从而 $U\cap V$ 为开集。
+  
+  (3) 设 $x\in\bigcup_{\alpha\in A}U_\alpha$，则存在 $\alpha_0\in A$ 使得 $x\in U_{\alpha_0}$。
+  因为 $U_{\alpha_0}$ 为开集，存在 $r>0$ 使得 $B(x,r)\subset U_{\alpha_0}\subset\bigcup_{\alpha\in A}U_\alpha$，故并集为开集。
+\end{proof}
+
+\begin{definition}
+  设 $A\subset X$，定义 $A$ 的内部为
+  \[
+    A^\circ\triangleq \{x\in X: x \text{ 为 } A \text{ 的内点}\}.
+  \]
+\end{definition}
+
+\begin{proposition}
+  对任意 $A\subset X$，$A^\circ$ 是包含于 $A$ 的最大开集。
+\end{proposition}
+
+\begin{proof}
+  由定义知 $A^\circ\subset A$。又若 $x\in A^\circ$，则存在 $r>0$ 使得 $B(x,r)\subset A$，从而 $x$ 为 $A^\circ$ 的内点，故 $A^\circ$ 为开集。
+  设 $U\subset A$ 为开集，任取 $x\in U$，则存在 $r>0$ 使得 $B(x,r)\subset U\subset A$，故 $x\in A^\circ$，从而 $U\subset A^\circ$。
+\end{proof}
+
+\begin{definition}
+  设 $A\subset X$，$x\in X$。若 $x$ 为 $A$ 的内点，则称 $A$ 为 $x$ 的一个邻域。
+\end{definition}
+
+\begin{remark}
+  设 $U\subset X$，则 $U$ 为开集当且仅当 $U$ 中每一点都以 $U$ 为邻域。
+\end{remark}
+
+\begin{definition}
+  设 $x\in X$，定义 $x$ 的邻域系
+  \[
+    \mathcal{N}_x\triangleq \{A\subset X: A \text{ 为 } x \text{ 的邻域}\}.
+  \]
+\end{definition}
+
+\begin{remark}
+  若 $A\subset B\subset X$ 且 $A\in\mathcal{N}_x$，则 $B\in\mathcal{N}_x$。
+\end{remark}
+
+\begin{proposition}\label{prop:neighborhood-open-characterization}
+  设 $A\subset X$，$x\in X$。则 $A\in\mathcal{N}_x$ 当且仅当存在开集 $U$ 使得
+  \[
+    x\in U\subset A.
+  \]
+\end{proposition}
+
+\begin{proof}
+  若 $A\in\mathcal{N}_x$，则 $x$ 为 $A$ 的内点，存在 $\varepsilon>0$ 使得 $B(x,\varepsilon)\subset A$。
+  由于开球 $B(x,\varepsilon)$ 为开集，取 $U\triangleq B(x,\varepsilon)$ 即得。
+
+  反之，若存在开集 $U$ 使得 $x\in U\subset A$，则由 $U$ 的开性知存在 $\varepsilon>0$ 使得 $B(x,\varepsilon)\subset U\subset A$，故 $x$ 为 $A$ 的内点，即 $A\in\mathcal{N}_x$。
+\end{proof}
+
+\begin{proposition}
+  若 $A,B\in\mathcal{N}_x$，则 $A\cap B\in\mathcal{N}_x$。
+\end{proposition}
+
+\begin{proof}
+  由命题~\ref{prop:neighborhood-open-characterization}，存在开集 $U,V$ 使得 $x\in U\subset A$ 且 $x\in V\subset B$。
+  则 $U\cap V$ 为开集，且 $x\in U\cap V\subset A\cap B$，再由命题~\ref{prop:neighborhood-open-characterization} 知 $A\cap B\in\mathcal{N}_x$。
+\end{proof}
+
+\begin{proposition}
+  设 $A\subset X$，$x\in X$。则
+  \[
+    x\in\overline{A}\iff (\forall U\in\mathcal{N}_x)\,U\cap A\ne\varnothing.
+  \]
+\end{proposition}
+
+\begin{proof}
+  若 $x\in\overline{A}$，任取 $U\in\mathcal{N}_x$。由命题~\ref{prop:neighborhood-open-characterization}，存在 $\varepsilon>0$ 使得 $B(x,\varepsilon)\subset U$。
+  由命题~\ref{prop:closure-ball-intersection}，$B(x,\varepsilon)\cap A\ne\varnothing$，从而 $U\cap A\ne\varnothing$。
+
+  反之，若对任意 $U\in\mathcal{N}_x$ 都有 $U\cap A\ne\varnothing$，则对任意 $\varepsilon>0$，开球 $B(x,\varepsilon)$ 属于 $\mathcal{N}_x$，故 $B(x,\varepsilon)\cap A\ne\varnothing$。
+  再由命题~\ref{prop:closure-ball-intersection} 知 $x\in\overline{A}$。
+\end{proof}
+
+\begin{proposition}
+  设 $A\subset X$，$x\in X$。则
+  \[
+    x\in dA\iff (\forall U\in\mathcal{N}_x)\,(U\setminus\{x\})\cap A\ne\varnothing.
+  \]
+\end{proposition}
+
+\begin{proof}
+  若 $x\in dA$，任取 $U\in\mathcal{N}_x$。由命题~\ref{prop:neighborhood-open-characterization}，存在 $\varepsilon>0$ 使得 $B(x,\varepsilon)\subset U$。
+  由聚点定义可知 $(B(x,\varepsilon)\setminus\{x\})\cap A\ne\varnothing$，从而 $(U\setminus\{x\})\cap A\ne\varnothing$。
+
+  反之，若对任意 $U\in\mathcal{N}_x$ 都有 $(U\setminus\{x\})\cap A\ne\varnothing$，则对任意 $\varepsilon>0$，开球 $B(x,\varepsilon)$ 属于 $\mathcal{N}_x$，故 $(B(x,\varepsilon)\setminus\{x\})\cap A\ne\varnothing$。
+  由聚点定义得 $x\in dA$。
+\end{proof}
+
+\begin{remark}
+  上述两个命题中，将“对任意 $U\in\mathcal{N}_x$”改为“对任意开集 $U$ 满足 $x\in U$”亦等价。
+\end{remark}
+
+\begin{proposition}
+  设 $A\subset X$。则 $A$ 为开集当且仅当 $A^c\triangleq X\setminus A$ 为闭集。
+\end{proposition}
+
+\begin{proof}
+  若 $A$ 为开集，任取 $x\in d(A^c)$。则对任意 $\varepsilon>0$，有 $(B(x,\varepsilon)\setminus\{x\})\cap A^c\ne\varnothing$。
+  若 $x\in A$，由于 $A$ 开，存在 $\varepsilon_0>0$ 使得 $B(x,\varepsilon_0)\subset A$，与上式矛盾。
+  故 $x\notin A$，即 $x\in A^c$，从而 $d(A^c)\subset A^c$，即 $A^c$ 闭。
+
+  反之，若 $A^c$ 为闭集，则 $\overline{A^c}=A^c$。
+  任取 $x\in A$。若 $x\notin A^\circ$，则对任意 $\varepsilon>0$，$B(x,\varepsilon)\not\subset A$，即 $B(x,\varepsilon)\cap A^c\ne\varnothing$。
+  由命题~\ref{prop:closure-ball-intersection} 得 $x\in\overline{A^c}=A^c$，矛盾。
+  故 $x\in A^\circ$，即 $A\subset A^\circ$。又恒有 $A^\circ\subset A$，从而 $A=A^\circ$ 为开集。
+\end{proof}
+
+\begin{proposition}
+  对任意 $A\subset X$，有
+  \[
+    A^\circ=\bigl(\overline{A^c}\bigr)^c.
+  \]
+\end{proposition}
+
+\begin{proof}
+  设 $x\in X$。由内部定义，$x\in A^\circ$ 当且仅当存在 $\varepsilon>0$ 使得 $B(x,\varepsilon)\subset A$，等价于存在 $\varepsilon>0$ 使得 $B(x,\varepsilon)\cap A^c=\varnothing$。
+  再由命题~\ref{prop:closure-ball-intersection} 知这等价于 $x\notin\overline{A^c}$，即 $x\in (\overline{A^c})^c$。
+\end{proof}
+
+\section{连续映射}
+
+\begin{definition}
+  设 $(X,d),(Y,\rho)$ 为（伪）度量空间，$f:X\to Y$。
+  若对任意 $x\in X$ 与任意 $\varepsilon>0$，存在 $\delta>0$ 使得
+  \[
+    d(x',x)<\delta \Rightarrow \rho\bigl(f(x'),f(x)\bigr)<\varepsilon,\qquad \forall x'\in X,
+  \]
+  则称 $f$ 在点 $x$ 处连续。若 $f$ 在每一点都连续，则称 $f$ 连续。
+\end{definition}
+
+\begin{remark}
+  $f$ 在 $x$ 处连续当且仅当对任意 $\varepsilon>0$，存在 $\delta>0$ 使得
+  \[
+    f\bigl(B(x,\delta)\bigr)\subset B\bigl(f(x),\varepsilon\bigr).
+  \]
+\end{remark}
+
+\begin{definition}
+  设 $x\in X$，定义 $x$ 的开邻域系
+  \[
+    \mathcal{N}_x^\circ\triangleq \{U\in\mathcal{N}_x: U \text{ 为开集}\}.
+  \]
+\end{definition}
+
+\begin{proposition}\label{prop:continuity-neighborhood}
+  设 $(X,d),(Y,\rho)$ 为（伪）度量空间，$f:X\to Y$，$x\in X$。则下列命题等价：
+  \begin{enumerate}
+    \item $f$ 在 $x$ 处连续；
+    \item 对任意 $U\in\mathcal{N}_{f(x)}$，存在 $V\in\mathcal{N}_x$ 使得 $f(V)\subset U$；
+    \item 对任意 $U\in\mathcal{N}_{f(x)}^\circ$，存在 $V\in\mathcal{N}_x$ 使得 $f(V)\subset U$。
+  \end{enumerate}
+\end{proposition}
+
+\begin{proof}
+  (1)$\Rightarrow$(2) 任取 $U\in\mathcal{N}_{f(x)}$。由命题~\ref{prop:neighborhood-open-characterization}，存在 $\varepsilon>0$ 使得 $B(f(x),\varepsilon)\subset U$。
+  由 $f$ 在 $x$ 处连续，存在 $\delta>0$ 使得 $f(B(x,\delta))\subset B(f(x),\varepsilon)\subset U$。
+  取 $V\triangleq B(x,\delta)\in\mathcal{N}_x$ 即得。
+
+  (2)$\Rightarrow$(3) 由 $\mathcal{N}_{f(x)}^\circ\subset\mathcal{N}_{f(x)}$ 立得。
+
+  (3)$\Rightarrow$(1) 任取 $\varepsilon>0$。由于开球 $B(f(x),\varepsilon)$ 为开集，故 $B(f(x),\varepsilon)\in\mathcal{N}_{f(x)}^\circ$。
+  由 (3)，存在 $V\in\mathcal{N}_x$ 使得 $f(V)\subset B(f(x),\varepsilon)$。
+  再由命题~\ref{prop:neighborhood-open-characterization}，存在 $\delta>0$ 使得 $B(x,\delta)\subset V$，从而 $f(B(x,\delta))\subset f(V)\subset B(f(x),\varepsilon)$。
+  因此 $f$ 在 $x$ 处连续。
+\end{proof}
+
+\begin{proposition}\label{prop:continuity-open-preimage}
+  设 $(X,d),(Y,\rho)$ 为（伪）度量空间，$f:X\to Y$。则 $f$ 连续当且仅当对任意开集 $U\subset Y$，其原像
+  \[
+    f^{-1}(U)\triangleq \{x\in X: f(x)\in U\}
+  \]
+  是 $X$ 中开集。
+\end{proposition}
+
+\begin{proof}
+  若 $f$ 连续，任取开集 $U\subset Y$ 与 $x\in f^{-1}(U)$，则 $f(x)\in U$。
+  因为 $U$ 为开集，所以 $U\in\mathcal{N}_{f(x)}^\circ$。
+  由命题~\ref{prop:continuity-neighborhood} 的 (3)，存在 $V\in\mathcal{N}_x$ 使得 $f(V)\subset U$。
+  从而 $V\subset f^{-1}(U)$，即 $x$ 为 $f^{-1}(U)$ 的内点，故 $f^{-1}(U)$ 开。
+
+  反之，设对任意开集 $U\subset Y$，$f^{-1}(U)$ 都是开集。任取 $x\in X$ 与 $\varepsilon>0$。
+  因为 $B(f(x),\varepsilon)$ 为开集，$f^{-1}(B(f(x),\varepsilon))$ 为开集且包含 $x$。
+  因此存在 $\delta>0$ 使得 $B(x,\delta)\subset f^{-1}(B(f(x),\varepsilon))$，即 $f(B(x,\delta))\subset B(f(x),\varepsilon)$。
+  故 $f$ 在 $x$ 处连续，从而 $f$ 连续。
+\end{proof}
+
+\begin{proposition}
+  设 $(X,d),(Y,\rho)$ 为（伪）度量空间，$f:X\to Y$。则 $f$ 连续当且仅当对任意闭集 $F\subset Y$，其原像 $f^{-1}(F)$ 在 $X$ 中为闭集。
+\end{proposition}
+
+\begin{proof}
+  由命题~\ref{prop:continuity-open-preimage}，$f$ 连续当且仅当对任意开集 $U\subset Y$，$f^{-1}(U)$ 为开集。
+  注意到 $F$ 为闭集当且仅当 $F^c$ 为开集，且 $f^{-1}(F^c)=(f^{-1}(F))^c$。
+  因此“开集原像开”等价于“闭集原像闭”。
+\end{proof}
+
+\begin{proposition}\label{prop:continuity-closure-characterization}
+  设 $(X,d),(Y,\rho)$ 为（伪）度量空间，$f:X\to Y$。则下列命题等价：
+  \begin{enumerate}
+    \item $f$ 连续；
+    \item 对任意 $A\subset X$，有 $f(\overline{A})\subset \overline{f(A)}$。
+  \end{enumerate}
+\end{proposition}
+
+\begin{proof}
+  (1)$\Rightarrow$(2) 任取 $A\subset X$。集合 $\overline{f(A)}$ 是 $Y$ 的闭集且包含 $f(A)$，故 $A\subset f^{-1}(\overline{f(A)})$。
+  由命题~\ref{prop:continuity-open-preimage}（闭集原像闭），$f^{-1}(\overline{f(A)})$ 为闭集。
+  因此 $\overline{A}\subset f^{-1}(\overline{f(A)})$，从而 $f(\overline{A})\subset \overline{f(A)}$。
+
+  (2)$\Rightarrow$(1) 任取闭集 $F\subset Y$，令 $A\triangleq f^{-1}(F)$。
+  则 $f(A)\subset F$，从而 $\overline{f(A)}\subset \overline{F}=F$。
+  由 (2)，$f(\overline{A})\subset \overline{f(A)}\subset F$，即 $\overline{A}\subset f^{-1}(F)=A$。
+  因而 $A$ 为闭集。由“闭集原像闭”命题知 $f$ 连续。
+\end{proof}
+
+\section{序列与收敛}
+
+\begin{definition}
+  设 $X$ 为集合。若 $x_n\in X\,(n\in\mathbb{N})$，则称 $(x_n)$ 为 $X$ 中的一个序列。
+\end{definition}
+
+\begin{definition}
+  设 $(X,d)$ 为（伪）度量空间，$(x_n)$ 为 $X$ 中序列，$x\in X$。
+  若对任意 $U\in\mathcal{N}_x$，存在 $N\in\mathbb{N}$ 使得当 $n\ge N$ 时 $x_n\in U$，则称 $(x_n)$ 收敛于 $x$，记为 $x_n\to x\,(n\to\infty)$。
+\end{definition}
+
+\begin{proposition}
+  设 $(X,d)$ 为（伪）度量空间，$(x_n)$ 为 $X$ 中序列，$x\in X$。则 $x_n\to x$ 当且仅当
+  \[
+    \lim_{n\to\infty} d(x_n,x)=0.
+  \]
+\end{proposition}
+
+\begin{proof}
+  $x_n\to x$ 等价于对任意 $\varepsilon>0$，存在 $N$ 使得 $n\ge N$ 时 $x_n\in B(x,\varepsilon)$，即 $d(x_n,x)<\varepsilon$。
+\end{proof}
+
+\begin{remark}
+  若 $d$ 为度量，则序列的极限若存在必唯一。
+\end{remark}
+
+\begin{proposition}
+  设 $(X,d),(Y,\rho)$ 为（伪）度量空间，$f:X\to Y$，$x\in X$。
+  则 $f$ 在点 $x$ 处连续当且仅当对任意序列 $(x_n)$，若 $x_n\to x$ 则 $f(x_n)\to f(x)$。
+\end{proposition}
+
+\begin{proof}
+  若 $f$ 在 $x$ 处连续，任取 $\varepsilon>0$，由 $\varepsilon$-$\delta$ 定义可取 $\delta>0$。
+  若 $x_n\to x$，则存在 $N$ 使得 $n\ge N$ 时 $d(x_n,x)<\delta$，从而 $\rho(f(x_n),f(x))<\varepsilon$，即 $f(x_n)\to f(x)$。
+
+  反之，若对任意序列均成立。任取 $\varepsilon>0$。若不存在 $\delta>0$ 使得 $d(x',x)<\delta\Rightarrow \rho(f(x'),f(x))<\varepsilon$，则对每个 $n$ 可取 $x_n\in X$ 使得
+  \[
+    d(x_n,x)<\frac{1}{n},\qquad \rho(f(x_n),f(x))\ge\varepsilon.
+  \]
+  则 $x_n\to x$，但 $f(x_n)\not\to f(x)$，矛盾。故 $f$ 在 $x$ 处连续。
+\end{proof}
+
+\section{完备性}
+
+\begin{definition}
+  设 $(X,d)$ 为（伪）度量空间。称序列 $(x_n)$ 为柯西列，若对任意 $\varepsilon>0$，存在 $N\in\mathbb{N}$ 使得当 $m,n\ge N$ 时 $d(x_m,x_n)<\varepsilon$。
+\end{definition}
+
+\begin{definition}
+  若 $(X,d)$ 中每个柯西列都收敛于 $X$ 中某点，则称 $(X,d)$ 为完备度量空间。
+\end{definition}
+
+\begin{example}
+  $\mathbb{R},\ \mathbb{C},\ \mathbb{R}^n$ 在其通常度量下都是完备的。
+\end{example}
+
+\begin{definition}
+  设 $(X,d)$ 为（伪）度量空间，$A\subset X$。
+  若 $A\ne\varnothing$，定义
+  \[
+    \mathrm{diam}\,A\triangleq \sup\{d(x,y): x,y\in A\};
+    \qquad d(x,A)\triangleq \inf\{d(x,y): y\in A\},\ \forall x\in X.
+  \]
+  若 $A=\varnothing$，约定 $\mathrm{diam}\,\varnothing\triangleq 0$。
+\end{definition}
+
+\begin{proposition}
+  对任意 $A\subset X$，有 $\mathrm{diam}\,\overline{A}=\mathrm{diam}\,A$。
+\end{proposition}
+
+\begin{proof}
+  显然 $\mathrm{diam}\,A\le \mathrm{diam}\,\overline{A}$。反之，任取 $x,y\in\overline{A}$，可取序列 $x_n,y_n\in A$ 使得 $x_n\to x$ 且 $y_n\to y$。
+  由距离函数连续性（或直接用三角不等式）知 $d(x_n,y_n)\to d(x,y)$，从而 $d(x,y)\le \mathrm{diam}\,A$。
+  取上确界得 $\mathrm{diam}\,\overline{A}\le \mathrm{diam}\,A$。
+\end{proof}
+
+\begin{proposition}
+  设 $A\subset X$ 且 $A\ne\varnothing$，则对任意 $x\in X$，有
+  \[
+    d(x,A)=0\iff x\in\overline{A}.
+  \]
+\end{proposition}
+
+\begin{proof}
+  若 $x\in\overline{A}$，则对任意 $n$ 存在 $y_n\in A$ 使得 $d(x,y_n)<\frac1n$，故 $d(x,A)=0$。
+  反之，若 $d(x,A)=0$，则对任意 $\varepsilon>0$ 存在 $y\in A$ 使得 $d(x,y)<\varepsilon$，即 $B(x,\varepsilon)\cap A\ne\varnothing$。
+  由命题~\ref{prop:closure-ball-intersection} 得 $x\in\overline{A}$。
+\end{proof}
+
+
+
+
+
+
+
+
+
+
+
+
+\begin{proposition}\label{prop:cauchy-subsequence-limit}
+  设 $(X,d)$ 为度量空间，$(x_n)$ 为 $X$ 中的柯西列。
+  若存在子列 $(x_{n_k})$ 与点 $x\in X$ 使得 $x_{n_k}\to x$，则 $x_n\to x$。
+\end{proposition}
+
+\begin{proof}
+  任取 $\varepsilon>0$。
+  由 $(x_n)$ 为柯西列，存在 $N_1\in\mathbb{N}$ 使得对任意 $m,n\ge N_1$ 都有
+  \[
+    d(x_m,x_n)<\varepsilon/2.
+  \]
+  又因 $x_{n_k}\to x$，存在 $K\in\mathbb{N}$ 使得 $d(x_{n_K},x)<\varepsilon/2$。
+  令 $N\triangleq\max\{N_1,n_K\}$。
+  则对任意 $n\ge N$，有
+  \[
+    d(x_n,x)\le d(x_n,x_{n_K})+d(x_{n_K},x)<\varepsilon/2+\varepsilon/2=\varepsilon.
+  \]
+  故 $x_n\to x$。
+\end{proof}
+
+\begin{proposition}\label{prop:cluster-points-tail-closures}
+  设 $(X,d)$ 为度量空间，$(x_n)$ 为 $X$ 中的序列。
+  对每个 $m\in\mathbb{N}$ 定义
+  \[
+    E_m\triangleq \overline{\{x_n: n\ge m\}}.
+  \]
+  则对任意 $x\in X$，有
+  \[
+    x\in\bigcap_{m=1}^{\infty}E_m
+    \iff \text{存在严格递增的 }(n_k)\subset\mathbb{N}\text{ 使 }x_{n_k}\to x.
+  \]
+\end{proposition}
+
+\begin{proof}
+  $(\Leftarrow)$ 若存在子列 $x_{n_k}\to x$。
+  任取 $m\in\mathbb{N}$。
+  对任意开集 $U\subset X$ 若 $x\in U$，由收敛性可取 $k$ 足够大使得 $n_k\ge m$ 且 $x_{n_k}\in U$。
+  从而 $U\cap\{x_n:n\ge m\}\ne\varnothing$，故 $x\in\overline{\{x_n:n\ge m\}}=E_m$。
+  因 $m$ 任意，得 $x\in\bigcap_{m\ge1}E_m$。
+
+  $(\Rightarrow)$ 设 $x\in\bigcap_{m\ge1}E_m$。
+  由 $x\in E_1$，存在 $n_1\in\mathbb{N}$ 使得 $x_{n_1}\in B(x,1)$。
+  假设已取 $n_k$。
+  因 $x\in E_{n_k+1}=\overline{\{x_n:n\ge n_k+1\}}$，可取 $n_{k+1}\ge n_k+1$ 使得
+  \[
+    x_{n_{k+1}}\in B\bigl(x,\tfrac{1}{k+1}\bigr).
+  \]
+  由归纳得到严格递增子列 $(x_{n_k})$。
+  并且 $d(x_{n_k},x)<1/k$，故 $x_{n_k}\to x$。
+\end{proof}
+
+
+
+\begin{definition}
+  设 $(X,d)$ 为（伪）度量空间。若 $(F_n)$ 满足：
+  \begin{enumerate}
+    \item $F_n\ne\varnothing$ 且 $F_n$ 为闭集；
+    \item $F_{n+1}\subset F_n$；
+    \item $\lim_{n\to\infty}\mathrm{diam}\,F_n=0$，
+  \end{enumerate}
+  则称 $(F_n)$ 为 $(X,d)$ 中的闭集套。
+\end{definition}
+
+\begin{theorem}
+  设 $(X,d)$ 为度量空间，则 $(X,d)$ 完备当且仅当对任意闭集套 $(F_n)$，都有
+  \[
+    \bigcap_{n=1}^{\infty} F_n\ne\varnothing.
+  \]
+\end{theorem}
+
+\begin{proof}
+  先设 $(X,d)$ 完备。任取闭集套 $(F_n)$，取 $x_n\in F_n$。
+  对任意 $m,n\ge N$，有 $x_m,x_n\in F_N$，故 $d(x_m,x_n)\le \mathrm{diam}\,F_N$。
+  由 $\mathrm{diam}\,F_N\to 0$ 知 $(x_n)$ 为柯西列，故存在 $x\in X$ 使 $x_n\to x$。
+  因为 $n\ge N$ 时 $x_n\in F_N$ 且 $F_N$ 闭，故 $x\in F_N$。
+  任意 $N$ 成立，故 $x\in\bigcap_n F_n$。
+
+  反之，设对任意闭集套都有非空交。取 $(X,d)$ 中任意柯西列 $(x_n)$。
+  对每个 $n$ 令 $A_n\triangleq \{x_k: k\ge n\}$，并置 $F_n\triangleq \overline{A_n}$。
+  则 $F_n$ 闭且非空，且 $F_{n+1}\subset F_n$。
+  由柯西性可知 $\mathrm{diam}\,A_n\to 0$，再由 $\mathrm{diam}\,\overline{A_n}=\mathrm{diam}\,A_n$ 得 $\mathrm{diam}\,F_n\to 0$，故 $(F_n)$ 为闭集套。
+  取 $x\in\bigcap_n F_n$。
+  任取 $\varepsilon>0$，取 $n$ 使得 $\mathrm{diam}\,F_n<\varepsilon/2$。
+  因 $x\in F_n=\overline{A_n}$，可取 $k\ge n$ 使 $d(x,x_k)<\varepsilon/2$。
+  又由柯西性可取 $N\ge k$ 使得 $m\ge N$ 时 $d(x_m,x_k)<\varepsilon/2$。
+  则对任意 $m\ge N$，有 $d(x_m,x)\le d(x_m,x_k)+d(x_k,x)<\varepsilon$，故 $x_n\to x$。
+  因而 $(X,d)$ 完备。
+\end{proof}
+
+\begin{definition}
+  设 $(X,d)$ 为（伪）度量空间，$D\subset X$。若 $\overline{D}=X$，则称 $D$ 在 $X$ 中稠密。
+\end{definition}
+
+\begin{proposition}\label{prop:closed-ball-closed}
+  设 $(X,d)$ 为（伪）度量空间，$x\in X$，$\varepsilon>0$。
+  则闭球 $\overline{B}(x,\varepsilon)$ 为闭集。
+\end{proposition}
+
+\begin{proof}
+  任取 $y\notin \overline{B}(x,\varepsilon)$，则 $d(x,y)>\varepsilon$。
+  令 $r\triangleq d(x,y)-\varepsilon>0$。
+  下证 $B(y,r)\cap\overline{B}(x,\varepsilon)=\varnothing$。
+  任取 $z\in B(y,r)$，则 $d(y,z)<r$。
+  由三角不等式得
+  \[
+    d(x,y)\le d(y,z)+d(x,z)<r+d(x,z),
+  \]
+  从而 $d(x,z)>d(x,y)-r=\varepsilon$，即 $z\notin\overline{B}(x,\varepsilon)$。
+  因此 $B(y,r)\subseteq X\setminus\overline{B}(x,\varepsilon)$。
+  故 $X\setminus\overline{B}(x,\varepsilon)$ 为开集，$\overline{B}(x,\varepsilon)$ 为闭集。
+\end{proof}
+
+\section{Baire 纲定理}
+
+\begin{theorem}[Baire]\label{thm:baire-category}
+  设 $(X,d)$ 为非空完备度量空间，$(U_n)_{n\in\mathbb{N}}$ 为 $X$ 中一列稠密开集。
+  则
+  \[
+    \bigcap_{n=1}^{\infty}U_n
+  \]
+  在 $X$ 中稠密。
+\end{theorem}
+
+\begin{proof}
+  任取非空开集 $V\subseteq X$。
+  只需证 $V\cap\bigcap_{n\ge1}U_n\ne\varnothing$。
+
+  由 $U_1$ 稠密且开，$U_1\cap V$ 为非空开集。
+  取 $x_1\in U_1\cap V$。
+  由开集定义可取 $r_1>0$ 使得
+  \[
+    \overline{B}(x_1,r_1)\subseteq U_1\cap V.
+  \]
+
+  假设已取 $x_n\in X$ 与 $r_n>0$ 使
+  \[
+    \overline{B}(x_n,r_n)\subseteq U_n\cap B(x_{n-1},r_{n-1})\qquad(n\ge2),
+  \]
+  并且 $r_n\le 2^{-n}$。
+  因 $U_{n+1}$ 稠密且开，$U_{n+1}\cap B(x_n,r_n)$ 为非空开集。
+  取 $x_{n+1}\in U_{n+1}\cap B(x_n,r_n)$，再取 $r_{n+1}>0$ 使得
+  \[
+    \overline{B}(x_{n+1},r_{n+1})\subseteq U_{n+1}\cap B(x_n,r_n),\qquad r_{n+1}\le 2^{-(n+1)}.
+  \]
+
+  令 $F_n\triangleq\overline{B}(x_n,r_n)$。
+  则 $(F_n)$ 为闭集套：$F_n$ 非空闭集，且 $F_{n+1}\subseteq F_n$，并且
+  \[
+    \mathrm{diam}\,F_n\le 2r_n\to 0.
+  \]
+  由完备性定理（闭集套交非空）知 $\bigcap_{n\ge1}F_n\ne\varnothing$。
+  取 $x\in\bigcap_{n\ge1}F_n$。
+  则 $x\in F_1\subseteq V$ 且对任意 $n$ 有 $x\in F_n\subseteq U_n$。
+  因此 $x\in V\cap\bigcap_{n\ge1}U_n$，从而 $\bigcap_{n\ge1}U_n$ 稠密。
+\end{proof}
+
+\begin{example}
+  在不完备空间中，上一定理结论未必成立。
+  例如在度量空间 $(\mathbb{Q},|\cdot|)$ 中，取枚举 $\mathbb{Q}=\{x_n:n\in\mathbb{N}\}$，令
+  \[
+    U_n\triangleq \mathbb{Q}\setminus\{x_n\}.
+  \]
+  则每个 $U_n$ 在 $\mathbb{Q}$ 中开且稠密，但
+  \[
+    \bigcap_{n\in\mathbb{N}}U_n=\varnothing.
+  \]
+\end{example}
+
+\begin{corollary}
+  设 $(X,d)$ 为度量空间，$x\in X$，$\varepsilon>0$。
+  则
+  \[
+    \overline{B(x,\varepsilon)}\subseteq \overline{B}(x,\varepsilon).
+  \]
+\end{corollary}
+
+\begin{proof}
+  显然 $B(x,\varepsilon)\subseteq\overline{B}(x,\varepsilon)$。
+  又由命题~\ref{prop:closed-ball-closed}，$\overline{B}(x,\varepsilon)$ 为闭集。
+  因而由闭包的最小闭集性质得 $\overline{B(x,\varepsilon)}\subseteq\overline{B}(x,\varepsilon)$。
+\end{proof}
+
+\begin{remark}
+  一般而言，$\overline{B(x,\varepsilon)}$ 不一定等于 $\overline{B}(x,\varepsilon)$。
+\end{remark}
+
+\begin{example}
+  取任意集合 $X$，赋予离散度量
+  \[
+    d(x,y)=\begin{cases}
+      0, & x=y,\\
+      1, & x\ne y.
+    \end{cases}
+  \]
+  则对任意 $x\in X$，有 $B(x,1)=\{x\}$，从而 $\overline{B(x,1)}=\{x\}$。
+  但 $\overline{B}(x,1)=X$。
+\end{example}
+
+\begin{proposition}\label{prop:pseudometric-hausdorff-metric}
+  设 $(X,d)$ 为伪度量空间。
+  则 $d$ 为度量当且仅当 $X$ 为 Hausdorff 空间。
+\end{proposition}
+
+\begin{proof}
+  $(\Rightarrow)$ 若 $d$ 为度量。
+  任取 $x\ne y$，令 $\varepsilon\triangleq d(x,y)/2>0$。
+  若 $z\in B(x,\varepsilon)\cap B(y,\varepsilon)$，则
+  \[
+    d(x,y)\le d(x,z)+d(z,y)<\varepsilon+\varepsilon=d(x,y),
+  \]
+  矛盾。
+  因此 $B(x,\varepsilon)$ 与 $B(y,\varepsilon)$ 为不交开集，故 $X$ 为 Hausdorff。
+
+  $(\Leftarrow)$ 若 $X$ 为 Hausdorff 空间。
+  任取 $x\ne y$。
+  存在不交开集 $U,V\subseteq X$ 使 $x\in U$ 且 $y\in V$。
+  因 $U$ 开，存在 $\varepsilon>0$ 使 $B(x,\varepsilon)\subseteq U$。
+  由于 $U\cap V=\varnothing$ 且 $y\in V$，必有 $y\notin B(x,\varepsilon)$，从而 $d(x,y)\ge \varepsilon>0$。
+  因此 $d(x,y)=0\Rightarrow x=y$，即 $d$ 为度量。
+\end{proof}
+
+\begin{lemma}\label{lem:locally-compact-small-ball}
+  设 $(X,d)$ 为局部紧度量空间，$U\subseteq X$ 为非空开集，$\varepsilon>0$。
+  则存在开球 $B$ 使得
+  \[
+    B\subseteq \overline{B}\subseteq U,\qquad \overline{B}\text{ 为紧集},\qquad \mathrm{diam}\,B<\varepsilon.
+  \]
+\end{lemma}
+
+\begin{proof}
+  任取 $x\in U$。
+  由于 $U$ 为开集，令
+  \[
+    \delta\triangleq d(x,X\setminus U)>0.
+  \]
+  由局部紧性，存在 $r_0>0$ 使得 $\overline{B}(x,r_0)$ 为紧集。
+  令
+  \[
+    r\triangleq \min\left\{\frac{r_0}{2},\frac{\delta}{2},\frac{\varepsilon}{4}\right\}>0.
+  \]
+  取 $B\triangleq B(x,r)$。
+  则 $\overline{B}=\overline{B}(x,r)\subseteq \overline{B}(x,r_0)$，从而 $\overline{B}$ 为紧集。
+  又因 $r<\delta$，可得 $\overline{B}(x,r)\subseteq U$。
+  并且 $\mathrm{diam}\,B\le 2r<\varepsilon$。
+\end{proof}
+
+\begin{theorem}\label{thm:baire-locally-compact}
+  设 $(X,d)$ 为非空局部紧度量空间，$(U_n)_{n\in\mathbb{N}}$ 为 $X$ 中一列稠密开集。
+  则 $\bigcap_{n=1}^{\infty}U_n$ 在 $X$ 中稠密。
+\end{theorem}
+
+\begin{proof}
+  任取非空开集 $V\subseteq X$。
+  只需证
+  \[
+    V\cap\bigcap_{n\ge1}U_n\ne\varnothing.
+  \]
+  由引理~\ref{lem:locally-compact-small-ball}，可取开球 $B_1$ 使
+  \[
+    B_1\subseteq\overline{B_1}\subseteq V,\qquad \overline{B_1}\text{ 紧}.
+  \]
+
+  设已取开球 $B_n$ 使得 $\overline{B_n}$ 为紧集且 $\overline{B_n}\subseteq U_n\cap B_{n-1}$（约定 $B_0\triangleq V$）。
+  因 $U_{n+1}$ 稠密开，$U_{n+1}\cap B_n$ 为非空开集。
+  再由引理~\ref{lem:locally-compact-small-ball}，可取开球 $B_{n+1}$ 使
+  \[
+    B_{n+1}\subseteq\overline{B_{n+1}}\subseteq U_{n+1}\cap B_n,\qquad \overline{B_{n+1}}\text{ 紧}.
+  \]
+  从而 $(\overline{B_n})$ 为一列递减的非空紧集。
+
+  取 $x_n\in\overline{B_n}$。
+  因 $\overline{B_1}$ 紧，存在子列 $(x_{n_k})$ 收敛到某点 $x\in\overline{B_1}$。
+  对任意 $m$，当 $k$ 足够大时 $n_k\ge m$，故 $x_{n_k}\in\overline{B_{n_k}}\subseteq\overline{B_m}$。
+  因 $\overline{B_m}$ 闭，得 $x\in\overline{B_m}$。
+  于是 $x\in\bigcap_{m\ge1}\overline{B_m}$。
+  由构造，$\overline{B_m}\subseteq U_m$ 且 $\overline{B_1}\subseteq V$，故
+  \[
+    x\in V\cap\bigcap_{m\ge1}U_m.
+  \]
+  从而 $V\cap\bigcap_{m\ge1}U_m\ne\varnothing$，即 $\bigcap_{n\ge1}U_n$ 稠密。
+\end{proof}
+
+\begin{definition}
+  设 $(X,d)$ 为度量空间。
+  若对任意一列稠密开集 $(U_n)_{n\in\mathbb{N}}$，都有
+  \[
+    \bigcap_{n=1}^{\infty}U_n
+  \]
+  在 $X$ 中稠密，则称 $(X,d)$ 为一个 Baire 空间。
+\end{definition}
+
+\begin{definition}
+  设 $(X,d)$ 为度量空间，$A\subseteq X$。
+  若
+  \[
+    (\overline{A})^\circ=\varnothing,
+  \]
+  则称 $A$ 为 $X$ 中的稀疏集。
+
+  若 $\Omega\subseteq X$ 满足：存在一列稀疏集 $(A_n)_{n\in\mathbb{N}}$ 使得
+  \[
+    \Omega=\bigcup_{n=1}^{\infty}A_n,
+  \]
+  则称 $\Omega$ 为第一纲集。
+  若 $\Omega$ 不是第一纲集，则称 $\Omega$ 为第二纲集。
+\end{definition}
+
+\begin{proposition}\label{prop:sparse-set-properties}
+  设 $(X,d)$ 为度量空间。
+  \begin{enumerate}
+    \item 若 $A$ 为稀疏集且 $B\subseteq A$，则 $B$ 为稀疏集。
+    \item 若 $A$ 为稀疏集，则 $\overline{A}$ 为稀疏集。
+    \item $A$ 为稀疏集当且仅当 $(\overline{A})^c$ 在 $X$ 中开且稠密。
+    \item 若 $U$ 在 $X$ 中开且稠密，则 $U^c$ 为稀疏集。
+  \end{enumerate}
+\end{proposition}
+
+\begin{proof}
+  \begin{enumerate}
+    \item 因为 $B\subseteq A$，有 $\overline{B}\subseteq \overline{A}$。
+    从而 $(\overline{B})^\circ\subseteq (\overline{A})^\circ=\varnothing$，故 $B$ 为稀疏集。
+
+    \item 由 $\overline{\overline{A}}=\overline{A}$ 得
+    \[
+      (\overline{\overline{A}})^\circ=(\overline{A})^\circ=\varnothing,
+    \]
+    故 $\overline{A}$ 为稀疏集。
+
+    \item 若 $A$ 为稀疏集，则 $(\overline{A})^\circ=\varnothing$。
+    因此对任意非空开集 $V\subseteq X$，必有 $V\not\subseteq\overline{A}$，从而 $V\cap(\overline{A})^c\ne\varnothing$。
+    故 $(\overline{A})^c$ 稠密。
+    又 $\overline{A}$ 闭，故 $(\overline{A})^c$ 开。
+
+    反之，若 $(\overline{A})^c$ 在 $X$ 中开且稠密。
+    若 $(\overline{A})^\circ\ne\varnothing$，取非空开集 $V\subseteq (\overline{A})^\circ$。
+    则 $V\subseteq\overline{A}$，从而 $V\cap(\overline{A})^c=\varnothing$，与 $(\overline{A})^c$ 稠密矛盾。
+    因此 $(\overline{A})^\circ=\varnothing$，即 $A$ 为稀疏集。
+
+    \item 因 $U$ 开且稠密，若 $(U^c)^\circ\ne\varnothing$，则存在非空开集 $V\subseteq U^c$，从而 $V\cap U=\varnothing$，与 $U$ 稠密矛盾。
+    因此 $(U^c)^\circ=\varnothing$。
+    又 $U^c$ 为闭集，故
+    \[
+      (\overline{U^c})^\circ=(U^c)^\circ=\varnothing,
+    \]
+    即 $U^c$ 为稀疏集。
+  \end{enumerate}
+\end{proof}
+
+\begin{theorem}\label{thm:baire-space-characterization}
+  设 $(X,d)$ 为度量空间，则下列命题等价：
+  \begin{enumerate}
+    \item $(X,d)$ 为 Baire 空间；
+    \item 对任意稀疏集列 $(A_n)_{n\in\mathbb{N}}$，都有
+    \[
+      \left(\bigcup_{n=1}^{\infty}A_n\right)^\circ=\varnothing;
+    \]
+    \item 任意非空开集 $V\subseteq X$ 都是第二纲集。
+  \end{enumerate}
+\end{theorem}
+
+\begin{proof}
+  $(1)\Rightarrow(2)$：设 $(A_n)$ 为稀疏集列。
+  由命题~\ref{prop:sparse-set-properties} (3) 知 $U_n\triangleq(\overline{A_n})^c$ 在 $X$ 中开且稠密。
+  若 $(X,d)$ 为 Baire 空间，则 $\bigcap_{n\ge1}U_n$ 在 $X$ 中稠密。
+  注意到
+  \[
+    \bigcap_{n\ge1}U_n=\left(\bigcup_{n\ge1}\overline{A_n}\right)^c\subseteq\left(\bigcup_{n\ge1}A_n\right)^c,
+  \]
+  从而 $\left(\bigcup_{n\ge1}A_n\right)^c$ 稠密。
+  因此 $\left(\bigcup_{n\ge1}A_n\right)^\circ=\varnothing$。
+
+  $(2)\Rightarrow(1)$：设 $(U_n)$ 为一列稠密开集。
+  令 $A_n\triangleq U_n^c$。
+  由命题~\ref{prop:sparse-set-properties} (4) 知每个 $A_n$ 为稀疏集。
+  由 (2) 得 $\left(\bigcup_{n\ge1}A_n\right)^\circ=\varnothing$，即 $\left(\bigcup_{n\ge1}A_n\right)^c$ 稠密。
+  又
+  \[
+    \bigcap_{n\ge1}U_n=\left(\bigcup_{n\ge1}A_n\right)^c,
+  \]
+  故 $\bigcap_{n\ge1}U_n$ 稠密，$(X,d)$ 为 Baire 空间。
+
+  $(2)\Rightarrow(3)$：任取非空开集 $V\subseteq X$。
+  若 $V$ 为第一纲集，则存在稀疏集列 $(A_n)$ 使 $V=\bigcup_{n\ge1}A_n$。
+  由 (2) 得 $V^\circ=\varnothing$。
+  但 $V$ 开，故 $V=\varnothing$，矛盾。
+  因此 $V$ 为第二纲集。
+
+  $(3)\Rightarrow(2)$：若存在稀疏集列 $(A_n)$ 使 $\left(\bigcup_{n\ge1}A_n\right)^\circ\ne\varnothing$，则可取非空开集 $V\subseteq\bigcup_{n\ge1}A_n$。
+  于是
+  \[
+    V=\bigcup_{n\ge1}(A_n\cap V).
+  \]
+  因 $A_n\cap V\subseteq A_n$，由命题~\ref{prop:sparse-set-properties} (1) 知 $A_n\cap V$ 仍为稀疏集。
+  故 $V$ 为第一纲集，与 (3) 矛盾。
+  因此 $\left(\bigcup_{n\ge1}A_n\right)^\circ=\varnothing$。
+\end{proof}
+
+\begin{corollary}
+  设 $(X,d)$ 为非空 Baire 空间，且
+  \[
+    X=\bigcup_{n=1}^{\infty}F_n,
+  \]
+  其中每个 $F_n$ 为闭集。
+  则存在 $n$ 使得 $F_n^\circ\ne\varnothing$。
+\end{corollary}
+
+\begin{proof}
+  反设对任意 $n$ 都有 $F_n^\circ=\varnothing$。
+  则每个 $F_n$ 为稀疏集（因为 $F_n=\overline{F_n}$）。
+  由定理~\ref{thm:baire-space-characterization} 的 (2) 可得
+  \[
+    \left(\bigcup_{n=1}^{\infty}F_n\right)^\circ=\varnothing.
+  \]
+  但 $\bigcup_{n\ge1}F_n=X$ 且 $X^\circ=X\ne\varnothing$，矛盾。
+\end{proof}
+
+\section{紧性与序列紧性}
+
+\begin{definition}
+  设 $(X,d)$ 为度量空间。
+  若对任意开覆盖 $\mathcal{U}$（即 $\mathcal{U}$ 为 $X$ 的开集族且 $X=\bigcup_{U\in\mathcal{U}}U$），存在有限子族 $\{U_1,\dots,U_n\}\subseteq\mathcal{U}$ 使
+  \[
+    X=\bigcup_{k=1}^{n}U_k,
+  \]
+  则称 $(X,d)$ 为紧致（或紧）度量空间。
+\end{definition}
+
+\begin{definition}
+  设 $(X,d)$ 为度量空间。
+  若对任意序列 $(x_n)\subseteq X$，都存在收敛子列 $(x_{n_k})$，则称 $(X,d)$ 为序列紧度量空间。
+\end{definition}
+
+\begin{proposition}\label{prop:compact-implies-sequentially-compact}
+  设 $(X,d)$ 为度量空间。
+  若 $(X,d)$ 紧致，则 $(X,d)$ 序列紧。
+\end{proposition}
+
+\begin{proof}
+  任取序列 $(x_n)\subseteq X$。
+  对每个 $m\in\mathbb{N}$ 令
+  \[
+    A_m\triangleq\{x_n:n\ge m\},\qquad F_m\triangleq\overline{A_m}.
+  \]
+  则 $F_m$ 为非空闭集，且 $F_{m+1}\subseteq F_m$。
+
+  下证
+  \[
+    \bigcap_{m=1}^{\infty}F_m\ne\varnothing.
+  \]
+  反设 $\bigcap_{m\ge1}F_m=\varnothing$。
+  则 $\{F_m^c:m\in\mathbb{N}\}$ 为 $X$ 的开覆盖。
+  由紧致性可取有限子覆盖 $F_1^c,\dots,F_N^c$，从而
+  \[
+    X=\bigcup_{m=1}^{N}F_m^c\iff \bigcap_{m=1}^{N}F_m=\varnothing.
+  \]
+  但 $F_{m+1}\subseteq F_m$，故 $\bigcap_{m=1}^{N}F_m=F_N$。
+  于是 $F_N=\varnothing$，与 $F_N$ 非空矛盾。
+  因此 $\bigcap_{m\ge1}F_m\ne\varnothing$。
+  取 $x\in\bigcap_{m\ge1}F_m$。
+  由命题~\ref{prop:cluster-points-tail-closures}，存在严格递增的 $(n_k)\subset\mathbb{N}$ 使 $x_{n_k}\to x$。
+  因而 $(X,d)$ 序列紧。
+\end{proof}
+
+\begin{definition}
+  设 $\mathcal{F}\subseteq\mathcal{P}(X)$。
+  若对任意 $F_1,\dots,F_n\in\mathcal{F}$ 都有
+  \[
+    F_1\cap\cdots\cap F_n\ne\varnothing,
+  \]
+  则称 $\mathcal{F}$ 具有有限交性质。
+\end{definition}
+
+\begin{theorem}\label{thm:compact-fip}
+  设 $(X,d)$ 为度量空间。
+  则 $(X,d)$ 紧致当且仅当对任意具有有限交性质的闭集族 $\mathcal{F}$，都有
+  \[
+    \bigcap_{F\in\mathcal{F}}F\ne\varnothing.
+  \]
+\end{theorem}
+
+\begin{proof}
+  $(\Rightarrow)$ 设 $(X,d)$ 紧致，$\mathcal{F}$ 为具有有限交性质的闭集族。
+  反设 $\bigcap_{F\in\mathcal{F}}F=\varnothing$。
+  则
+  \[
+    X=\bigcup_{F\in\mathcal{F}}F^c,
+  \]
+  即 $\{F^c:F\in\mathcal{F}\}$ 为 $X$ 的开覆盖。
+  由紧致性可取有限子覆盖 $F_1^c,\dots,F_n^c$，从而
+  \[
+    X=\bigcup_{k=1}^{n}F_k^c\iff F_1\cap\cdots\cap F_n=\varnothing,
+  \]
+  与有限交性质矛盾。
+  因此 $\bigcap_{F\in\mathcal{F}}F\ne\varnothing$。
+
+  $(\Leftarrow)$ 设对任意具有有限交性质的闭集族都成立结论。
+  任取 $X$ 的开覆盖 $\mathcal{U}$。
+  若 $\mathcal{U}$ 无有限子覆盖，则对任意有限子族 $\{U_1,\dots,U_n\}\subseteq\mathcal{U}$ 有
+  \[
+    X\ne\bigcup_{k=1}^{n}U_k\iff U_1^c\cap\cdots\cap U_n^c\ne\varnothing.
+  \]
+  因此闭集族 $\mathcal{F}\triangleq\{U^c:U\in\mathcal{U}\}$ 具有有限交性质。
+  由假设得
+  \[
+    \bigcap_{U\in\mathcal{U}}U^c\ne\varnothing,
+  \]
+  即存在 $x\in X$ 使得 $x\notin\bigcup_{U\in\mathcal{U}}U=X$，矛盾。
+  故 $\mathcal{U}$ 必有有限子覆盖，从而 $(X,d)$ 紧致。
+\end{proof}
+
+\begin{proposition}\label{prop:sequentially-compact-implies-complete}
+  设 $(X,d)$ 为度量空间。
+  若 $(X,d)$ 序列紧，则 $(X,d)$ 完备。
+\end{proposition}
+
+\begin{proof}
+  任取 $X$ 中的柯西列 $(x_n)$。
+  由序列紧性，存在子列 $(x_{n_k})$ 与点 $x\in X$ 使 $x_{n_k}\to x$。
+  由命题~\ref{prop:cauchy-subsequence-limit}，可得 $x_n\to x$。
+  因而 $(X,d)$ 完备。
+\end{proof}
+
+\begin{corollary}
+  设 $(X,d)$ 为非空度量空间。
+  若 $(X,d)$ 序列紧，则 $(X,d)$ 为 Baire 空间。
+\end{corollary}
+
+\begin{proof}
+  由命题~\ref{prop:sequentially-compact-implies-complete}，$(X,d)$ 完备。
+  再由 Baire 定理~\ref{thm:baire-category}，$(X,d)$ 为 Baire 空间。
+\end{proof}
+
+\begin{definition}
+  设 $(X,d)$ 为度量空间，$\mathcal{U}$ 为 $X$ 的一个覆盖。
+  若存在 $\delta>0$ 使得对任意 $E\subseteq X$，只要
+  \[
+    \mathrm{diam}\,E<\delta,
+  \]
+  就存在 $U\in\mathcal{U}$ 使 $E\subseteq U$，
+  则称 $\delta$ 为覆盖 $\mathcal{U}$ 的一个 Lebesgue 数。
+\end{definition}
+
+\begin{theorem}[Lebesgue 数引理]\label{thm:lebesgue-number-sequentially-compact}
+  设 $(X,d)$ 为序列紧度量空间，$\mathcal{U}$ 为 $X$ 的一个开覆盖。
+  则 $\mathcal{U}$ 存在 Lebesgue 数。
+\end{theorem}
+
+\begin{proof}
+  反设 $\mathcal{U}$ 不存在 Lebesgue 数。
+  则对每个 $n\in\mathbb{N}$，存在 $x_n\in X$ 使得对任意 $U\in\mathcal{U}$ 都有
+  \[
+    B\left(x_n,\frac{1}{n}\right)\not\subseteq U.
+  \]
+  由序列紧性，存在子列 $(x_{n_k})$ 与点 $x\in X$ 使 $x_{n_k}\to x$。
+
+  由于 $\mathcal{U}$ 为开覆盖，存在 $U_0\in\mathcal{U}$ 使 $x\in U_0$。
+  因 $U_0$ 开，存在 $r>0$ 使 $B(x,r)\subseteq U_0$。
+  当 $k$ 充分大时，有
+  \[
+    d(x_{n_k},x)<\frac{r}{2},\qquad \frac{1}{n_k}<\frac{r}{2}.
+  \]
+  于是对任意 $y\in B(x_{n_k},1/n_k)$，有
+  \[
+    d(y,x)\le d(y,x_{n_k})+d(x_{n_k},x)<\frac{1}{n_k}+\frac{r}{2}<r,
+  \]
+  从而 $y\in B(x,r)\subseteq U_0$。
+  即 $B(x_{n_k},1/n_k)\subseteq U_0$，与构造矛盾。
+  因此 $\mathcal{U}$ 存在 Lebesgue 数。
+\end{proof}
+
+\begin{definition}
+  设 $(X,d)$ 为度量空间，$\varepsilon>0$。
+  若存在 $\Omega\subseteq X$ 使得
+  \[
+    X=\bigcup_{x\in\Omega}B(x,\varepsilon),
+  \]
+  则称 $\Omega$ 为 $X$ 的一个 $\varepsilon$-网。
+  若对任意 $\varepsilon>0$，都存在有限的 $\varepsilon$-网，则称 $(X,d)$ 为全有界度量空间。
+\end{definition}
+
+\begin{theorem}\label{thm:sequentially-compact-implies-totally-bounded}
+  设 $(X,d)$ 为序列紧度量空间。
+  则 $(X,d)$ 全有界。
+\end{theorem}
+
+\begin{proof}
+  任取 $\varepsilon>0$。
+  反设不存在有限的 $\varepsilon$-网。
+  取任意 $x_1\in X$。
+  因 $B(x_1,\varepsilon)\ne X$，可取 $x_2\in X\setminus B(x_1,\varepsilon)$。
+  设已取到 $x_1,\dots,x_n$，且
+  \[
+    d(x_i,x_j)\ge\varepsilon,\qquad i\ne j.
+  \]
+  因为 $\bigcup_{k=1}^{n}B(x_k,\varepsilon)\ne X$，可取
+  \[
+    x_{n+1}\in X\setminus\bigcup_{k=1}^{n}B(x_k,\varepsilon).
+  \]
+  则对任意 $1\le k\le n$，有 $d(x_{n+1},x_k)\ge\varepsilon$。
+  由归纳可得一列序列 $(x_n)$ 满足对任意 $m\ne n$ 都有 $d(x_m,x_n)\ge\varepsilon$。
+
+  但任意收敛序列都是 Cauchy 列，从而存在 $N$ 使得当 $m,n\ge N$ 时 $d(x_m,x_n)<\varepsilon$。
+  因此 $(x_n)$ 不可能有收敛子列，与序列紧性矛盾。
+  故存在有限的 $\varepsilon$-网，$(X,d)$ 全有界。
+\end{proof}
+
+\begin{theorem}\label{thm:sequentially-compact-implies-compact}
+  设 $(X,d)$ 为序列紧度量空间。
+  则 $(X,d)$ 紧致。
+\end{theorem}
+
+\begin{proof}
+  任取 $X$ 的开覆盖 $\mathcal{U}$。
+  由定理~\ref{thm:lebesgue-number-sequentially-compact}，存在 Lebesgue 数 $\delta>0$。
+  由定理~\ref{thm:sequentially-compact-implies-totally-bounded}，存在有限的 $\delta/2$-网 $\Omega=\{x_1,\dots,x_n\}$。
+  从而
+  \[
+    X=\bigcup_{k=1}^{n}B\left(x_k,\frac{\delta}{2}\right).
+  \]
+  对每个 $k$，球 $B(x_k,\delta/2)$ 的直径小于 $\delta$，故由 Lebesgue 数的定义可取 $U_k\in\mathcal{U}$ 使得
+  \[
+    B\left(x_k,\frac{\delta}{2}\right)\subseteq U_k.
+  \]
+  因而
+  \[
+    X\subseteq\bigcup_{k=1}^{n}U_k.
+  \]
+  故 $\{U_1,\dots,U_n\}$ 为 $\mathcal{U}$ 的有限子覆盖，$(X,d)$ 紧致。
+\end{proof}
+
+\begin{remark}
+  本节中的全有界也常称为预紧。
+  若 $A\subseteq X$，则称 $A$ 在 $(X,d)$ 中全有界（或预紧），意谓度量子空间 $(A,d|_{A\times A})$ 全有界。
+\end{remark}
+
+\begin{lemma}\label{lem:totally-bounded-subset-cover}
+  设 $(X,d)$ 为度量空间，$A\subseteq X$。
+  则 $A$ 全有界当且仅当对任意 $\varepsilon>0$，存在有限集 $F\subseteq X$ 使
+  \[
+    A\subseteq\bigcup_{x\in F}B(x,\varepsilon).
+  \]
+\end{lemma}
+
+\begin{proof}
+  $(\Rightarrow)$：若 $A$ 全有界，则对任意 $\varepsilon>0$，存在有限 $\varepsilon$-网 $\Omega\subseteq A$。
+  因而
+  \[
+    A\subseteq\bigcup_{x\in\Omega}B(x,\varepsilon),
+  \]
+  取 $F\triangleq\Omega$ 即可。
+
+  $(\Leftarrow)$：设对任意 $\varepsilon>0$，存在有限集 $F\subseteq X$ 使
+  \[
+    A\subseteq\bigcup_{x\in F}B\left(x,\frac{\varepsilon}{2}\right).
+  \]
+  令
+  \[
+    \mathcal{B}\triangleq\left\{B\left(x,\frac{\varepsilon}{2}\right):x\in F,\ A\cap B\left(x,\frac{\varepsilon}{2}\right)\ne\varnothing\right\}.
+  \]
+  对每个 $B\in\mathcal{B}$ 任选一点 $a_B\in A\cap B$，并令
+  \[
+    E\triangleq\{a_B:B\in\mathcal{B}\}.
+  \]
+  显然 $E$ 有限。
+  任取 $y\in A$。
+  由覆盖性，存在 $x\in F$ 使 $y\in B(x,\varepsilon/2)$。
+  因 $y\in A$，故 $A\cap B(x,\varepsilon/2)\ne\varnothing$，于是 $B(x,\varepsilon/2)\in\mathcal{B}$。
+  记 $a\triangleq a_{B(x,\varepsilon/2)}\in E$，则 $a\in B(x,\varepsilon/2)$。
+  从而
+  \[
+    d(y,a)\le d(y,x)+d(x,a)<\frac{\varepsilon}{2}+\frac{\varepsilon}{2}=\varepsilon,
+  \]
+  即 $y\in B(a,\varepsilon)$。
+  于是
+  \[
+    A\subseteq\bigcup_{a\in E}B(a,\varepsilon),
+  \]
+  即 $E$ 为 $A$ 的有限 $\varepsilon$-网，$A$ 全有界。
+\end{proof}
+
+\begin{corollary}\label{cor:totally-bounded-subspace}
+  设 $(X,d)$ 为全有界度量空间，$A\subseteq X$。
+  则 $A$ 全有界。
+\end{corollary}
+
+\begin{proof}
+  任取 $\varepsilon>0$。
+  因 $X$ 全有界，存在有限的 $\varepsilon$-网 $\Omega\subseteq X$ 使
+  \[
+    X\subseteq\bigcup_{x\in\Omega}B(x,\varepsilon).
+  \]
+  从而
+  \[
+    A\subseteq\bigcup_{x\in\Omega}B(x,\varepsilon).
+  \]
+  由引理~\ref{lem:totally-bounded-subset-cover} 即得 $A$ 全有界。
+\end{proof}
+
+\begin{theorem}\label{thm:compact-sequential-compact-complete-totally-bounded}
+  设 $(X,d)$ 为度量空间，则下列命题等价：
+  \begin{enumerate}
+    \item $(X,d)$ 紧致；
+    \item $(X,d)$ 序列紧；
+    \item $(X,d)$ 完备且全有界。
+  \end{enumerate}
+\end{theorem}
+
+\begin{proof}
+  $(1)\Rightarrow(2)$：由命题~\ref{prop:compact-implies-sequentially-compact}。
+
+  $(2)\Rightarrow(1)$：由定理~\ref{thm:sequentially-compact-implies-compact}。
+
+  $(2)\Rightarrow(3)$：由命题~\ref{prop:sequentially-compact-implies-complete} 与定理~\ref{thm:sequentially-compact-implies-totally-bounded}。
+
+  $(3)\Rightarrow(2)$：设 $(X,d)$ 完备且全有界，任取序列 $(x_n)\subseteq X$。
+  由全有界性，存在有限集 $F_1\subseteq X$ 使
+  \[
+    X=\bigcup_{a\in F_1}B(a,1).
+  \]
+  故存在 $a_1\in F_1$ 使 $B(a_1,1)$ 含有无穷多个 $x_n$。
+  取子列 $(x_n^{(1)})$ 使得
+  \[
+    x_n^{(1)}\in B(a_1,1),\qquad \forall n.
+  \]
+
+  设已取到 $a_k\in X$ 与子列 $(x_n^{(k)})$，使得
+  \[
+    x_n^{(k)}\in B\left(a_k,\frac{1}{k}\right),\qquad \forall n,
+  \]
+  且
+  \[
+    B\left(a_k,\frac{1}{k}\right)\subseteq B\left(a_{k-1},\frac{1}{k-1}\right)\quad (k\ge2).
+  \]
+  因为 $B(a_k,1/k)\subseteq X$，由推论~\ref{cor:totally-bounded-subspace} 知 $B(a_k,1/k)$ 全有界。
+  故存在有限集 $F_{k+1}\subseteq X$ 使
+  \[
+    B\left(a_k,\frac{1}{k}\right)\subseteq\bigcup_{a\in F_{k+1}}B\left(a,\frac{1}{k+1}\right).
+  \]
+  从而存在 $a_{k+1}\in F_{k+1}$，使得 $B(a_{k+1},1/(k+1))$ 含有无穷多个 $(x_n^{(k)})$ 的项。
+  取子列 $(x_n^{(k+1)})$ 使得
+  \[
+    x_n^{(k+1)}\in B\left(a_{k+1},\frac{1}{k+1}\right),\qquad \forall n.
+  \]
+  由构造即有 $B(a_{k+1},1/(k+1))\subseteq B(a_k,1/k)$。
+
+  定义对角线子列 $y_k\triangleq x_k^{(k)}$。
+  则当 $m\ge n$ 时，由嵌套性知 $y_n,y_m\in B(a_n,1/n)$，从而
+  \[
+    d(y_n,y_m)\le d(y_n,a_n)+d(a_n,y_m)<\frac{1}{n}+\frac{1}{n}=\frac{2}{n}\to0.
+  \]
+  因此 $(y_k)$ 为 Cauchy 列。
+  由完备性，存在 $y\in X$ 使 $y_k\to y$。
+  故任意序列都有收敛子列，$(X,d)$ 序列紧。
+\end{proof}
+
+\section{积空间与完备化}
+
+\begin{lemma}[H\"older 不等式]\label{lem:holder-finite}
+  设 $1<p<\infty$，令 $q\triangleq\frac{p}{p-1}$。
+  则对任意 $u=(u_1,\dots,u_n),v=(v_1,\dots,v_n)\in\mathbb{R}^n$，有
+  \[
+    \sum_{i=1}^{n}|u_iv_i|\le
+    \left(\sum_{i=1}^{n}|u_i|^p\right)^{1/p}
+    \left(\sum_{i=1}^{n}|v_i|^q\right)^{1/q}.
+  \]
+\end{lemma}
+
+\begin{proof}
+  若 $u=0$ 或 $v=0$，则结论显然。
+  否则令
+  \[
+    \alpha_i\triangleq\frac{|u_i|}{\left(\sum_{j=1}^{n}|u_j|^p\right)^{1/p}},\qquad
+    \beta_i\triangleq\frac{|v_i|}{\left(\sum_{j=1}^{n}|v_j|^q\right)^{1/q}}.
+  \]
+  则 $\sum_i\alpha_i^p=1$ 且 $\sum_i\beta_i^q=1$。
+  由 Young 不等式（$ab\le \frac{a^p}{p}+\frac{b^q}{q}$，$a,b\ge0$）得
+  \[
+    \alpha_i\beta_i\le \frac{\alpha_i^p}{p}+\frac{\beta_i^q}{q}.
+  \]
+  求和得
+  \[
+    \sum_{i=1}^{n}\alpha_i\beta_i\le \frac{1}{p}\sum_{i=1}^{n}\alpha_i^p+\frac{1}{q}\sum_{i=1}^{n}\beta_i^q
+    =\frac{1}{p}+\frac{1}{q}=1.
+  \]
+  两边乘以 $\left(\sum|u_i|^p\right)^{1/p}\left(\sum|v_i|^q\right)^{1/q}$ 即得结论。
+\end{proof}
+
+\begin{proposition}[Minkowski 不等式]\label{prop:minkowski-finite}
+  设 $1\le p<\infty$。
+  对任意 $x=(x_1,\dots,x_n),y=(y_1,\dots,y_n)\in\mathbb{R}^n$，定义
+  \[
+    \|x\|_p\triangleq\left(|x_1|^p+\cdots+|x_n|^p\right)^{1/p}.
+  \]
+  则
+  \[
+    \|x+y\|_p\le \|x\|_p+\|y\|_p.
+  \]
+\end{proposition}
+
+\begin{proof}
+  当 $p=1$ 时由
+  \[
+    \sum_{i=1}^{n}|x_i+y_i|\le\sum_{i=1}^{n}|x_i|+\sum_{i=1}^{n}|y_i|
+  \]
+  得结论。
+
+  下设 $1<p<\infty$，令 $q\triangleq\frac{p}{p-1}$。
+  记 $z\triangleq x+y$。
+  若 $\|z\|_p=0$ 则结论显然。
+  否则由
+  \[
+    \sum_{i=1}^{n}|z_i|^p
+    =\sum_{i=1}^{n}|z_i|^{p-1}|z_i|
+    \le\sum_{i=1}^{n}|z_i|^{p-1}|x_i|+\sum_{i=1}^{n}|z_i|^{p-1}|y_i|
+  \]
+  并对两项分别应用引理~\ref{lem:holder-finite}（注意 $\bigl(|z_i|^{p-1}\bigr)^q=|z_i|^p$）得
+  \[
+    \sum_{i=1}^{n}|z_i|^p
+    \le\left(\sum_{i=1}^{n}|z_i|^p\right)^{(p-1)/p}\left(\|x\|_p+\|y\|_p\right).
+  \]
+  即
+  \[
+    \|z\|_p^p\le \|z\|_p^{p-1}\left(\|x\|_p+\|y\|_p\right).
+  \]
+  两边除以 $\|z\|_p^{p-1}$ 得 $\|x+y\|_p\le\|x\|_p+\|y\|_p$。
+\end{proof}
+
+\begin{proposition}\label{prop:product-metric-dp}
+  设 $(X_1,d_1),\dots,(X_n,d_n)$ 为度量空间，$1\le p<\infty$。
+  在积空间 $X\triangleq X_1\times\cdots\times X_n$ 上定义
+  \[
+    d_p\bigl((x_1,\dots,x_n),(y_1,\dots,y_n)\bigr)
+    \triangleq\left(d_1(x_1,y_1)^p+\cdots+d_n(x_n,y_n)^p\right)^{1/p}.
+  \]
+  则 $d_p$ 为 $X$ 上的度量。
+\end{proposition}
+
+\begin{proof}
+  非负性与对称性显然。
+  若 $d_p(x,y)=0$，则 $\sum_i d_i(x_i,y_i)^p=0$，从而对每个 $i$ 有 $d_i(x_i,y_i)=0$，即 $x_i=y_i$，故 $x=y$。
+  反之 $x=y$ 时显然 $d_p(x,y)=0$。
+
+  三角不等式：任取 $x,y,z\in X$。
+  令
+  \[
+    a\triangleq\bigl(d_1(x_1,y_1),\dots,d_n(x_n,y_n)\bigr),\qquad
+    b\triangleq\bigl(d_1(y_1,z_1),\dots,d_n(y_n,z_n)\bigr).
+  \]
+  由各坐标的三角不等式，$d_i(x_i,z_i)\le a_i+b_i$。
+  因此
+  \[
+    d_p(x,z)
+    =\left(\sum_{i=1}^{n}d_i(x_i,z_i)^p\right)^{1/p}
+    \le\left(\sum_{i=1}^{n}(a_i+b_i)^p\right)^{1/p}
+    \le\left(\sum_{i=1}^{n}a_i^p\right)^{1/p}+\left(\sum_{i=1}^{n}b_i^p\right)^{1/p}
+    =d_p(x,y)+d_p(y,z),
+  \]
+  其中第二个不等式由命题~\ref{prop:minkowski-finite} 得出。
+\end{proof}
+
+\begin{definition}
+  设 $(X,d)$ 为度量空间。
+  定义
+  \[
+    \tau_d\triangleq\left\{U\subseteq X:\ \forall x\in U,\ \exists r>0\ \text{使}\ B(x,r)\subseteq U\right\}.
+  \]
+  称 $\tau_d$ 为由 $d$ 诱导的拓扑。
+\end{definition}
+
+\begin{theorem}\label{thm:complete-subset-closed}
+  设 $(X,d)$ 为完备度量空间，$Y\subseteq X$。
+  记 $d_Y\triangleq d|_{Y\times Y}$。
+  则 $Y$ 在 $(X,\tau_d)$ 中为闭集当且仅当 $(Y,d_Y)$ 完备。
+\end{theorem}
+
+\begin{proof}
+  $(\Rightarrow)$：设 $Y$ 为闭集。
+  任取 $Y$ 中的 Cauchy 列 $(y_n)$。
+  因 $d_Y$ 为 $d$ 的限制，故 $(y_n)$ 也是 $X$ 中的 Cauchy 列。
+  由 $X$ 完备，存在 $x\in X$ 使 $y_n\to x$。
+  因 $Y$ 在 $X$ 中闭且 $y_n\in Y$，得 $x\in Y$。
+  故 $(Y,d_Y)$ 完备。
+
+  $(\Leftarrow)$：设 $(Y,d_Y)$ 完备。
+  任取序列 $(y_n)\subseteq Y$，若 $y_n\to x$（在 $X$ 中收敛），则 $(y_n)$ 在 $X$ 中为收敛列，从而是 Cauchy 列。
+  因 $d_Y$ 为限制度量，$(y_n)$ 亦为 $Y$ 中 Cauchy 列。
+  由 $Y$ 的完备性，存在 $y\in Y$ 使 $y_n\to y$（在 $Y$ 中收敛）。
+  但度量空间极限唯一，故 $x=y\in Y$。
+  从而 $Y$ 为闭集。
+\end{proof}
+
+\begin{remark}
+  在度量空间中，集合 $Y$ 为闭集等价于：任意 $Y$ 中收敛于 $X$ 内某点的序列，其极限仍属于 $Y$。
+  因此上定理亦可表述为：完备度量空间的子空间完备当且仅当它是序列闭的。
+\end{remark}
+
+\begin{proposition}\label{prop:closed-sequential-characterization}
+  设 $(X,d)$ 为度量空间，$Y\subseteq X$。
+  则 $Y$ 在 $(X,\tau_d)$ 中为闭集当且仅当对任意序列 $(y_n)\subseteq Y$，若 $y_n\to x$（在 $X$ 中收敛），则 $x\in Y$。
+\end{proposition}
+
+\begin{proof}
+  $(\Rightarrow)$：设 $Y$ 为闭集。
+  若 $y_n\in Y$ 且 $y_n\to x$，则 $x\in\overline{Y}=Y$，故 $x\in Y$。
+
+  $(\Leftarrow)$：设 $Y$ 满足题设的序列判别性质。
+  任取 $x\in\overline{Y}$。
+  对每个 $n\in\mathbb{N}$，因为 $x\in\overline{Y}$，可取 $y_n\in Y$ 使得
+  \[
+    d(y_n,x)<\frac{1}{n}.
+  \]
+  则 $y_n\to x$。
+  由假设得 $x\in Y$。
+  故 $\overline{Y}\subseteq Y$，从而 $Y$ 闭。
+\end{proof}
+
+\begin{proposition}\label{prop:relative-closedness}
+  设 $(X,d)$ 为度量空间，且 $\Omega\subseteq Y\subseteq X$。
+  若 $\Omega$ 在 $(X,\tau_d)$ 中为闭集，则 $\Omega$ 在子空间 $\bigl(Y,\tau_{d_Y}\bigr)$ 中为闭集，其中 $d_Y\triangleq d|_{Y\times Y}$。
+\end{proposition}
+
+\begin{proof}
+  因 $\Omega$ 在 $X$ 中闭，$X\setminus\Omega\in\tau_d$。
+  注意到
+  \[
+    Y\setminus\Omega=Y\cap(X\setminus\Omega).
+  \]
+  而子空间拓扑满足：$V\subseteq Y$ 在 $\tau_{d_Y}$ 中开当且仅当存在 $U\in\tau_d$ 使 $V=Y\cap U$。
+  因此 $Y\setminus\Omega\in\tau_{d_Y}$，从而 $\Omega$ 在 $Y$ 中闭。
+\end{proof}
+
+\begin{corollary}
+  设 $\Omega\subseteq\mathbb{R}$，$d(x,y)=|x-y|$。
+  则 $\Omega$ 完备当且仅当 $\Omega$ 为 $\mathbb{R}$ 的闭子集。
+\end{corollary}
+
+\begin{proof}
+  因 $(\mathbb{R},|\cdot|)$ 完备，由定理~\ref{thm:complete-subset-closed} 立得。
+\end{proof}
+
+\begin{definition}
+  设 $(X_1,d_1),\dots,(X_n,d_n)$ 为度量空间，$X\triangleq X_1\times\cdots\times X_n$。
+  对 $1\le p<\infty$，定义
+  \[
+    d_p\bigl((x_1,\dots,x_n),(y_1,\dots,y_n)\bigr)
+    \triangleq\left(d_1(x_1,y_1)^p+\cdots+d_n(x_n,y_n)^p\right)^{1/p}.
+  \]
+  对 $p=\infty$，定义
+  \[
+    d_\infty\bigl((x_1,\dots,x_n),(y_1,\dots,y_n)\bigr)
+    \triangleq\max\{d_1(x_1,y_1),\dots,d_n(x_n,y_n)\}.
+  \]
+\end{definition}
+
+\begin{proposition}\label{prop:product-metric-dinfty}
+  设 $(X_1,d_1),\dots,(X_n,d_n)$ 为度量空间。
+  则 $d_\infty$ 为 $X_1\times\cdots\times X_n$ 上的度量。
+\end{proposition}
+
+\begin{proof}
+  非负性、对称性与分离性显然。
+  三角不等式：任取 $x,y,z\in X$。
+  对任意 $i$，由 $d_i$ 的三角不等式有
+  \[
+    d_i(x_i,z_i)\le d_i(x_i,y_i)+d_i(y_i,z_i)\le d_\infty(x,y)+d_\infty(y,z).
+  \]
+  对 $i$ 取最大值得
+  \[
+    d_\infty(x,z)\le d_\infty(x,y)+d_\infty(y,z).
+  \]
+\end{proof}
+
+\begin{proposition}\label{prop:product-convergence-coordinatewise}
+  设 $(X_1,d_1),\dots,(X_n,d_n)$ 为度量空间，$p\in[1,\infty]$。
+  令 $d_p$ 为上述积度量（当 $p=\infty$ 时取 $d_\infty$）。
+  若 $x^{(k)}=(x_1^{(k)},\dots,x_n^{(k)})\in X$ 且 $x=(x_1,\dots,x_n)\in X$，则
+  \[
+    x^{(k)}\xrightarrow[d_p]{}x
+    \iff
+    \forall i\in\{1,\dots,n\},\ x_i^{(k)}\xrightarrow[d_i]{}x_i.
+  \]
+\end{proposition}
+
+\begin{proof}
+  若 $p<\infty$，则
+  \[
+    d_i(x_i^{(k)},x_i)\le d_p(x^{(k)},x),\qquad \forall i,
+  \]
+  故 $d_p(x^{(k)},x)\to0$ 推出对每个 $i$ 都有 $d_i(x_i^{(k)},x_i)\to0$。
+  反之若对每个 $i$ 都有 $d_i(x_i^{(k)},x_i)\to0$，则有限和收敛到 $0$，从而 $d_p(x^{(k)},x)\to0$。
+
+  若 $p=\infty$，由
+  \[
+    d_i(x_i^{(k)},x_i)\le d_\infty(x^{(k)},x)
+  \]
+  与
+  \[
+    d_\infty(x^{(k)},x)=\max_i d_i(x_i^{(k)},x_i)
+  \]
+  可得同样结论。
+\end{proof}
+
+\begin{theorem}\label{thm:product-sequentially-compact}
+  设 $(X_1,d_1),\dots,(X_n,d_n)$ 为序列紧度量空间，$p\in[1,\infty]$。
+  则积空间 $X_1\times\cdots\times X_n$ 在积度量 $d_p$（当 $p=\infty$ 时取 $d_\infty$）下序列紧。
+\end{theorem}
+
+\begin{proof}
+  任取序列 $x^{(m)}=(x_1^{(m)},\dots,x_n^{(m)})\in X_1\times\cdots\times X_n$。
+
+  由 $X_1$ 序列紧，存在严格递增的 $\sigma_1:\mathbb{N}\to\mathbb{N}$ 与 $x_1\in X_1$ 使
+  \[
+    x_1^{(\sigma_1(m))}\to x_1.
+  \]
+  设已构造严格递增的 $\sigma_k$ 与 $x_1,\dots,x_k$ 使得对每个 $1\le i\le k$ 都有
+  \[
+    x_i^{(\sigma_k(m))}\to x_i.
+  \]
+  由 $X_{k+1}$ 序列紧，可在序列 $(x_{k+1}^{(\sigma_k(m))})_{m\in\mathbb{N}}$ 中取收敛子列。
+  即存在严格递增的 $\rho_{k+1}:\mathbb{N}\to\mathbb{N}$ 与 $x_{k+1}\in X_{k+1}$ 使
+  \[
+    x_{k+1}^{(\sigma_k(\rho_{k+1}(m)))}\to x_{k+1}.
+  \]
+  令 $\sigma_{k+1}\triangleq\sigma_k\circ\rho_{k+1}$，则对每个 $1\le i\le k$ 仍有 $x_i^{(\sigma_{k+1}(m))}\to x_i$。
+  如此归纳至 $k=n$。
+
+  令 $\sigma\triangleq\sigma_n$，并记 $x\triangleq(x_1,\dots,x_n)\in X$。
+  则对每个 $i$ 有 $x_i^{(\sigma(m))}\to x_i$。
+  由命题~\ref{prop:product-convergence-coordinatewise} 得 $x^{(\sigma(m))}\to x$（在 $d_p$ 下）。
+  故积空间序列紧。
+\end{proof}
+
+\begin{definition}
+  设 $X$ 为集合，$d_1,d_2$ 为 $X$ 上的度量。
+  若
+  \[
+    \tau_{d_1}=\tau_{d_2},
+  \]
+  则称 $d_1,d_2$ 等价，记为 $d_1\sim d_2$。
+\end{definition}
+
+\begin{proposition}\label{prop:equivalent-metrics-homeomorphism}
+  设 $X$ 为集合，$d_1,d_2$ 为 $X$ 上的度量。
+  则
+  \[
+    d_1\sim d_2
+    \iff
+    \mathrm{id}:(X,\tau_{d_1})\to (X,\tau_{d_2})\text{ 为同胚}.
+  \]
+\end{proposition}
+
+\begin{proof}
+  若 $d_1\sim d_2$，则两拓扑相同，恒等映射及其逆映射均连续，故为同胚。
+  反之，若恒等映射为同胚，则对任意 $U\subseteq X$，
+  \[
+    U\in\tau_{d_2}\iff \mathrm{id}^{-1}(U)=U\in\tau_{d_1},
+  \]
+  故 $\tau_{d_1}=\tau_{d_2}$，即 $d_1\sim d_2$。
+\end{proof}
+
+\begin{proposition}\label{prop:dp-dinfty-equivalent}
+  设 $(X_1,d_1),\dots,(X_n,d_n)$ 为度量空间，$X\triangleq X_1\times\cdots\times X_n$。
+  对任意 $p\in[1,\infty)$，有
+  \[
+    d_\infty(x,y)\le d_p(x,y)\le n^{1/p}d_\infty(x,y),\qquad \forall x,y\in X.
+  \]
+  因此 $d_p\sim d_\infty$。
+\end{proposition}
+
+\begin{proof}
+  设 $x=(x_1,\dots,x_n)$，$y=(y_1,\dots,y_n)$。
+  因为
+  \[
+    \max_i d_i(x_i,y_i)^p\le \sum_{i=1}^{n}d_i(x_i,y_i)^p\le n\cdot\max_i d_i(x_i,y_i)^p,
+  \]
+  两边取 $1/p$ 次方即得
+  \[
+    d_\infty(x,y)\le d_p(x,y)\le n^{1/p}d_\infty(x,y).
+  \]
+  从而恒等映射 $\mathrm{id}:(X,d_\infty)\to(X,d_p)$ 与 $\mathrm{id}:(X,d_p)\to(X,d_\infty)$ 均 Lipschitz 连续，故诱导相同拓扑，$d_p\sim d_\infty$。
+\end{proof}
+
+\begin{remark}
+  特别地，在有限积空间 $X_1\times\cdots\times X_n$ 上，所有 $p\in[1,\infty]$ 的积度量都两两等价，从而诱导相同的积拓扑。
+\end{remark}
+
+\begin{proposition}\label{prop:dinfty-ball-product}
+  设 $(X_1,d_1),\dots,(X_n,d_n)$ 为度量空间，$X\triangleq X_1\times\cdots\times X_n$。
+  对任意 $x=(x_1,\dots,x_n)\in X$ 与 $\varepsilon>0$，有
+  \[
+    B_{d_\infty}(x,\varepsilon)=B_{d_1}(x_1,\varepsilon)\times\cdots\times B_{d_n}(x_n,\varepsilon).
+  \]
+\end{proposition}
+
+\begin{proof}
+  由定义
+  \[
+    B_{d_\infty}(x,\varepsilon)=\{y=(y_1,\dots,y_n)\in X:\max_i d_i(x_i,y_i)<\varepsilon\}.
+  \]
+  而 $\max_i d_i(x_i,y_i)<\varepsilon$ 当且仅当对每个 $i$ 都有 $d_i(x_i,y_i)<\varepsilon$。
+  因此
+  \[
+    B_{d_\infty}(x,\varepsilon)=\{y:\forall i,\ y_i\in B_{d_i}(x_i,\varepsilon)\}
+    =B_{d_1}(x_1,\varepsilon)\times\cdots\times B_{d_n}(x_n,\varepsilon).
+  \]
+\end{proof}
+
+\begin{theorem}\label{thm:finite-product-topology-metric}
+  设 $(X_1,d_1),\dots,(X_n,d_n)$ 为度量空间，$X\triangleq X_1\times\cdots\times X_n$。
+  记 $\tau_{\mathrm{prod}}$ 为 $X$ 上的产品拓扑（由 $\tau_{d_1},\dots,\tau_{d_n}$ 生成）。
+  则
+  \[
+    \tau_{d_\infty}=\tau_{\mathrm{prod}}.
+  \]
+  特别地，对任意 $p\in[1,\infty]$，都有 $\tau_{d_p}=\tau_{\mathrm{prod}}$。
+\end{theorem}
+
+\begin{proof}
+  先证 $\tau_{d_\infty}\subseteq\tau_{\mathrm{prod}}$。
+  任取 $U\in\tau_{d_\infty}$ 与 $x\in U$。
+  则存在 $\varepsilon>0$ 使 $B_{d_\infty}(x,\varepsilon)\subseteq U$。
+  由命题~\ref{prop:dinfty-ball-product} 知 $B_{d_\infty}(x,\varepsilon)$ 为坐标开球的直积，因而属于 $\tau_{\mathrm{prod}}$。
+  故 $U\in\tau_{\mathrm{prod}}$。
+
+  再证 $\tau_{\mathrm{prod}}\subseteq\tau_{d_\infty}$。
+  只需证明产品拓扑的一组基：形如 $U_1\times\cdots\times U_n$（其中 $U_i\in\tau_{d_i}$）的集合在 $\tau_{d_\infty}$ 中开。
+  任取 $x=(x_1,\dots,x_n)\in U_1\times\cdots\times U_n$。
+  对每个 $i$，可取 $\varepsilon_i>0$ 使 $B_{d_i}(x_i,\varepsilon_i)\subseteq U_i$。
+  令 $\varepsilon\triangleq\min\{\varepsilon_1,\dots,\varepsilon_n\}$，则由命题~\ref{prop:dinfty-ball-product} 得
+  \[
+    B_{d_\infty}(x,\varepsilon)=\prod_{i=1}^{n}B_{d_i}(x_i,\varepsilon)\subseteq\prod_{i=1}^{n}U_i.
+  \]
+  故 $U_1\times\cdots\times U_n\in\tau_{d_\infty}$。
+  从而 $\tau_{\mathrm{prod}}\subseteq\tau_{d_\infty}$。
+
+  因此 $\tau_{d_\infty}=\tau_{\mathrm{prod}}$。
+  若 $p\in[1,\infty)$，由命题~\ref{prop:dp-dinfty-equivalent} 得 $d_p\sim d_\infty$，从而 $\tau_{d_p}=\tau_{d_\infty}=\tau_{\mathrm{prod}}$；
+  若 $p=\infty$ 则 $d_p=d_\infty$，结论同样成立。
+\end{proof}
+
+\begin{proposition}\label{prop:distance-function-continuous}
+  设 $(X,d)$ 为度量空间，$p\in[1,\infty]$。
+  令 $d_p$ 为 $X\times X$ 上由 $d$ 诱导的积度量（当 $p=\infty$ 时取 $d_\infty$）。
+  则映射
+  \[
+    d:(X\times X,d_p)\to\mathbb{R},\qquad (x,y)\mapsto d(x,y)
+  \]
+  连续。
+\end{proposition}
+
+\begin{proof}
+  任取 $x,y,x',y'\in X$。
+  由三角不等式得
+  \[
+    d(x,y)\le d(x,x')+d(x',y')+d(y',y),
+  \]
+  以及
+  \[
+    d(x',y')\le d(x',x)+d(x,y)+d(y,y').
+  \]
+  两式合并得
+  \[
+    |d(x,y)-d(x',y')|\le d(x,x')+d(y,y').
+  \]
+  令 $u\triangleq(d(x,x'),d(y,y'))\in\mathbb{R}^2$。
+  则
+  \[
+    |d(x,y)-d(x',y')|\le \|u\|_1\le 2^{1-1/p}\|u\|_p=2^{1-1/p}d_p\bigl((x,y),(x',y')\bigr)
+  \]
+  （当 $p=\infty$ 时约定 $2^{1-1/\infty}=2$）。
+  因此 $d$ 为 Lipschitz 映射，从而连续。
+\end{proof}
+
+\begin{corollary}
+  设 $(X_1,d_1),\dots,(X_n,d_n)$ 为度量空间，$p\in[1,\infty]$。
+  令 $d_p$ 为积空间 $X_1\times\cdots\times X_n$ 上的积度量（当 $p=\infty$ 时取 $d_\infty$）。
+  若 $x^{(k)}=(x_1^{(k)},\dots,x_n^{(k)})$，$x=(x_1,\dots,x_n)$，则
+  \[
+    x^{(k)}\to x\text{（在 }d_p\text{ 下）}
+    \iff
+    \forall i,\ x_i^{(k)}\to x_i\text{（在 }d_i\text{ 下）}.
+  \]
+\end{corollary}
+
+\begin{proof}
+  由命题~\ref{prop:product-convergence-coordinatewise} 立得。
+\end{proof}
+
+\section{赋范线性空间}
+
+\begin{definition}
+  设 $X$ 为域 $\mathbb{F}$（$\mathbb{R}$ 或 $\mathbb{C}$）上的线性空间。
+  称函数 $\|\cdot\|:X\to[0,+\infty)$ 为一个半范数，若对任意 $x,y\in X$ 与 $\lambda\in\mathbb{F}$ 有
+  \begin{enumerate}
+    \item $\|x\|\ge0$；
+    \item $\|\lambda x\|=|\lambda|\,\|x\|$；
+    \item $\|x+y\|\le\|x\|+\|y\|$。
+  \end{enumerate}
+  若进一步满足 $\|x\|=0\Rightarrow x=0$，则称 $\|\cdot\|$ 为一个范数，称 $(X,\|\cdot\|)$ 为赋范线性空间。
+\end{definition}
+
+\begin{proposition}\label{prop:norm-induces-metric}
+  设 $(X,\|\cdot\|)$ 为赋范线性空间。
+  定义
+  \[
+    d(x,y)\triangleq\|x-y\|,\qquad x,y\in X.
+  \]
+  则 $d$ 为 $X$ 上的度量。
+\end{proposition}
+
+\begin{proof}
+  非负性显然。
+  若 $d(x,y)=0$，则 $\|x-y\|=0$，由范数的分离性得 $x=y$；反之 $x=y$ 时 $d(x,y)=0$。
+  对称性由
+  \[
+    d(x,y)=\|x-y\|=\|-(y-x)\|=\|y-x\|=d(y,x)
+  \]
+  得。
+  三角不等式由范数的三角不等式：
+  \[
+    d(x,z)=\|x-z\|=\|(x-y)+(y-z)\|\le\|x-y\|+\|y-z\|=d(x,y)+d(y,z).
+  \]
+\end{proof}
+
+\begin{proposition}\label{prop:addition-continuous-normed}
+  设 $(X,\|\cdot\|)$ 为赋范线性空间，并令 $d(x,y)\triangleq\|x-y\|$。
+  在 $X\times X$ 上定义
+  \[
+    d_\infty\bigl((x,y),(x',y')\bigr)\triangleq\max\{\|x-x'\|,\|y-y'\|\}.
+  \]
+  则加法映射
+  \[
+    +:(X\times X,d_\infty)\to (X,d),\qquad (x,y)\mapsto x+y
+  \]
+  连续。
+\end{proposition}
+
+\begin{proof}
+  任取 $x,y,x',y'\in X$。
+  由三角不等式得
+  \[
+    \|(x+y)-(x'+y')\|\le\|x-x'\|+\|y-y'\|\le 2\max\{\|x-x'\|,\|y-y'\|\}.
+  \]
+  即
+  \[
+    d(x+y,x'+y')\le 2\,d_\infty\bigl((x,y),(x',y')\bigr).
+  \]
+  因此加法映射为 Lipschitz 连续，从而连续。
+\end{proof}
+
+\begin{proposition}\label{prop:scalar-multiplication-continuous-normed}
+  设 $(X,\|\cdot\|)$ 为域 $\mathbb{F}$（$\mathbb{R}$ 或 $\mathbb{C}$）上的赋范线性空间。
+  令 $d_X(x,y)\triangleq\|x-y\|$，$d_{\mathbb{F}}(\lambda,\mu)\triangleq|\lambda-\mu|$，并在 $\mathbb{F}\times X$ 上取积度量
+  \[
+    d_\infty\bigl((\lambda,x),(\mu,y)\bigr)\triangleq\max\{|\lambda-\mu|,\|x-y\|\}.
+  \]
+  则数乘映射
+  \[
+    \cdot:(\mathbb{F}\times X,d_\infty)\to (X,d_X),\qquad (\lambda,x)\mapsto \lambda x
+  \]
+  连续。
+\end{proposition}
+
+\begin{proof}
+  由范数的齐次性与三角不等式，
+  \[
+    \|\lambda x-\mu y\|\le\|\lambda x-\lambda y\|+\|\lambda y-\mu y\|
+    =|\lambda|\,\|x-y\|+|\lambda-\mu|\,\|y\|.
+  \]
+  因此对固定的 $(\mu,y)$，当 $(\lambda,x)\to(\mu,y)$ 时，有 $|\lambda|\to|\mu|$ 且 $\|x-y\|\to0$、$|\lambda-\mu|\to0$，故右端趋于 $0$，从而 $\lambda x\to\mu y$。
+  因此数乘映射连续。
+\end{proof}
+
+\begin{proposition}\label{prop:finite-product-open-sets}
+  设 $(X_1,d_1),\dots,(X_n,d_n)$ 为度量空间，$X\triangleq X_1\times\cdots\times X_n$。
+  对任意 $p\in[1,\infty]$，令 $d_p$ 为 $X$ 上的积度量（当 $p=\infty$ 时取 $d_\infty$）。
+  若 $\Omega\subseteq X$ 为开集，则存在一族正数 $(\varepsilon_x)_{x\in\Omega}$ 使
+  \[
+    \Omega=\bigcup_{x\in\Omega}B_{d_p}(x,\varepsilon_x).
+  \]
+  并且还可取为
+  \[
+    \Omega=\bigcup_{x=(x_1,\dots,x_n)\in\Omega}\left(B_{d_1}(x_1,\varepsilon_x)\times\cdots\times B_{d_n}(x_n,\varepsilon_x)\right).
+  \]
+\end{proposition}
+
+\begin{proof}
+  因 $\Omega$ 为开集，对任意 $x\in\Omega$，存在 $\varepsilon_x>0$ 使 $B_{d_p}(x,\varepsilon_x)\subseteq\Omega$。
+  故
+  \[
+    \Omega=\bigcup_{x\in\Omega}B_{d_p}(x,\varepsilon_x).
+  \]
+  又由命题~\ref{prop:dp-dinfty-equivalent} 知 $d_\infty\le d_p$，从而 $B_{d_\infty}(x,\varepsilon_x)\subseteq B_{d_p}(x,\varepsilon_x)\subseteq\Omega$。
+  再由命题~\ref{prop:dinfty-ball-product} 得
+  \[
+    B_{d_\infty}(x,\varepsilon_x)=\prod_{i=1}^{n}B_{d_i}(x_i,\varepsilon_x),
+  \]
+  于是
+  \[
+    \Omega=\bigcup_{x\in\Omega}B_{d_\infty}(x,\varepsilon_x)=\bigcup_{x\in\Omega}\prod_{i=1}^{n}B_{d_i}(x_i,\varepsilon_x).
+  \]
+\end{proof}
+
+\begin{proposition}\label{prop:product-sequentially-compact-two}
+  设 $(X,d)$ 与 $(Y,d')$ 为序列紧度量空间。
+  令 $p\in[1,\infty]$，并以积度量 $d_p$（当 $p=\infty$ 时取 $d_\infty$）赋予 $X\times Y$。
+  则 $(X\times Y,d_p)$ 为序列紧度量空间。
+\end{proposition}
+
+\begin{proof}
+  任取序列 $(x_n,y_n)$ 于 $X\times Y$。
+  由 $X$ 序列紧，可取子列 $(x_{n_k})$ 收敛于某 $x\in X$。
+  由 $Y$ 序列紧，可从对应子列 $(y_{n_k})$ 中取子列 $(y_{n_{k_j}})$ 收敛于某 $y\in Y$。
+  于是 $x_{n_{k_j}}\to x$ 且 $y_{n_{k_j}}\to y$。
+  由推论~\ref{prop:product-convergence-coordinatewise}（取 $n=2$）知 $(x_{n_{k_j}},y_{n_{k_j}})\to(x,y)$（在 $d_p$ 下）。
+  故 $X\times Y$ 序列紧。
+\end{proof}
+
+\begin{definition}
+  设 $X$ 为域 $\mathbb{F}$（$\mathbb{R}$ 或 $\mathbb{C}$）上的线性空间，$\tau$ 为 $X$ 上的拓扑。
+  若加法映射
+  \[
+    +:(X\times X,\tau\times\tau)\to(X,\tau),\qquad (x,y)\mapsto x+y
+  \]
+  与数乘映射
+  \[
+    \cdot:(\mathbb{F}\times X,\tau_{\mathbb{F}}\times\tau)\to(X,\tau),\qquad (\lambda,x)\mapsto \lambda x
+  \]
+  均连续（其中 $\tau_{\mathbb{F}}$ 为 $\mathbb{F}$ 上的通常拓扑），则称 $(X,\tau)$ 为拓扑线性空间。
+\end{definition}
+
+\begin{corollary}
+  设 $(X,\|\cdot\|)$ 为赋范线性空间。
+  令 $d(x,y)\triangleq\|x-y\|$ 并以 $\tau_d$ 赋予 $X$。
+  则 $(X,\tau_d)$ 为拓扑线性空间。
+\end{corollary}
+
+\begin{proof}
+  由命题~\ref{prop:addition-continuous-normed} 与命题~\ref{prop:scalar-multiplication-continuous-normed} 知加法与数乘映射连续。
+  因此 $(X,\tau_d)$ 为拓扑线性空间。
+\end{proof}
+
+\begin{proposition}\label{prop:convergent-sequence-bounded-normed}
+  设 $(X,\|\cdot\|)$ 为赋范线性空间。
+  若 $x_n\to x$，则序列 $(x_n)$ 有界。
+\end{proposition}
+
+\begin{proof}
+  由 $x_n\to x$，存在 $N\in\mathbb{N}$ 使得当 $n\ge N$ 时 $\|x_n-x\|<1$。
+  故当 $n\ge N$ 时
+  \[
+    \|x_n\|\le\|x\|+\|x_n-x\|<\|x\|+1.
+  \]
+  又有限集 $\{x_1,\dots,x_{N-1}\}$ 有界，从而整个序列有界。
+\end{proof}
+
+\begin{proposition}\label{prop:bounded-set-norm-characterization}
+  设 $(X,\|\cdot\|)$ 为赋范线性空间，$\Omega\subseteq X$。
+  则下列命题等价：
+  \begin{enumerate}
+    \item $\Omega$ 关于度量 $d(x,y)\triangleq\|x-y\|$ 有界；
+    \item $\{\|x\|:x\in\Omega\}$ 在 $\mathbb{R}$ 中有界；
+    \item 存在 $r>0$ 使得 $\Omega\subseteq B(0,r)$。
+  \end{enumerate}
+\end{proposition}
+
+\begin{proof}
+  $(3)\Rightarrow(2)$：若 $\Omega\subseteq B(0,r)$，则对任意 $x\in\Omega$ 有 $\|x\|<r$，故 (2) 成立。
+
+  $(2)\Rightarrow(3)$：若存在 $M>0$ 使对任意 $x\in\Omega$ 有 $\|x\|\le M$，则 $\Omega\subseteq \overline{B}(0,M)\subseteq B(0,M+1)$。
+
+  $(1)\Rightarrow(2)$：若 $\Omega$ 关于 $d$ 有界，则存在 $R>0$ 使 $\|x-y\|\le R$ 对任意 $x,y\in\Omega$ 成立。
+  取定 $x_0\in\Omega$（若 $\Omega=\varnothing$ 则 (2) 显然成立），则
+  \[
+    \|x\|\le\|x-x_0\|+\|x_0\|\le R+\|x_0\|,\qquad \forall x\in\Omega.
+  \]
+  故 (2) 成立。
+
+  $(2)\Rightarrow(1)$：由 (2) 存在 $M>0$ 使得对任意 $x\in\Omega$ 有 $\|x\|\le M$。
+  则对任意 $x,y\in\Omega$，
+  \[
+    \|x-y\|\le\|x\|+\|y\|\le 2M.
+  \]
+  故 $\Omega$ 有界。
+\end{proof}
+
+\begin{remark}\label{rem:ball-scaling}
+  设 $(X,\|\cdot\|)$ 为赋范线性空间，$r>0$。
+  则
+  \[
+    B(0,r)=rB(0,1),\qquad \overline{B}(0,r)=r\overline{B}(0,1).
+  \]
+\end{remark}
+
+\begin{proof}
+  先证 $B(0,r)=rB(0,1)$。
+  若 $x\in rB(0,1)$，则存在 $y\in B(0,1)$ 使 $x=ry$，从而 $\|x\|=r\|y\|<r$，即 $x\in B(0,r)$。
+  反之若 $x\in B(0,r)$，令 $y\triangleq\frac{1}{r}x$，则 $\|y\|=\frac{1}{r}\|x\|<1$，故 $y\in B(0,1)$ 且 $x=ry\in rB(0,1)$。
+
+  对闭球同理：若 $x=ry$ 且 $\|y\|\le1$，则 $\|x\|=r\|y\|\le r$；
+  反之若 $\|x\|\le r$，令 $y\triangleq\frac{1}{r}x$ 则 $\|y\|\le1$。
+\end{proof}
+
+\section{有界线性算子}
+
+\begin{definition}
+  设 $(X,\|\cdot\|_X)$ 与 $(Y,\|\cdot\|_Y)$ 为赋范线性空间。
+  称映射 $T:X\to Y$ 为线性算子，若对任意 $x_1,x_2\in X$ 与 $\lambda\in\mathbb{F}$ 有
+  \[
+    T(x_1+x_2)=T(x_1)+T(x_2),\qquad T(\lambda x_1)=\lambda T(x_1).
+  \]
+\end{definition}
+
+\begin{definition}
+  设 $T:X\to Y$ 为线性算子。
+  若存在 $M>0$ 使对任意 $x\in X$ 有
+  \[
+    \|Tx\|_Y\le M\|x\|_X,
+  \]
+  则称 $T$ 为有界线性算子。
+\end{definition}
+
+\begin{theorem}\label{thm:bounded-linear-operator-equivalences}
+  设 $(X,\|\cdot\|_X)$ 与 $(Y,\|\cdot\|_Y)$ 为赋范线性空间，$T:X\to Y$ 为线性算子。
+  则下列命题等价：
+  \begin{enumerate}
+    \item $T$ 连续；
+    \item $T$ 在 $0$ 处连续；
+    \item $T(B_X(0,1))$ 有界；
+    \item 存在 $M>0$ 使得对任意 $x\in X$ 有 $\|Tx\|_Y\le M\|x\|_X$。
+  \end{enumerate}
+\end{theorem}
+
+\begin{proof}
+  $(1)\Rightarrow(2)$ 显然。
+
+  $(2)\Rightarrow(3)$：由 $T$ 在 $0$ 处连续，存在 $\delta>0$ 使 $\|x\|_X<\delta$ 时有 $\|Tx\|_Y<1$。
+  任取 $x\in B_X(0,1)$，令 $z\triangleq\delta x$，则 $\|z\|_X<\delta$，从而 $\|Tz\|_Y<1$。
+  又 $Tz=\delta Tx$，故
+  \[
+    \|Tx\|_Y=\frac{1}{\delta}\|Tz\|_Y<\frac{1}{\delta}.
+  \]
+  因此 $T(B_X(0,1))$ 有界。
+
+  $(3)\Rightarrow(4)$：由 (3) 存在 $M>0$ 使对任意 $u\in B_X(0,1)$ 有 $\|Tu\|_Y\le M$。
+  任取 $x\in X$。
+  若 $x=0$ 则结论显然。
+  若 $x\ne0$，令 $u\triangleq\frac{x}{\|x\|_X}$，则 $u\in B_X(0,1)$ 且
+  \[
+    \|Tx\|_Y=\|x\|_X\cdot\|Tu\|_Y\le M\|x\|_X.
+  \]
+
+  $(4)\Rightarrow(1)$：若 $\|Tx\|_Y\le M\|x\|_X$ 对任意 $x$ 成立，则
+  \[
+    \|Tx-Ty\|_Y=\|T(x-y)\|_Y\le M\|x-y\|_X,
+  \]
+  故 $T$ 为 Lipschitz 连续，从而连续。
+\end{proof}
+
+\begin{proposition}\label{prop:linear-continuous-iff-at-zero}
+  设 $(X,\|\cdot\|_X)$ 与 $(Y,\|\cdot\|_Y)$ 为赋范线性空间，$T:X\to Y$ 为线性算子。
+  则 $T$ 连续当且仅当 $T$ 在 $0$ 处连续。
+\end{proposition}
+
+\begin{proof}
+  $(\Rightarrow)$ 显然。
+  $(\Leftarrow)$：设 $T$ 在 $0$ 处连续。
+  任取 $x\in X$ 与序列 $x_n\to x$。
+  则 $x_n-x\to0$。
+  由 $T$ 在 $0$ 处连续得 $T(x_n-x)\to T(0)=0$。
+  又由线性性 $T(x_n-x)=T(x_n)-T(x)$，故 $T(x_n)\to T(x)$。
+  因此 $T$ 在任意点连续，从而连续。
+\end{proof}
+
+\begin{proposition}\label{prop:bounded-set-neighborhood-absorb}
+  设 $(X,\|\cdot\|)$ 为赋范线性空间，$\Omega\subseteq X$。
+  则 $\Omega$ 有界当且仅当对任意 $0$ 的邻域 $U$，存在 $\lambda>0$ 使
+  \[
+    \Omega\subseteq \lambda U.
+  \]
+\end{proposition}
+
+\begin{proof}
+  $(\Rightarrow)$：设 $\Omega$ 有界。
+  则存在 $R>0$ 使 $\Omega\subseteq B(0,R)$。
+  任取 $0$ 的邻域 $U$。
+  因 $U$ 在 $0$ 的邻域，存在 $\varepsilon>0$ 使 $B(0,\varepsilon)\subseteq U$。
+  令 $\lambda\triangleq\frac{R}{\varepsilon}$。
+  由 remark~\ref{rem:ball-scaling} 得
+  \[
+    B(0,R)=\lambda B(0,\varepsilon)\subseteq\lambda U.
+  \]
+  故 $\Omega\subseteq\lambda U$。
+
+  $(\Leftarrow)$：设对任意 $0$ 的邻域 $U$ 都存在 $\lambda>0$ 使 $\Omega\subseteq\lambda U$。
+  取 $U=B(0,1)$，则存在 $\lambda>0$ 使
+  \[
+    \Omega\subseteq\lambda B(0,1)=B(0,\lambda),
+  \]
+  从而 $\Omega$ 有界。
+\end{proof}
+
+\begin{remark}
+  定理 \ref{thm:bounded-linear-operator-equivalences} 中 $(3)\Rightarrow(2)$ 亦可由命题 \ref{prop:bounded-set-neighborhood-absorb} 得出：设 $T\bigl(B_X(0,1)\bigr)$ 有界。任取 $0$ 的邻域 $U\subset Y$，由命题 \ref{prop:bounded-set-neighborhood-absorb}，存在 $\lambda>0$ 使
+  \[
+    T\bigl(B_X(0,1)\bigr)\subseteq \lambda U.
+  \]
+  因 $T$ 线性，
+  \[
+    T\bigl(B_X(0,1/\lambda)\bigr)=\tfrac{1}{\lambda}T\bigl(B_X(0,1)\bigr)\subseteq U.
+  \]
+\end{remark}
+
+\begin{example}
+  在赋范线性空间 $(X,\|\cdot\|)$ 中，
+  \[
+    \overline{\{0\}}=\{x\in X: \|x\|=0\}\quad(\text{亦即 }\overline{B}(0,0)).
+  \]
+\end{example}
+
+\begin{proof}
+  任取 $x\in\overline{\{0\}}$。由命题~\ref{prop:closure-ball-intersection}，任取 $\varepsilon>0$，都有
+  \[
+    B(x,\varepsilon)\cap\{0\}\ne\varnothing.
+  \]
+  因而 $0\in B(x,\varepsilon)$，即 $\|x\|=\|x-0\|<\varepsilon$。
+  由于 $\varepsilon>0$ 任意，得 $\|x\|=0$，从而 $x\in\overline{B}(0,0)$。
+  故 $\overline{\{0\}}\subseteq \overline{B}(0,0)$。
+
+  反之，任取 $x\in\overline{B}(0,0)$，则 $\|x\|=0$。
+  对任意 $\varepsilon>0$，有
+  \[
+    0\in B(x,\varepsilon)\cap\{0\}\ne\varnothing,
+  \]
+  因为 $\|0-x\|=\|x\|=0<\varepsilon$。
+  因而 $x\in\overline{\{0\}}$，即 $\overline{B}(0,0)\subseteq \overline{\{0\}}$。
+\end{proof}
+\begin{corollary}
+  设 $(X,\|\cdot\|_X),(Y,\|\cdot\|_Y)$ 为赋范线性空间，$T:X\to Y$ 为连续线性算子。
+  则
+  \[
+    T\bigl(\overline{B}_X(0,0)\bigr)\subseteq \overline{B}_Y(0,0).
+  \]
+\end{corollary}
+
+\begin{proof}
+  由上一例知 $\overline{B}_X(0,0)=\overline{\{0\}}$。
+  又由命题~\ref{prop:continuity-closure-characterization}：对任意 $A\subset X$，有 $T(\overline{A})\subset \overline{T(A)}$。
+  取 $A=\{0\}$，并注意到 $T(0)=0$，得
+  \[
+    T\bigl(\overline{B}_X(0,0)\bigr)=T\bigl(\overline{\{0\}}\bigr)\subseteq \overline{T(\{0\})}
+    =\overline{\{0\}}=\overline{B}_Y(0,0).
+  \]
+\end{proof}
+
+\begin{proposition}
+  设 $(X,\|\cdot\|_X)$ 为赋范线性空间，$Y\subset X$ 为线性子空间。
+  对 $x\in X$ 记 $[x]=x+Y$。
+  定义
+  \[
+    \|[x]\|_{X/Y}\triangleq \inf\{\|z\|_X: z\in[x]\}
+    =\inf\{\|x+y\|_X: y\in Y\}.
+  \]
+  则 $\|\cdot\|_{X/Y}$ 为 $X/Y$ 上的半范数，并且对任意 $x\in X$ 有
+  \[
+    \|[x]\|_{X/Y}\le \|x\|_X.
+  \]
+\end{proposition}
+
+\begin{proof}
+  由于 $z\in[x]\iff z=x+y\ (y\in Y)$，故两种写法等价。
+  因为 $x\in[x]$，得 $\|[x]\|_{X/Y}\le \|x\|_X$。
+
+  再证齐次性与三角不等式。
+  任取标量 $\lambda$。若 $\lambda=0$ 则结论显然；若 $\lambda\ne0$，则
+  \[
+    \|\lambda[x]\|_{X/Y}
+    =\|[\lambda x]\|_{X/Y}
+    =\inf_{y\in Y}\|\lambda x-y\|_X
+    =\inf_{y\in Y}|\lambda|\,\|x-y/\lambda\|_X
+    =|\lambda|\,\|[x]\|_{X/Y},
+  \]
+  其中用到 $y/\lambda\in Y$。
+
+  任取 $x_1,x_2\in X$ 及任意 $y_1,y_2\in Y$，由三角不等式
+  \[
+    \|x_1+x_2+(y_1+y_2)\|_X\le \|x_1+y_1\|_X+\|x_2+y_2\|_X.
+  \]
+  对 $y_1,y_2$ 分别取下确界，得
+  \[
+    \|[x_1+x_2]\|_{X/Y}\le \|[x_1]\|_{X/Y}+\|[x_2]\|_{X/Y}.
+  \]
+\end{proof}
+\begin{proposition}
+  设 $(X,\|\cdot\|_X)$ 为赋范线性空间，$Y\subset X$ 为线性子空间。
+  对 $x\in X$ 记其等价类为 $[x]=x+Y$，并在商空间 $X/Y$ 上定义商范数
+  \[
+    \|[x]\|_{X/Y}\triangleq \inf\{\|z\|_X: z\in[x]\}.
+  \]
+  令商映射 $\pi:X\to X/Y,\ x\mapsto[x]$。
+  则 $\pi$ 为连续线性算子，并且对任意 $x\in X$ 有
+  \[
+    \|\pi(x)\|_{X/Y}\le \|x\|_X.
+  \]
+  特别地，对任意 $\varepsilon>0$，
+  \[
+    \pi\bigl(B_X(0,\varepsilon)\bigr)=B_{X/Y}(0,\varepsilon).
+  \]
+\end{proposition}
+
+\begin{proof}
+  显然 $\pi$ 线性。并且
+  \[
+    \|\pi(x)\|_{X/Y}=\|[x]\|_{X/Y}=\inf\{\|z\|_X:z\in[x]\}\le \|x\|_X,
+  \]
+  因为 $x\in[x]$。故 $\pi$ 有界从而连续。
+
+  下证 $\pi\bigl(B_X(0,\varepsilon)\bigr)=B_{X/Y}(0,\varepsilon)$。
+  若 $x\in B_X(0,\varepsilon)$，则由上式
+  \[
+    \|\pi(x)\|_{X/Y}\le\|x\|_X<\varepsilon,
+  \]
+  从而 $\pi(x)\in B_{X/Y}(0,\varepsilon)$，即 $\pi(B_X(0,\varepsilon))\subseteq B_{X/Y}(0,\varepsilon)$。
+
+  反之，若 $[x]\in B_{X/Y}(0,\varepsilon)$，则 $\|[x]\|_{X/Y}<\varepsilon$。
+  由下确界的定义，存在 $z\in[x]$ 使得 $\|z\|_X<\varepsilon$。
+  此时 $z\in B_X(0,\varepsilon)$，且 $[x]=[z]=\pi(z)$，故 $[x]\in\pi(B_X(0,\varepsilon))$。
+\end{proof}
+
+\begin{definition}
+  设 $(X,d),(Y,\rho)$ 为（伪）度量空间，$f:X\to Y$。
+  若对任意开集 $U\subset X$，都有 $f(U)$ 在 $Y$ 中开，则称 $f$ 为开映射。
+\end{definition}
+
+\begin{proposition}\label{prop:open-map-linear}
+  设 $(X,\tau_X),(Y,\tau_Y)$ 为拓扑线性空间，$T:X\to Y$ 为线性映射。
+  则 $T$ 为开映射当且仅当对任意 $0$ 的邻域 $U\subset X$，$T(U)$ 为 $0$ 的邻域。
+\end{proposition}
+
+\begin{proof}
+  $(\Rightarrow)$ 任取 $0$ 的邻域 $U\subset X$，可取开集 $V\subset X$ 使 $0\in V\subset U$。
+  因为 $T$ 为开映射，$T(V)$ 为开集且 $0=T(0)\in T(V)\subset T(U)$，故 $T(U)$ 为 $0$ 的邻域。
+
+  $(\Leftarrow)$ 任取开集 $G\subset X$，任取 $y_0\in T(G)$。
+  取 $x_0\in G$ 使 $T(x_0)=y_0$，则 $G-x_0$ 为 $0$ 的邻域。
+  由假设 $T(G-x_0)$ 为 $0$ 的邻域，故存在开集 $W\subset Y$ 使 $0\in W\subset T(G-x_0)$。
+  于是
+  \[
+    y_0+W\subset y_0+T(G-x_0)=T(x_0)+T(G-x_0)=T(G),
+  \]
+  从而 $y_0$ 为 $T(G)$ 的内点，故 $T(G)$ 为开集。
+\end{proof}
+
+\begin{corollary}
+  设 $(X,\|\cdot\|_X)$ 为赋范线性空间，$Y\subset X$ 为线性子空间。
+  在 $X/Y$ 上赋予商范数
+  \[
+    \|[x]\|_{X/Y}\triangleq \inf\{\|z\|_X: z\in[x]\},
+  \]
+  并令商映射 $\pi:X\to X/Y,\ x\mapsto[x]$。
+  则 $\pi$ 为开映射。
+\end{corollary}
+
+\begin{proof}
+  任取 $0$ 的邻域 $U\subset X$，可取 $\varepsilon>0$ 使 $B_X(0,\varepsilon)\subset U$。
+  对任意 $x\in B_X(0,\varepsilon)$，有
+  \[
+    \|\pi(x)\|_{X/Y}=\|[x]\|_{X/Y}\le \|x\|_X<\varepsilon,
+  \]
+  故 $\pi\bigl(B_X(0,\varepsilon)\bigr)\subset B_{X/Y}(0,\varepsilon)$。
+  反之若 $[x]\in B_{X/Y}(0,\varepsilon)$，则 $\|[x]\|_{X/Y}<\varepsilon$，
+  由下确界定义可取 $z\in[x]$ 使 $\|z\|_X<\varepsilon$，从而 $[x]=[z]=\pi(z)\in\pi(B_X(0,\varepsilon))$。
+  故 $\pi(B_X(0,\varepsilon))=B_{X/Y}(0,\varepsilon)\subset \pi(U)$，从而 $\pi(U)$ 为 $0$ 的邻域。
+  由命题~\ref{prop:open-map-linear} 知 $\pi$ 为开映射。
+\end{proof}
+\begin{proposition}
+  设 $(X,\tau)$ 为拓扑线性空间，取定 $x_0\in X$，定义平移映射
+  \[
+    \ell_{x_0}:X\to X,\qquad x\mapsto x_0+x.
+  \]
+  则 $\ell_{x_0}$ 为同胚，且 $\ell_{x_0}^{-1}=\ell_{-x_0}$。
+  特别地，对任意序列 $(x_n)\subset X$ 与 $x\in X$，有
+  \[
+    x_n\to x \iff x_0+x_n\to x_0+x.
+  \]
+\end{proposition}
+
+\begin{proof}
+  因为加法映射连续，故 $\ell_{x_0}$ 连续。
+  同理 $\ell_{-x_0}$ 连续，且显然 $\ell_{-x_0}\circ \ell_{x_0}=\mathrm{id}=\ell_{x_0}\circ \ell_{-x_0}$，
+  故 $\ell_{x_0}$ 为同胚。由同胚保序列收敛，得最后的等价式。
+\end{proof}
+
+\begin{definition}
+  设 $(X,d),(Y,\rho)$ 为（伪）度量空间，$f:X\to Y$。
+  若对任意闭集 $F\subset X$，都有 $f(F)$ 在 $Y$ 中闭，则称 $f$ 为闭映射。
+\end{definition}
+
+\begin{remark}
+  连续性、开映射性、闭映射性在一般情形下彼此独立。
+  \begin{enumerate}
+    \item 连续映射不一定是开映射：例如 $f:\mathbb{R}\to\mathbb{R}$，$f(x)=x^2$ 连续，但
+    \[
+      f((-1,1))=[0,1)
+    \]
+    不是开集。
+
+    \item 连续映射不一定是闭映射：例如包含映射 $i:(-1,1)\to\mathbb{R}$ 连续，但 $(-1,1)$ 在 $(-1,1)$ 中闭，而
+    \[
+      i((-1,1))=(-1,1)
+    \]
+    在 $\mathbb{R}$ 中不闭。
+
+    \item 开映射不一定连续：令 $d$ 为 $\mathbb{R}$ 上通常度量，$d_{\mathrm{dis}}$ 为离散度量。
+    恒等映射 $\mathrm{id}:(\mathbb{R},d)\to(\mathbb{R},d_{\mathrm{dis}})$ 为开映射（像集在离散拓扑下总是开），但不连续。
+  \end{enumerate}
+\end{remark}
+
+\begin{proposition}
+  设 $(X,d),(Y,\rho)$ 为（伪）度量空间，$f:X\to Y$ 连续，$D\subset X$ 在 $X$ 中稠密。
+  则 $f(D)$ 在 $f(X)$ 中稠密（以子空间拓扑计）。
+  特别地，若 $f$ 满射，则 $f(D)$ 在 $Y$ 中稠密。
+\end{proposition}
+
+\begin{proof}
+  因 $D$ 稠密，$\overline{D}=X$。
+  由命题~\ref{prop:continuity-closure-characterization}（对任意 $A\subset X$ 有 $f(\overline{A})\subset\overline{f(A)}$），得
+  \[
+    f(X)=f(\overline{D})\subset \overline{f(D)}.
+  \]
+  因此 $f(D)$ 在 $f(X)$ 中稠密；若 $f$ 满射则 $f(X)=Y$。
+\end{proof}
+
+\begin{theorem}
+  设 $(X,d),(Y,\rho)$ 为度量空间，$f:X\to Y$ 连续，$K\subset X$ 紧致。
+  则 $f(K)$ 在 $Y$ 中紧致。
+\end{theorem}
+
+\begin{proof}
+  任取序列 $(y_n)\subset f(K)$，可取 $x_n\in K$ 使 $y_n=f(x_n)$。
+  由 $K$ 紧致知存在子列 $(x_{n_k})$ 收敛到某点 $x\in K$。
+  由连续性得 $y_{n_k}=f(x_{n_k})\to f(x)\in f(K)$。
+  故 $f(K)$ 序列紧，从而紧致。
+\end{proof}
+\begin{proposition}
+  设 $(X,d),(Y,\rho)$ 为（伪）度量空间，$f:X\to Y$ 为连续满射。
+  \begin{enumerate}
+    \item 若 $f$ 为开映射，则对任意 $\Omega\subseteq Y$，
+    \[
+      \Omega\text{ 在 }Y\text{ 中开}\iff f^{-1}(\Omega)\text{ 在 }X\text{ 中开}.
+    \]
+    \item 若 $f$ 为闭映射，则对任意 $F\subseteq Y$，
+    \[
+      F\text{ 在 }Y\text{ 中闭}\iff f^{-1}(F)\text{ 在 }X\text{ 中闭}.
+    \]
+  \end{enumerate}
+\end{proposition}
+
+\begin{proof}
+  \begin{enumerate}
+    \item “$\Rightarrow$” 由 $f$ 连续性知开集原像开。
+    “$\Leftarrow$” 若 $f^{-1}(\Omega)$ 在 $X$ 中开，则由 $f$ 为开映射知 $f(f^{-1}(\Omega))$ 在 $Y$ 中开。
+    又因 $f$ 满射，$f(f^{-1}(\Omega))=\Omega$，故 $\Omega$ 开。
+
+    \item “$\Rightarrow$” 由 $f$ 连续性知闭集原像闭。
+    “$\Leftarrow$” 若 $f^{-1}(F)$ 在 $X$ 中闭，则由 $f$ 为闭映射知 $f(f^{-1}(F))$ 在 $Y$ 中闭。
+    又因 $f$ 满射，$f(f^{-1}(F))=F$，故 $F$ 闭。
+  \end{enumerate}
+\end{proof}
+
+\begin{proposition}
+  设 $(X,\|\cdot\|_X)$ 为赋范线性空间，$Y\subset X$ 为线性子空间。
+  在 $X/Y$ 上定义
+  \[
+    \|[x]\|_{X/Y}\triangleq \inf\{\|z\|_X: z\in[x]\}.
+  \]
+  则 $\|\cdot\|_{X/Y}$ 为 $X/Y$ 上的半范数，并且对任意 $x\in X$，
+  \[
+    \|[x]\|_{X/Y}=0 \iff x\in\overline{Y}.
+  \]
+  特别地，$\|\cdot\|_{X/Y}$ 为范数当且仅当 $Y$ 在 $X$ 中为闭集。
+\end{proposition}
+
+\begin{proof}
+  先证其为半范数。显然 $\|[x]\|_{X/Y}\ge0$。
+  对任意 $\lambda\in\mathbb{F}$，
+  \[
+    \|\lambda[x]\|_{X/Y}
+    =\|[\lambda x]\|_{X/Y}
+    =\inf_{y\in Y}\|\lambda x-y\|_X
+    =\inf_{y\in Y}|\lambda|\,\|x-y/\lambda\|_X
+    =|\lambda|\,\|[x]\|_{X/Y},
+  \]
+  其中当 $\lambda\ne0$ 时用到 $y/\lambda\in Y$；$\lambda=0$ 情形显然。
+  又任取 $x_1,x_2\in X$ 与任意 $y_1,y_2\in Y$，由三角不等式
+  \[
+    \|x_1+x_2-(y_1+y_2)\|_X\le \|x_1-y_1\|_X+\|x_2-y_2\|_X.
+  \]
+  对右端分别取下确界得
+  \[
+    \|[x_1+x_2]\|_{X/Y}\le \|[x_1]\|_{X/Y}+\|[x_2]\|_{X/Y}.
+  \]
+  故 $\|\cdot\|_{X/Y}$ 为半范数。
+
+  再证零点刻画。
+  若 $\|[x]\|_{X/Y}=0$，则对每个 $n$ 可取 $y_n\in Y$ 使 $\|x-y_n\|_X<1/n$，
+  从而 $y_n\to x$，故 $x\in\overline{Y}$。
+  反之若 $x\in\overline{Y}$，则存在 $y_n\in Y$ 使 $\|x-y_n\|_X\to0$，
+  于是 $\|[x]\|_{X/Y}\le \|x-y_n\|_X$ 对每个 $n$ 成立，故 $\|[x]\|_{X/Y}=0$。
+
+  因而 $\|\cdot\|_{X/Y}$ 为范数
+  \[
+    \iff \bigl(\|[x]\|_{X/Y}=0\Rightarrow [x]=[0]\bigr)
+    \iff (\overline{Y}=Y)
+    \iff Y\text{ 闭}.
+  \]
+\end{proof}
+\begin{proposition}
+  设 $(X,\|\cdot\|)$ 为半范数空间，记
+  \[
+    N\triangleq \{x\in X:\|x\|=0\}.
+  \]
+  则 $N$ 为 $X$ 的线性子空间，并且在商空间 $X/N$ 上定义
+  \[
+    \|[x]\|_{X/N}\triangleq \|x\|
+  \]
+  得到 $X/N$ 上的范数。
+  特别地，对任意 $x\in X$，有
+  \[
+    \|[x]\|_{X/N}=\inf\{\|x+y\|:y\in N\}\le \|x\|.
+  \]
+\end{proposition}
+
+\begin{proof}
+  因为半范数满足齐次性与三角不等式，故对任意 $x_1,x_2\in N$ 与标量 $\lambda$，
+  \[
+    \|x_1+x_2\|\le \|x_1\|+\|x_2\|=0,\qquad \|\lambda x_1\|=|\lambda|\|x_1\|=0,
+  \]
+  从而 $x_1+x_2\in N$ 且 $\lambda x_1\in N$，故 $N$ 为线性子空间。
+
+  若 $[x]=[x']$，则 $x-x'\in N$，于是
+  \[
+    \|x\|=\|(x-x')+x'\|\le \|x-x'\|+\|x'\|=\|x'\|,
+  \]
+  同理 $\|x'\|\le \|x\|$，故 $\|x\|=\|x'\|，\|\cdot\|_{X/N}$ 良定义。
+  由半范数的齐次性与三角不等式可直接验证 $\|\cdot\|_{X/N}$ 满足范数三公理。
+
+  最后一式中，因为 $0\in N$，所以
+  \[
+    \inf\{\|x+y\|:y\in N\}\le \|x+0\|=\|x\|.
+  \]
+\end{proof}
+\begin{lemma}\label{lem:geometric-cauchy}
+  设 $(X,d)$ 为度量空间，$(y_k)$ 为 $X$ 中序列。
+  若对每个 $k$ 都有
+  \[
+    d(y_{k+1},y_k)<2^{-k},
+  \]
+  则 $(y_k)$ 为柯西列。
+\end{lemma}
+
+\begin{proof}
+  任取 $\varepsilon>0$。可取 $N$ 使得
+  \[
+    \sum_{k=N}^{\infty}2^{-k}<\varepsilon.
+  \]
+  若 $m>n\ge N$，由三角不等式
+  \[
+    d(y_m,y_n)\le \sum_{k=n}^{m-1}d(y_{k+1},y_k)<\sum_{k=n}^{m-1}2^{-k}\le \sum_{k=N}^{\infty}2^{-k}<\varepsilon.
+  \]
+  故 $(y_k)$ 为柯西列。
+\end{proof}
+\begin{theorem}
+  设 $(X,\|\cdot\|)$ 为完备赋范线性空间，$Y\subset X$ 为闭线性子空间。
+  在商空间 $X/Y$ 上赋予商范数
+  \[
+    \|[x]\|_{X/Y}\triangleq \inf\{\|x-y\|:y\in Y\}.
+  \]
+  则 $(X/Y,\|\cdot\|_{X/Y})$ 为完备赋范线性空间。
+\end{theorem}
+
+\begin{proof}
+  任取柯西列 $([x_n])\subset X/Y$。递归选取 $y_n\in Y$ 使得
+  \[
+    \|x_{n+1}-x_n-(y_{n+1}-y_n)\|<2^{-n}\qquad(n\in\mathbb{N}),
+  \]
+  这是因为
+  \[
+    \|[x_{n+1}]-[x_n]\|_{X/Y}=\inf_{y\in Y}\|x_{n+1}-x_n-y\|
+  \]
+  且可逼近下确界。令 $z_n\triangleq x_n-y_n$，则
+  \[
+    \|z_{n+1}-z_n\|=\|x_{n+1}-x_n-(y_{n+1}-y_n)\|<2^{-n}.
+  \]
+  由引理~\ref{lem:geometric-cauchy} 知 $(z_n)$ 为 $X$ 中柯西列。因 $X$ 完备，存在 $z\in X$ 使 $z_n\to z$。
+
+  下证 $[x_n]\to [z]$。注意到 $[x_n]=[z_n]$，且
+  \[
+    \|[z_n]-[z]\|_{X/Y}\le \|z_n-z\|\to 0,
+  \]
+  故 $[x_n]\to [z]$，从而 $X/Y$ 完备。
+\end{proof}
+
+\begin{remark}
+  上述定理的另一证法：设 $(\alpha_n)$ 为 $X/Y$ 中柯西列。
+  取子列 $(\beta_n)$ 使得对任意 $n$ 有
+  \[
+    \|\beta_{n+1}-\beta_n\|_{X/Y}<2^{-n}.
+  \]
+  递归选取 $x_n\in\beta_n$ 使得 $\|x_{n+1}-x_n\|<2^{-n}$：
+  取 $x_1\in\beta_1$；因 $\|\beta_2-\beta_1\|_{X/Y}<\frac{1}{2}$，存在 $x_2\in\beta_2$ 使 $\|x_2-x_1\|<\frac{1}{2}$；
+  因 $\|\beta_3-\beta_2\|_{X/Y}<\frac{1}{4}$，存在 $x_3\in\beta_3$ 使 $\|x_3-x_2\|<\frac{1}{4}$；依此类推。
+  由引理~\ref{lem:geometric-cauchy} 知 $(x_n)$ 为 $X$ 中柯西列。
+
+  因 $(X,\|\cdot\|)$ 完备，设 $x_n\to x$，其中 $x\in X$。
+  由 $\pi:X\to X/Y$ 连续，得 $\pi(x_n)\to\pi(x)$，即 $\beta_n\to\pi(x)$。
+  从而子列 $(\beta_n)$ 收敛，再由命题~\ref{prop:cauchy-subsequence-limit} 知柯西列 $(\alpha_n)$ 收敛。
+\end{remark}
+
+\begin{theorem}
+  设 $X,Y$ 为拓扑线性空间，$f:X\to Y$ 线性。则下列命题等价：
+  \begin{enumerate}
+    \item $f$ 连续（等价于 $f$ 在 $0$ 处连续）；
+    \item $f$ 有界；
+    \item 存在 $U\in\mathcal{N}_0^X$ 使得 $f(U)$ 有界。
+  \end{enumerate}
+\end{theorem}
+
+\begin{proof}
+  $(1)\Leftrightarrow(2)$ 已证。
+
+  $(2)\Rightarrow(3)$：显然成立。
+
+  $(3)\Rightarrow(2)$：设存在 $U\in\mathcal{N}_0^X$ 使 $f(U)$ 有界。
+  任取 $X$ 中有界集 $E$，则存在 $\lambda>0$ 使 $E\subset\lambda U$。
+  从而
+  \[
+    f(E)\subset f(\lambda U)=\lambda f(U).
+  \]
+  因 $f(U)$ 有界，故 $\lambda f(U)$ 有界，从而 $f(E)$ 有界。
+  因此 $f$ 有界。
+\end{proof}
+
+\begin{proposition}
+  设 $(X,d)$ 为度量空间，$K\subset X$ 紧致。则 $K$ 为闭集。
+\end{proposition}
+
+\begin{proof}
+  设 $x\notin K$。对每个 $y\in K$，令 $r_y\triangleq d(x,y)/2>0$。
+  则 $\{B(y,r_y)\}_{y\in K}$ 为 $K$ 的开覆盖。
+  由 $K$ 紧致，存在有限子覆盖 $B(y_1,r_{y_1}),\ldots,B(y_n,r_{y_n})$。
+  令
+  \[
+    r\triangleq\min\{r_{y_1},\ldots,r_{y_n}\}>0.
+  \]
+  则 $B(x,r)\cap K=\varnothing$：若存在 $z\in B(x,r)\cap K$，则 $z\in B(y_i,r_{y_i})$ 对某 $i$ 成立，从而
+  \[
+    d(x,y_i)\le d(x,z)+d(z,y_i)<r+r_{y_i}\le 2r_{y_i}=d(x,y_i),
+  \]
+  矛盾。故 $x\notin\overline{K}$，从而 $K=\overline{K}$，即 $K$ 闭。
+\end{proof}
+
+\begin{proposition}\label{prop:linear-Fn-continuous}
+  设 $\mathbb{F}=\mathbb{R}$ 或 $\mathbb{C}$，$(X,\|\cdot\|)$ 为 $\mathbb{F}$ 上的赋范线性空间，$f:\mathbb{F}^n\to X$ 线性。
+  则 $f$ 连续。
+\end{proposition}
+
+\begin{proof}
+  设 $e_1,\ldots,e_n$ 为 $\mathbb{F}^n$ 的标准基。
+  令 $M\triangleq\max\{\|f(e_1)\|,\ldots,\|f(e_n)\|\}$。
+  对任意 $(\lambda_1,\ldots,\lambda_n)^\top\in\mathbb{F}^n$，有
+  \[
+    \Bigl\|f\bigl((\lambda_1,\ldots,\lambda_n)^\top\bigr)\Bigr\|
+    =\|\lambda_1 f(e_1)+\cdots+\lambda_n f(e_n)\|
+    \le |\lambda_1|\|f(e_1)\|+\cdots+|\lambda_n|\|f(e_n)\|
+    \le M(|\lambda_1|+\cdots+|\lambda_n|).
+  \]
+  因此 $f$ 有界，从而连续。
+\end{proof}
+
+\begin{theorem}
+  设 $X$ 为有限维赋范线性空间，$f:X\to\mathbb{F}^n$ 为线性同构。
+  则 $f$ 为同胚。
+\end{theorem}
+
+\begin{proof}
+  由命题~\ref{prop:linear-Fn-continuous} 知 $f^{-1}:\mathbb{F}^n\to X$ 连续。下证 $f$ 连续。
+
+  考虑 $(\mathbb{F}^n,\|\cdot\|_2)$ 中的单位球面
+  \[
+    S\triangleq\{y\in\mathbb{F}^n:\|y\|_2=1\}.
+  \]
+  因 $0\notin S$，故 $0\notin f^{-1}(S)$。
+  又 $S$ 为 $\mathbb{F}^n$ 中紧集，$f^{-1}$ 连续，故 $f^{-1}(S)$ 为 $X$ 中紧集，从而闭。
+  因此存在 $\varepsilon>0$ 使得
+  \[
+    \overline{B}_X(0,\varepsilon)\cap f^{-1}(S)=\varnothing,
+  \]
+  即 $f(\overline{B}_X(0,\varepsilon))\cap S=\varnothing$。
+
+  下证 $f(\overline{B}_X(0,\varepsilon))\subset \overline{B}_{\mathbb{F}^n}(0,1)$。
+  反设存在 $y\in f(\overline{B}_X(0,\varepsilon))$ 使得 $\|y\|_2>1$。
+  则 $\frac{y}{\|y\|_2}\in S$。
+  设 $y=f(x)$，其中 $\|x\|\le\varepsilon$。
+  则
+  \[
+    \frac{y}{\|y\|_2}=f\Bigl(\frac{x}{\|y\|_2}\Bigr)\in f(\overline{B}_X(0,\varepsilon)),
+  \]
+  因为 $\bigl\|\frac{x}{\|y\|_2}\bigr\|=\frac{\|x\|}{\|y\|_2}<\|x\|\le\varepsilon$。
+  这与 $f(\overline{B}_X(0,\varepsilon))\cap S=\varnothing$ 矛盾。
+
+  故 $f(\overline{B}_X(0,\varepsilon))$ 有界，从而 $f$ 连续。
+\end{proof}
+
+\begin{corollary}
+  设 $X$ 为有限维赋范线性空间，$(Y,\|\cdot\|)$ 为赋范线性空间，$f:X\to Y$ 线性。
+  则 $f$ 连续。
+\end{corollary}
+
+\begin{proof}
+  设 $\dim X=n$。存在线性同构 $\theta:X\to\mathbb{F}^n$。
+  令 $g\triangleq f\circ\theta^{-1}:\mathbb{F}^n\to Y$，则下图交换：
+  \[
+    \begin{tikzcd}
+      X \arrow[r,"f"] \arrow[d,"\theta"',"\cong"] & Y \\
+      \mathbb{F}^n \arrow[ur,"g"']
+    \end{tikzcd}
+  \]
+  由前述命题知 $g$ 连续，由前述定理知 $\theta$ 为同胚。
+  因此 $f=g\circ\theta$ 为连续映射的复合，从而连续。
+\end{proof}
+
+\begin{definition}
+  设 $X,Y$ 为拓扑线性空间，$f:X\to Y$ 线性。
+  称 $f$ 为\textbf{半开映射}，若对任意 $U\in\mathcal{N}_0^X$，都有
+  \[
+    \overline{f(U)}\in\mathcal{N}_0^Y.
+  \]
+\end{definition}
+
+\begin{lemma}\label{lem:semi-open-to-open}
+  设 $(X,\|\cdot\|)$ 为完备赋范线性空间，$Y$ 为赋范线性空间，$f:X\to Y$ 为连续线性满射且为半开映射。
+  则 $f$ 为开映射。
+\end{lemma}
+
+\begin{proof}
+  只需证对任意 $U\in\mathcal{N}_0^X$，有 $f(U)\in\mathcal{N}_0^Y$。
+  取 $\varepsilon>0$ 使 $\overline{B}_X(0,2\varepsilon)\subset U$。
+  令 $V_n\triangleq B_X(0,\varepsilon/2^n)$。
+  因 $f$ 半开，$\overline{f(V_0)}\in\mathcal{N}_0^Y$，故只需证 $\overline{f(V_0)}\subset f(U)$。
+
+  任取 $y\in\overline{f(V_0)}$。递归构造序列 $(x_n)_{n\ge 0}\subset X$ 与 $(y_n)_{n\ge 1}\subset Y$：
+  因 $y\in\overline{f(V_0)}$ 且 $\overline{f(V_1)}\in\mathcal{N}_0^Y$，故 $(y-\overline{f(V_1)})\cap f(V_0)\ne\varnothing$。
+  取 $x_0\in V_0$ 使 $y-y_1=f(x_0)$，其中 $y_1\in\overline{f(V_1)}$。
+  因 $y_1\in\overline{f(V_1)}$ 且 $\overline{f(V_2)}\in\mathcal{N}_0^Y$，故 $(y_1-\overline{f(V_2)})\cap f(V_1)\ne\varnothing$。
+  取 $x_1\in V_1$ 使 $y_1-y_2=f(x_1)$，其中 $y_2\in\overline{f(V_2)}$。
+  依此类推，得
+  \[
+    x_n\in V_n,\quad y_n\in\overline{f(V_n)},\quad y_{n}-y_{n+1}=f(x_n).
+  \]
+
+  令 $S_n\triangleq x_0+x_1+\cdots+x_n$。因 $\|x_k\|<\varepsilon/2^k$，对 $m<n$ 有
+  \[
+    \|S_n-S_m\|=\|x_{m+1}+\cdots+x_n\|\le\sum_{k=m+1}^{n}\|x_k\|<\sum_{k=m+1}^{n}\frac{\varepsilon}{2^k}<\frac{\varepsilon}{2^m},
+  \]
+  故 $(S_n)$ 为柯西列。因 $X$ 完备，存在 $S\in X$ 使 $S_n\to S$。
+  且
+  \[
+    \|S\|\le\sum_{k=0}^{\infty}\|x_k\|<\sum_{k=0}^{\infty}\frac{\varepsilon}{2^k}=2\varepsilon,
+  \]
+  故 $S\in\overline{B}_X(0,2\varepsilon)\subset U$。
+
+  下证 $y_n\to 0$。任取 $\beta\in\mathcal{N}_0^Y$。因 $f$ 连续，存在 $W\in\mathcal{N}_0^X$ 使 $f(W)\subset\beta$。
+  取 $\beta_0\in\mathcal{N}_0^Y$ 使 $\overline{\beta_0}\subset\beta$。
+  存在 $N$ 使 $n\ge N$ 时 $V_n\subset W$，从而
+  \[
+    \overline{f(V_n)}\subset\overline{f(W)}\subset\overline{\beta_0}\subset\beta.
+  \]
+  故 $n\ge N$ 时 $y_n\in\overline{f(V_n)}\subset\beta$，即 $y_n\to 0$。
+
+  由 $f$ 连续及 $S_n\to S$ 知 $f(S_n)\to f(S)$。
+  又由
+  \[
+    y-y_{n+1}=(y-y_1)+(y_1-y_2)+\cdots+(y_n-y_{n+1})=f(x_0)+f(x_1)+\cdots+f(x_n)=f(S_n),
+  \]
+  令 $n\to\infty$，得 $y=f(S)\in f(U)$。
+  因此 $\overline{f(V_0)}\subset f(U)$，从而 $f(U)\in\mathcal{N}_0^Y$。
+\end{proof}
+
+\begin{remark}
+  设 $(X,\|\cdot\|)$ 为赋范线性空间，$\Omega\subset X$ 为开集，$A\subset X$。
+  则 $\Omega+A$ 仍为开集。
+  事实上，
+  \[
+    \Omega+A=\bigcup_{a\in A}(\Omega+a),
+  \]
+  而每个 $\Omega+a$ 为开集（因平移 $\lambda_a:\Omega\mapsto\Omega+a$ 为同胚），故并集为开。
+\end{remark}
+
+\begin{proposition}\label{prop:semi-open-characterization}
+  设 $X,Y$ 为拓扑线性空间，$f:X\to Y$ 线性。则
+  \[
+    f\text{ 半开}\quad\Longleftrightarrow\quad\forall\,U\in\mathcal{N}_0^X,\;\overline{f(U)}^\circ\ne\varnothing.
+  \]
+\end{proposition}
+
+\begin{proof}
+  $(\Rightarrow)$：若 $f$ 半开，则 $\overline{f(U)}\in\mathcal{N}_0^Y$，故 $0\in\overline{f(U)}^\circ$，即 $\overline{f(U)}^\circ\ne\varnothing$。
+
+  $(\Leftarrow)$：设 $\forall\,U\in\mathcal{N}_0^X$ 有 $\overline{f(U)}^\circ\ne\varnothing$。
+  对于 $U$，存在 $V\in\mathcal{N}_0^X$ 使 $V-V\subset U$。
+  因 $\overline{f(V)}^\circ\ne\varnothing$，设 $\Omega\triangleq\overline{f(V)}^\circ$ 为非空开集。
+  则
+  \[
+    0\in\overline{\Omega}-\Omega\subset\overline{f(V)}-\overline{f(V)}\subset\overline{f(V)-f(V)}=\overline{f(V-V)}\subset\overline{f(U)}.
+  \]
+  因 $\overline{\Omega}-\Omega$ 为开集（由上述注记），故 $\overline{f(U)}\in\mathcal{N}_0^Y$，即 $f$ 半开。
+\end{proof}
+
+\begin{lemma}\label{lem:second-category-semi-open}
+  设 $X,Y$ 为拓扑线性空间，$f:X\to Y$ 线性。
+  若 $f(X)$ 在 $Y$ 中为第二纲集，则 $f$ 为半开映射。
+\end{lemma}
+
+\begin{proof}
+  任取 $U\in\mathcal{N}_0^X$。因 $X=\bigcup_{n=1}^{\infty}nU$，故
+  \[
+    f(X)=f\Bigl(\bigcup_{n=1}^{\infty}nU\Bigr)=\bigcup_{n=1}^{\infty}nf(U).
+  \]
+  因 $f(X)$ 为第二纲集，而 $\bigcup_{n=1}^{\infty}nf(U)=\bigcup_{n=1}^{\infty}\overline{nf(U)}$ 覆盖 $f(X)$，
+  故存在 $n$ 使 $\overline{nf(U)}^\circ\ne\varnothing$。
+  从而 $\overline{f(U)}^\circ=\frac{1}{n}\overline{nf(U)}^\circ\ne\varnothing$。
+  由命题~\ref{prop:semi-open-characterization} 知 $f$ 半开。
+\end{proof}
+
+\begin{remark}
+  设 $Y$ 为拓扑线性空间的非空开子集。若 $Y$ 为 $X$ 的线性子空间，则 $Y=X$。
+  事实上，$0\cdot x=0\in Y$ 对任意 $x\in X$ 成立。
+  因 $Y$ 开，存在 $\varepsilon>0$ 使 $|\lambda|<\varepsilon$ 时 $\lambda x\in Y$。
+  取 $\lambda\ne 0$ 满足 $|\lambda|<\varepsilon$，则 $\lambda x\in Y$，从而 $x=\frac{1}{\lambda}(\lambda x)\in Y$。
+  故 $X\subset Y$，即 $Y=X$。
+\end{remark}
+
+\begin{theorem}[开映射定理]\label{thm:open-mapping}
+  设 $X$ 为完备赋范线性空间，$Y$ 为赋范线性空间，$f:X\to Y$ 为连续线性映射。
+  若 $f(X)$ 在 $Y$ 中为第二纲集，则 $f$ 为开映射，且 $f(X)=Y$。
+\end{theorem}
+
+\begin{proof}
+  由引理~\ref{lem:second-category-semi-open} 知 $f$ 半开。
+  由引理~\ref{lem:semi-open-to-open} 知 $f$ 为开映射。
+  从而 $f(X)$ 为 $Y$ 中的开集（因 $X$ 开）。
+  又 $f(X)$ 为 $Y$ 的线性子空间，由上述注记知 $f(X)=Y$。
+\end{proof}
+
+\begin{corollary}
+  设 $X,Y$ 为 Banach 空间，$f:X\to Y$ 为连续线性满射。则 $f$ 为开映射。
+\end{corollary}
+
+\begin{proof}
+  由定理~\ref{thm:baire-category}，完备度量空间自身为第二纲集。
+  因 $f$ 满射，$f(X)=Y$ 为第二纲集，由定理~\ref{thm:open-mapping} 知 $f$ 为开映射。
+\end{proof}
+
+\begin{theorem}[商空间同构定理]
+  设 $X,Y$ 为 Banach 空间，$f:X\to Y$ 为连续线性满射。
+  则存在唯一的线性同构 $\bar{f}:X/\ker f\to Y$ 使下图交换，且 $\bar{f}$ 为同胚：
+  \[
+    \begin{tikzcd}
+      X \arrow[r,"f"] \arrow[d,"\pi"'] & Y \\
+      X/\ker f \arrow[ur,"\bar{f}"',"\cong"]
+    \end{tikzcd}
+  \]
+  即 $Y\cong X/\ker f$（拓扑同构）。
+\end{theorem}
+
+\begin{proof}
+  由代数知识，存在唯一的线性同构 $\bar{f}:X/\ker f\to Y$ 使 $f=\bar{f}\circ\pi$。
+  因 $\pi$ 连续且 $f$ 连续，故 $\bar{f}$ 连续。
+  由上述推论，$f$ 为开映射。
+  因 $\pi$ 为满射，对任意 $X/\ker f$ 中的开集 $U$，有
+  \[
+    \bar{f}(U)=f(\pi^{-1}(U))
+  \]
+  为 $Y$ 中的开集（因 $\pi^{-1}(U)$ 开且 $f$ 开）。
+  故 $\bar{f}$ 为开映射，从而 $\bar{f}$ 为同胚。
+\end{proof}
+
+\begin{proposition}\label{prop:closure-epsilon-intersection}
+  设 $(X,\|\cdot\|)$ 为赋范线性空间，$\Omega\subset X$，$(\varepsilon_n)$ 为正数列且 $\varepsilon_n\to 0$。则
+  \[
+    \bigcap_{n=1}^{\infty}\bigl(\Omega+B(0,\varepsilon_n)\bigr)=\overline{\Omega}.
+  \]
+\end{proposition}
+
+\begin{proof}
+  设 $x\in\overline{\Omega}$。对任意 $n$，存在 $y\in\Omega$ 使 $\|x-y\|<\varepsilon_n$，
+  即 $x\in y+B(0,\varepsilon_n)\subset\Omega+B(0,\varepsilon_n)$。
+  故 $x\in\bigcap_{n=1}^{\infty}(\Omega+B(0,\varepsilon_n))$。
+
+  反之，设 $x\in\bigcap_{n=1}^{\infty}(\Omega+B(0,\varepsilon_n))$。
+  对任意 $\varepsilon>0$，取 $n$ 使 $\varepsilon_n<\varepsilon$。
+  则 $x\in\Omega+B(0,\varepsilon_n)\subset\Omega+B(0,\varepsilon)$，
+  即存在 $y\in\Omega$ 使 $\|x-y\|<\varepsilon$。
+  由命题~\ref{prop:closure-ball-intersection} 知 $x\in\overline{\Omega}$。
+\end{proof}
+
+\begin{proposition}
+  设 $(X,\|\cdot\|)$ 为赋范线性空间。若 $0$ 点存在一个紧邻域，则 $\dim X<+\infty$。
+\end{proposition}
+
+\begin{proof}
+  设 $U\in\mathcal{N}_0$ 为紧集。则 $\frac{1}{2}U\in\mathcal{N}_0$。
+  因 $U$ 紧，存在有限个点 $x_1,\ldots,x_n\in X$ 使
+  \[
+    U\subset\bigl(x_1+\tfrac{1}{2}U\bigr)\cup\cdots\cup\bigl(x_n+\tfrac{1}{2}U\bigr).
+  \]
+  令 $Y\triangleq\mathrm{span}\{x_1,\ldots,x_n\}$，则 $\dim Y<+\infty$，故 $Y$ 为闭子空间。
+  由上述覆盖知 $U\subset Y+\frac{1}{2}U$。从而
+  \[
+    U\subset Y+\tfrac{1}{2}U\subset Y+\tfrac{1}{2}(Y+\tfrac{1}{2}U)=Y+\tfrac{1}{4}U.
+  \]
+  递归地，$U\subset Y+\frac{1}{2^n}U$ 对任意 $n$ 成立。
+  由命题~\ref{prop:closure-epsilon-intersection} 知
+  \[
+    U\subset\bigcap_{n=1}^{\infty}\bigl(Y+\tfrac{1}{2^n}U\bigr)=\overline{Y}=Y.
+  \]
+  因此 $U\subset Y$，而 $U\in\mathcal{N}_0$，由前述注记知 $Y=X$，故 $\dim X=\dim Y<+\infty$。
+\end{proof}
+
+\begin{proposition}\label{prop:subspace-open-characterization}
+  设 $(X,d)$ 为度量空间，$Y\subset X$，$d_Y\triangleq d|_{Y\times Y}$。
+  则 $U\subset Y$ 开于 $(Y,d_Y)$ 当且仅当存在 $V$ 开于 $(X,d)$ 使 $U=V\cap Y$。
+\end{proposition}
+
+\begin{proof}
+  $(\Rightarrow)$：设 $U$ 开于 $(Y,d_Y)$。对任意 $x\in U$，存在 $\varepsilon_x>0$ 使 $B_Y(x,\varepsilon_x)\subset U$。
+  注意到 $B_Y(x,\varepsilon_x)=B_X(x,\varepsilon_x)\cap Y$，故
+  \[
+    U=\bigcup_{x\in U}B_Y(x,\varepsilon_x)=\bigcup_{x\in U}\bigl(B_X(x,\varepsilon_x)\cap Y\bigr)=\Bigl(\bigcup_{x\in U}B_X(x,\varepsilon_x)\Bigr)\cap Y.
+  \]
+  令 $V\triangleq\bigcup_{x\in U}B_X(x,\varepsilon_x)$，则 $V$ 开于 $X$ 且 $U=V\cap Y$。
+
+  $(\Leftarrow)$：设 $U=V\cap Y$，其中 $V$ 开于 $X$。
+  对任意 $x\in U$，有 $x\in V$。因 $V$ 开，存在 $\varepsilon>0$ 使 $B_X(x,\varepsilon)\subset V$。
+  从而 $B_Y(x,\varepsilon)=B_X(x,\varepsilon)\cap Y\subset V\cap Y=U$。
+  故 $U$ 开于 $(Y,d_Y)$。
+\end{proof}
+
+\begin{proposition}
+  设 $(X,d)$ 为度量空间，$Y\subset X$。则
+  $Y$ 为紧空间当且仅当对任意 $X$ 中开集族 $\mathcal{U}$ 覆盖 $Y$，存在 $\mathcal{U}$ 的有限子族覆盖 $Y$。
+\end{proposition}
+
+\begin{proof}
+  $(\Rightarrow)$：设 $Y$ 紧，$\mathcal{U}=\{U_\alpha\}_{\alpha\in I}$ 为 $X$ 中开集族覆盖 $Y$。
+  由命题~\ref{prop:subspace-open-characterization}，$V_\alpha\triangleq U_\alpha\cap Y$ 开于 $Y$，且 $\{V_\alpha\}_{\alpha\in I}$ 为 $Y$ 的开覆盖。
+  因 $Y$ 紧，存在有限子族 $\{V_{\alpha_1},\ldots,V_{\alpha_n}\}$ 覆盖 $Y$。
+  从而 $\{U_{\alpha_1},\ldots,U_{\alpha_n}\}$ 为 $\mathcal{U}$ 的有限子族覆盖 $Y$。
+
+  $(\Leftarrow)$：设 $\{W_\beta\}_{\beta\in J}$ 为 $Y$ 的开覆盖（开于 $Y$）。
+  由命题~\ref{prop:subspace-open-characterization}，对每个 $\beta$，存在 $U_\beta$ 开于 $X$ 使 $W_\beta=U_\beta\cap Y$。
+  则 $\{U_\beta\}_{\beta\in J}$ 为 $X$ 中开集族覆盖 $Y$。
+  由假设，存在有限子族 $\{U_{\beta_1},\ldots,U_{\beta_m}\}$ 覆盖 $Y$。
+  从而 $\{W_{\beta_1},\ldots,W_{\beta_m}\}$ 为 $\{W_\beta\}$ 的有限子族覆盖 $Y$，即 $Y$ 紧。
+\end{proof}
+
+\begin{definition}
+  设 $(X,d)$ 为度量空间，$x\in X$。
+  称 $\mathcal{B}\subset\mathcal{N}_x$ 为 $x$ 的\textbf{邻域基}，若对任意 $U\in\mathcal{N}_x$，存在 $B\in\mathcal{B}$ 使 $B\subset U$。
+\end{definition}
+
+\begin{example}
+  $\{B(x,\frac{1}{n}):n\in\mathbb{N}^*\}$ 为 $x$ 的一个邻域基。
+\end{example}
+
+\begin{proposition}
+  设 $(X,\|\cdot\|)$ 为赋范线性空间，$\Omega\subset X$，$\mathcal{B}$ 为 $0$ 点的一个邻域基。则
+  \[
+    \overline{\Omega}=\bigcap_{B\in\mathcal{B}}(\Omega+B).
+  \]
+\end{proposition}
+
+\begin{proof}
+  $(\supset)$：设 $x\in\overline{\Omega}$。对任意 $B\in\mathcal{B}$，需证 $x\in\Omega+B$，即 $(x-B)\cap\Omega\ne\varnothing$。
+  因 $B\in\mathcal{N}_0$，故 $x-B\in\mathcal{N}_x$。
+  由 $x\in\overline{\Omega}$ 知任意 $x$ 的邻域与 $\Omega$ 相交，故 $(x-B)\cap\Omega\ne\varnothing$。
+  因此 $x\in\Omega+B$，从而 $x\in\bigcap_{B\in\mathcal{B}}(\Omega+B)$。
+
+  $(\subset)$：设 $x\notin\overline{\Omega}$。则存在 $\varepsilon>0$ 使 $B(x,\varepsilon)\cap\Omega=\varnothing$。
+  即 $(x-B(0,\varepsilon))\cap\Omega=\varnothing$。
+  因 $\mathcal{B}$ 为 $0$ 的邻域基，存在 $B\in\mathcal{B}$ 使 $B\subset B(0,\varepsilon)$。
+  从而 $(x-B)\cap\Omega=\varnothing$，即 $x\notin\Omega+B$。
+  故 $x\notin\bigcap_{B\in\mathcal{B}}(\Omega+B)$。
+\end{proof}
+
+\begin{remark}
+  设 $(X,\|\cdot\|)$ 为赋范线性空间，$Y\subset X$ 为有限维子空间。则 $Y$ 为闭子空间。
+  事实上，$Y\cong\mathbb{F}^n$（拓扑同构），而 $\mathbb{F}^n$ 完备，故 $Y$ 完备，从而 $Y$ 闭。
+\end{remark}
+
+\begin{theorem}
+  设 $(X,\|\cdot\|)$ 为赋范线性空间。则
+  \[
+    \dim X<+\infty\quad\Longleftrightarrow\quad X\text{ 局部紧}.
+  \]
+\end{theorem}
+
+\begin{proof}
+  $(\Rightarrow)$：已知有限维赋范空间与 $\mathbb{F}^n$ 拓扑同构。
+  而 $\mathbb{F}^n$ 局部紧，故 $X$ 局部紧。
+
+  $(\Leftarrow)$：设 $0$ 点存在紧邻域 $A$，则 $\frac{1}{2}A\in\mathcal{N}_0$。
+  因 $A$ 紧，存在有限个点 $x_1,\ldots,x_n\in A$ 使
+  \[
+    A\subset\bigl(x_1+\tfrac{1}{2}A\bigr)\cup\cdots\cup\bigl(x_n+\tfrac{1}{2}A\bigr).
+  \]
+  令 $Y\triangleq\mathrm{span}\{x_1,\ldots,x_n\}$。则 $\dim Y<+\infty$，由上述注记知 $Y$ 为闭子空间。
+  由覆盖知
+  \[
+    A\subset\{x_1,\ldots,x_n\}+\tfrac{1}{2}A\subset Y+\tfrac{1}{2}A.
+  \]
+  从而
+  \[
+    A\subset Y+\tfrac{1}{2}A\subset Y+\tfrac{1}{2}(Y+\tfrac{1}{2}A)=Y+\tfrac{1}{4}A.
+  \]
+  递归地，$A\subset Y+\frac{1}{2^n}A$ 对任意 $n$ 成立。
+
+  因 $A\in\mathcal{N}_0$，存在 $r>0$ 使 $B(0,r)\subset A$。
+  则 $\frac{1}{2^n}A\subset B(0,\frac{r}{2^n})$，故 $\{\frac{1}{2^n}A\}_{n\ge 1}$ 为 $0$ 的邻域基。
+  由命题~\ref{prop:closure-epsilon-intersection} 知
+  \[
+    A\subset\bigcap_{n=1}^{\infty}\bigl(Y+\tfrac{1}{2^n}A\bigr)=\overline{Y}=Y.
+  \]
+  因此 $A\subset Y$，而 $A\in\mathcal{N}_0$，由前述注记知 $Y=X$，故 $\dim X=\dim Y<+\infty$。
+\end{proof}
+
+\begin{proposition}
+  设 $(X,\|\cdot\|)$ 为赋范线性空间。以下等价：
+  \begin{enumerate}
+    \item $X$ 局部紧；
+    \item $\overline{B}(0,1)$ 紧；
+    \item 存在 $\varepsilon>0$ 使 $\overline{B}(0,\varepsilon)$ 紧。
+  \end{enumerate}
+\end{proposition}
+
+\begin{proof}
+  (1)$\Rightarrow$(2)：设 $A$ 为 $0$ 的紧邻域。存在 $\lambda>0$ 使 $\overline{B}(0,1)\subset\lambda A$。
+  因 $A$ 紧且 $x\mapsto\lambda x$ 为同胚，故 $\lambda A$ 紧。
+  从而 $\overline{B}(0,1)$ 作为紧集的闭子集亦紧。
+
+  (2)$\Rightarrow$(3)：取 $\varepsilon=1$ 即可。
+
+  (3)$\Rightarrow$(1)：设 $\overline{B}(0,\varepsilon)$ 紧。
+  令 $S\triangleq\{x\in X:\|x\|=1\}$ 为单位球面。
+  定义 $g:S\times[0,1]\to\overline{B}(0,1)$ 为 $g(x,\lambda)=\lambda x$。
+  因数乘连续，$g$ 连续。显然 $g$ 为满射。
+  又 $S$ 紧（作为 $\overline{B}(0,1)$ 的闭子集）且 $[0,1]$ 紧，故 $S\times[0,1]$ 紧。
+  因此 $\overline{B}(0,1)=g(S\times[0,1])$ 作为紧集的连续像亦紧，故 $X$ 局部紧。
+\end{proof}
+
+\begin{proposition}\label{prop:continuous-closed-graph}
+  设 $(X,d_X),(Y,d_Y)$ 为度量空间，$f:X\to Y$ 连续。则
+  \[
+    G_f\triangleq\{(x,y)\in X\times Y:y=f(x)\}
+  \]
+  为 $X\times Y$ 中的闭子集。
+\end{proposition}
+
+\begin{proof}
+  设 $(x_n,f(x_n))\in G_f$ 为序列，且 $(x_n,f(x_n))\to(x,y)\in X\times Y$。
+  则 $x_n\to x$（在 $d_X$ 意义下）且 $f(x_n)\to y$（在 $d_Y$ 意义下）。
+  因 $f$ 连续，$f(x_n)\to f(x)$。
+  由极限唯一性知 $y=f(x)$，从而 $(x,y)\in G_f$。
+  故 $G_f$ 闭。
+\end{proof}
+
+\begin{lemma}
+  设 $(X,\|\cdot\|_X),(Y,\|\cdot\|_Y)$ 为赋范线性空间。在 $X\times Y$ 上定义
+  \[
+    \|(x,y)\|\triangleq\|x\|_X+\|y\|_Y.
+  \]
+  则 $(X\times Y,\|\cdot\|)$ 为赋范线性空间。若 $X,Y$ 均完备，则 $X\times Y$ 完备。
+\end{lemma}
+
+\begin{proof}
+  范数性质的验证是直接的。下证完备性。
+  设 $(x_n,y_n)$ 为 $X\times Y$ 中的柯西列。则
+  \[
+    \|(x_n,y_n)-(x_m,y_m)\|=\|x_n-x_m\|_X+\|y_n-y_m\|_Y<\varepsilon.
+  \]
+  故 $(x_n)$ 为 $X$ 中柯西列，$(y_n)$ 为 $Y$ 中柯西列。
+  因 $X,Y$ 完备，存在 $x\in X,y\in Y$ 使 $x_n\to x,y_n\to y$。
+  从而 $(x_n,y_n)\to(x,y)$，故 $X\times Y$ 完备。
+\end{proof}
+
+\begin{theorem}[闭图像定理]\label{thm:closed-graph}
+  设 $X,Y$ 为 Banach 空间，$f:X\to Y$ 线性。则
+  \[
+    f\text{ 连续}\quad\Longleftrightarrow\quad G_f\text{ 在 }X\times Y\text{ 中闭}.
+  \]
+\end{theorem}
+
+\begin{proof}
+  $(\Rightarrow)$：由命题~\ref{prop:continuous-closed-graph} 即得。
+
+  $(\Leftarrow)$：设 $G_f$ 闭。因 $X\times Y$ 完备且 $G_f$ 闭，故 $G_f$ 为 Banach 空间。
+  考虑投影映射 $p_1:G_f\to X$ 和 $p_2:G_f\to Y$，即
+  \[
+    p_1(x,f(x))=x,\quad p_2(x,f(x))=f(x).
+  \]
+  定义 $\theta:X\to G_f$ 为 $\theta(x)=(x,f(x))$，则 $\theta$ 为线性双射且 $p_1\circ\theta=\mathrm{id}_X$。
+  下图交换：
+  \[
+    \begin{tikzcd}
+      X \arrow[r,"\theta"] \arrow[dr,"f"'] & G_f \arrow[d,"p_2"] \\
+      & Y
+    \end{tikzcd}
+  \]
+  即 $f=p_2\circ\theta$。
+
+  因 $p_1:G_f\to X$ 为连续线性满射（$G_f,X$ 均为 Banach 空间），由开映射定理知 $p_1$ 为开映射。
+  从而 $p_1$ 为同胚，故 $\theta=p_1^{-1}$ 连续。
+  又 $p_2$ 显然连续，故 $f=p_2\circ\theta$ 连续。
+\end{proof}
+
+\begin{remark}
+  设 $(X,\|\cdot\|),(Y,\|\cdot\|)$ 为赋范线性空间。则
+  \[
+    f\text{ 连续}\quad\Longleftrightarrow\quad f(\overline{B}(0,1))\text{ 在 }Y\text{ 中有界}.
+  \]
+\end{remark}
+
+\begin{definition}
+  设 $(X,\|\cdot\|_X),(Y,\|\cdot\|_Y)$ 为赋范线性空间。记
+  \[
+    B(X,Y)\triangleq\{f:X\to Y\mid f\text{ 为有界线性映射}\}
+  \]
+  为 $X$ 到 $Y$ 的\textbf{有界线性算子空间}。对 $f\in B(X,Y)$，定义\textbf{算子范数}
+  \[
+    \|f\|\triangleq\sup_{x\in\overline{B}(0,1)}\|f(x)\|_Y.
+  \]
+\end{definition}
+
+\begin{proposition}
+  $(B(X,Y),\|\cdot\|)$ 为赋范线性空间。
+\end{proposition}
+
+\begin{proof}
+  只需验证 $\|\cdot\|$ 满足范数公理。
+
+  (1) 三角不等式：对任意 $f,g\in B(X,Y)$，
+  \[
+    \|f+g\|=\sup_{\|x\|\le 1}\|(f+g)(x)\|\le\sup_{\|x\|\le 1}\|f(x)\|+\sup_{\|x\|\le 1}\|g(x)\|=\|f\|+\|g\|.
+  \]
+
+  (2) 齐次性：对任意 $\lambda\in\mathbb{F}$，$f\in B(X,Y)$，
+  \[
+    \|\lambda f\|=\sup_{\|x\|\le 1}\|\lambda f(x)\|=|\lambda|\sup_{\|x\|\le 1}\|f(x)\|=|\lambda|\|f\|.
+  \]
+
+  (3) 正定性：显然 $\|f\|\ge 0$。下证 $\|f\|=0\Rightarrow f=0$。
+  设 $\|f\|=0$，则对任意 $x\in\overline{B}(0,1)$，有 $\|f(x)\|=0$，即 $f(x)=0$。
+  从而 $\overline{B}(0,1)\subset\ker f$。
+  因 $\overline{B}(0,1)\in\mathcal{N}_0$ 且 $\ker f$ 为 $X$ 的线性子空间，由前述注记知 $\ker f=X$，即 $f=0$。
+\end{proof}
+
+\begin{proposition}
+  若 $Y$ 完备，则 $B(X,Y)$ 完备。
+\end{proposition}
+
+\begin{remark}
+  有界线性映射保柯西列。设 $f:X\to Y$ 为有界线性映射，$(x_n)$ 为 $X$ 中柯西列。
+  因 $f$ 有界，存在 $A>0$ 使对任意 $x\in X$ 有 $\|f(x)\|\le A\|x\|$。
+  对任意 $\varepsilon>0$，存在 $N$ 使 $m,n\ge N$ 时 $\|x_m-x_n\|<\varepsilon/A$。
+  从而
+  \[
+    \|f(x_m)-f(x_n)\|=\|f(x_m-x_n)\|\le A\|x_m-x_n\|<\varepsilon.
+  \]
+  故 $(f(x_n))$ 为 $Y$ 中柯西列。
+\end{remark}
+
+\begin{proposition}
+  设 $X,Y$ 为赋范线性空间且拓扑同构（即存在连续线性双射 $f:X\to Y$ 且 $f^{-1}$ 连续）。则
+  \[
+    X\text{ 完备}\quad\Longleftrightarrow\quad Y\text{ 完备}.
+  \]
+\end{proposition}
+
+\begin{proof}
+  设 $Y$ 完备，证 $X$ 完备。设 $(x_n)$ 为 $X$ 中柯西列。
+  由上述注记，$(f(x_n))$ 为 $Y$ 中柯西列。因 $Y$ 完备，存在 $y\in Y$ 使 $f(x_n)\to y$。
+  因 $f^{-1}$ 连续，$x_n=f^{-1}(f(x_n))\to f^{-1}(y)$，故 $X$ 完备。
+  同理可证 $X$ 完备 $\Rightarrow$ $Y$ 完备。
+\end{proof}
+
+\begin{proposition}
+  若 $X$ 为 Banach 空间，则 $\dim X$ 有限或不可数。
+\end{proposition}
+
+\begin{proof}
+  反证。设 $\dim X$ 为可数无穷，即存在可数基 $\{x_n:n\in\mathbb{N}\}$。
+  令 $Y_n\triangleq\mathrm{span}\{x_1,\ldots,x_n\}$。则
+  \[
+    Y_1\subsetneq Y_2\subsetneq Y_3\subsetneq\cdots
+  \]
+  且 $\bigcup_{n=1}^{\infty}Y_n=X$。
+  因每个 $Y_n$ 为有限维子空间，故 $Y_n$ 闭。
+  因 $X$ 为 Banach 空间，由 Baire 纲定理知 $X$ 为第二纲集。
+  而 $X=\bigcup_{n=1}^{\infty}Y_n$，故存在 $n$ 使 $Y_n^\circ\ne\varnothing$。
+  但 $Y_n$ 为 $X$ 的真子空间，由前述注记知 $Y_n$ 不含非空开集，矛盾。
+\end{proof}
+
+\begin{proposition}\label{prop:operator-norm-characterization}
+  对任意 $f\in B(X,Y)$，有
+  \[
+    \|f\|=\sup_{\|x\|\le 1}\|f(x)\|=\sup_{\|x\|=1}\|f(x)\|=\sup_{\|x\|\ne 0}\frac{\|f(x)\|}{\|x\|}=\sup_{0<\|x\|\le 1}\frac{\|f(x)\|}{\|x\|}.
+  \]
+\end{proposition}
+
+\begin{proposition}
+  对任意 $f\in B(X,Y)$，$x\in X$，有 $\|f(x)\|\le\|f\|\|x\|$。
+\end{proposition}
+
+\begin{proof}
+  若 $\|x\|\ne 0$，由命题~\ref{prop:operator-norm-characterization} 知 $\frac{\|f(x)\|}{\|x\|}\le\|f\|$，即 $\|f(x)\|\le\|f\|\|x\|$。
+  若 $\|x\|=0$，因 $f$ 连续线性，$f(x)=f(0)=0$，故 $\|f(x)\|=0\le\|f\|\|x\|$。
+\end{proof}
+
+\begin{proposition}
+  设 $f\in B(X,Y)$，$A\ge 0$ 满足对任意 $x\in X$ 有 $\|f(x)\|\le A\|x\|$。则 $\|f\|\le A$。
+  从而
+  \[
+    \|f\|=\min\{A\ge 0:\forall x\in X,\,\|f(x)\|\le A\|x\|\}.
+  \]
+\end{proposition}
+
+\begin{proof}
+  由假设，对任意 $\|x\|\ne 0$，有 $\frac{\|f(x)\|}{\|x\|}\le A$。
+  故 $\|f\|=\sup_{\|x\|\ne 0}\frac{\|f(x)\|}{\|x\|}\le A$。
+\end{proof}
+
+\begin{theorem}[一致有界性原理/Banach--Steinhaus 定理]\label{thm:uniform-boundedness}
+  设 $X$ 为 Banach 空间，$Y$ 为赋范线性空间，$\Omega\subset B(X,Y)$。
+  若对任意 $x\in X$，$\Omega(x)\triangleq\{f(x):f\in\Omega\}$ 在 $Y$ 中有界（逐点有界），
+  则 $\Omega$ 在 $B(X,Y)$ 中有界（算子有界），即存在 $M>0$ 使对任意 $f\in\Omega$ 有 $\|f\|\le M$。
+\end{theorem}
+
+\begin{proof}
+  对 $n\in\mathbb{N}^*$，令
+  \[
+    E_n\triangleq\{x\in X:\forall f\in\Omega,\,\|f(x)\|\le n\}=\bigcap_{f\in\Omega}\{x\in X:\|f(x)\|\le n\}.
+  \]
+  因每个 $f$ 连续，$\{x:\|f(x)\|\le n\}$ 闭，故 $E_n$ 为闭集。
+  由逐点有界性，对任意 $x\in X$，存在 $n$ 使 $\|f(x)\|\le n$ 对所有 $f\in\Omega$ 成立，故 $x\in E_n$。
+  从而 $X=\bigcup_{n=1}^{\infty}E_n$。
+
+  因 $X$ 为 Banach 空间，由 Baire 纲定理知 $X$ 为第二纲集。
+  故存在 $n\in\mathbb{N}^*$ 使 $E_n^\circ\ne\varnothing$。
+  即存在 $x_0\in X$ 和 $\varepsilon>0$ 使 $\overline{B}(x_0,\varepsilon)\subset E_n$。
+
+  对任意 $f\in\Omega$ 和 $y\in\overline{B}(0,\varepsilon)$，有 $x_0+y\in\overline{B}(x_0,\varepsilon)\subset E_n$，故
+  \[
+    \|f(y)\|=\|f(x_0+y)-f(x_0)\|\le\|f(x_0+y)\|+\|f(x_0)\|\le n+n=2n.
+  \]
+  从而对任意 $f\in\Omega$，$f(\overline{B}(0,\varepsilon))$ 有界，界为 $2n$。
+  因此 $f(\overline{B}(0,1))=\frac{1}{\varepsilon}f(\overline{B}(0,\varepsilon))$ 有界，界为 $\frac{2n}{\varepsilon}$。
+  故对任意 $f\in\Omega$，$\|f\|\le\frac{2n}{\varepsilon}$，即 $\Omega$ 在 $B(X,Y)$ 中有界。
+\end{proof}
+
+\begin{proposition}
+  设 $X$ 为 Banach 空间，$Y$ 为赋范线性空间。
+  设 $(f_n)$ 为 $B(X,Y)$ 中一列算子，若 $f:X\to Y$ 逐点极限存在，即
+  \[
+    \forall x\in X,\quad f_n(x)\to f(x)\quad(n\to\infty),
+  \]
+  则 $f$ 有界。
+\end{proposition}
+
+\begin{proof}
+  由假设，对任意 $x\in X$，$\{f_n(x):n\in\mathbb{N}\}$ 有界。
+  因 $X$ 完备，由定理~\ref{thm:uniform-boundedness} 知 $\{\|f_n\|:n\in\mathbb{N}\}$ 有界，设 $\|f_n\|\le M$ 对所有 $n$ 成立。
+  对任意 $\|x\|\le 1$，有
+  \[
+    \|f(x)\|=\left\|\lim_{n\to\infty}f_n(x)\right\|=\lim_{n\to\infty}\|f_n(x)\|\le M.
+  \]
+  故 $f$ 有界。
+\end{proof}
+
+\begin{remark}
+  设 $X,Y$ 为 Banach 空间，$f:X\to Y$ 为线性双射。则以下等价：
+  \begin{enumerate}
+    \item $f$ 连续（等价于有界）；
+    \item $f^{-1}$ 连续（等价于 $f$ 为开映射）；
+    \item $f$ 为闭图像映射。
+  \end{enumerate}
+  由开映射定理和闭图像定理可得上述等价性。
+\end{remark}
+
+\chapter{对偶理论}
+
+\section{Hahn--Banach 延拓定理}
+
+\begin{definition}[次可加与正齐性]
+  设 $X$ 为 $\mathbb{R}$ 线性空间，$p:X\to\mathbb{R}$。
+  \begin{enumerate}
+    \item 称 $p$ 为\textbf{次可加}的，若对任意 $x,y\in X$，有 $p(x+y)\le p(x)+p(y)$。
+    \item 称 $p$ 为\textbf{正齐性}的，若对任意 $x\in X$，$\lambda\ge 0$，有 $p(\lambda x)=\lambda p(x)$。
+  \end{enumerate}
+\end{definition}
+
+\begin{example}
+  若 $X$ 为赋范线性空间，则范数 $\|\cdot\|$ 既是次可加的，也是正齐性的。
+\end{example}
+
+\begin{definition}[控制]
+  设 $Y\subset X$ 为线性子空间，$p:X\to\mathbb{R}$ 次可加正齐性，$f:Y\to\mathbb{R}$ 线性。
+  若对任意 $x\in Y$ 有 $f(x)\le p(x)$，则称 $p$ \textbf{控制} $f$，记为 $f\le p$。
+\end{definition}
+
+\begin{lemma}[一维延拓引理]\label{lem:one-dim-extension}
+  设 $Y$ 为 $\mathbb{R}$ 线性空间 $X$ 的真线性子空间，$p:X\to\mathbb{R}$ 次可加正齐性，$f:Y\to\mathbb{R}$ 线性且 $f\le p$。
+  则对任意 $x_0\notin Y$，存在 $\tilde{f}:Y\oplus\mathbb{R}x_0\to\mathbb{R}$ 线性，使得 $\tilde{f}$ 为 $f$ 的延拓且 $\tilde{f}\le p$。
+\end{lemma}
+
+\begin{proof}
+  设 $\tilde{f}$ 存在且满足条件。则对任意 $y\in Y$，$\lambda\in\mathbb{R}$，有
+  \[
+    \tilde{f}(y+\lambda x_0)=f(y)+\lambda\tilde{f}(x_0).
+  \]
+  由 $\tilde{f}\le p$，即对任意 $y\in Y$，$\lambda\in\mathbb{R}$，有
+  \[
+    f(y)+\lambda\tilde{f}(x_0)\le p(y+\lambda x_0).
+  \]
+  当 $\lambda>0$ 时，$\tilde{f}(x_0)\le\frac{1}{\lambda}p(y+\lambda x_0)-\frac{1}{\lambda}f(y)=p\left(\frac{y}{\lambda}+x_0\right)-f\left(\frac{y}{\lambda}\right)$。
+  当 $\lambda<0$ 时，$\tilde{f}(x_0)\ge\frac{1}{\lambda}p(y+\lambda x_0)-\frac{1}{\lambda}f(y)=-p\left(-\frac{y}{\lambda}-x_0\right)-f\left(\frac{y}{\lambda}\right)$。
+
+  因此 $\tilde{f}$ 存在且 $\tilde{f}\le p$ 当且仅当
+  \[
+    \sup_{y\in Y}\{-p(-y-x_0)-f(y)\}\le\tilde{f}(x_0)\le\inf_{y\in Y}\{p(y+x_0)-f(y)\}.
+  \]
+  故只需证明 $\sup\{\cdots\}\le\inf\{\cdots\}$。
+
+  对任意 $y,y'\in Y$，需证
+  \[
+    -p(-y-x_0)-f(y)\le p(y'+x_0)-f(y').
+  \]
+  即证 $f(y')-f(y)\le p(y'+x_0)+p(-y-x_0)$。
+
+  因 $f$ 线性，$f(y')-f(y)=f(y'-y)$。因 $f\le p$ 且 $y'-y\in Y$，有
+  \[
+    f(y'-y)\le p(y'-y).
+  \]
+  由 $p$ 次可加，$p(y'-y)=p((y'+x_0)+(-y-x_0))\le p(y'+x_0)+p(-y-x_0)$。
+  故不等式成立。
+\end{proof}
+
+\begin{theorem}[Hahn--Banach 延拓定理，实线性空间版本]\label{thm:hahn-banach-real}
+  设 $Y\subset X$ 为 $\mathbb{R}$ 线性空间的线性子空间，$p:X\to\mathbb{R}$ 次可加正齐性，$f:Y\to\mathbb{R}$ 线性且 $f\le p$。
+  则存在 $\bar{f}:X\to\mathbb{R}$ 线性，使得 $\bar{f}$ 为 $f$ 的延拓且 $\bar{f}\le p$。
+\end{theorem}
+
+\begin{proof}
+  定义
+  \[
+    \mathcal{A}\triangleq\{\psi:\psi\text{ 为 }f\text{ 的线性延拓},\,\mathrm{Dom}\,\psi\subset X,\,\psi\le p\}.
+  \]
+  显然 $f\in\mathcal{A}$，故 $\mathcal{A}\ne\varnothing$。
+  定义偏序：$\psi\le\psi'$ 当且仅当 $\psi'$ 为 $\psi$ 的延拓。
+  则 $(\mathcal{A},\le)$ 为偏序集，且每条链有上界（取并集）。
+  由 Zorn 引理，$\mathcal{A}$ 有极大元 $\bar{f}:X_0\to\mathbb{R}$。
+  因 $\bar{f}$ 极大且满足 $\bar{f}\le p$，由引理~\ref{lem:one-dim-extension} 知 $X_0=X$。
+\end{proof}
+
+\begin{remark}
+  复线性泛函与实部的关系。设 $X$ 为 $\mathbb{C}$ 线性空间，$f:X\to\mathbb{C}$ 复线性。
+  令 $u=\mathrm{Re}\,f$，$v=\mathrm{Im}\,f$，则 $u,v:X\to\mathbb{R}$ 实线性，且
+  \[
+    f(x)=u(x)-iu(ix).
+  \]
+  反之，若 $u:X\to\mathbb{R}$ 实线性，则 $f\triangleq u-iu(i\cdot)$ 为复线性。
+\end{remark}
+
+\begin{theorem}[Hahn--Banach 延拓定理，赋范空间版本]\label{thm:hahn-banach-normed}
+  设 $X$ 为 $\mathbb{F}$（$\mathbb{R}$ 或 $\mathbb{C}$）赋范线性空间，$Y\subset X$ 为线性子空间，$f:Y\to\mathbb{F}$ 线性且对任意 $x\in Y$ 有 $|f(x)|\le\|x\|$。
+  则存在 $\bar{f}:X\to\mathbb{F}$ 线性，使得 $\bar{f}$ 为 $f$ 的延拓且对任意 $x\in X$ 有 $|\bar{f}(x)|\le\|x\|$。
+\end{theorem}
+
+\begin{proof}
+  (I) $\mathbb{F}=\mathbb{R}$。由 $|f(x)|\le\|x\|$ 知 $f(x)\le\|x\|$。
+  由定理~\ref{thm:hahn-banach-real} 存在 $\bar{f}:X\to\mathbb{R}$ 为 $f$ 的延拓且 $\bar{f}\le\|\cdot\|$。
+  因 $\bar{f}(-x)\le\|-x\|=\|x\|$，即 $-\bar{f}(x)\le\|x\|$，故 $|\bar{f}(x)|\le\|x\|$。
+
+  (II) $\mathbb{F}=\mathbb{C}$。设 $u=\mathrm{Re}\,f$，则 $u:Y\to\mathbb{R}$ 实线性。
+  对任意 $x\in Y$，$|u(x)|\le|f(x)|\le\|x\|$。
+  由 (I) 存在 $\bar{u}:X\to\mathbb{R}$ 实线性延拓 $u$，且 $|\bar{u}(x)|\le\|x\|$。
+  定义 $\bar{f}:X\to\mathbb{C}$ 为 $\bar{f}(x)\triangleq\bar{u}(x)-i\bar{u}(ix)$。
+  则 $\bar{f}$ 复线性，且 $\bar{f}$ 为 $f$ 的延拓。
+
+  对任意 $x\in X$，设 $\bar{f}(x)=|\bar{f}(x)|e^{i\theta}$，令 $\alpha=e^{-i\theta}$，则
+  \[
+    |\bar{f}(x)|=\alpha\bar{f}(x)=\bar{f}(\alpha x)=\bar{u}(\alpha x)\le\|\alpha x\|=|\alpha|\|x\|=\|x\|.
+  \]
+\end{proof}
+
+\begin{theorem}
+  设 $(X,\|\cdot\|)$ 为赋范空间，$x_0\in X$。则存在有界线性泛函 $f:X\to\mathbb{F}$ 使得
+  \[
+    f(x_0)=\|x_0\|,\quad\|f\|\le 1.
+  \]
+\end{theorem}
+
+\begin{proof}
+  若 $\|x_0\|=0$，取 $f=0$，则 $\|f\|=0\le 1$。
+
+  若 $\|x_0\|\ne 0$，则 $x_0\ne 0$，$\mathrm{span}\{x_0\}=\mathbb{F}x_0$。
+  定义 $g:\mathbb{F}x_0\to\mathbb{F}$ 为 $g(\lambda x_0)=\lambda\|x_0\|$。
+  则 $g$ 线性，$g(x_0)=\|x_0\|$，且
+  \[
+    |g(\lambda x_0)|=|\lambda|\|x_0\|=\|\lambda x_0\|,
+  \]
+  故 $\|g\|\le 1$。由定理~\ref{thm:hahn-banach-normed} 存在 $f:X\to\mathbb{F}$ 为 $g$ 的线性延拓，且 $|f(x)|\le\|x\|$。
+  从而 $\|f\|\le 1$，$f(x_0)=g(x_0)=\|x_0\|$。
+\end{proof}
+
+\begin{theorem}
+  设 $(X,\|\cdot\|)$ 为赋范空间，$Y\subset X$ 为线性子空间，$f:Y\to\mathbb{F}$ 有界线性。
+  则存在 $\bar{f}:X\to\mathbb{F}$ 为 $f$ 的线性延拓，使得 $\|\bar{f}\|=\|f\|$。
+\end{theorem}
+
+\begin{proof}
+  定义 $p:X\to\mathbb{R}$ 为 $p(x)=\|f\|\|x\|$。则 $p$ 为半范（次可加正齐性）。
+  对任意 $x\in Y$，$|f(x)|\le\|f\|\|x\|=p(x)$。
+  由定理~\ref{thm:hahn-banach-normed} 存在 $\bar{f}:X\to\mathbb{F}$ 线性延拓 $f$，且 $|\bar{f}(x)|\le p(x)=\|f\|\|x\|$。
+  故 $\|\bar{f}\|\le\|f\|$。又 $\bar{f}|_Y=f$，故 $\|\bar{f}\|\ge\|f\|$。
+  从而 $\|\bar{f}\|=\|f\|$。
+\end{proof}
+
+\section{等价范数与拓扑}
+
+\begin{definition}[等价范数]
+  设 $X$ 为 $\mathbb{F}$ 线性空间，$\|\cdot\|_1,\|\cdot\|_2$ 为 $X$ 上两个范数。
+  称 $\|\cdot\|_1$ \textbf{等价于} $\|\cdot\|_2$，记为 $\|\cdot\|_1\sim\|\cdot\|_2$，若存在 $A,B>0$ 使得对任意 $x\in X$，
+  \[
+    A\|x\|_1\le\|x\|_2\le B\|x\|_1.
+  \]
+\end{definition}
+
+\begin{remark}
+  范数等价是一个等价关系。等价条件也可写为：存在 $C,D>0$ 使对任意 $x\in X$，
+  \[
+    \|x\|_2\le C\|x\|_1,\quad\|x\|_1\le D\|x\|_2.
+  \]
+\end{remark}
+
+\begin{definition}[拓扑]
+  设 $X$ 非空，$\mathcal{T}\subset\mathcal{P}(X)$。若 $\mathcal{T}$ 满足：
+  \begin{enumerate}
+    \item $\varnothing,X\in\mathcal{T}$；
+    \item 若 $U,V\in\mathcal{T}$，则 $U\cap V\in\mathcal{T}$（有限交封闭）；
+    \item 若 $\mathcal{E}\subset\mathcal{T}$，则 $\bigcup\mathcal{E}\in\mathcal{T}$（任意并封闭）。
+  \end{enumerate}
+  则称 $\mathcal{T}$ 为 $X$ 上的一个\textbf{拓扑}，$(X,\mathcal{T})$ 为\textbf{拓扑空间}。
+\end{definition}
+
+\begin{remark}
+  设 $(X,d)$ 为度量空间。令 $\mathcal{T}_d\triangleq\{U\subset X:U\text{ 为 }d\text{-开集}\}$，
+  则 $\mathcal{T}_d$ 为 $X$ 上由 $d$ 诱导的拓扑。
+  类似地，赋范空间 $(X,\|\cdot\|)$ 诱导度量 $d_{\|\cdot\|}$，进而诱导拓扑 $\mathcal{T}_{\|\cdot\|}$。
+\end{remark}
+
+\begin{remark}
+  $(X,d)$ 与 $(Y,d')$ 同胚，即存在双射 $f:X\to Y$ 使对任意 $U$ 开于 $Y$，$f^{-1}(U)$ 开于 $X$（即 $U\in\mathcal{T}_{d'}\Rightarrow f^{-1}(U)\in\mathcal{T}_d$），且反之亦然。
+\end{remark}
+
+\begin{proposition}
+  设 $X$ 为线性空间，$\|\cdot\|_1,\|\cdot\|_2$ 为 $X$ 上两个范数。则
+  \[
+    \|\cdot\|_1\sim\|\cdot\|_2\quad\Longleftrightarrow\quad(X,\|\cdot\|_1)\xrightarrow{\mathrm{id}}(X,\|\cdot\|_2)\text{ 同胚}.
+  \]
+\end{proposition}
+
+\begin{proof}
+  $(\Rightarrow)$：设 $\|\cdot\|_1\sim\|\cdot\|_2$，则存在 $C,D>0$ 使
+  \[
+    \|x\|_2\le C\|x\|_1,\quad\|x\|_1\le D\|x\|_2.
+  \]
+  考虑恒等映射 $\mathrm{id}:(X,\|\cdot\|_1)\to(X,\|\cdot\|_2)$。
+  由 $\|\mathrm{id}(x)\|_2=\|x\|_2\le C\|x\|_1$ 知 $\mathrm{id}$ 有界，故连续。
+  由 $\|\mathrm{id}^{-1}(x)\|_1=\|x\|_1\le D\|x\|_2$ 知 $\mathrm{id}^{-1}$ 有界，故连续。
+  从而 $\mathrm{id}$ 为同胚。
+
+  $(\Leftarrow)$：设 $\mathrm{id}:(X,\|\cdot\|_1)\to(X,\|\cdot\|_2)$ 为同胚。
+  则 $\mathrm{id}$ 连续（有界），设 $\|\mathrm{id}\|<C$；$\mathrm{id}^{-1}$ 连续（有界），设 $\|\mathrm{id}^{-1}\|<D$。
+  对任意 $x\in X$，
+  \[
+    \|x\|_2=\|\mathrm{id}(x)\|_2\le\|\mathrm{id}\|\|x\|_1\le C\|x\|_1,
+  \]
+  \[
+    \|x\|_1=\|\mathrm{id}^{-1}(x)\|_1\le\|\mathrm{id}^{-1}\|\|x\|_2\le D\|x\|_2.
+  \]
+  故 $\|\cdot\|_1\sim\|\cdot\|_2$。
+\end{proof}
+
+\begin{theorem}
+  若 $X$ 为有限维 $\mathbb{F}$ 赋范线性空间，则 $X$ 上任意两个范数都等价。
+\end{theorem}
+
+\begin{proof}
+  设 $\|\cdot\|_1,\|\cdot\|_2$ 为 $X$ 上两个范数，$\dim X=n$。
+  则 $(X,\|\cdot\|_1)$ 与 $\mathbb{F}^n$ 线性同构，设同构映射为 $\theta$。
+  因 $\mathbb{F}^n$ 与 $(X,\|\cdot\|_2)$ 均为有限维赋范空间，由开映射定理知 $\theta$ 与 $\theta^{-1}$ 均连续，故 $\theta$ 为同胚。
+  从而 $(X,\|\cdot\|_1)\xrightarrow{\mathrm{id}}(X,\|\cdot\|_2)$ 同胚，即 $\|\cdot\|_1\sim\|\cdot\|_2$。
+\end{proof}
+
+\begin{theorem}\label{thm:nonzero-functional}
+  若 $X$ 为赋范线性空间，$x\in X\setminus\{0\}$，则存在 $f:X\to\mathbb{F}$ 连续线性泛函使得 $\|f\|=1$ 且 $f(x)\ne 0$。
+\end{theorem}
+
+\begin{proof}
+  由定理~\ref{thm:hahn-banach-normed} 存在 $f:X\to\mathbb{F}$ 使 $\|f\|\le 1$ 且 $f(x)=\|x\|\ne 0$。
+  从而 $\|f\|\ge\frac{|f(x)|}{\|x\|}=1$，故 $\|f\|=1$。
+\end{proof}
+
+\begin{definition}[可分点]
+  称 $X$ 上一族线性泛函 $\Omega$ \textbf{可分} $X$ 两点，若对任意 $x,y\in X$，$x\ne y$，存在 $f\in\Omega$ 使 $f(x)\ne f(y)$。
+\end{definition}
+
+\begin{proposition}
+  $X^*$ 可分 $X$ 两点。
+\end{proposition}
+
+\begin{proof}
+  设 $x\ne y$，则 $x-y\ne 0$。由定理~\ref{thm:nonzero-functional} 存在 $f\in X^*$ 使 $f(x-y)\ne 0$，即 $f(x)\ne f(y)$。
+\end{proof}
+
+\begin{proposition}\label{prop:BXY-Banach}
+  若 $Y$ 为 Banach 空间，则 $B(X,Y)$ 为 Banach 空间。
+\end{proposition}
+
+\begin{proof}
+  设 $(f_n)$ 为 $B(X,Y)$ 中 Cauchy 列。对任意 $x\in X$，$(f_n(x))$ 为 $Y$ 中 Cauchy 列。
+  因 $Y$ 完备，存在唯一 $y_x\in Y$ 使 $f_n(x)\to y_x$。定义 $f:X\to Y$ 为 $f(x)=y_x$。
+
+  下证 $f$ 线性。因 $f_n(x+x')\to f(x+x')$ 且 $f_n(x)+f_n(x')\to f(x)+f(x')$，
+  由极限唯一性知 $f(x+x')=f(x)+f(x')$。类似地 $f(\lambda x)=\lambda f(x)$。
+
+  下证 $f$ 有界。因 $(f_n)$ 为 Cauchy 列，存在 $M>0$ 使 $\|f_n\|\le M$ 对所有 $n$ 成立。
+  对任意 $\|x\|\le 1$，
+  \[
+    \|f(x)\|=\left\|\lim_{n\to\infty}f_n(x)\right\|=\lim_{n\to\infty}\|f_n(x)\|\le M.
+  \]
+  故 $\|f\|\le M$，即 $f\in B(X,Y)$。
+
+  下证 $f_n\to f$（按算子范数）。对任意 $\varepsilon>0$，因 $(f_n)$ Cauchy，存在 $N$ 使 $m,n\ge N$ 时 $\|f_n-f_m\|<\varepsilon$。
+  对任意 $\|x\|\le 1$ 和 $n\ge N$，
+  \[
+    \|(f_n-f)(x)\|=\left\|f_n(x)-\lim_{m\to\infty}f_m(x)\right\|=\lim_{m\to\infty}\|f_n(x)-f_m(x)\|\le\lim_{m\to\infty}\|f_n-f_m\|\le\varepsilon.
+  \]
+  故 $\|f_n-f\|\le\varepsilon$，即 $f_n\to f$。
+\end{proof}
+
+\begin{theorem}
+  设 $X,Y$ 为赋范线性空间，$X\ne\{0\}$。则
+  \[
+    Y\text{ 为 Banach 空间}\quad\Longleftrightarrow\quad B(X,Y)\text{ 为 Banach 空间}.
+  \]
+\end{theorem}
+
+\begin{proof}
+  $(\Rightarrow)$：由命题~\ref{prop:BXY-Banach} 即得。
+
+  $(\Leftarrow)$：因 $X\ne\{0\}$，存在 $x_0\in X\setminus\{0\}$，不妨设 $\|x_0\|=1$。
+  由定理~\ref{thm:hahn-banach-normed} 存在 $f:X\to\mathbb{F}$ 使 $\|f\|=1$ 且 $f(x_0)=1$。
+
+  定义 $\sigma:Y\to B(X,Y)$ 为：对 $y\in Y$，$\sigma_y:X\to Y$ 定义为 $\sigma_y(x)=f(x)y$。
+  易验证 $\sigma_y$ 线性。又
+  \[
+    \|\sigma_y(x)\|=|f(x)|\|y\|\le\|f\|\|x\|\|y\|=\|x\|\|y\|,
+  \]
+  故 $\|\sigma_y\|\le\|y\|$，即 $\sigma_y\in B(X,Y)$。
+
+  下证 $\sigma$ 线性。对任意 $y_1,y_2\in Y$，$\lambda\in\mathbb{F}$，$x\in X$，
+  \[
+    \sigma_{y_1+y_2}(x)=f(x)(y_1+y_2)=f(x)y_1+f(x)y_2=(\sigma_{y_1}+\sigma_{y_2})(x),
+  \]
+  \[
+    \sigma_{\lambda y}(x)=f(x)(\lambda y)=\lambda f(x)y=(\lambda\sigma_y)(x).
+  \]
+
+  下证 $\|\sigma_y\|=\|y\|$（等距）。由上知 $\|\sigma_y\|\le\|y\|$。又
+  \[
+    \|\sigma_y(x_0)\|=|f(x_0)|\|y\|=\|y\|,
+  \]
+  故 $\|\sigma_y\|\ge\|y\|$，从而 $\|\sigma_y\|=\|y\|$。
+
+  下证 $\sigma(Y)$ 为 $B(X,Y)$ 的闭子空间。设 $(y_n)\subset Y$，$\sigma_{y_n}\to T\in B(X,Y)$。
+  则 $\sigma_{y_n}(x_0)\to T(x_0)$，即 $y_n\to Tx_0$。
+  因 $\sigma$ 等距连续，$\sigma_{y_n}\to\sigma_{Tx_0}$。由极限唯一性 $T=\sigma_{Tx_0}\in\sigma(Y)$。
+  故 $\sigma(Y)$ 闭。
+
+  因 $B(X,Y)$ 完备，$\sigma(Y)$ 为其闭子空间，故 $\sigma(Y)$ 完备。
+  又 $\sigma:Y\to\sigma(Y)$ 等距满射，故 $Y$ 完备。
+\end{proof}
+
+\section{共轭算子}
+
+\begin{remark}
+  $\|\mathrm{id}\|=1$。
+\end{remark}
+
+\begin{proposition}
+  设 $X\xrightarrow{g}Y\xrightarrow{f}Z$ 为有界线性映射，则 $f\circ g$ 有界且 $\|f\circ g\|\le\|f\|\|g\|$。
+\end{proposition}
+
+\begin{proof}
+  对任意 $x\in X$，
+  \[
+    \|(f\circ g)(x)\|=\|f(g(x))\|\le\|f\|\|g(x)\|\le\|f\|\|g\|\|x\|.
+  \]
+  故 $\|f\circ g\|\le\|f\|\|g\|$。
+\end{proof}
+
+\begin{definition}[共轭算子]
+  设 $A$ 为赋范空间，$X\xrightarrow{f}Y$ 有界线性。定义 $f^*:B(Y,A)\to B(X,A)$ 为
+  \[
+    f^*(\varphi)=\varphi\circ f,\quad\varphi\in B(Y,A).
+  \]
+  称 $f^*$ 为 $f$ 的\textbf{共轭算子}（或\textbf{对偶算子}）。
+  \[
+    \begin{tikzcd}
+      X \arrow[r,"f"] \arrow[dr,"\varphi\circ f"'] & Y \arrow[d,"\varphi"] \\
+      & A
+    \end{tikzcd}
+  \]
+\end{definition}
+
+\begin{proposition}
+  $f^*$ 有界且 $\|f^*\|\le\|f\|$。
+\end{proposition}
+
+\begin{proof}
+  先证 $f^*$ 线性。对任意 $\varphi,\psi\in B(Y,A)$，$\lambda\in\mathbb{F}$，
+  \[
+    f^*(\varphi+\psi)=(\varphi+\psi)\circ f=\varphi\circ f+\psi\circ f=f^*(\varphi)+f^*(\psi),
+  \]
+  \[
+    f^*(\lambda\varphi)=(\lambda\varphi)\circ f=\lambda(\varphi\circ f)=\lambda f^*(\varphi).
+  \]
+  再证有界。对任意 $\varphi\in B(Y,A)$，
+  \[
+    \|f^*(\varphi)\|=\|\varphi\circ f\|\le\|\varphi\|\|f\|.
+  \]
+  故 $\|f^*\|\le\|f\|$。
+\end{proof}
+
+\begin{proposition}
+  共轭算子具有以下性质：
+  \begin{enumerate}
+    \item $\mathrm{id}^*=\mathrm{id}$；
+    \item $(f\circ g)^*=g^*\circ f^*$（反变性）；
+    \item $(f+g)^*=f^*+g^*$；
+    \item $(\lambda f)^*=\lambda f^*$。
+  \end{enumerate}
+  即 $*$ 为反变函子。
+\end{proposition}
+
+\begin{proof}
+  (1) 显然。
+
+  (2) 对任意 $\varphi\in B(Z,A)$，
+  \[
+    (f\circ g)^*(\varphi)=\varphi\circ(f\circ g)=(\varphi\circ f)\circ g=g^*(f^*(\varphi))=(g^*\circ f^*)(\varphi).
+  \]
+
+  (3) 对任意 $\varphi\in B(Y,A)$，
+  \[
+    (f+g)^*(\varphi)=\varphi\circ(f+g)=\varphi\circ f+\varphi\circ g=f^*(\varphi)+g^*(\varphi).
+  \]
+
+  (4) 对任意 $\varphi\in B(Y,A)$，
+  \[
+    (\lambda f)^*(\varphi)=\varphi\circ(\lambda f)=\lambda(\varphi\circ f)=\lambda f^*(\varphi).
+  \]
+\end{proof}
+
+\begin{theorem}
+  若 $X\cong Y$ 等距同构，则 $B(X,A)\cong B(Y,A)$ 等距同构。
+\end{theorem}
+
+\begin{proof}
+  设 $f:X\to Y$ 为等距同构，则存在等距同构 $g:Y\to X$ 使 $f\circ g=\mathrm{id}_Y$，$g\circ f=\mathrm{id}_X$。
+  由共轭算子的反变性，
+  \[
+    g^*\circ f^*=(f\circ g)^*=\mathrm{id}_Y^*=\mathrm{id},
+  \]
+  \[
+    f^*\circ g^*=(g\circ f)^*=\mathrm{id}_X^*=\mathrm{id}.
+  \]
+  故 $f^*:B(Y,A)\to B(X,A)$ 为双射。又 $\|f^*\|\le\|f\|=1$，$\|g^*\|\le\|g\|=1$，
+  故 $f^*$ 为等距同构。
+  \[
+    \begin{tikzcd}
+      B(X,A) \arrow[r,"f^*",shift left] & B(Y,A) \arrow[l,"g^*",shift left]
+    \end{tikzcd}
+  \]
+\end{proof}
+
+\begin{remark}
+  若 $X\xrightarrow{f}Y$ 等距同构，则 $B(Y,A)\xrightarrow{f^*}B(X,A)$ 等距同构。
+\end{remark}
+
+\begin{proposition}
+  设 $A$ 为赋范空间，$X\xrightarrow{f}Y$ 有界线性。若 $\mathrm{Im}\,f$ 在 $Y$ 中稠密，则 $f^*$ 单射。
+\end{proposition}
+
+\begin{proof}
+  设 $f^*(\varphi)=0$，即 $\varphi\circ f=0$。则 $\varphi(\mathrm{Im}\,f)=\{0\}$，即 $\mathrm{Im}\,f\subset\ker\varphi$。
+  因 $\ker\varphi=\varphi^{-1}(\{0\})$ 为闭集且 $\mathrm{Im}\,f$ 稠密，故 $\overline{\mathrm{Im}\,f}=Y\subset\ker\varphi$。
+  从而 $\varphi=0$，即 $f^*$ 单射。
+\end{proof}
+
+\begin{lemma}\label{lem:separate-point-subspace}
+  设 $X$ 为赋范空间，$Y\subset X$ 为闭线性子空间，$x_0\in X\setminus Y$。
+  则存在 $f\in X^*$ 使得 $\|f\|\le 1$，$f(Y)=\{0\}$，$f(x_0)=d(x_0,Y)\ne 0$。
+\end{lemma}
+
+\begin{proof}
+  因 $Y$ 闭且 $x_0\notin Y$，故 $[x_0]\ne 0$ 在商空间 $X/Y$ 中，从而 $\|[x_0]\|=d(x_0,Y)>0$。
+  由定理~\ref{thm:hahn-banach-normed} 存在 $\varphi:X/Y\to\mathbb{F}$ 使 $\|\varphi\|\le 1$ 且 $\varphi([x_0])=\|[x_0]\|=d(x_0,Y)$。
+  定义 $f=\varphi\circ\pi:X\to\mathbb{F}$，其中 $\pi:X\to X/Y$ 为商映射。
+  \[
+    \begin{tikzcd}
+      X \arrow[r,"\pi"] \arrow[dr,"f"'] & X/Y \arrow[d,"\varphi"] \\
+      & \mathbb{F}
+    \end{tikzcd}
+  \]
+  则 $f(x_0)=\varphi([x_0])=d(x_0,Y)\ne 0$，$f(Y)=\varphi(\pi(Y))=\varphi(\{0\})=\{0\}$。
+  又 $\|f\|=\|\varphi\circ\pi\|\le\|\varphi\|\|\pi\|\le 1$。
+\end{proof}
+
+\begin{theorem}
+  设 $X,Y$ 为赋范空间，$f:X\to Y$ 有界线性。则
+  \[
+    \overline{\mathrm{Im}\,f}=Y\quad\Longleftrightarrow\quad f^*:Y^*\to X^*\text{ 单射}.
+  \]
+\end{theorem}
+
+\begin{proof}
+  $(\Rightarrow)$：已证。
+
+  $(\Leftarrow)$：若 $\mathrm{Im}\,f$ 不稠密，则 $\overline{\mathrm{Im}\,f}\ne Y$。
+  由引理 \ref{lem:separate-point-subspace} 存在 $\psi\in Y^*$ 使 $\psi\ne 0$ 且 $\psi(\overline{\mathrm{Im}\,f})=\{0\}$。
+  则 $f^*(\psi)=\psi\circ f=0$，与 $f^*$ 单射矛盾。
+\end{proof}
+
+\section{典范映射与自反空间}
+
+\begin{definition}[典范映射]
+  设 $(X,\|\cdot\|)$ 为赋范空间。定义\textbf{典范映射} $\theta:X\to X^{**}$ 为
+  \[
+    \theta(x)=\hat{x},\quad\text{其中 }\hat{x}:X^*\to\mathbb{F},\quad\hat{x}(f)=f(x).
+  \]
+\end{definition}
+
+\begin{proposition}
+  典范映射 $\theta$ 有界且 $\|\theta\|\le 1$。
+\end{proposition}
+
+\begin{proof}
+  对任意 $f\in X^*$，$|\hat{x}(f)|=|f(x)|\le\|f\|\|x\|$，故 $\|\hat{x}\|\le\|x\|$。
+\end{proof}
+
+\begin{theorem}
+  设 $X$ 为赋范空间，则典范映射 $\theta:X\to X^{**}$ 为等距同构嵌入。
+\end{theorem}
+
+\begin{proof}
+  已证 $\|\hat{x}\|\le\|x\|$，下证 $\|\hat{x}\|=\|x\|$。
+
+  (1) 若 $x=0$，则 $\hat{x}=0$，故 $\|\hat{x}\|=0=\|x\|$。
+
+  (2) 若 $x\ne 0$，由定理~\ref{thm:hahn-banach-normed} 存在 $f\in X^*$ 使 $\|f\|=1$ 且 $f(x)=\|x\|$。
+  则 $|\hat{x}(f)|=|f(x)|=\|x\|$，故 $\|\hat{x}\|\ge\|x\|$。
+  从而 $\|\hat{x}\|=\|x\|$，即 $\theta$ 等距。
+\end{proof}
+
+\begin{definition}[自反空间]
+  设 $X$ 为赋范空间。若典范映射 $\theta:X\to X^{**}$ 为满射（即 $\theta(X)=X^{**}$），则称 $X$ 为\textbf{自反空间}。
+\end{definition}
+
+\begin{proposition}
+  若 $X$ 为有限维赋范空间，则 $X$ 自反。
+\end{proposition}
+
+\begin{proof}
+  设 $\dim X=n$。因 $X^*\subset\mathrm{Hom}(X,\mathbb{F})$ 且 $\dim\mathrm{Hom}(X,\mathbb{F})=n$，故 $\dim X^*\le n$。
+  类似地 $\dim X^{**}\le\dim X^*\le n$。
+  因 $\theta:X\to X^{**}$ 等距（单射），且 $\dim X=n$，$\dim X^{**}\le n$，故 $\theta$ 满射。
+\end{proof}
+
+\begin{remark}
+  存在赋范空间 $X$ 使 $X\cong X^{**}$（等距同构）但 $X$ 不自反。即典范映射不是满射，但存在其他等距同构。
+\end{remark}
+
+\begin{proposition}
+  任取 $f\in B(X,Y)$，下图交换：
+  \[
+    \begin{tikzcd}
+      X \arrow[r,"\theta_X"] \arrow[d,"f"'] & X^{**} \arrow[d,"f^{**}"] \\
+      Y \arrow[r,"\theta_Y"'] & Y^{**}
+    \end{tikzcd}
+  \]
+  即 $f^{**}\circ\theta_X=\theta_Y\circ f$。
+\end{proposition}
+
+\begin{proof}
+  对任意 $x\in X$，$\psi\in Y^*$，
+  \begin{align*}
+    f^{**}(\hat{x})(\psi)&=(\hat{x}\circ f^*)(\psi)=\hat{x}(f^*(\psi))=\hat{x}(\psi\circ f)\\
+    &=(\psi\circ f)(x)=\psi(f(x))=\widehat{f(x)}(\psi).
+  \end{align*}
+  故 $f^{**}(\hat{x})=\widehat{f(x)}=\theta_Y(f(x))$，即 $f^{**}\circ\theta_X=\theta_Y\circ f$。
+\end{proof}
+
+\begin{theorem}
+  设 $X,Y$ 为赋范空间，$f\in B(X,Y)$。则 $\|f^*\|=\|f\|$。
+\end{theorem}
+
+\begin{proof}
+  已证 $\|f^*\|\le\|f\|$。下证 $\|f\|\le\|f^*\|$。
+
+  考虑交换图：
+  \[
+    \begin{tikzcd}
+      X \arrow[r,"\theta_X"] \arrow[d,"f"'] & X^{**} \arrow[d,"f^{**}"] \\
+      Y \arrow[r,"\theta_Y"'] & Y^{**}
+    \end{tikzcd}
+  \]
+  因 $\theta_X,\theta_Y$ 等距，$f=\theta_Y^{-1}\circ f^{**}\circ\theta_X$（在 $\theta_Y(Y)$ 上）。
+  又 $\|f^{**}\|=\|(f^*)^*\|\le\|f^*\|$，故
+  \[
+    \|f\|\le\|f^{**}\|\le\|f^*\|.
+  \]
+  从而 $\|f^*\|=\|f\|$。
+\end{proof}
+
+\section{$\ell^p$ 空间与自反性}
+
+\begin{definition}[$\ell^p$ 空间]
+  设 $1<p<+\infty$，定义
+  \[
+    \ell^p\triangleq\left\{(x_n)_n\in\mathbb{C}^{\mathbb{N}}:\sum_{n=1}^{\infty}|x_n|^p<+\infty\right\},
+  \]
+  并定义范数 $\|(x_n)_n\|_p\triangleq\left(\sum_{n=1}^{\infty}|x_n|^p\right)^{1/p}$。则 $(\ell^p,\|\cdot\|_p)$ 为赋范空间。
+\end{definition}
+
+\begin{theorem}[Riesz 表示定理]\label{thm:riesz-lp}
+  设 $1<p,q<+\infty$ 且 $\frac{1}{p}+\frac{1}{q}=1$（称 $p,q$ 共轭）。
+  则 $\ell^q\cong(\ell^p)^*$ 等距同构，同构映射 $T:\ell^q\to(\ell^p)^*$ 定义为
+  \[
+    T_{(a_n)}((x_n)_n)\triangleq\sum_{n=1}^{\infty}a_n x_n.
+  \]
+\end{theorem}
+
+\begin{theorem}
+  $\forall p\in(1,+\infty)$，$(\ell^p,\|\cdot\|_p)$ 为自反空间。
+\end{theorem}
+
+\begin{proof}
+  由定理~\ref{thm:riesz-lp}，$\ell^q\xrightarrow{T_p}(\ell^p)^*$ 等距同构。
+  类似地，$(\ell^p)^{**}\xrightarrow{T_q}(\ell^q)^*$ 等距同构。
+  考虑下图：
+  \[
+    \begin{tikzcd}
+      \ell^p \arrow[r,"\theta"] \arrow[dr,"T_p"'] & (\ell^p)^{**} \arrow[d,"T_q^{-1}"] \\
+      & (\ell^q)^*
+    \end{tikzcd}
+  \]
+  因 $T_p,T_q$ 均为等距同构，且 $\theta$ 为等距嵌入，故 $\theta$ 满射，即 $\ell^p$ 自反。
+\end{proof}
+
+\begin{proposition}
+  若 $X$ 自反，则 $X$ 为 Banach 空间。
+\end{proposition}
+
+\begin{proof}
+  因 $X$ 自反，$\theta:X\to X^{**}$ 为等距满射。
+  又 $X^{**}=(X^*)^*$，因 $X^*$ 为 Banach 空间，故 $X^{**}$ 完备。
+  因 $\theta$ 等距满射，$X$ 与 $X^{**}$ 等距同构，故 $X$ 完备。
+\end{proof}
+
+\begin{remark}
+  由定理~\ref{thm:riesz-lp}，$\ell^p\cong(\ell^q)^*$ 等距同构，故 $\ell^p$ 为 Banach 空间。
+\end{remark}
+
+\section{自反空间的判别性质}
+
+\begin{theorem}
+  若 $X$ 为自反空间，$Y\subset X$ 为闭线性子空间，则 $Y$ 自反且 $X/Y$ 自反。
+\end{theorem}
+
+\begin{theorem}
+  若 $X$ 为赋范空间，$Y\subset X$ 为闭线性子空间，且 $Y$ 自反、$X/Y$ 自反，则 $X$ 自反。
+\end{theorem}
+
+\section{正合列}
+
+\begin{definition}[正合列]
+  设 $X,Y,Z$ 为赋范空间，$f:X\to Y$，$g:Y\to Z$ 有界线性。
+  若 $\mathrm{Im}\,f=\ker g$，则称 $X\xrightarrow{f}Y\xrightarrow{g}Z$ \textbf{正合}。
+
+  若 $X_1\xrightarrow{f_1}X_2\xrightarrow{f_2}X_3\xrightarrow{f_3}X_4$ 中每相邻两个映射正合，则称其为\textbf{正合列}。
+\end{definition}
+
+\begin{proposition}
+  设 $X\xrightarrow{f}Y$ 有界线性。则
+  \begin{enumerate}
+    \item $f$ 单射 $\Longleftrightarrow$ $0\to X\xrightarrow{f}Y$ 正合；
+    \item $f$ 满射 $\Longleftrightarrow$ $X\xrightarrow{f}Y\to 0$ 正合。
+  \end{enumerate}
+\end{proposition}
+
+\begin{remark}
+  设 $Y\subset X$ 为闭线性子空间，$\iota:Y\hookrightarrow X$ 为包含映射，$\pi:X\to X/Y$ 为商映射。则
+  \[
+    0\to Y\xrightarrow{\iota}X\xrightarrow{\pi}X/Y\to 0
+  \]
+  为正合列。
+\end{remark}
+
+\begin{lemma}[五引理]\label{lem:five-lemma}
+  设有交换图
+  \[
+    \begin{tikzcd}
+      0 \arrow[r] & X \arrow[r] \arrow[d,"\alpha"] & Y \arrow[r] \arrow[d,"\beta"] & Z \arrow[r] \arrow[d,"\gamma"] & 0 \\
+      0 \arrow[r] & X' \arrow[r] & Y' \arrow[r] & Z' \arrow[r] & 0
+    \end{tikzcd}
+  \]
+  且两行均为短正合列。则
+  \begin{enumerate}
+    \item 若 $\beta$ 满，$\gamma$ 单，则 $\alpha$ 满；
+    \item 若 $\alpha$ 单，则 $\beta$ 单；若 $\alpha$ 满，则 $\beta$ 满。
+  \end{enumerate}
+\end{lemma}
+
+\begin{definition}[赋范短正合列]
+  设 $X,Y,Z$ 为赋范空间，$f,g$ 为有界线性映射。若
+  \[
+    0\to X\xrightarrow{f}Y\xrightarrow{g}Z\to 0
+  \]
+  为短正合列，且满足：
+  \begin{enumerate}
+    \item $X$ 与 $f(X)$ 拓扑同构；
+    \item $Y/\ker g\cong Z$ 拓扑同构，
+  \end{enumerate}
+  则称其为\textbf{赋范短正合列}。
+\end{definition}
+
+\begin{lemma}
+  设 $0\to X\xrightarrow{f}Y\xrightarrow{g}Z\to 0$ 为赋范短正合列，则
+  \[
+    0\to Z^*\xrightarrow{g^*}Y^*\xrightarrow{f^*}X^*\to 0
+  \]
+  亦为赋范短正合列。
+\end{lemma}
+
+\begin{proof}
+  (i) $g$ 满 $\Rightarrow$ $g^*$ 单（已证）。
+
+  (ii) 下证 $\mathrm{Im}\,g^*=\ker f^*$。因 $g\circ f=0$，故 $f^*\circ g^*=(g\circ f)^*=0$，
+  从而 $\mathrm{Im}\,g^*\subset\ker f^*$。
+
+  反之，设 $\psi\in\ker f^*$，即 $\psi\circ f=0$。因 $f(X)=\ker g$，存在唯一 $\tilde{\psi}:Z\to\mathbb{F}$ 使 $\psi=\tilde{\psi}\circ g$，
+  即 $\psi=g^*(\tilde{\psi})\in\mathrm{Im}\,g^*$。
+
+  (iii) 下证 $f^*$ 满。因 $Y^*,X^*$ 为 Banach 空间，$f^*$ 双满（满射）$\Rightarrow$ $f^*$ 开（开映射定理）。
+
+  (iv) 因 $Z^*$ 为 Banach 空间，$\mathrm{Im}\,g^*=\ker f^*$ 闭于 $Y^*$，故 $g^*$ 开，即 $g^*$ 为拓扑同构嵌入。
+\end{proof}
+
+\begin{lemma}
+  设 $Y\subset X$ 为闭线性子空间。则有交换图
+  \[
+    \begin{tikzcd}
+      0 \arrow[r] & Y \arrow[r,hook] \arrow[d,"\theta_Y"] & X \arrow[r,"\pi"] \arrow[d,"\theta_X"] & X/Y \arrow[r] \arrow[d,"\theta_{X/Y}"] & 0 \\
+      0 \arrow[r] & Y^{**} \arrow[r] & X^{**} \arrow[r] & (X/Y)^{**} \arrow[r] & 0
+    \end{tikzcd}
+  \]
+  且两行均为赋范短正合列。
+\end{lemma}
+
+\begin{theorem}\label{thm:reflexive-subspace}
+  若 $X$ 自反，$Y\subset X$ 为闭线性子空间，则 $Y$ 自反且 $X/Y$ 自反。
+\end{theorem}
+
+\begin{proof}
+  因 $X$ 自反，$\theta_X$ 满。由上述交换图和引理~\ref{lem:five-lemma}：
+  \begin{itemize}
+    \item $\theta_X$ 满 $\Rightarrow$ $\theta_{X/Y}$ 满 $\Rightarrow$ $X/Y$ 自反；
+    \item $\theta_X$ 满，$\theta_{X/Y}$ 单 $\Rightarrow$ $\theta_Y$ 满 $\Rightarrow$ $Y$ 自反。
+  \end{itemize}
+\end{proof}
+
+\begin{theorem}
+  若 $Y\subset X$ 为闭线性子空间，且 $Y$ 自反、$X/Y$ 自反，则 $X$ 自反。
+\end{theorem}
+
+\begin{proof}
+  因 $Y$ 自反，$\theta_Y$ 为拓扑同构；因 $X/Y$ 自反，$\theta_{X/Y}$ 为拓扑同构。
+  由引理~\ref{lem:five-lemma}，$\theta_X$ 满，故 $X$ 自反。
+\end{proof}
+
+\chapter{弱拓扑与弱收敛}
+
+\section{弱有界与弱收敛}
+
+\begin{definition}[弱有界]
+  设 $X$ 为赋范空间，$\Omega\subset X$。称 $\Omega$ \textbf{弱有界}，若对任意 $\psi\in X^*$，$\psi(\Omega)$ 在 $\mathbb{F}$ 中有界。
+\end{definition}
+
+\begin{proposition}
+  $\Omega$ 有界 $\Rightarrow$ $\Omega$ 弱有界。
+\end{proposition}
+
+\begin{remark}
+  考虑典范映射 $\theta:X\to X^{**}$，$x\mapsto\hat{x}$，其中 $\hat{x}(\psi)=\psi(x)$。
+  则 $\Omega$ 在 $X$ 中有界 $\Longleftrightarrow$ $\theta(\Omega)=\{\hat{x}:x\in\Omega\}$ 在 $X^{**}$ 中有界。
+\end{remark}
+
+\begin{theorem}
+  设 $X$ 为赋范空间，$\Omega\subset X$。则
+  \[
+    \Omega\text{ 有界}\quad\Longleftrightarrow\quad\Omega\text{ 弱有界}.
+  \]
+\end{theorem}
+
+\begin{proof}
+  $(\Rightarrow)$：显然。
+
+  $(\Leftarrow)$：设 $\Omega$ 弱有界。对任意 $\psi\in X^*$，$\theta(\Omega)(\psi)=\psi(\Omega)$ 有界（已知）。
+  即 $\theta(\Omega)$ 逐点有界。因 $X^*$ 为 Banach 空间，由定理~\ref{thm:uniform-boundedness}，$\theta(\Omega)$ 在 $(X^{**},\|\cdot\|)$ 中有界。
+  又 $\theta$ 等距，故 $\Omega$ 有界。
+\end{proof}
+
+\begin{definition}[弱收敛]
+  设 $X$ 为赋范空间，$(x_n)_n$ 为 $X$ 中序列，$x\in X$。
+  称 $(x_n)_n$ \textbf{弱收敛}于 $x$，记为 $x_n\xrightarrow{w}x$，若对任意 $\psi\in X^*$，
+  \[
+    \psi(x_n)\to\psi(x)\quad\text{在 }\mathbb{F}\text{ 中}.
+  \]
+\end{definition}
+
+\begin{proposition}
+  收敛 $\Rightarrow$ 弱收敛，即 $x_n\xrightarrow{\|\cdot\|}x\Rightarrow x_n\xrightarrow{w}x$。
+\end{proposition}
+
+\begin{definition}[弱$^*$有界与弱$^*$收敛]
+  设 $X$ 为赋范空间。
+  \begin{enumerate}
+    \item 称 $\Omega\subset X^*$ \textbf{弱$^*$有界}，若对任意 $x\in X$，$\Omega(x)=\{\psi(x):\psi\in\Omega\}$ 在 $\mathbb{F}$ 中有界。
+    \item 称 $(\psi_n)_n\subset X^*$ \textbf{弱$^*$收敛}于 $\psi\in X^*$，记为 $\psi_n\xrightarrow{w^*}\psi$，若对任意 $x\in X$，
+    \[
+      \psi_n(x)\to\psi(x)\quad\text{在 }\mathbb{F}\text{ 中}.
+    \]
+  \end{enumerate}
+\end{definition}
+
+\begin{proposition}
+  在 $X^*$ 中，$\psi_n\xrightarrow{\|\cdot\|}\psi\Rightarrow\psi_n\xrightarrow{w}\psi$。
+\end{proposition}
+
+\begin{proof}
+  若 $\psi_n\xrightarrow{\|\cdot\|}\psi$，则对任意 $x\in X$，$\psi_n(x)\to\psi(x)$。
+\end{proof}
+
+\begin{proposition}
+  在 $X^*$ 中，$\psi_n\xrightarrow{w}\psi\Rightarrow\psi_n\xrightarrow{w^*}\psi$。
+\end{proposition}
+
+\begin{proof}
+  对任意 $x\in X$，$\hat{x}\in(X^*)^*$。若 $\psi_n\xrightarrow{w}\psi$，则 $\hat{x}(\psi_n)\to\hat{x}(\psi)$，即 $\psi_n(x)\to\psi(x)$。
+\end{proof}
+
+\begin{proposition}
+  若 $X$ 自反，则在 $X^*$ 中，$\psi_n\xrightarrow{w^*}\psi\Longleftrightarrow\psi_n\xrightarrow{w}\psi$。
+\end{proposition}
+
+\section{弱拓扑的构造}
+
+\begin{definition}[拓扑空间]
+  设 $X$ 非空，$\mathcal{T}\subset\mathcal{P}(X)$。若 $\mathcal{T}$ 满足拓扑公理，则称 $(X,\mathcal{T})$ 为\textbf{拓扑空间}。
+\end{definition}
+
+\begin{proposition}
+  设 $X$ 非空，$\mathcal{J}\subset\mathcal{P}(X)$。则存在唯一的拓扑 $\mathcal{T}$ 使得 $\mathcal{J}\subset\mathcal{T}$ 且 $\mathcal{T}$ 为包含 $\mathcal{J}$ 的极小拓扑。
+\end{proposition}
+
+\begin{proof}
+  取 $\mathcal{T}=\bigcap\{\mathcal{T}':\mathcal{T}'\text{ 为拓扑且 }\mathcal{J}\subset\mathcal{T}'\}$。
+  因 $\mathcal{P}(X)$ 为拓扑且包含 $\mathcal{J}$，故交非空。验证 $\mathcal{T}$ 满足拓扑公理即可。唯一性由极小性保证。
+\end{proof}
+
+\begin{definition}[诱导的最弱拓扑]
+  设 $X$ 为集合，$(Y_\alpha,\mathcal{T}_\alpha)_{\alpha\in\Lambda}$ 为一族拓扑空间，$f_\alpha:X\to Y_\alpha$。
+  称由 $(f_\alpha)_{\alpha\in\Lambda}$ \textbf{诱导的最弱拓扑}为使所有 $f_\alpha$ 连续的极小拓扑。
+\end{definition}
+
+\begin{proposition}
+  上述诱导的最弱拓扑存在，且所有 $f_\alpha$ 在此拓扑下连续。
+\end{proposition}
+
+\begin{proof}
+  取 $\mathcal{J}=\bigcup_{\alpha\in\Lambda}\{f_\alpha^{-1}(U):U\in\mathcal{T}_\alpha\}$。
+  设 $\mathcal{T}$ 为包含 $\mathcal{J}$ 的极小拓扑。则 $\mathcal{J}\subset\mathcal{T}$。
+
+  验证 $(X,\mathcal{T})\xrightarrow{f_\alpha}(Y_\alpha,\mathcal{T}_\alpha)$ 连续：对任意 $U\in\mathcal{T}_\alpha$，$f_\alpha^{-1}(U)\in\mathcal{J}\subset\mathcal{T}$，故 $f_\alpha$ 连续。
+
+  极小性：若 $\mathcal{T}'$ 为拓扑使所有 $f_\alpha$ 连续，则 $\mathcal{J}\subset\mathcal{T}'$，故 $\mathcal{T}\subset\mathcal{T}'$。
+\end{proof}
+
+\begin{proposition}
+  设 $X\xrightarrow{f_\alpha}(Y_\alpha,\mathcal{T}_\alpha)$，$\mathcal{T}$ 为由 $(f_\alpha)_{\alpha\in\Lambda}$ 诱导的最弱拓扑。
+  设 $(x_n)_n$ 为 $X$ 中序列，$x\in X$。则
+  \[
+    x_n\xrightarrow{\mathcal{T}}x\quad\Longleftrightarrow\quad\forall\alpha,\;f_\alpha(x_n)\to f_\alpha(x).
+  \]
+\end{proposition}
+
+\begin{proof}
+  $(\Rightarrow)$：因各 $f_\alpha$ 在 $\mathcal{T}$ 下连续，显然。
+
+  $(\Leftarrow)$：设 $\mathcal{J}=\bigcup_{\alpha\in\Lambda}\{f_\alpha^{-1}(U):U\in\mathcal{T}_\alpha\}$。
+  只需证：对任意 $B\in\mathcal{J}$，若 $x\in B$，则存在 $N\in\mathbb{N}$ 使 $n\ge N$ 时 $x_n\in B$。
+
+  设 $B=f_\alpha^{-1}(U)$，$U\in\mathcal{T}_\alpha$。因 $x\in B$，故 $f_\alpha(x)\in U$。
+  由 $f_\alpha(x_n)\to f_\alpha(x)$，存在 $N\in\mathbb{N}$ 使 $n\ge N$ 时 $f_\alpha(x_n)\in U$，即 $x_n\in f_\alpha^{-1}(U)=B$。
+\end{proof}
+
+\begin{definition}[弱$^*$拓扑]
+  设 $(X,\|\cdot\|)$ 为赋范空间。$X^*$ 上由 $(\hat{x})_{x\in X}$ 诱导的最弱拓扑称为 $X^*$ 上的\textbf{弱$^*$拓扑}，记为 $\mathcal{T}_{w^*}$。
+\end{definition}
+
+\begin{proposition}
+  $\mathcal{T}_{w^*}\subset\mathcal{T}_{\|\cdot\|}$。
+\end{proposition}
+
+\begin{proposition}
+  在 $X^*$ 中，$\varphi_n\xrightarrow{w^*}\varphi\Longleftrightarrow\varphi_n\xrightarrow{\mathcal{T}_{w^*}}\varphi$。
+\end{proposition}
+
+\begin{proof}
+  因 $\mathcal{T}_{w^*}$ 由 $(\hat{x})_{x\in X}$ 诱导，
+  \[
+    \varphi_n\xrightarrow{\mathcal{T}_{w^*}}\varphi\quad\Longleftrightarrow\quad\forall x\in X,\;\hat{x}(\varphi_n)\to\hat{x}(\varphi)\quad\Longleftrightarrow\quad\forall x\in X,\;\varphi_n(x)\to\varphi(x)\quad\Longleftrightarrow\quad\varphi_n\xrightarrow{w^*}\varphi.
+  \]
+\end{proof}
+
+\begin{proposition}
+  若 $X$ 为赋范空间，则 $X$ 在弱拓扑下为 $T_2$ 空间。
+\end{proposition}
+
+\begin{proof}
+  因 $\mathbb{F}$ 为 $T_2$，由定理~\ref{thm:hahn-banach-normed}，$X^*$ 分离 $X$ 中的点。
+\end{proof}
+
+\begin{corollary}
+  弱收敛极限唯一，即若 $x_n\xrightarrow{w}x$ 且 $x_n\xrightarrow{w}y$，则 $x=y$。
+\end{corollary}
+
+\begin{theorem}[Banach-Alaoglu]
+  设 $X$ 为赋范空间，$(X^*,\mathcal{T}_{w^*})$ 为 $T_2$ 空间。则
+  \[
+    \overline{B}_{X^*}(0,1)=\{\varphi\in X^*:\|\varphi\|\le 1\}
+  \]
+  为 $(X^*,\mathcal{T}_{w^*})$ 中的紧子集。
+\end{theorem}
+
+\begin{proof}
+  由 Tychonoff 定理即得。
+\end{proof}
+
+\begin{corollary}
+  若 $X$ 为可分赋范空间，则 $\overline{B}_{X^*}(0,1)$ 在 $(X^*,\mathcal{T}_{w^*})$ 中为可序列紧子空间。
+\end{corollary}
+
+\begin{proof}
+  设 $\{x_n\}_n$ 在 $\overline{B}_X(0,1)$ 中稠密。$(\hat{x}_n)_n$ 可分离 $\overline{B}_{X^*}(0,1)$ 中的点。
+\end{proof}
+
+\begin{lemma}\label{lem:metrizable}
+  设 $X$ 为紧空间，存在 $(\varphi_n)_n$，$\varphi_n:X\to[0,1]$ 连续，且 $(\varphi_n)_n$ 分离 $X$ 中诸点。则 $X$ 可度量化。
+\end{lemma}
+
+\begin{proof}
+  考虑 $X\xrightarrow{\varphi}[0,1]^{\mathbb{N}}$，$x\mapsto(\varphi_n(x))_n$。
+  因 $[0,1]^{\mathbb{N}}$ 赋积拓扑可度量，且 $\varphi$ 连续、单射，$X$ 紧，$[0,1]^{\mathbb{N}}$ Hausdorff，故 $\varphi$ 为拓扑嵌入，从而 $X$ 可度量化。
+\end{proof}
+
+\begin{theorem}
+  设 $X$ 为可分赋范空间。则任取 $(\psi_n)_n$ 为 $X^*$ 中有界序列，存在子列 $(\psi_{n_k})_k$ 弱$^*$收敛。
+\end{theorem}
+
+\begin{proof}
+  不妨设 $\|\psi_n\|\le 1$，$\forall n$。则 $(\psi_n)_n$ 为 $\overline{B}_{X^*}(0,1)$ 中序列。
+  因 $X$ 可分，$\overline{B}_{X^*}(0,1)$ 在 $(X^*,\mathcal{T}_{w^*})$ 中可序列紧，故存在子列 $\psi_{n_k}\xrightarrow{w^*}\psi$。
+\end{proof}
+
+\begin{proposition}
+  若 $X$ 自反，则 $X^*$ 自反。
+\end{proposition}
+
+\begin{proof}
+  考虑 $\theta_X:X\to X^{**}$ 等距同构。则 $\theta_X^*:(X^{**})^*\to X^*$ 为同构。
+  考虑交换图：
+  \[
+    \begin{tikzcd}
+      (X^{**})^* \arrow[r,"\theta_X^*"] & X^* \\
+      & X^{**} \arrow[u,"\psi"] \arrow[ul,"\widehat{\psi\circ\theta_X}"]
+    \end{tikzcd}
+  \]
+  对任意 $\tau\in X^{**}$，$\psi\in X^*$，
+  \[
+    \widehat{\psi\circ\theta_X}(\tau)=\tau(\psi\circ\theta_X)=\hat{x}(\psi\circ\theta_X)=(\psi\circ\theta_X)(x)=\psi(\hat{x})=\psi(\tau).
+  \]
+  故 $\theta_{X^*}$ 满射，即 $X^*$ 自反。
+\end{proof}
+
+\begin{remark}
+  反之，若 $X^*$ 自反，$X$ 不一定自反。
+\end{remark}
+
+\begin{proposition}
+  设 $Y\subset X$ 为闭线性子空间。则 $\overline{B}_Y(0,r)=\overline{B}_X(0,r)\cap Y$。
+\end{proposition}
+
+\begin{proof}
+  $(\subset)$：显然。
+
+  $(\supset)$：设 $x\in\overline{B}_X(0,r)\cap Y$。对任意 $\delta>0$，需证 $B_X(x,\delta)\cap\overline{B}_Y(0,r)\ne\varnothing$。
+  取 $\varepsilon<\delta$ 使 $B_Y(x,\varepsilon)\subset B_X(0,r)$。因 $Y$ 非空，存在 $y\in B_Y(x,\varepsilon)\cap\overline{B}_Y(0,r)\subset B_X(x,\delta)$。
+\end{proof}
+
+\begin{proposition}
+  设 $Y\subset X$ 为闭线性子空间，$i:Y\hookrightarrow X$ 为包含映射。则 $i^*:X^*\to Y^*$，$\psi\mapsto\psi|_Y=\psi\circ i$ 为等距满射。
+\end{proposition}
+
+\begin{proof}
+  满射性由定理~\ref{thm:hahn-banach-normed} 保证。等距性：
+  \[
+    \|\psi|_Y\|=\sup\{|\psi(y)|:y\in\overline{B}_Y(0,1)\}\le\sup\{|\psi(x)|:x\in\overline{B}_X(0,1)\}=\|\psi\|.
+  \]
+  反向由定理~\ref{thm:hahn-banach-normed} 延拓可得 $\|\psi|_Y\|=\|\psi\|$。
+\end{proof}
+
+\begin{theorem}
+  若 $X$ 为 Banach 空间，则 $X$ 自反 $\Longleftrightarrow$ $X^*$ 自反。
+\end{theorem}
+
+\begin{proof}
+  $(\Rightarrow)$：已证。
+
+  $(\Leftarrow)$：因 $X\xrightarrow{\theta}X^{**}$ 等距嵌入，$X$ 为 Banach 空间，故 $\theta(X)$ 为 $X^{**}$ 的闭线性子空间。
+  因 $X^*$ 自反，由定理~\ref{thm:reflexive-subspace}，$X^{**}$ 自反。
+  从而 $X^{**}$ 的闭线性子空间 $\theta(X)$ 仍自反，即 $X\cong\theta(X)$ 自反。
+\end{proof}
+
+\section{Banach--Alaoglu 定理}
+
+\begin{proof}[Banach-Alaoglu 定理的详细证明]
+  设 $X$ 为赋范空间。考虑
+  \[
+    \begin{tikzcd}
+      X^* \arrow[r,"\theta"] & \prod_{x\in X}\mathbb{F} \\
+      \psi \arrow[r,mapsto] & (\psi(x))_{x\in X}
+    \end{tikzcd}
+  \]
+  其中 $\prod_{x\in X}\mathbb{F}$ 赋积拓扑。
+
+  \textbf{Step 1}：$\theta$ 为同构嵌入（$X^*$ 配弱$^*$拓扑）。
+
+  \textbf{Step 2}：$\overline{B}_{X^*}(0,1)\xrightarrow{\theta}\mathrm{Im}\,\theta$。
+  若 $\psi\in\overline{B}_{X^*}(0,1)$，则对任意 $x\in X$，
+  \[
+    |\psi(x)|\le\|\psi\|\|x\|\le\|x\|.
+  \]
+  故 $\psi(x)\in\overline{B}_{\mathbb{F}}(0,\|x\|)$，从而
+  \[
+    \mathrm{Im}\,\theta\subset\prod_{x\in X}\overline{B}_{\mathbb{F}}(0,\|x\|).
+  \]
+
+  \textbf{Step 3}：由 Tychonoff 定理，$\prod_{x\in X}\overline{B}_{\mathbb{F}}(0,\|x\|)$ 紧。
+
+  \textbf{Step 4}：证明 $\mathrm{Im}\,\theta$ 在 $\prod_{x\in X}\overline{B}_{\mathbb{F}}(0,\|x\|)$ 中闭。
+
+  设 $\theta(\psi_\alpha)\to\theta(\psi)$，置于 $\psi\in\mathbb{F}^X$。则对任意 $x\in X$，
+  \[
+    P_x(\theta(\psi_\alpha))\to P_x(\theta(\psi)),\quad\text{即}\quad\psi_\alpha(x)\to\psi(x).
+  \]
+  置于 $\psi_\alpha\in\overline{B}_{X^*}(0,1)$。对任意 $x\in X$ 且 $\|x\|\le 1$，
+  \[
+    |\psi(x)|=\left|\lim_{\alpha}\psi_\alpha(x)\right|=\lim_{\alpha}|\psi_\alpha(x)|\le 1.
+  \]
+  故 $\|\psi\|\le 1$，即 $\psi\in\overline{B}_{X^*}(0,1)$，从而 $\theta(\psi)\in\mathrm{Im}\,\theta$。
+
+  因此 $\mathrm{Im}\,\theta$ 闭，$\overline{B}_{X^*}(0,1)$ 在 $(X^*,\mathcal{T}_{w^*})$ 中紧。
+\end{proof}
+
+\begin{remark}
+  若 $\psi,\psi'\in\overline{B}_{X^*}(0,1)$ 满足对任意 $x\in D$ 有 $\hat{x}(\psi)=\hat{x}(\psi')$，即 $\psi(x)=\psi'(x)$，
+  则 $\psi|_D=\psi'|_D$。若 $D$ 在 $X$ 中稠密，则 $\psi=\psi'$。
+\end{remark}
+
+\begin{theorem}
+  设 $X$ 为赋范空间。若 $X$ 可分，则 $\overline{B}_{X^*}(0,1)$ 在弱$^*$拓扑下可度量化。
+\end{theorem}
+
+\begin{proof}
+  设 $D\subset X$ 可数且 $\overline{D}=X$。考虑 $\overline{B}_{X^*}(0,1)\xrightarrow{\hat{x}}\mathbb{F}$，$\psi\mapsto\psi(x)$，对每个 $x\in D$。
+  因 $D$ 可数且分离 $\overline{B}_{X^*}(0,1)$ 中的点，由引理~\ref{lem:metrizable}，$\overline{B}_{X^*}(0,1)$ 可度量化。
+\end{proof}
+
+\begin{proposition}
+  设 $(X,d)$ 为度量空间，$Y\subset X$。若 $X$ 可分，则 $Y$ 可分。
+\end{proposition}
+
+\begin{proof}
+  若 $Y=\varnothing$，显然。设 $Y\ne\varnothing$，$D$ 为 $X$ 的可数稠密子集。
+  令 $\Lambda\triangleq\{(x,n)\in D\times\mathbb{N}^*:B(x,\tfrac{1}{n})\cap Y\ne\varnothing\}$。
+  对任意 $(x,n)\in\Lambda$，选取 $y_{(x,n)}\in B(x,\tfrac{1}{n})\cap Y$。
+  下证 $\tilde{D}\triangleq\{y_{(x,n)}:(x,n)\in\Lambda\}$ 为 $Y$ 的可数稠密子集。
+
+  对任意 $y\in Y$，$n\in\mathbb{N}^*$，需证 $\tilde{D}\cap B_Y(y,\tfrac{1}{n})\ne\varnothing$。
+  因 $D$ 在 $X$ 中稠密，存在 $x\in D$ 使 $x\in B(y,\tfrac{1}{2n})$，从而 $y\in B(x,\tfrac{1}{2n})\cap Y\ne\varnothing$。
+  故 $(x,2n)\in\Lambda$，$y_{(x,2n)}\in B(x,\tfrac{1}{2n})\cap Y$。
+  由三角不等式，
+  \[
+    d(y_{(x,2n)},y)\le d(y_{(x,2n)},x)+d(x,y)<\tfrac{1}{2n}+\tfrac{1}{2n}=\tfrac{1}{n}.
+  \]
+  故 $y_{(x,2n)}\in B_Y(y,\tfrac{1}{n})$。
+\end{proof}
+
+\begin{lemma}
+  设 $X$ 为赋范空间，$S\triangleq\{x\in X:\|x\|=1\}$ 为单位球面。则 $X$ 可分 $\Longleftrightarrow$ $S$ 可分。
+\end{lemma}
+
+\begin{proof}
+  $(\Rightarrow)$：已证（$S\subset X$ 子空间可分）。
+
+  $(\Leftarrow)$：设 $\Omega\subset S$ 可数稠密。设 $D\subset\mathbb{F}$ 可数稠密。
+  则 $D\cdot\Omega=\{d\omega:d\in D,\omega\in\Omega\}$ 可数。
+  因 $\overline{\mathrm{span}_{\mathbb{F}}\Omega}=X$（否则存在非零泛函在 $\Omega$ 上为零，与 $\Omega$ 稠密矛盾），
+  故 $\overline{D\cdot\Omega}\supset\overline{\mathrm{span}_{\mathbb{F}}\Omega}=X$，即 $X$ 可分。
+\end{proof}
+
+\begin{theorem}
+  设 $X$ 为赋范空间。若 $X^*$ 可分，则 $X$ 可分。
+\end{theorem}
+
+\begin{proof}
+  因 $X^*$ 可分，$X^*$ 的单位球面可分。设 $\Omega$ 为 $X^*$ 单位球面的可数稠密子集。
+  对任意 $\psi\in\Omega$，$\|\psi\|=1$，存在 $x_\psi\in X$ 使 $\|x_\psi\|=1$ 且 $|\psi(x_\psi)|\ge\tfrac{1}{2}$。
+
+  下证 $\overline{\mathrm{span}_{\mathbb{F}}\{x_\psi:\psi\in\Omega\}}=X$。
+  若不然，存在 $\psi\in X^*$ 使 $\|\psi\|=1$ 且 $\psi|_{\mathrm{span}_{\mathbb{F}}\{x_\varphi:\varphi\in\Omega\}}=0$。
+  则对任意 $\varphi\in\Omega$，
+  \[
+    \|\psi-\varphi\|\ge|\psi(x_\varphi)-\varphi(x_\varphi)|=|\varphi(x_\varphi)|\ge\tfrac{1}{2}.
+  \]
+  这与 $\Omega$ 在 $X^*$ 单位球面中稠密矛盾。
+
+  因此 $\mathrm{span}_{\mathbb{F}}\{x_\psi:\psi\in\Omega\}$ 在 $X$ 中稠密，且可数，故 $X$ 可分。
+\end{proof}
+
+\chapter{紧算子}
+
+\section{紧算子的定义与性质}
+
+\begin{definition}[紧算子]
+  设 $X,Y$ 为赋范空间，$T:X\to Y$ 为线性算子。称 $T$ 为\textbf{紧算子}，若对任意 $\Omega\subset X$ 有界，$\overline{T(\Omega)}$ 在 $Y$ 中紧。
+  
+  等价地，$T$ 为紧算子当且仅当对任意 $\Omega\subset X$ 有界，$T(\Omega)$ 蕴含收敛子列。
+\end{definition}
+
+\begin{remark}
+  记号说明：
+  \begin{enumerate}
+    \item 若 $\Omega\subset K$ 且 $K$ 紧，则 $\Omega\subset\overline{\Omega}\subset K$（闭），故 $\overline{\Omega}$ 紧。
+    \item $K(X,Y)$ 表示 $X$ 到 $Y$ 的紧算子全体，$K(X,Y)\subset B(X,Y)$。
+  \end{enumerate}
+\end{remark}
+
+\begin{proposition}
+  紧算子 $\Rightarrow$ 有界。
+\end{proposition}
+
+\begin{proof}
+  设 $T$ 为紧算子。对任意 $\Omega\subset X$ 有界，$T(\Omega)$ 蕴含紧，从而 $T(\Omega)$ 有界。
+  故 $T$ 有界。
+\end{proof}
+
+\begin{proposition}
+  设 $X\xrightarrow{T}Y$ 为线性算子。则 $T$ 为紧算子 $\Longleftrightarrow$ $T(\overline{B}_X(0,1))$ 蕴含紧。
+\end{proposition}
+
+\begin{proof}
+  $(\Rightarrow)$：显然。
+
+  $(\Leftarrow)$：对任意 $r>0$，有 $T(\overline{B}_X(0,r))=r\cdot T(\overline{B}_X(0,1))$ 蕴含紧。
+  对任意有界集 $\Omega\subset\overline{B}_X(0,r)$，$T(\Omega)\subset T(\overline{B}_X(0,r))$ 蕴含紧。
+\end{proof}
+
+\begin{theorem}
+  紧算子具有运算性质，即 $K(X,Y)$ 为 $B(X,Y)$ 的线性子空间。
+\end{theorem}
+
+\begin{proof}
+  设 $T,S\in K(X,Y)$，$\lambda\in\mathbb{F}$，$\Omega\subset X$ 有界。
+  \begin{itemize}
+    \item 若 $\lambda=0$，则 $(\lambda T)(\Omega)=\{0\}$ 紧。
+    \item 若 $\lambda\ne 0$，则 $(\lambda T)(\Omega)=\lambda\cdot T(\Omega)$ 蕴含紧，故 $\lambda T$ 为紧算子。
+    \item $(T+S)(\Omega)\subset T(\Omega)+S(\Omega)\subset\overline{T(\Omega)}+\overline{S(\Omega)}$。
+          因 $\overline{T(\Omega)},\overline{S(\Omega)}$ 紧，$\overline{T(\Omega)}+\overline{S(\Omega)}$ 紧，故 $(T+S)(\Omega)$ 蕴含紧。
+  \end{itemize}
+\end{proof}
+
+\begin{proposition}
+  设 $A,B\subset X$ 紧。则 $A+B$ 紧。
+\end{proposition}
+
+\begin{proof}
+  考虑连续映射 $(X,\|\cdot\|)\times(X,\|\cdot\|)\xrightarrow{+}(X,\|\cdot\|)$。
+  因 $A\times B$ 紧（赋积拓扑），$+(A\times B)=A+B$ 紧。
+\end{proof}
+
+\begin{theorem}
+  设 $S_1,S_2$ 为有界算子，$T$ 为紧算子。则 $S_1\circ T$ 和 $T\circ S_2$ 仍为紧算子。
+\end{theorem}
+
+\begin{proof}
+  考虑交换图：
+  \[
+    \begin{tikzcd}
+      A \arrow[r,"S"] \arrow[dr,"T\circ S"'] & X \arrow[d,"T"] \\
+      & Y
+    \end{tikzcd}
+    \qquad
+    \begin{tikzcd}
+      X \arrow[r,"T"] \arrow[dr,"S\circ T"'] & Y \arrow[d,"S"] \\
+      & B
+    \end{tikzcd}
+  \]
+  
+  \textbf{左复合}：设 $\Omega\subset A$ 有界。则 $(T\circ S)(\Omega)=T(S(\Omega))$。
+  因 $S$ 有界，$S(\Omega)$ 有界；因 $T$ 紧，$T(S(\Omega))$ 蕴含紧。
+
+  \textbf{右复合}：设 $\Omega\subset X$ 有界。则 $(S\circ T)(\Omega)=S(T(\Omega))\subset S(\overline{T(\Omega)})$。
+  因 $T$ 紧，$\overline{T(\Omega)}$ 紧；因 $S$ 连续，$S(\overline{T(\Omega)})$ 紧，故 $S\circ T$ 为紧算子。
+\end{proof}
+
+\begin{proposition}
+  设 $(Y,d)$ 为度量空间，$\Omega\subset Y$。则 $\Omega$ 完全有界 $\Longleftrightarrow$ $\overline{\Omega}$ 完全有界。
+\end{proposition}
+
+\begin{proof}
+  $(\Leftarrow)$：显然。
+
+  $(\Rightarrow)$：对任意 $\varepsilon>0$，因 $\Omega$ 完全有界，存在 $\{x_1,\ldots,x_n\}\subset\Omega$ 为 $\Omega$ 的 $\frac{\varepsilon}{2}$-网。
+  下证 $\{x_1,\ldots,x_n\}$ 为 $\overline{\Omega}$ 的 $\varepsilon$-网。
+  
+  对任意 $z\in\overline{\Omega}$，存在 $y\in\Omega$ 使 $d(y,z)<\frac{\varepsilon}{2}$，又存在 $x_i$ 使 $d(y,x_i)<\frac{\varepsilon}{2}$。
+  由三角不等式，$d(z,x_i)\le d(z,y)+d(y,x_i)<\frac{\varepsilon}{2}+\frac{\varepsilon}{2}=\varepsilon$。
+  故 $\overline{\Omega}$ 完全有界。
+\end{proof}
+
+\begin{theorem}
+  设 $X$ 为赋范空间，$Y$ 为 Banach 空间。则 $K(X,Y)$ 为 $B(X,Y)$ 的闭线性子空间，从而 $K(X,Y)$ 为 Banach 空间。
+\end{theorem}
+
+\begin{proof}
+  设 $(\varphi_n)_n$ 为 $K(X,Y)$ 中柯西列，且 $\varphi_n\xrightarrow{\|\cdot\|}\varphi\in B(X,Y)$。
+  需证 $\varphi\in K(X,Y)$。
+  
+  对任意 $\Omega\subset X$ 有界，需证 $\overline{\varphi(\Omega)}$ 在 $Y$ 中紧。
+  因 $Y$ 完备，只需证 $\varphi(\Omega)$ 在 $Y$ 中完全有界。
+  
+  对任意 $\varepsilon>0$，因 $\varphi_n\xrightarrow{\|\cdot\|}\varphi$，存在 $N$ 使 $\|\varphi_N-\varphi\|<\frac{\varepsilon}{3}$。
+  则对任意 $x\in\overline{B}_X(0,1)$，有 $\|\varphi_N(x)-\varphi(x)\|<\frac{\varepsilon}{3}$。
+  
+  因 $\varphi_N$ 为紧算子，$\varphi_N(\overline{B}_X(0,1))$ 完全有界。
+  存在 $\{\varphi_N(x_1),\ldots,\varphi_N(x_k)\}$ 为 $\varphi_N(\overline{B}_X(0,1))$ 的 $\frac{\varepsilon}{3}$-网，其中 $x_1,\ldots,x_k\in\overline{B}_X(0,1)$。
+  
+  下证 $\{\varphi(x_1),\ldots,\varphi(x_k)\}$ 为 $\varphi(\overline{B}_X(0,1))$ 的 $\varepsilon$-网。
+  对任意 $\varphi(x)\in\varphi(\overline{B}_X(0,1))$，$x\in\overline{B}_X(0,1)$，存在 $x_i$ 使 $\|\varphi_N(x)-\varphi_N(x_i)\|<\frac{\varepsilon}{3}$。
+  则
+  \begin{align*}
+    \|\varphi(x)-\varphi(x_i)\| &\le \|\varphi(x)-\varphi_N(x)\|+\|\varphi_N(x)-\varphi_N(x_i)\|+\|\varphi_N(x_i)-\varphi(x_i)\| \\
+    &< \frac{\varepsilon}{3}+\frac{\varepsilon}{3}+\frac{\varepsilon}{3}=\varepsilon.
+  \end{align*}
+  故 $\varphi(\overline{B}_X(0,1))$ 完全有界，$\varphi$ 为紧算子。
+\end{proof}
+
+\begin{theorem}
+  $X\xrightarrow{T}Y$ 紧 $\Longrightarrow$ $Y^*\xrightarrow{T^*}X^*$ 紧。
+\end{theorem}
+
+\begin{definition}[有限秩算子]
+  设 $X\xrightarrow{T}Y$ 为线性算子。称 $T$ 为\textbf{有限秩算子}，若 $\dim TX<+\infty$。
+\end{definition}
+
+\begin{proposition}
+  有限秩算子为紧算子。
+\end{proposition}
+
+\begin{proof}
+  设 $X\xrightarrow{T}TX\hookrightarrow Y$。对任意 $\Omega\subset X$ 有界，$T(\Omega)\subset TX$。
+  因 $TX$ 为有限维赋范空间，$T(\Omega)$ 有界，故 $T(\Omega)$ 在 $TX$ 中蕴含紧。
+  又 $TX$ 为 $Y$ 的闭线性子空间，故 $T(\Omega)$ 在 $Y$ 中蕴含紧。
+\end{proof}
+
+\begin{proposition}
+  设 $\Omega\subset Y\subset X$。则 $\Omega$ 在 $X$ 中蕴含紧 $\Longleftrightarrow$ $\Omega$ 在 $Y$ 中蕴含紧。
+\end{proposition}
+
+\begin{proof}
+  $(\Leftarrow)$：若 $\Omega\subset K$ 且 $K$ 在 $Y$ 中紧，则 $K\subset Y\subset X$，$K$ 在 $X$ 中紧。
+
+  $(\Rightarrow)$：若 $\Omega\subset K$ 且 $K$ 在 $X$ 中紧，则 $\overline{\Omega}\subset K$ 闭，故 $\overline{\Omega}$ 在 $X$ 中紧。
+  又 $\overline{\Omega}\subset Y$，故 $\overline{\Omega}$ 在 $Y$ 中紧。
+\end{proof}
+
+\begin{proposition}
+  设 $X\xrightarrow{T}Y$ 为紧算子。若 $x_n\xrightarrow{w}x$，则 $Tx_n\to Tx$。
+\end{proposition}
+
+\begin{proposition}
+  设 $Y\subset X$ 为闭线性子空间，$\pi:X\to X/Y$ 为商映射。则
+  \[
+    (X/Y)^*\xrightarrow{\pi^*}X^*,\quad\psi\mapsto\psi\circ\pi
+  \]
+  为等距嵌入。
+\end{proposition}
+
+\begin{proof}
+  考虑交换图：
+  \[
+    \begin{tikzcd}
+      X \arrow[r,"\pi"] \arrow[dr,"\psi\circ\pi"'] & X/Y \arrow[d,"\psi"] \\
+      & \mathbb{F}
+    \end{tikzcd}
+  \]
+  
+  \textbf{单射性}：若 $\psi\circ\pi=0$，则对任意 $x\in X$，$\psi([x])=0$，故 $\psi=0$。
+
+  \textbf{等距性}：$\|\psi\circ\pi\|=\sup_{\|x\|\le 1}|(\psi\circ\pi)(x)|=\sup_{\|x\|\le 1}|\psi([x])|$。
+  
+  对任意 $[x_0]\ne 0$，存在 $\psi\in(X/Y)^*$ 使 $\|\psi\|=1$ 且 $\psi([x_0])=\|[x_0]\|=d(x_0,Y)$。
+  
+  因 $\psi|_Y=0$（即 $\psi([y])=0$，$\forall y\in Y$），有
+  \[
+    \|\psi\circ\pi\|=\sup_{\|[x]\|\le 1}|\psi([x])|=\|\psi\|=1.
+  \]
+  故 $\pi^*$ 为等距映射。
+\end{proof}
+
+\begin{proposition}
+  设 $X\xrightarrow{f}Y$ 有界，$\Omega\subset\overline{B}_X(0,1)$ 紧。则 $\|f\|=\sup_{x\in\Omega}\|f(x)\|$。
+\end{proposition}
+
+\begin{proof}
+  显然 $\|f\|\ge\sup_{x\in\Omega}\|f(x)\|$。
+  
+  下证对任意 $x\in\overline{B}(0,1)$，有 $\|f(x)\|\le\sup_{z\in\Omega}\|f(z)\|$。
+  因 $\Omega$ 紧，存在 $(x_n)_n\subset\Omega$ 使 $x_n\to x$。
+  由 $f$ 连续，$\|f(x_n)\|\to\|f(x)\|$，故 $\|f(x)\|\le\sup_{z\in\Omega}\|f(z)\|$。
+\end{proof}
+
+\begin{theorem}[赋范空间的完备化]
+  设 $X$ 为赋范空间。则存在 Banach 空间 $\tilde{X}$ 使 $X$ 为 $\tilde{X}$ 的稠密子空间。
+\end{theorem}
+
+\begin{proof}
+  考虑 $X\xrightarrow{\theta}X^{**}$，$\theta$ 为等距嵌入，$X^{**}$ 为 Banach 空间。
+  取 $\tilde{X}=\overline{\theta(X)}\cong$ Banach 空间。
+\end{proof}
+
+\begin{theorem}
+  设 $X\xrightarrow{f}Y$ 为紧算子。则 $x_n\xrightarrow{w}x\Longrightarrow f(x_n)\xrightarrow{\|\cdot\|}f(x)$。
+\end{theorem}
+
+\begin{proof}
+  反证。设 $x_n\xrightarrow{w}x$，但 $f(x_n)\not\to f(x)$。
+  则存在 $U\in\mathcal{N}_{f(x)}$ 及子列 $(x_{n_k})_k$ 使 $f(x_{n_k})\notin U$。
+  
+  因 $x_n\xrightarrow{w}x$，$(x_n)_n$ 有界，故 $(x_{n_k})_k$ 有界。
+  因 $f$ 为紧算子，$(f(x_{n_k}))_k$ 蕴含收敛子列。
+  设 $f(x_{n_{k_i}})\to y$，$i\to\infty$。
+  
+  由已知 $y\notin U$，故 $y\ne f(x)$。存在 $\psi\in Y^*$ 使 $\psi(f(x))\ne\psi(y)$。
+  
+  考虑交换图：
+  \[
+    \begin{tikzcd}
+      X \arrow[r,"f"] \arrow[dr,"\psi\circ f"'] & Y \arrow[d,"\psi"] \\
+      & \mathbb{F}
+    \end{tikzcd}
+  \]
+  
+  因 $x_n\xrightarrow{w}x$，对任意 $\psi\in Y^*$，有 $(\psi\circ f)(x_n)\to(\psi\circ f)(x)$，即 $\psi(f(x_n))\to\psi(f(x))$。
+  
+  而 $\psi(f(x_{n_{k_i}}))\to\psi(y)$，故 $\psi(y)=\psi(f(x))$，与 $\psi(f(x))\ne\psi(y)$ 矛盾。
+\end{proof}
+
+\begin{proof}[定理"$T$ 紧 $\Rightarrow$ $T^*$ 紧"的证明]
+  只需证 $T^*(\overline{B}_{Y^*}(0,1))$ 在 $X^*$ 中蕴含紧。因 $X^*$ 为 Banach 空间，只需证 $T^*(\overline{B}_{Y^*}(0,1))$ 在 $X^*$ 中完全有界。
+
+  对任意 $\varepsilon>0$，因 $T:X\to Y$ 为紧算子，$T(\overline{B}_X(0,1))$ 蕴含紧，从而完全有界。
+  存在 $y_1,\ldots,y_n\in T(\overline{B}_X(0,1))$ 为 $T(\overline{B}_X(0,1))$ 的 $\frac{\varepsilon}{3}$-网。
+
+  考虑 $Y^*\xrightarrow{\theta}(\mathbb{F}^n,\|\cdot\|_\infty)$，$\psi\mapsto(\psi(y_1),\ldots,\psi(y_n))$。
+  因 $\theta$ 连续（压缩）且为有限秩算子（紧算子），$\theta(\overline{B}_{Y^*}(0,1))$ 蕴含紧，从而完全有界。
+  存在 $\psi_1,\ldots,\psi_k\in Y^*$ 使 $\theta(\psi_1),\ldots,\theta(\psi_k)$ 为 $\theta(\overline{B}_{Y^*}(0,1))$ 的 $\frac{\varepsilon}{3}$-网。
+
+  下证 $\psi_1\circ T,\ldots,\psi_k\circ T$ 为 $T^*(\overline{B}_{Y^*}(0,1))$ 的 $\varepsilon$-网。
+
+  对任意 $\psi\in\overline{B}_{Y^*}(0,1)$，存在 $\psi_i$ 使 $\|\theta(\psi)-\theta(\psi_i)\|_\infty<\frac{\varepsilon}{3}$，即对任意 $j=1,\ldots,n$，$|\psi(y_j)-\psi_i(y_j)|<\frac{\varepsilon}{3}$。
+
+  对任意 $x\in\overline{B}_X(0,1)$，存在 $y_j$ 使 $\|Tx-y_j\|<\frac{\varepsilon}{3}$。则
+  \begin{align*}
+    |(\psi\circ T)(x)-(\psi_i\circ T)(x)| &= |\psi(Tx)-\psi_i(Tx)| \\
+    &\le |\psi(Tx)-\psi(y_j)|+|\psi(y_j)-\psi_i(y_j)|+|\psi_i(y_j)-\psi_i(Tx)| \\
+    &\le \|\psi\|\|Tx-y_j\|+\frac{\varepsilon}{3}+\|\psi_i\|\|y_j-Tx\| \\
+    &< \frac{\varepsilon}{3}+\frac{\varepsilon}{3}+\frac{\varepsilon}{3}=\varepsilon.
+  \end{align*}
+  故 $\|T^*\psi-T^*\psi_i\|=\|\psi\circ T-\psi_i\circ T\|\le\varepsilon$，即 $T^*(\overline{B}_{Y^*}(0,1))$ 完全有界。
+\end{proof}
+
+\chapter{Hilbert 空间}
+
+\section{内积空间}
+
+\begin{definition}[双线性型]
+  设 $X$ 为 $\mathbb{F}$ 上的线性空间。称 $T:X\times X\to\mathbb{F}$ 为\textbf{双线性型}，若 $T$ 对每个分量都是线性的。
+\end{definition}
+
+\begin{definition}[半双线性型]
+  称 $T:X\times X\to\mathbb{F}$ 为\textbf{半双线性型}，若
+  \begin{enumerate}
+    \item 对任意 $x\in X$，$T(x,\cdot)$ 保紧（线性）；
+    \item 对任意 $x\in X$，$T(\cdot,x)$ 共轭保紧（共轭线性），即 $T(\lambda y,x)=\overline{\lambda}T(y,x)$。
+  \end{enumerate}
+\end{definition}
+
+\begin{definition}[共轭对称型]
+  称 $T:X\times X\to\mathbb{F}$ 为\textbf{共轭对称型}，若对任意 $x,y\in X$，有 $T(x,y)=\overline{T(y,x)}$。
+\end{definition}
+
+\begin{remark}
+  共轭对称 $\Rightarrow$ 半双线性。且在实数域上，共轭对称即对称，即 $T(x,y)=T(y,x)$。
+  
+  共轭对称蕴含对任意 $x\in X$，$T(x,x)\in\mathbb{R}$。
+\end{remark}
+
+\begin{definition}[半内积]
+  称 $T:X\times X\to\mathbb{F}$ 为\textbf{半内积}，若
+  \begin{enumerate}
+    \item $T$ 为共轭对称型；
+    \item 对任意 $x\in X$，$T(x,x)\ge 0$（半正定性）。
+  \end{enumerate}
+\end{definition}
+
+\begin{definition}[内积]
+  称 $T:X\times X\to\mathbb{F}$ 为 $X$ 上的\textbf{内积}，若
+  \begin{enumerate}
+    \item $T$ 为共轭对称型；
+    \item 对任意 $x\in X$，$T(x,x)\ge 0$；
+    \item 对任意 $x\in X$，若 $T(x,x)=0$，则 $x=0$（正定性）。
+  \end{enumerate}
+\end{definition}
+
+\begin{definition}[半内积空间、内积空间]
+  设 $X$ 为 $\mathbb{F}$ 上的线性空间，$\langle\cdot,\cdot\rangle:X\times X\to\mathbb{F}$ 满足：
+  \begin{enumerate}
+    \item 对任意 $x\in X$，$\langle x,x\rangle\ge 0$（半正定性）；
+    \item 对任意 $x\in X$，$\langle\cdot,x\rangle:X\to\mathbb{F}$ 为线性映射；
+    \item 对任意 $x,y\in X$，$\langle x,y\rangle=\overline{\langle y,x\rangle}$（共轭对称性）。
+  \end{enumerate}
+  则称 $\langle\cdot,\cdot\rangle$ 为 $X$ 上的\textbf{半内积}，$(X,\langle\cdot,\cdot\rangle)$ 为\textbf{半内积空间}。
+
+  进而，若对任意 $x\in X$，$\langle x,x\rangle=0\Rightarrow x=0$（正定性），则称 $\langle\cdot,\cdot\rangle$ 为\textbf{内积}，$(X,\langle\cdot,\cdot\rangle)$ 为\textbf{内积空间}。
+\end{definition}
+
+\begin{definition}[正交]
+  设 $(X,\langle\cdot,\cdot\rangle)$ 为半内积空间，$x,y\in X$。若 $\langle x,y\rangle=0$，称 $x$ 与 $y$ \textbf{正交}，记为 $x\perp y$。
+
+  若对任意 $x\in A\subset X$，$y\in B\subset X$，有 $x\perp y$，则记 $A\perp B$。
+\end{definition}
+
+\begin{definition}[范数]
+  设 $(X,\langle\cdot,\cdot\rangle)$ 为半内积空间。定义 $\|x\|\triangleq\langle x,x\rangle^{1/2}\ge 0$。
+\end{definition}
+
+\begin{proposition}
+  设 $(X,\langle\cdot,\cdot\rangle)$ 为半内积空间，则
+  \begin{enumerate}
+    \item 对任意 $x\in X$，$\|x\|\ge 0$；
+    \item 对任意 $\lambda\in\mathbb{F}$，$x\in X$，$\|\lambda x\|=|\lambda|\|x\|$。
+  \end{enumerate}
+\end{proposition}
+
+\begin{proof}
+  (1) 由定义显然。(2) $\|\lambda x\|^2=\langle\lambda x,\lambda x\rangle=\lambda\bar{\lambda}\langle x,x\rangle=|\lambda|^2\|x\|^2$。
+\end{proof}
+
+\begin{lemma}[勾股定理]\label{lem:pythagorean}
+  若 $x\perp y$，则 $\|x+y\|^2=\|x\|^2+\|y\|^2$。
+\end{lemma}
+
+\begin{proof}
+  $\langle x+y,x+y\rangle=\langle x,x\rangle+\langle y,y\rangle+\langle x,y\rangle+\langle y,x\rangle=\|x\|^2+\|y\|^2+0+\bar{0}=\|x\|^2+\|y\|^2$。
+\end{proof}
+
+\begin{definition}[正交投影]
+  设 $x,y\in(X,\langle\cdot,\cdot\rangle)$。称 $y_1$ 为 $y$ 在 $x$ 上的\textbf{正交投影}，若满足：
+  \begin{enumerate}
+    \item $y_1\in\mathbb{F}x$；
+    \item $y-y_1\perp x$。
+  \end{enumerate}
+\end{definition}
+
+\begin{proposition}\label{prop:orthogonal-projection}
+  设 $\langle x,x\rangle\ne 0$，则 $y$ 在 $x$ 上的正交投影为 $P_x(y)=\dfrac{\langle y,x\rangle}{\langle x,x\rangle}x$。
+\end{proposition}
+
+\begin{proof}
+  设 $y_1=\lambda x$，则 $y-y_1\perp x$ 当且仅当 $\langle y-\lambda x,x\rangle=0$，即 $\langle y,x\rangle-\lambda\langle x,x\rangle=0$，故 $\lambda=\dfrac{\langle y,x\rangle}{\langle x,x\rangle}$。
+\end{proof}
+
+\begin{proposition}\label{prop:projection-inequality}
+  若 $\langle x,x\rangle\ne 0$，则 $\|y\|\ge\|P_x(y)\|$。
+\end{proposition}
+
+\begin{proof}
+  设 $y_2=y-P_x(y)$，则 $y_2\perp x$，从而 $y_2\perp\lambda x$ 对任意 $\lambda\in\mathbb{F}$ 成立（因 $\langle y_2,\lambda x\rangle=\bar{\lambda}\langle y_2,x\rangle=0$）。
+
+  由引理~\ref{lem:pythagorean}，$\|y\|^2=\|y_2\|^2+\|P_x(y)\|^2\ge\|P_x(y)\|^2$。
+\end{proof}
+
+\begin{corollary}\label{cor:cauchy-schwarz-nonzero}
+  若 $\langle x,x\rangle\ne 0$，则 $|\langle y,x\rangle|\le\|y\|\|x\|$。
+\end{corollary}
+
+\begin{proof}
+  由命题~\ref{prop:projection-inequality}，
+  \[
+    \|y\|^2\ge\|P_x(y)\|^2=\left\|\frac{\langle y,x\rangle}{\langle x,x\rangle}x\right\|^2=\frac{|\langle y,x\rangle|^2}{|\langle x,x\rangle|^2}\|x\|^2=\frac{|\langle y,x\rangle|^2}{\|x\|^2}.
+  \]
+  故 $|\langle y,x\rangle|\le\|y\|\|x\|$。
+\end{proof}
+
+\begin{lemma}\label{lem:semi-inner-product-zero}
+  设 $(X,\langle\cdot,\cdot\rangle)$ 为半内积空间，$x\in X$。若 $\langle x,x\rangle=0$，则对任意 $y\in X$，$\langle x,y\rangle=0$。
+\end{lemma}
+
+\begin{proof}
+  反设存在 $y$ 使 $\langle x,y\rangle\ne 0$，则 $|\langle x,y\rangle|>0$。
+
+  存在 $\alpha\in S^1$（单位圆）使 $0<|\langle x,y\rangle|=\alpha\langle x,y\rangle=\langle x,\bar{\alpha}y\rangle$。记 $z=\bar{\alpha}y$，则 $\langle x,z\rangle>0$。
+
+  由半正定性，对任意 $\lambda\in\mathbb{F}$，
+  \[
+    0\le\langle z-\lambda x,z-\lambda x\rangle=\langle z,z\rangle-\lambda\langle x,z\rangle-\bar{\lambda}\langle z,x\rangle+|\lambda|^2\langle x,x\rangle=\langle z,z\rangle-2\operatorname{Re}(\lambda\langle x,z\rangle).
+  \]
+  故 $\langle z,z\rangle\ge 2\operatorname{Re}(\lambda\langle x,z\rangle)$ 对任意 $\lambda\in\mathbb{F}$ 成立，矛盾（取 $\lambda$ 为正实数且充分大）。
+\end{proof}
+
+\section{Cauchy--Schwarz 不等式与范数}
+
+\begin{theorem}[Cauchy-Schwarz 不等式]\label{thm:cauchy-schwarz}
+  设 $(X,\langle\cdot,\cdot\rangle)$ 为半内积空间，则对任意 $x,y\in X$，有
+  \[
+    |\langle y,x\rangle|\le\|y\|\|x\|.
+  \]
+\end{theorem}
+
+\begin{proof}
+  分两种情况：
+  \begin{enumerate}
+    \item 若 $\langle x,x\rangle\ne 0$，由推论~\ref{cor:cauchy-schwarz-nonzero} 即得。
+    \item 若 $\langle x,x\rangle=0$，由引理~\ref{lem:semi-inner-product-zero}，$|\langle y,x\rangle|=0\le\|y\|\|x\|$。
+  \end{enumerate}
+\end{proof}
+
+\begin{theorem}[半内积诱导范数]\label{thm:semi-inner-product-norm}
+  半内积空间诱导半范数。即 $X\xrightarrow{\|\cdot\|}\mathbb{R}$，$x\mapsto\langle x,x\rangle^{1/2}$ 为一个半范数。
+  进而，若为内积空间，则诱导范数。
+\end{theorem}
+
+\begin{proof}
+  由于已证 $\|x\|\ge 0$ 且 $\|\lambda x\|=|\lambda|\|x\|$，只需证三角不等式 $\|x+y\|\le\|x\|+\|y\|$。
+
+  由定理~\ref{thm:cauchy-schwarz}，
+  \begin{align*}
+    \|x+y\|^2 &= \langle x+y,x+y\rangle = \|x\|^2+\|y\|^2+2\operatorname{Re}\langle x,y\rangle \\
+    &\le \|x\|^2+\|y\|^2+2|\langle x,y\rangle| \\
+    &\le \|x\|^2+\|y\|^2+2\|x\|\|y\| = (\|x\|+\|y\|)^2.
+  \end{align*}
+  故 $\|x+y\|\le\|x\|+\|y\|$。
+\end{proof}
+
+\begin{theorem}[商空间内积结构]\label{thm:quotient-inner-product}
+  设 $(X,\langle\cdot,\cdot\rangle)$ 为半内积空间，$N=\{x:\langle x,x\rangle=0\}$。
+  则 $N$ 为 $X$ 的闭线性子空间，且 $X/N\times X/N\xrightarrow{\langle\cdot,\cdot\rangle}\mathbb{F}$，$([x],[y])\mapsto\langle x,y\rangle$ 为内积。
+\end{theorem}
+
+\begin{proof}
+  由定理~\ref{thm:semi-inner-product-norm} 和引理~\ref{lem:semi-inner-product-zero} 知 $N=\{x:\langle x,x\rangle=0\}=\{x:\|x\|=0\}$ 为闭线性子空间。下证商空间上的内积良定义。
+
+  设 $[x]=[x']$，$[y]=[y']$，即 $x-x'\in N$，$y-y'\in N$。则
+  \[
+    \langle x,y\rangle-\langle x',y'\rangle = \langle x,y\rangle-\langle x,y'\rangle+\langle x,y'\rangle-\langle x',y'\rangle = \langle x,y-y'\rangle+\langle x-x',y'\rangle = 0,
+  \]
+  其中由引理~\ref{lem:semi-inner-product-zero}，$\langle x,y-y'\rangle=0$，$\langle x-x',y'\rangle=0$。
+
+  若 $\langle[x],[x]\rangle=0$，即 $\langle x,x\rangle=0$，则 $x\in N$，故 $[x]=[0]$ 在 $X/N$ 中为零元，即正定性成立。
+
+  又 $\|[x]\|=\langle[x],[x]\rangle^{1/2}=\langle x,x\rangle^{1/2}=\|x\|$。
+\end{proof}
+
+\begin{definition}[正交投影到子空间]
+  设 $(X,\langle\cdot,\cdot\rangle)$ 为半内积空间，$Y\le X$，$x\in X$。
+  称 $z$ 为 $x$ 在 $Y$ 上的\textbf{（正交）投影}，若满足：$z\in Y$ 且 $x-z\perp Y$。
+\end{definition}
+
+\begin{remark}
+  若 $z_1,z_2$ 均为 $x$ 在 $Y$ 上的投影，则 $z_1=z_2$（唯一性）。
+\end{remark}
+
+\begin{proposition}[正交投影的唯一性]\label{prop:orthogonal-projection-uniqueness}
+  设 $(X,\langle\cdot,\cdot\rangle)$ 为内积空间，$Y\le X$，$x\in X$。则 $x$ 在 $Y$ 上的正交投影若存在则唯一。
+\end{proposition}
+
+\begin{proof}
+  设 $x-z_1,x-z_2\perp Y$，则 $x-z_1,x-z_2\in Y^\perp\le X$。
+  故 $z_1-z_2=(x-z_2)-(x-z_1)\in Y^\perp$。
+
+  又 $z_1-z_2\in Y$，故 $z_1-z_2\in Y\cap Y^\perp$。
+
+  由 $Y\cap Y^\perp=\{0\}$（因若 $y\in Y\cap Y^\perp$，则 $\langle y,y\rangle=0$，由正定性 $y=0$），得 $z_1=z_2$。
+\end{proof}
+
+\begin{definition}[正交补]
+  设 $\Omega\subset X$ 为半内积空间的子集。定义
+  \[
+    \Omega^\perp \triangleq \{x\in X:x\perp\Omega\} = \{x\in X:\forall y\in\Omega,\langle x,y\rangle=0\}.
+  \]
+\end{definition}
+
+\begin{proposition}\label{prop:orthogonal-complement-closed}
+  对任意 $\Omega\subset X$，$\Omega^\perp$ 为 $X$ 的闭线性子空间。
+\end{proposition}
+
+\begin{proof}
+  对任意 $x\in\Omega$，$\{x\}^\perp=\ker\varphi_x$ 为闭线性子空间，其中 $\varphi_x:X\to\mathbb{F}$，$z\mapsto\langle z,x\rangle$ 为连续线性泛函（因 $|\varphi_x(z)|=|\langle z,x\rangle|\le\|z\|\|x\|$）。
+
+  故 $\Omega^\perp=\bigcap_{x\in\Omega}\{x\}^\perp$ 为闭线性子空间的交，仍为闭线性子空间。
+\end{proof}
+
+\begin{definition}[Hilbert 空间]
+  完备的内积空间称为 \textbf{Hilbert 空间}。
+\end{definition}
+
+\begin{theorem}[正交投影存在性]\label{thm:orthogonal-projection-existence}
+  设 $H$ 为 Hilbert 空间，$Y$ 为 $H$ 的闭凸非空子集，$x\in H$。则 $x$ 在 $Y$ 上的正交投影存在且唯一。
+\end{theorem}
+
+\begin{theorem}[正交分解]\label{thm:orthogonal-decomposition}
+  设 $H$ 为 Hilbert 空间，$Y$ 为 $H$ 的闭线性子空间，则 $H=Y\oplus Y^\perp$（正交分解）。
+\end{theorem}
+
+\begin{proof}
+  只需证 $Y\cap Y^\perp=\{0\}$ 且 $H=Y+Y^\perp$。
+
+  前者：若 $y\in Y\cap Y^\perp$，则 $\langle y,y\rangle=0$，由正定性 $y=0$。
+
+  后者：对任意 $x\in H$，由定理~\ref{thm:orthogonal-projection-existence}，$x$ 在 $Y$ 上存在正交投影 $x_1\in Y$。
+  则 $x=x_1+(x-x_1)$，其中 $x_1\in Y$，$x-x_1\in Y^\perp$。
+\end{proof}
+
+\begin{proposition}\label{prop:span-orthogonal-complement}
+  设 $H$ 为 Hilbert 空间，$\Omega\subset H$，则 $\overline{\operatorname{span}\Omega}=\Omega^{\perp\perp}$。
+\end{proposition}
+
+\begin{proof}
+  显然 $\Omega\subset\Omega^{\perp\perp}$（因对任意 $x\in\Omega$，$y\in\Omega^\perp$，有 $\langle x,y\rangle=0$）。
+
+  由命题~\ref{prop:orthogonal-complement-closed}，$\Omega^{\perp\perp}$ 为闭线性子空间，故 $\overline{\operatorname{span}\Omega}\subset\Omega^{\perp\perp}$。
+
+  反之，设 $V=\overline{\operatorname{span}\Omega}$。由定理~\ref{thm:orthogonal-decomposition}，$H=V\oplus V^\perp$。
+
+  下证 $\Omega^\perp=V^\perp$。因 $\Omega\subset V$，故 $V^\perp\subset\Omega^\perp$。反之，若 $x\perp\Omega$，则 $x\perp\operatorname{span}\Omega$，由连续性 $x\perp\overline{\operatorname{span}\Omega}=V$，故 $x\in V^\perp$，即 $\Omega^\perp\subset V^\perp$。
+
+  故 $\Omega^{\perp\perp}=V^{\perp\perp}$。由定理~\ref{thm:orthogonal-decomposition}，$V^{\perp\perp}=V$（因 $H=V\oplus V^\perp$ 蕴含 $V=(V^\perp)^\perp$）。
+\end{proof}
+
+\begin{remark}
+  由已知 $x\perp\Omega\Rightarrow x\in\Omega^\perp$，而 $x\in\Omega^{\perp\perp}$，故 $x=0$（由 $\Omega^\perp\cap\Omega^{\perp\perp}=\{0\}$）。
+\end{remark}
+
+\section{Riesz 表示定理}
+
+\begin{theorem}[Riesz 表示定理]\label{thm:riesz-representation-hilbert}
+  设 $H$ 为 Hilbert 空间，则
+  \[
+    \begin{tikzcd}
+      H \arrow[r,"\theta"] & H^*
+    \end{tikzcd}
+  \]
+  $x\mapsto\langle\cdot,x\rangle:H\to\mathbb{F}$ 为等距共轭线性同构。
+\end{theorem}
+
+\begin{proof}
+  首先验证 $\theta$ 保持保紧性：$\varphi_{x+y}=\varphi_x+\varphi_y$，$\varphi_{\bar{\lambda}x}=\lambda\varphi_x$。
+
+  证 $\|\theta(x)\|\le\|x\|$：$|\langle z,x\rangle|\le\|z\|\|x\|$，故 $\|\varphi_x\|\le\|x\|$。
+
+  证 $\|\theta(x)\|\ge\|x\|$：
+  \begin{enumerate}
+    \item 若 $x=0$，则 $\langle\cdot,x\rangle=0$，$\|\varphi_x\|=0=\|x\|$。
+    \item 若 $x\ne 0$，则 $|\langle\frac{x}{\|x\|},x\rangle|=\|x\|$，故 $\|\varphi_x\|\ge\|x\|$。
+  \end{enumerate}
+
+  证 $\theta$ 满射：设 $\varphi\in H^*$。若 $\varphi=0$，则 $\varphi=\varphi_0$。
+
+  若 $\varphi\ne 0$，则 $\ker\varphi$ 为 $H$ 的闭真子空间，$(\ker\varphi)^\perp\ne\{0\}$。
+  取 $x_0\in(\ker\varphi)^\perp$，$x_0\ne 0$。
+
+  对任意 $x=\lambda x_0$（$\lambda\in\mathbb{F}$），有 $\varphi(x)=\lambda\varphi(x_0)$。
+
+  设 $\varphi=\langle\cdot,x_*\rangle$，则 $\varphi(x_0)=\langle x_0,x_*\rangle$。取 $\lambda=\overline{\varphi(x_0)}$，则
+  \[
+    x_*=\frac{\overline{\varphi(x_0)}}{\langle x_0,x_0\rangle}x_0.
+  \]
+  验证：$\varphi|_{\ker\varphi}=0=\psi|_{\ker\varphi}$（其中 $\psi=\langle\cdot,x_*\rangle$），因 $x_0\in(\ker\varphi)^\perp$ 蕴含 $x_*\in(\ker\varphi)^\perp$，故 $\psi|_{\ker\varphi}=0$。
+
+  又 $\psi(x_0)=\langle x_0,\frac{\overline{\varphi(x_0)}}{\langle x_0,x_0\rangle}x_0\rangle=\frac{\varphi(x_0)}{\langle x_0,x_0\rangle}\langle x_0,x_0\rangle=\varphi(x_0)$。
+
+  故 $\varphi=\psi=\theta(x_*)$。
+\end{proof}
+
+\begin{proposition}[平行四边形恒等式]\label{prop:parallelogram}
+  设 $(X,\langle\cdot,\cdot\rangle)$ 为半内积空间，则对任意 $x,y\in X$，有
+  \[
+    \|x+y\|^2+\|x-y\|^2=2\|x\|^2+2\|y\|^2.
+  \]
+\end{proposition}
+
+\begin{proof}
+  \begin{align*}
+    \langle x+y,x+y\rangle+\langle x-y,x-y\rangle &= \langle x,x\rangle+\langle y,x\rangle+\langle x,y\rangle+\langle y,y\rangle \\
+    &\quad +\langle x,x\rangle-\langle x,y\rangle-\langle y,x\rangle+\langle y,y\rangle \\
+    &= 2\langle x,x\rangle+2\langle y,y\rangle.
+  \end{align*}
+\end{proof}
+
+\begin{corollary}\label{cor:projection-distance}
+  设 $(X,\langle\cdot,\cdot\rangle)$ 为半内积空间，$Y\le X$，$x\in X$。若 $x_1$ 为 $x$ 在 $Y$ 上的正交投影，则 $d(x,x_1)=d(x,Y)$。
+\end{corollary}
+
+\begin{proof}
+  只需证对任意 $y\in Y$，有 $d(x,y)\ge d(x,x_1)$。这是因为：
+  \[
+    d(x,y)^2=\|x-y\|^2=\|x-x_1\|^2+\|x_1-y\|^2\ge\|x-x_1\|^2=d(x,x_1)^2,
+  \]
+  其中因 $x-x_1\perp Y$ 且 $x_1-y\in Y$，故 $x-x_1\perp x_1-y$，由引理~\ref{lem:pythagorean} 即得。
+\end{proof}
+
+\begin{definition}[最近元]
+  设 $(X,d)$ 为度量空间，$\Omega$ 为 $X$ 的非空子集，$x\in X$。若 $a\in\Omega$ 满足 $d(x,\Omega)=d(x,a)$，则称 $a$ 为 $\Omega$ 中与 $x$ \textbf{距离最近的元}（最近元）。
+\end{definition}
+
+\begin{lemma}\label{lem:nearest-projection}
+  设 $(X,\langle\cdot,\cdot\rangle)$ 为内积空间，$Y\le X$，$x\in X$，$y_0\in Y$。则 $y_0$ 为 $Y$ 关于 $x$ 的最近元当且仅当 $y_0$ 为 $x$ 在 $Y$ 上的正交投影。
+\end{lemma}
+
+\begin{proof}
+  $(\Leftarrow)$ 由推论~\ref{cor:projection-distance} 即得。
+
+  $(\Rightarrow)$ 显然（由最近性的刻画）。
+\end{proof}
+
+\begin{definition}[凸集]
+  设 $(X,\langle\cdot,\cdot\rangle)$ 为半内积空间，$\Omega\subset X$。称 $\Omega$ 为\textbf{凸集}，若对任意 $x,y\in\Omega$，$\lambda\in[0,1]$，有 $\lambda x+(1-\lambda)y\in\Omega$。
+
+  等价地，$\Omega$ 为凸集当且仅当对任意 $x,y\in\Omega$，$\lambda,\mu\ge 0$，$\lambda+\mu=1$，有 $\lambda x+\mu y\in\Omega$。
+\end{definition}
+
+\begin{theorem}[凸集最近元存在唯一性]\label{thm:convex-nearest}
+  设 $(X,\langle\cdot,\cdot\rangle)$ 为半内积空间，$\Omega$ 为 $X$ 中非空闭凸子集。则对任意 $x\in X$，$\Omega$ 关于 $x$ 的最近元存在。进一步，若 $\langle\cdot,\cdot\rangle$ 为内积，则最近元唯一。
+\end{theorem}
+
+\begin{proof}
+  记 $d=d(x,\Omega)$。存在 $(y_n)_n\subset\Omega$ 使 $d(x,y_n)\to d$。
+
+  下证 $(y_n)_n$ 为 Cauchy 列。由命题~\ref{prop:parallelogram}，
+  \[
+    \|y_n-x+y_m-x\|^2+\|y_n-x-(y_m-x)\|^2=2\|y_n-x\|^2+2\|y_m-x\|^2.
+  \]
+  即
+  \[
+    \|y_n-y_m\|^2=2\|y_n-x\|^2+2\|y_m-x\|^2-\|(y_n+y_m)-2x\|^2=2\|y_n-x\|^2+2\|y_m-x\|^2-4\left\|\frac{y_n+y_m}{2}-x\right\|^2.
+  \]
+
+  因 $\Omega$ 为凸集，$\frac{y_n+y_m}{2}\in\Omega$，故 $\left\|\frac{y_n+y_m}{2}-x\right\|\ge d$。从而
+  \[
+    \frac{1}{4}\|y_n-y_m\|^2\le\frac{1}{2}\|y_n-x\|^2+\frac{1}{2}\|y_m-x\|^2-d^2\to\frac{1}{2}d^2+\frac{1}{2}d^2-d^2=0.
+  \]
+  故 $(y_n)_n$ 为 Cauchy 列。
+
+  因 $\Omega$ 完备（闭子集），设 $y_n\to a\in\Omega$。则 $d(y_n,x)\to d(a,x)$，即 $a$ 为 $\Omega$ 关于 $x$ 的最近元。
+
+  若 $\langle\cdot,\cdot\rangle$ 为内积，设 $a,b$ 均为 $\Omega$ 关于 $x$ 的最近元。考虑序列 $a,b,a,b,\ldots$，由上述证明知该序列为 Cauchy 列，故 $a=b$。
+\end{proof}
+
+\begin{theorem}\label{thm:projection-complete-subspace}
+  设 $(X,\langle\cdot,\cdot\rangle)$ 为内积空间，$Y$ 为完备闭子空间。则对任意 $x\in X$，$x$ 在 $Y$ 上的正交投影存在。
+\end{theorem}
+
+\begin{proof}
+  因 $Y$ 为完备凸非空子集，由定理~\ref{thm:convex-nearest}，对任意 $x\in X$，$x$ 在 $Y$ 上存在唯一最近元。由引理~\ref{lem:nearest-projection}，该最近元即为正交投影。
+\end{proof}
+
+\begin{lemma}\label{lem:banach-weak-topology}
+  设 $X$ 为 Banach 空间，则 $(X,\mathcal{J}_w)\xrightarrow{\theta}(X^{**},\mathcal{J}_{w^*})$ 为同胚嵌入。
+
+  考虑交换图：
+  \[
+    \begin{tikzcd}
+      X \arrow[r,"\theta"] \arrow[d] & X^{**} \arrow[d,"\hat{\psi}"] \\
+      \mathbb{F} & (X^*)^* \arrow[l,"\hat{\psi}"]
+    \end{tikzcd}
+  \]
+  其中 $\theta$ 为规范映射（等距嵌入），$\hat{\psi}$ 为赋值映射。
+\end{lemma}
+
+\begin{proof}
+  $\theta$ 为等距嵌入。对任意 $\psi\in X^*$，$(X^*)^*\xrightarrow{\hat{\psi}}\mathbb{F}$ 使得每个具有连续性的线性泛函对应，故 $\theta$ 为同胚。
+\end{proof}
+
+\begin{theorem}\label{thm:banach-weak-compact}
+  设 $X$ 为 Banach 空间，则对任意 $r>0$，$\overline{B}(0,r)$ 为 $X$ 中弱列紧的凸子集。
+\end{theorem}
+
+\begin{proof}
+  $X\xrightarrow{\theta}X^{**}$ 为等距嵌入，$\overline{B}_X(0,r)\mapsto\overline{B}_{X^{**}}(0,r)$（弱完备）。
+  由引理~\ref{lem:banach-weak-topology} 及 Banach-Alaoglu 定理即得。
+\end{proof}
+
+\begin{corollary}\label{cor:hilbert-dual-structure}
+  设 $H$ 为 Hilbert 空间，则 $H^*$ 亦为 Hilbert 空间。
+\end{corollary}
+
+\begin{proof}
+  由定理~\ref{thm:riesz-representation-hilbert}，$H\xrightarrow{T}H^*$，$x\mapsto\langle\cdot,x\rangle=\varphi_x$ 为等距共轭线性同构。
+
+  在 $H^*$ 上定义内积：$\langle\varphi_x,\varphi_y\rangle_{H^*}\triangleq\langle y,x\rangle_H$。验证：
+  \begin{enumerate}
+    \item 若 $\langle\varphi_x,\varphi_x\rangle_{H^*}=\langle x,x\rangle=0$，则 $x=0$，故 $\varphi_x=0$（正定性）。
+    \item $\|\varphi_x\|_{H^*}=\|x\|_H=\langle x,x\rangle^{1/2}=\langle\varphi_x,\varphi_x\rangle_{H^*}^{1/2}$。
+  \end{enumerate}
+  故 $(H^*,\langle\cdot,\cdot\rangle_{H^*})$ 为 Hilbert 空间。
+\end{proof}
+
+\begin{theorem}\label{thm:hilbert-reflexive}
+  Hilbert 空间为自反空间。
+\end{theorem}
+
+\begin{proof}
+  考虑交换图：
+  \[
+    \begin{tikzcd}
+      H \arrow[r,"T_H"] \arrow[dr,"\theta_H"'] & H^* \arrow[r,"T_{H^*}"] & H^{**} \\
+      & H^{**} \arrow[ur,equal]
+    \end{tikzcd}
+  \]
+  其中 $T_H:x\mapsto\varphi_x=\langle\cdot,x\rangle$，$T_{H^*}:\varphi\mapsto\langle\cdot,\varphi\rangle_{H^*}$。
+
+  验证 $\theta_H=T_{H^*}\circ T_H$：对于任意 $\sigma\in H^*$，由定理~\ref{thm:riesz-representation-hilbert}，存在 $y\in H$ 使 $\sigma=\varphi_y$。于是
+  \begin{align*}
+    (T_{H^*}\circ T_H)(x)(\sigma)&=\varphi_{\varphi_x}(\sigma)=\varphi_{\varphi_x}(\varphi_y)=\langle\varphi_y,\varphi_x\rangle_{H^*}=\langle x,y\rangle,\\
+    \theta_H(x)(\sigma)&=\hat{x}(\sigma)=\sigma(x)=\varphi_y(x)=\langle x,y\rangle.
+  \end{align*}
+  故 $\theta_H=T_{H^*}\circ T_H$。由于 $T_H$，$T_{H^*}$ 均为等距同构，$\theta_H$ 为满射，故 $H$ 自反。
+\end{proof}
+
+\begin{theorem}
+  若 $H$ 为 Hilbert 空间，则 $\forall r>0$，$\overline{B}(0,r)$ 为弱紧。
+\end{theorem}
+
+\begin{proof}
+  因 Hilbert 空间自反。
+\end{proof}
+
+\begin{remark}
+  在 Hilbert 空间 $H$ 中，内积有定义 $\langle\cdot,x\rangle:H\to\mathbb{F}$，故 $\{\langle\cdot,x\rangle:x\in H\}$ 弱拓扑与弱*拓扑相同。
+\end{remark}
+
+\begin{corollary}
+  设 $H$ 为 Hilbert 空间，$(x_\alpha)_\alpha$ 为有界网，则存在子网 $(x_{\alpha_i})_i$ 使 $x_{\alpha_i}\xrightarrow{w}x$，即 $\forall y\in H$，$\langle x_{\alpha_i},y\rangle\to\langle x,y\rangle$。
+\end{corollary}
+
+\begin{theorem}
+  若 $H$ 为可分 Hilbert 空间，则 $\forall r>0$，$\overline{B}(0,r)$ 的弱拓扑可度量。
+\end{theorem}
+
+\begin{proof}
+  $H$ 可分且 $H^*\cong H$，故 $H^*$ 可分。又 $\theta:H\to H^{**}$ 为等距同构，$\overline{B}(0,r)\xrightarrow{\theta|}\overline{B}(0,r)$（$H$ 闭球与 $H^{**}$ 闭球），故弱拓扑可度量。
+\end{proof}
+
+\begin{corollary}
+  若 $H$ 为可分 Hilbert 空间，$(x_n)_n$ 为 $H$ 中有界序列，则存在子列 $(x_{n_k})_k$ 使 $x_{n_k}\xrightarrow{w}x$，即 $\forall y\in H$，$\langle x_{n_k},y\rangle\to\langle x,y\rangle$。
+\end{corollary}
+
+\begin{theorem}
+  设 $X$ 为内积空间，$Y$ 为 $X$ 的非空凸子集，$x\in X$。若 $x_1$ 为 $Y$ 对于 $x$ 的最佳逼近元，则 $x-x_1\perp Y$。
+\end{theorem}
+
+\begin{proof}
+  $\forall y\in Y$，$\|x-x_1\|\leq\|x-(x_1+y)\|=\|x-x_1-y\|$。令 $z=x-x_1$，则
+  \[
+    \langle z,z\rangle\leq\langle z-y,z-y\rangle=\langle z,z\rangle-\langle z,y\rangle+\langle y,z\rangle+\langle y,y\rangle.
+  \]
+  即 $\langle y,y\rangle-2\operatorname{Re}\langle y,z\rangle\geq 0$，$\forall y\in Y$。
+
+  $\forall\lambda\in\mathbb{R}$，$\forall y\in Y$，有 $\langle\lambda y,\lambda y\rangle-2\operatorname{Re}\langle\lambda y,z\rangle\geq 0$，即
+  \[
+    \lambda^2\langle y,y\rangle-2\lambda\operatorname{Re}\langle y,z\rangle\geq 0.
+  \]
+  若 $y=0$，则 $z\perp y$。若 $y\neq 0$，则 $\langle y,y\rangle>0$，上式在 $\lambda=0$ 处取最小值，故导数为零：
+  \[
+    2\lambda\langle y,y\rangle-2\operatorname{Re}\langle y,z\rangle\big|_{\lambda=0}=0\implies\operatorname{Re}\langle y,z\rangle=0.
+  \]
+
+  又 $y\neq 0$ 时 $iy\neq 0$ 且 $iy\in Y$，故 $\operatorname{Re}\langle iy,z\rangle=0$。注意到 $\langle iy,z\rangle=i\langle y,z\rangle=i(a+bi)=ia-b$（设 $\langle y,z\rangle=a+bi$），故
+  \[
+    \operatorname{Re}\langle iy,z\rangle=-\operatorname{Im}\langle y,z\rangle=0.
+  \]
+  结合 $\operatorname{Re}\langle y,z\rangle=0$，得 $\langle y,z\rangle=0$。故 $\forall y\in Y$，$z\perp y$，即 $z\perp Y$。
+\end{proof}
+
+\section{半双线性型与伴随算子}
+
+\begin{definition}[双线性映射]
+  设 $X$，$Y$，$Z$ 为赋范空间，$f:X\times Y\to Z$。称 $f$ 为\textbf{双线性}的，若 $\forall x\in X$，$\forall y\in Y$，$f(\cdot,y):X\to Z$ 与 $f(x,\cdot):Y\to Z$ 均为线性映射。称 $f$ 为\textbf{有界}的，若 $\exists A>0$，使 $\forall x\in X$，$\forall y\in Y$，
+  \[
+    |f(x,y)|\leq A\|x\|\|y\|.
+  \]
+\end{definition}
+
+$X\times Y$ 到 $Z$ 的全体有界双线性映射构成赋范空间，范数定义为
+\[
+  \|f\|\coloneqq\sup_{\substack{x\neq 0\\y\neq 0}}\frac{|f(x,y)|}{\|x\|\|y\|}.
+\]
+验证 $\|\cdot\|$ 为范数：
+\begin{itemize}
+  \item $\|f\|=0\Rightarrow\forall x,y\neq 0$，$f(x,y)=0\Rightarrow f=0$；
+  \item $\|\lambda f\|=\sup\frac{|\lambda f(x,y)|}{\|x\|\|y\|}=|\lambda|\|f\|$；
+  \item $\|f+g\|=\sup\frac{|f(x,y)+g(x,y)|}{\|x\|\|y\|}\leq\sup\frac{|f(x,y)|}{\|x\|\|y\|}+\sup\frac{|g(x,y)|}{\|x\|\|y\|}=\|f\|+\|g\|$。
+\end{itemize}
+
+\begin{definition}[半双线性映射]
+  设 $X$，$Y$，$Z$ 为赋范空间，$f:X\times Y\to Z$。称 $f$ 为\textbf{半双线性}（或斜双线性）的，若 $\forall x\in X$，$\forall y\in Y$，$f(\cdot,y):X\to Z$ 为线性映射，$f(x,\cdot):Y\to Z$ 为共轭线性映射。
+
+  特别地，若 $Z=\mathbb{F}$，称 $f$ 为 $X\times Y$ 上的一个\textbf{半双线性型}。
+\end{definition}
+
+\begin{remark}
+  记 $\overline{Y}=(Y,+,\overline{\cdot})$，其中 $\lambda\cdot x\coloneqq\overline{\lambda}x$。则 $(\lambda\mu)\cdot x=\overline{\lambda\mu}x=\overline{\lambda}\cdot\overline{\mu}x=\lambda\cdot(\mu\cdot x)$，$(\lambda+\mu)\cdot x=\overline{\lambda+\mu}x=\overline{\lambda}x+\overline{\mu}x=\lambda\cdot x+\mu\cdot x$。于是 $X\times Y\xrightarrow{f}Z$ 半双线性当且仅当 $X\times\overline{Y}\xrightarrow{f}Z$ 双线性。
+\end{remark}
+
+\begin{theorem}\label{thm:sesquilinear-riesz}
+  设 $H_1$，$H_2$ 为 Hilbert 空间，$\varphi:H_1\times H_2\to\mathbb{F}$ 为有界半双线性型。则存在唯一 $T\in\mathcal{B}(H_1,H_2)$，使 $\forall x\in H_1$，$\forall y\in H_2$，
+  \[
+    \varphi(x,y)=\langle Tx,y\rangle.
+  \]
+  进而 $\|T\|=\|\varphi\|$。
+\end{theorem}
+
+\begin{remark}
+  $\langle Tx,y\rangle$ 关于 $x$，$y$ 有半双线性。
+\end{remark}
+
+\begin{proof}
+  $\forall x\in H_1$，记 $\theta_x:H_2\to\mathbb{F}$，$y\mapsto\overline{\varphi(x,y)}$。易知 $\theta_x$ 线性，且
+  \[
+    |\theta_x(y)|=|\overline{\varphi(x,y)}|=|\varphi(x,y)|\leq\|\varphi\|\|x\|\|y\|,
+  \]
+  故 $\|\theta_x\|\leq\|\varphi\|\|x\|$。由定理~\ref{thm:riesz-representation-hilbert}，存在唯一 $Tx\in H_2$ 使 $\theta_x=\langle\cdot,Tx\rangle$。记 $T:H_1\to H_2$，$x\mapsto Tx$。
+
+  验证 $T$ 线性：
+  \begin{align*}
+    \langle\cdot,T(x_1+x_2)\rangle&=\theta_{x_1+x_2}=\overline{\varphi(x_1+x_2,\cdot)}=\overline{\varphi(x_1,\cdot)}+\overline{\varphi(x_2,\cdot)}=\theta_{x_1}+\theta_{x_2}\\
+    &=\langle\cdot,Tx_1\rangle+\langle\cdot,Tx_2\rangle=\langle\cdot,Tx_1+Tx_2\rangle,
+  \end{align*}
+  故 $T(x_1+x_2)=Tx_1+Tx_2$。又
+  \[
+    \langle\cdot,T(\lambda x)\rangle=\theta_{\lambda x}=\overline{\varphi(\lambda x,\cdot)}=\overline{\lambda\varphi(x,\cdot)}=\overline{\lambda}\theta_x=\overline{\lambda}\langle\cdot,Tx\rangle=\langle\cdot,\lambda Tx\rangle,
+  \]
+  故 $T(\lambda x)=\lambda Tx$。
+
+  $\forall x\in H_1$，有 $\|Tx\|=\|\theta_x\|\leq\|\varphi\|\|x\|$，故 $\|T\|\leq\|\varphi\|$，即 $T$ 有界。
+
+  又 $\forall x\in H_1$，$\forall y\in H_2$，$\theta_x(y)=\langle y,Tx\rangle$，即 $\overline{\varphi(x,y)}=\langle y,Tx\rangle$，故
+  \[
+    \varphi(x,y)=\overline{\langle y,Tx\rangle}=\langle Tx,y\rangle.
+  \]
+
+  验证 $\|T\|=\|\varphi\|$：$\forall x\in H_1$ 且 $\|x\|=1$，
+  \[
+    \|Tx\|=|\langle\cdot,Tx\rangle|=\sup_{y\neq 0}\frac{|\langle y,Tx\rangle|}{\|y\|}=\sup_{y\neq 0}\frac{|\overline{\varphi(x,y)}|}{\|y\|\|x\|}=\sup_{y\neq 0}\frac{|\varphi(x,y)|}{\|y\|\|x\|}\leq\|\varphi\|.
+  \]
+  故 $\|T\|\leq\|\varphi\|$。反之，$|\varphi(x,y)|=|\langle Tx,y\rangle|\leq\|Tx\|\|y\|\leq\|T\|\|x\|\|y\|$，故 $\|\varphi\|\leq\|T\|$。综上 $\|T\|=\|\varphi\|$。
+\end{proof}
+
+\begin{corollary}[伴随算子]
+  设 $H_1$，$H_2$ 为 Hilbert 空间，$T\in\mathcal{B}(H_1,H_2)$。则存在唯一 $T^*\in\mathcal{B}(H_2,H_1)$，使 $\forall x\in H_1$，$\forall y\in H_2$，
+  \[
+    \langle Tx,y\rangle=\langle x,T^*y\rangle.
+  \]
+  进而 $\|T^*\|=\|T\|$。称 $T^*$ 为 $T$ 的\textbf{伴随算子}。
+\end{corollary}
+
+\begin{proof}
+  记 $\varphi:H_2\times H_1\to\mathbb{F}$，$(x,y)\mapsto\langle x,Ty\rangle$。易知 $\varphi$ 为有界半双线性型，且
+  \[
+    |\varphi(x,y)|=|\langle x,Ty\rangle|\leq\|x\|\|Ty\|\leq\|T\|\|x\|\|y\|,
+  \]
+  故 $\|\varphi\|\leq\|T\|$。由定理~\ref{thm:sesquilinear-riesz}，存在唯一 $T^*\in\mathcal{B}(H_2,H_1)$ 使 $\forall x\in H_2$，$\forall y\in H_1$，
+  \[
+    \varphi(x,y)=\langle T^*x,y\rangle,\quad\text{即}\quad\langle x,Ty\rangle=\langle T^*x,y\rangle.
+  \]
+  等价地，$\forall x\in H_1$，$\forall y\in H_2$，$\langle Tx,y\rangle=\langle x,T^*y\rangle$。
+
+  又 $\|T^*\|=\|\varphi\|\leq\|T\|$。同理 $\|T\|=\|T^{**}\|\leq\|T^*\|$，故 $\|T^*\|=\|T\|$。
+\end{proof}
+
+考虑交换图：
+\[
+  \begin{tikzcd}
+    H_1 \arrow[r,"T"] \arrow[dr,"\varphi\circ T"'] & H_2 \arrow[d,"\varphi"] & H_2 \arrow[r,"T^*"] & H_1 \\
+    & \mathbb{F} & H_2^* \arrow[r,"\cong"] & H_1^*
+  \end{tikzcd}
+\]
+其中 $T_1$，$T_2$ 为 Riesz 表示映射。
+
+\begin{proposition}[伴随算子性质]
+  设 $H_1$，$H_2$，$H_3$ 为 Hilbert 空间，$T,S\in\mathcal{B}(H_1,H_2)$，$R\in\mathcal{B}(H_2,H_3)$，$\lambda\in\mathbb{F}$。则
+  \begin{enumerate}
+    \item $T^{**}=T$；
+    \item $(T+S)^*=T^*+S^*$；
+    \item $(\lambda T)^*=\overline{\lambda}T^*$；
+    \item $(R\circ S)^*=S^*\circ R^*$。
+  \end{enumerate}
+\end{proposition}
+
+\begin{proof}
+  (1) $\forall x\in H_1$，$\forall y\in H_2$，$\langle Tx,y\rangle=\langle x,T^*y\rangle$，故 $\langle T^*y,x\rangle=\langle y,T^{**}x\rangle$。又 $\langle T^*y,x\rangle=\overline{\langle x,T^*y\rangle}=\overline{\langle Tx,y\rangle}=\langle y,Tx\rangle$，故 $T^{**}=T$。
+
+  (2)--(4) 类似验证。
+\end{proof}
+
+\begin{proposition}
+  $\|T^*T\|=\|T\|^2=\|TT^*\|$。
+\end{proposition}
+
+\begin{proof}
+  $\|T^*T\|\leq\|T^*\|\|T\|=\|T\|^2$。又 $\forall x\in H_1$，$\|Tx\|^2=\langle Tx,Tx\rangle=\langle x,T^*Tx\rangle\leq\|x\|\|T^*Tx\|\leq\|x\|\|T^*T\|\|x\|$，故 $\|Tx\|^2\leq\|T^*T\|\|x\|^2$，即 $\|T\|^2\leq\|T^*T\|$。综上 $\|T^*T\|=\|T\|^2$。同理 $\|TT^*\|=\|T^*\|^2=\|T\|^2$。
+\end{proof}
+
+\section{投影算子}
+
+\begin{definition}[投影算子]
+  设 $H$ 为 Hilbert 空间，$E$ 为 $H$ 的闭线性子空间。由 $H=E\oplus E^\perp$，$\forall x\in H$，存在唯一分解 $x=x_1+x_2$，$x_1\in E$，$x_2\in E^\perp$。定义 $P_E:H\to H$，$x\mapsto x_1$，称为 $H$ 到 $E$ 上的\textbf{投影算子}。
+\end{definition}
+
+\begin{proposition}
+  $P_E\in\mathcal{B}(H)$，且 $\|P_E\|=1$（若 $E\neq\{0\}$），$P_E^2=P_E$，$P_E^*=P_E$。
+\end{proposition}
+
+\begin{proof}
+  $\forall x\in E$，$P_E(x)=x$（因 $x=x+0$，$0\in E^\perp$）。
+
+  设 $x=x_1+x_2$，$x_1\in E$，$x_2\in E^\perp$。由 $x_1\perp x_2$，$\|x\|^2=\|x_1\|^2+\|x_2\|^2$，故
+  \[
+    \|P_E(x)\|^2=\|x_1\|^2\leq\|x\|^2\implies\|P_E(x)\|\leq\|x\|.
+  \]
+  即 $\|P_E\|\leq 1$。若 $E\neq\{0\}$，$\exists x_0\in E\setminus\{0\}$，$\|P_E(\frac{x_0}{\|x_0\|})\|=1$，故 $\|P_E\|=1$。
+
+  验证 $P_E^2=P_E$：$(P_E\circ P_E)(x)=P_E(P_E(x))=P_E(x_1)=x_1=P_E(x)$，故 $P_E^2=P_E$。
+
+  验证 $P_E^*=P_E$：$\forall x,y\in H$，设 $x=x_1+x_2$（$x_1\in E$，$x_2\in E^\perp$），$y=y_1+y_2$（$y_1\in E$，$y_2\in E^\perp$）。则
+  \begin{align*}
+    \langle P_Ex,y\rangle&=\langle x_1,y_1+y_2\rangle=\langle x_1,y_1\rangle+\underbrace{\langle x_1,y_2\rangle}_{=0},\\
+    \langle x,P_Ey\rangle&=\langle x_1+x_2,y_1\rangle=\langle x_1,y_1\rangle+\underbrace{\langle x_2,y_1\rangle}_{=0}.
+  \end{align*}
+  故 $\langle P_Ex,y\rangle=\langle x,P_Ey\rangle$，即 $P_E^*=P_E$。
+\end{proof}
+
+\begin{proposition}
+  设 $H$ 为 Hilbert 空间，$P\in\mathcal{B}(H)$。则 $P$ 为某个闭线性子空间上的投影算子当且仅当 $P^2=P$ 且 $P^*=P$。
+\end{proposition}
+
+\begin{proof}
+  必要性已证。下证充分性。设 $P^2=P$，$P^*=P$。记 $E=\operatorname{Im}P$。
+
+  先证 $E$ 为闭子空间。设 $(P(x_n))_n\to y$，则 $P(y)=P(\lim_n P(x_n))=\lim_n P^2(x_n)=\lim_n P(x_n)=y$，故 $y\in E$。
+
+  下证 $P=P_E$，即证 $P|_E=P_E|_E$ 且 $P|_{E^\perp}=P_E|_{E^\perp}$。
+
+  (1) $\forall x\in E$，有 $P_E(x)=x$。设 $x=P(y)$，则 $P(x)=P(P(y))=P^2(y)=P(y)=x$。故 $P|_E=P_E|_E$。
+
+  (2) $\forall x\in E^\perp$，有 $P_E(x)=0$。需证 $P(x)=0$。$\forall y\in H$，
+  \[
+    \langle P(x),y\rangle=\langle x,P^*(y)\rangle=\langle x,P(y)\rangle=0,
+  \]
+  因 $x\in E^\perp$，$P(y)\in E$。故 $P(x)=0$，即 $P|_{E^\perp}=P_E|_{E^\perp}$。
+
+  综上 $P=P_E$。
+\end{proof}
+
+\chapter{\texorpdfstring{$\ell^p$}{lp} 空间}
+
+\section{\texorpdfstring{$\ell^p$}{lp} 空间的定义}
+
+\begin{definition}
+  设 $1\leq p\leq+\infty$。定义
+  \[
+    \ell^p=\Bigl\{\alpha\in\mathbb{C}^{\mathbb{N}}:\sum_{n=0}^{\infty}|\alpha(n)|^p<+\infty\Bigr\},\quad\|\alpha\|_p=\Bigl(\sum_{n=0}^{\infty}|\alpha(n)|^p\Bigr)^{1/p}.
+  \]
+  当 $p=\infty$ 时，$\ell^\infty=\{\alpha\in\mathbb{C}^{\mathbb{N}}:\sup_{n\in\mathbb{N}}|\alpha(n)|<+\infty\}$，$\|\alpha\|_\infty=\sup_{n\in\mathbb{N}}|\alpha(n)|$。
+\end{definition}
+
+$(\ell^p,\|\cdot\|_p)$ 为 Banach 空间。
+
+\begin{proposition}
+  $1\leq p<+\infty$ 时，$\ell^p$ 可分。
+\end{proposition}
+
+\begin{proof}
+  记 $e_n\in\mathbb{C}^{\mathbb{N}}$，$e_n(i)=\begin{cases}1,&i=n,\\0,&i\neq n.\end{cases}$ 则 $\forall n$，$e_n\in\ell^p$。
+
+  设 $\alpha=(a_0,a_1,a_2,\ldots)\in\ell^p$，记 $\beta_n=a_0e_0+a_1e_1+\cdots+a_ne_n$。由于 $\alpha\in\ell^p$，$\sum_{i=0}^{\infty}|\alpha(i)|^p<+\infty$，故 $\forall\varepsilon>0$，$\exists N$ 使 $\sum_{i\geq N+1}|\alpha(i)|^p<\varepsilon^p$。于是当 $n\geq N$ 时，
+  \[
+    \|\alpha-\beta_n\|_p=\Bigl(\sum_{i=n+1}^{\infty}|\alpha(i)|^p\Bigr)^{1/p}<\varepsilon.
+  \]
+  故 $\overline{\operatorname{span}\{e_n:n\in\mathbb{N}\}}=\ell^p$，即 $\ell^p$ 可分。
+\end{proof}
+
+\begin{proposition}
+  $\ell^\infty$ 不可分。
+\end{proposition}
+
+\begin{proof}
+  $\forall\Omega\subset\mathbb{N}$，定义 $\chi_\Omega\in\mathbb{C}^{\mathbb{N}}$，$\chi_\Omega(n)=\begin{cases}1,&n\in\Omega,\\0,&n\notin\Omega.\end{cases}$ 则 $\chi_\Omega\in\ell^\infty$。
+
+  若 $\Omega\neq\Omega'$，则 $\chi_\Omega\neq\chi_{\Omega'}$，且 $\|\chi_\Omega-\chi_{\Omega'}\|_\infty=1$。
+
+  $\mathbb{N}$ 的子集全体 $\mathcal{P}(\mathbb{N})$ 不可数，故 $\{\chi_\Omega:\Omega\subset\mathbb{N}\}$ 为 $\ell^\infty$ 中不可数集，且两两距离为 $1$。若 $\ell^\infty$ 可分，则有可数稠密子集，矛盾。
+\end{proof}
+
+\begin{remark}
+  称 $p$，$q$ 为\textbf{共轭指数}，若 $\frac{1}{p}+\frac{1}{q}=1$（约定 $1$ 与 $\infty$ 共轭）。
+\end{remark}
+
+\section{\texorpdfstring{$\ell^p$}{lp} 空间的对偶空间}
+
+\begin{theorem}[Riesz 表示定理，$\ell^p$ 版本]
+  设 $1<p,q<+\infty$ 且 $p$，$q$ 共轭。则 $\ell^q\cong(\ell^p)^*$ 为等距线性同构。映射为
+  \[
+    \Theta:\ell^q\to(\ell^p)^*,\quad\alpha\mapsto T_\alpha,
+  \]
+  其中 $T_\alpha:\ell^p\to\mathbb{C}$，$\beta\mapsto\sum_{n=0}^{\infty}\alpha(n)\beta(n)$。
+\end{theorem}
+
+\begin{theorem}[Riesz 表示定理，$\ell^1$ 版本]
+  $\ell^\infty\cong(\ell^1)^*$ 为等距线性同构。映射为
+  \[
+    \Theta:\ell^\infty\to(\ell^1)^*,\quad\alpha\mapsto T_\alpha,
+  \]
+  其中 $T_\alpha:\ell^1\to\mathbb{C}$，$\beta\mapsto\sum_{n=0}^{\infty}\alpha(n)\beta(n)$。
+\end{theorem}
+
+\begin{proof}
+  先证 $T_\alpha$ 有定义且有界。$\forall\beta\in\ell^1$，
+  \[
+    \sum_{n=0}^{\infty}|\alpha(n)\beta(n)|\leq\sum_{n=0}^{\infty}\|\alpha\|_\infty|\beta(n)|=\|\alpha\|_\infty\|\beta\|_1<+\infty,
+  \]
+  故 $\sum_{n=0}^{\infty}\alpha(n)\beta(n)$ 绝对收敛。又 $|T_\alpha(\beta)|\leq\|\alpha\|_\infty\|\beta\|_1$，故 $T_\alpha$ 有界，$\|T_\alpha\|\leq\|\alpha\|_\infty$。
+
+  下证 $\|T_\alpha\|=\|\alpha\|_\infty$。$\forall\varepsilon>0$，$\exists n\in\mathbb{N}$ 使 $|\alpha(n)|>\|\alpha\|_\infty-\varepsilon$。取 $\beta=\frac{\overline{\alpha(n)}}{|\alpha(n)|}e_n$，则 $\|\beta\|_1=1$，且
+  \[
+    |T_\alpha(\beta)|=\Bigl|\sum_{i=0}^{\infty}\alpha(i)e_n(i)\Bigr|=|\alpha(n)|>\|\alpha\|_\infty-\varepsilon.
+  \]
+  故 $\|T_\alpha\|\geq\|\alpha\|_\infty-\varepsilon$。由 $\varepsilon$ 任意性，$\|T_\alpha\|\geq\|\alpha\|_\infty$。综上 $\|T_\alpha\|=\|\alpha\|_\infty$。
+
+  下证 $\Theta$ 满射。$\forall T\in(\ell^1)^*$，定义 $\alpha\in\mathbb{C}^{\mathbb{N}}$，$\alpha(n)\coloneqq T(e_n)$。则 $\forall n$，$|\alpha(n)|=|T(e_n)|\leq\|T\|\|e_n\|_1=\|T\|$，故 $\alpha\in\ell^\infty$。
+
+  由于 $\ell^1=\overline{\operatorname{span}\{e_n:n\in\mathbb{N}\}}$，且 $T_\alpha$，$T\in(\ell^1)^*$，若 $\forall n$，$T_\alpha(e_n)=T(e_n)$，则 $T_\alpha=T$。而 $T_\alpha(e_n)=\alpha(n)=T(e_n)$，故 $T=T_\alpha=\Theta(\alpha)$，即 $\Theta$ 满射。
+\end{proof}
+
+\begin{remark}
+  对于一般 Banach 空间 $X\xrightarrow{T}Y$，伴随算子定义为 $T^*:Y^*\to X^*$，$f\mapsto f\circ T$，满足 $\|T^*\|=\|T\|$。
+  \[
+    \begin{tikzcd}
+      X \arrow[r,"T"] & Y \\
+      X^* & Y^* \arrow[l,"T^*"]
+    \end{tikzcd}
+  \]
+\end{remark}
+
+\begin{proposition}
+  $\ell^1$ 的单位闭球在弱*拓扑下不预紧。
+\end{proposition}
+
+\begin{proof}
+  记 $P_n:\ell^1\to\mathbb{C}$，$\alpha\mapsto\alpha(n)$。则 $|P_n(\alpha)|=|\alpha(n)|\leq\|\alpha\|_1$，故 $\|P_n\|\leq 1$，即 $P_n\in(\ell^1)^*$。
+
+  设 $B=\overline{B}(0,1)\subset\ell^1$。考虑开覆盖
+  \[
+    \{P_n^{-1}(0)\cap B:n\in\mathbb{N}\}\cup\{T^{-1}(U)\cap B:T\in(\ell^1)^*,\,U\subset\mathbb{C}\text{ 开}\}.
+  \]
+  注意到 $e_k\in B$。若此开覆盖有有限子覆盖，则
+  \[
+    B\cap P_0^{-1}(0)\cap\cdots\cap P_n^{-1}(0)\cap T^{-1}(1)\neq\emptyset
+  \]
+  对某 $n$ 和 $T$ 成立。但若 $\alpha\in\bigcap_{n=0}^{\infty}P_n^{-1}(0)$，则 $\forall n$，$\alpha(n)=0$，即 $\alpha=0$，从而 $T(\alpha)=0\neq 1$，矛盾。
+\end{proof}
+
+\section{共鸣定理的应用}
+
+\begin{theorem}[共鸣定理的应用]\label{thm:resonance-application}
+  设 $X$ 为 Banach 空间，$Y$ 为赋范空间。$\forall n$，$T_n\in\mathcal{B}(X,Y)$，$T:X\to Y$ 为映射。若 $\forall x\in X$，有 $T_nx\to Tx$，则 $T\in\mathcal{B}(X,Y)$。
+\end{theorem}
+
+\begin{proof}
+  $\forall x\in X$，$\{T_nx:n\in\mathbb{N}\}$ 有界。由定理~\ref{thm:uniform-boundedness}，$\{\|T_n\|\}_n$ 有界。
+
+  $\forall n$，$\|Tx\|\leq\|(T-T_n)x\|+\|T_nx\|$。令 $n\to\infty$，得 $\|Tx\|\leq\limsup_n\|T_nx\|\leq(\sup_n\|T_n\|)\|x\|$，故 $T$ 有界。
+\end{proof}
+
+\begin{theorem}
+  设 $\alpha\in\mathbb{C}^{\mathbb{N}}$ 满足：$\forall\beta\in\ell^1$，$\alpha\cdot\beta\in\ell^1$。则 $\alpha\in\ell^\infty$。
+\end{theorem}
+
+\begin{proof}
+  固定可记 $\mathscr{L}_\alpha:\ell^1\to\ell^1$，$\beta\mapsto\alpha\beta$。$\forall n$，记 $\alpha_n=(\alpha(0),\ldots,\alpha(n),0,0,\ldots)$，$\mathscr{L}_{\alpha_n}:\ell^1\to\ell^1$，$\beta\mapsto\alpha_n\beta$。
+
+  则 $\|\mathscr{L}_{\alpha_n}(\beta)\|_1=\sum_{i=0}^{n}|\alpha(i)||\beta(i)|\leq\|\alpha_n\|_\infty\|\beta\|_1$，故 $\mathscr{L}_{\alpha_n}$ 有界，$\|\mathscr{L}_{\alpha_n}\|\leq\|\alpha_n\|_\infty$。
+
+  $\forall\beta\in\ell^1$，由于 $\alpha\cdot\beta\in\ell^1$，$\sum_{i=0}^{\infty}|\alpha(i)\beta(i)|<+\infty$。故 $\forall\varepsilon>0$，$\exists N$ 使 $\forall n\geq N$，
+  \[
+    \|\mathscr{L}_\alpha(\beta)-\mathscr{L}_{\alpha_n}(\beta)\|_1=\sum_{i=n+1}^{\infty}|\alpha(i)\beta(i)|<\varepsilon.
+  \]
+  即 $\mathscr{L}_{\alpha_n}(\beta)\to\mathscr{L}_\alpha(\beta)$。由定理~\ref{thm:resonance-application}，$\mathscr{L}_\alpha\in\mathcal{B}(\ell^1)$。
+
+  $\forall n$，$|\alpha(n)|=|T_\alpha(e_n)|\leq\|T_\alpha\|\|e_n\|_1=\|T_\alpha\|$，故 $\alpha\in\ell^\infty$。
+\end{proof}
+
+\end{document}

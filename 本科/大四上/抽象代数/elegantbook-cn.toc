@@ -1,0 +1,37 @@
+\contentsline {chapter}{\numberline {1}代数系统基础}{1}{chapter.1}%
+\contentsline {section}{\numberline {1.1}运算与代数系统}{1}{section.1.1}%
+\contentsline {section}{\numberline {1.2}群、环与域}{2}{section.1.2}%
+\contentsline {section}{\numberline {1.3}同构与子系统}{4}{section.1.3}%
+\contentsline {chapter}{\numberline {2}商结构与同构定理}{8}{chapter.2}%
+\contentsline {section}{\numberline {2.1}同余关系与商结构}{8}{section.2.1}%
+\contentsline {section}{\numberline {2.2}陪集与 Lagrange 定理}{10}{section.2.2}%
+\contentsline {section}{\numberline {2.3}正规子群与商群}{12}{section.2.3}%
+\contentsline {section}{\numberline {2.4}群同构定理}{14}{section.2.4}%
+\contentsline {section}{\numberline {2.5}理想与商环}{14}{section.2.5}%
+\contentsline {section}{\numberline {2.6}环同构定理}{16}{section.2.6}%
+\contentsline {chapter}{\numberline {3}生成结构与环论初步}{18}{chapter.3}%
+\contentsline {section}{\numberline {3.1}生成子群与生成理想}{18}{section.3.1}%
+\contentsline {section}{\numberline {3.2}幺环、除环与域}{19}{section.3.2}%
+\contentsline {section}{\numberline {3.3}循环群}{20}{section.3.3}%
+\contentsline {section}{\numberline {3.4}极大理想与 Zorn 引理}{22}{section.3.4}%
+\contentsline {chapter}{\numberline {4}有限群理论}{28}{chapter.4}%
+\contentsline {section}{\numberline {4.1}元素的阶}{28}{section.4.1}%
+\contentsline {section}{\numberline {4.2}群作用}{31}{section.4.2}%
+\contentsline {section}{\numberline {4.3}共轭与类方程}{33}{section.4.3}%
+\contentsline {section}{\numberline {4.4}Sylow 定理}{36}{section.4.4}%
+\contentsline {section}{\numberline {4.5}Sylow 定理的应用}{38}{section.4.5}%
+\contentsline {chapter}{\numberline {5}交换环与多项式环}{41}{chapter.5}%
+\contentsline {section}{\numberline {5.1}理想的运算}{41}{section.5.1}%
+\contentsline {section}{\numberline {5.2}中国剩余定理}{44}{section.5.2}%
+\contentsline {section}{\numberline {5.3}基数初步}{48}{section.5.3}%
+\contentsline {section}{\numberline {5.4}整环与多项式环}{49}{section.5.4}%
+\contentsline {chapter}{\numberline {6}域扩张}{51}{chapter.6}%
+\contentsline {section}{\numberline {6.1}域扩张与代数元}{51}{section.6.1}%
+\contentsline {section}{\numberline {6.2}代数扩张的性质}{55}{section.6.2}%
+\contentsline {section}{\numberline {6.3}代数闭域与代数闭包}{56}{section.6.3}%
+\contentsline {section}{\numberline {6.4}超越基与超越次数}{61}{section.6.4}%
+\contentsline {chapter}{\numberline {7}Galois 理论}{65}{chapter.7}%
+\contentsline {section}{\numberline {7.1}正规扩张与分裂域}{65}{section.7.1}%
+\contentsline {section}{\numberline {7.2}可分扩张}{67}{section.7.2}%
+\contentsline {section}{\numberline {7.3}Galois 对应}{70}{section.7.3}%
+\contentsline {section}{\numberline {7.4}本原元定理与代数基本定理}{72}{section.7.4}%

@@ -11,10 +11,11 @@
 \setcounter{tocdepth}{3}
 
 \logo{logo-blue.jpg}
-\cover{cover.jpg}
+\cover{figure/1358f1a0c54c099cded98690cb3fe3a180510933.png}
 
 % 本文档命令
 \usepackage{array}
+\usepackage{amscd}
 \newcommand{\ccr}[1]{\makecell{{\color{#1}\rule{1cm}{1cm}}}}
 
 % 修改标题页的橙色带
@@ -2196,9 +2197,11 @@ U_n^* \cap V_m^* = \left(U_n \setminus \bigcup_{k=1}^{n} \overline{V_k}\right) \
   \]
   的集合（其中 $m\ge 1$，$p_n$ 为投影）。对固定的 $(n_1,\dots,n_m)$，由引理 \ref{lem:countable-set-closure}(1) 知选择 $B_{n_k}$ 的方式可数；再对所有有限序列 $(n_1,\dots,n_m)$ 取并，由引理 \ref{lem:countable-set-closure}(2) 知总的基仍可数。
   故 $\prod_n X_n$ 第二可数。
-\end{proof}
+  \end{proof}
 
-\subsection{连通性与连续像}
+\chapter{连通性与同伦}
+
+\section{连通性与连续像}
 
 \begin{definition}[连通与不连通]\label{def:connected}
   设 $X$ 为拓扑空间。
@@ -2552,6 +2555,8 @@ U_n^* \cap V_m^* = \left(U_n \setminus \bigcup_{k=1}^{n} \overline{V_k}\right) \
   令 $g=\pi_2\circ\alpha$，则 $g$ 连续且 $g(t_n)=1$、$g(s_n)=-1$，并且 $t_n,s_n\to t_0$，这与 $g$ 在 $t_0$ 处连续矛盾。
 \end{proof}
 
+\subsection{局部连通与局部道路连通}
+
 \begin{definition}[局部连通与局部道路连通]\label{def:local-connected}
   设 $X$ 为拓扑空间。
   \begin{enumerate}
@@ -2597,7 +2602,7 @@ U_n^* \cap V_m^* = \left(U_n \setminus \bigcup_{k=1}^{n} \overline{V_k}\right) \
   但 $U$ 连通意味着它只有一个连通分支，即 $U$ 本身，故 $U$ 道路连通。
 \end{proof}
 
-\subsection{同伦与基本群}
+\section{同伦与基本群}
 
 \begin{definition}[映射同伦]\label{def:homotopy}
   设 $f,g:X\to Y$ 连续。
@@ -2871,7 +2876,9 @@ U_n^* \cap V_m^* = \left(U_n \setminus \bigcup_{k=1}^{n} \overline{V_k}\right) \
   然而 $\pi_1(D^2,1)=0$（$D^2$ 可缩），故 $i_*$ 是零映射，矛盾于 $\pi_1(S^1,1)\cong\mathbb Z\neq 0$。
 \end{proof}
 
-\subsection{局部紧空间}
+\chapter{局部紧空间与 Baire 范畴}
+
+\section{局部紧空间}
 
 \begin{definition}[局部紧空间]\label{def:locally-compact}
   称拓扑空间 $X$ 为\emph{局部紧}的，若每点都有一个紧邻域。
@@ -2907,7 +2914,9 @@ U_n^* \cap V_m^* = \left(U_n \setminus \bigcup_{k=1}^{n} \overline{V_k}\right) \
   Hausdorff 紧空间为正规空间。
 \end{proposition}
 
-\subsection{Baire 空间与纲}
+\section{Baire 空间与纲}
+
+\subsection{Baire 空间与纲的定义}
 
 \begin{definition}[Baire 空间]\label{def:baire-space}
   称拓扑空间 $X$ 为 \emph{Baire 空间}，若满足：任取 $X$ 中一列稠密开集 $(U_n)_{n\in\mathbb N}$，有 $\bigcap_{n}U_n$ 稠密。
@@ -2939,6 +2948,8 @@ U_n^* \cap V_m^* = \left(U_n \setminus \bigcup_{k=1}^{n} \overline{V_k}\right) \
   \end{enumerate}
   注：第一纲集未必稀疏（例如 $\mathbb Q$ 在 $\mathbb R$ 中）。
 \end{definition}
+
+\subsection{Baire 空间的基本性质}
 
 \begin{proposition}\label{prop:baire-equiv-second-category}
   $X$ 为 Baire 空间 $\Leftrightarrow$ $X$ 的每个非空开集为第二纲集。
@@ -3203,6 +3214,1500 @@ U_n^* \cap V_m^* = \left(U_n \setminus \bigcup_{k=1}^{n} \overline{V_k}\right) \
 \end{proof}
 
 
+\section{齐性空间与群作用}
 
+\begin{definition}[齐性空间]\label{def:homogeneous-space}
+  称拓扑空间 $X$ 为\emph{齐性空间}，若对任意 $x,y\in X$，存在同胚 $\varphi:X\to X$ 使 $\varphi(x)=y$。
+\end{definition}
+
+\begin{example}\label{ex:normed-space-homogeneous}
+  设 $(X,\|\cdot\|)$ 为赋范线性空间。任取 $x_0,y_0\in X$，令
+  \[
+    \varphi_{x_0,y_0}:X\to X,\qquad x\mapsto x-x_0+y_0.
+  \]
+  则 $\varphi_{x_0,y_0}$ 为同胚且 $\varphi_{x_0,y_0}(x_0)=y_0$，故 $X$ 为齐性空间。
+\end{example}
+
+\begin{definition}[群作用与 $G$-空间]\label{def:g-space}
+  设 $G$ 为群，$X$ 为拓扑空间。称映射
+  \[
+    G\times X\to X,\qquad (g,x)\mapsto g\cdot x
+  \]
+  为 $G$ 在 $X$ 上的一个\emph{左作用}，若对任意 $x\in X$ 及 $g,h\in G$ 有
+  \[
+    e\cdot x=x,\qquad (gh)\cdot x=g\cdot(h\cdot x),
+  \]
+  且对每个 $g\in G$，映射 $\ell_g:X\to X,\ x\mapsto g\cdot x$ 连续（从而为同胚）。
+  此时称 $(X,G)$ 为一个 $G$-空间。
+\end{definition}
+
+\begin{proposition}\label{prop:transitive-action-homogeneous}
+  设 $G$ 在 $X$ 上作用，且该作用是传递的：对任意 $x,y\in X$，存在 $g\in G$ 使 $y=g\cdot x$。
+  则 $X$ 为齐性空间。
+\end{proposition}
+\begin{proof}
+  任取 $x,y\in X$，取 $g\in G$ 使 $y=g\cdot x$。由定义，$\ell_g$ 为同胚且 $\ell_g(x)=y$，故 $X$ 齐性。
+\end{proof}
+
+\subsection{拓扑群、商映射与陪集空间}
+
+\begin{definition}[分别连续群]\label{def:semitopological-group}
+  设 $G$ 为群，$\tau$ 为 $G$ 上的拓扑。若乘法映射
+  \[
+    m:G\times G\to G,\qquad (x,y)\mapsto xy
+  \]
+  在每个变量上分别连续，则称 $(G,\tau)$ 为\emph{分别连续群}（或\emph{半拓扑群}）。
+  换言之，对任意 $g\in G$，左乘与右乘
+  \[
+    \ell_g:G\to G,\ x\mapsto gx,\qquad r_g:G\to G,\ x\mapsto xg
+  \]
+  都是连续映射。
+\end{definition}
+
+\begin{definition}[拓扑群]\label{def:topological-group}
+  设 $G$ 为群，$\tau$ 为 $G$ 上的拓扑。若乘法映射
+  \[
+    m:G\times G\to G,\qquad (x,y)\mapsto xy
+  \]
+  连续（其中 $G\times G$ 取积拓扑），且逆映射
+  \[
+    i:G\to G,\qquad x\mapsto x^{-1}
+  \]
+  连续，则称 $(G,\tau)$ 为\emph{拓扑群}。
+\end{definition}
+
+\begin{example}\label{ex:topological-group-examples}
+  以下都是拓扑群：
+  \begin{enumerate}[(1)]
+    \item $(\mathbb R,+)$、$(\mathbb Z,+)$、$(\mathbb R^n,+)$、$(\mathbb C^n,+)$；
+    \item 任意赋范线性空间 $(X,+)$；
+    \item $\mathrm{GL}_n(\mathbb R)$ 与 $\mathrm{GL}_n(\mathbb C)$（视为 $\mathbb R^{n^2}$ 与 $\mathbb C^{n^2}$ 的开子集，乘法为矩阵乘法）。
+  \end{enumerate}
+\end{example}
+
+\begin{example}\label{ex:semitopological-group-homogeneous}
+  若 $G$ 为分别连续群，则对任意 $g\in G$，$\ell_g$ 与 $\ell_{g^{-1}}$ 都连续，故 $\ell_g$ 为同胚。
+  因而 $G$ 对自身的左乘作用连续且传递，从而 $G$ 为齐性空间。
+\end{example}
+
+\begin{definition}[商映射]\label{def:quotient-map}
+  设 $X,Y$ 为拓扑空间，$f:X\to Y$ 为满射连续映射。
+  若对任意 $U\subseteq Y$，有
+  \[
+    U\text{ 在 }Y\text{ 中开}\ \Leftrightarrow\ f^{-1}(U)\text{ 在 }X\text{ 中开},
+  \]
+  则称 $f$ 为\emph{商映射}，并称 $Y$ 为 $X$ 的一个\emph{商空间}。
+\end{definition}
+
+\begin{proposition}\label{prop:quotient-map-test}
+  设 $f:X\to Y$ 为商映射，$Z$ 为拓扑空间，$\psi:Y\to Z$ 为映射，并令 $\varphi=\psi\circ f$。
+  则 $\psi$ 连续当且仅当 $\varphi$ 连续。
+  \[
+    \begin{CD}
+      X @>f>> Y \\
+      @V{\varphi}VV @VV{\psi}V \\
+      Z @= Z
+    \end{CD}
+  \]
+\end{proposition}
+\begin{proof}
+  ($\Rightarrow$) 显然。
+
+  ($\Leftarrow$) 任取 $W\subseteq Z$ 开，则 $\varphi^{-1}(W)$ 在 $X$ 中开。
+  但 $\varphi^{-1}(W)=f^{-1}(\psi^{-1}(W))$，由 $f$ 为商映射知 $\psi^{-1}(W)$ 在 $Y$ 中开，故 $\psi$ 连续。
+\end{proof}
+
+\begin{definition}[$G$-等变映射]\label{def:equivariant-map}
+  设 $X,Y$ 为 $G$-空间，$f:X\to Y$ 为映射。若对任意 $g\in G$ 及 $x\in X$，有
+  \[
+    f(g\cdot x)=g\cdot f(x),
+  \]
+  则称 $f$ 为\emph{$G$-等变}的。
+  \[
+    \begin{CD}
+      X @>f>> Y \\
+      @V{g\cdot(-)}VV @VV{g\cdot(-)}V \\
+      X @>>f> Y
+    \end{CD}
+  \]
+\end{definition}
+
+\begin{proposition}\label{prop:coset-space-homogeneous}
+  设 $G$ 为分别连续群，$H\le G$ 为子群，令 $\pi:G\to G/H$ 为典范满射，$G/H$ 赋商拓扑。
+  则对任意 $g\in G$，映射
+  \[
+    L_g:G/H\to G/H,\qquad xH\mapsto (gx)H
+  \]
+  连续，且给出 $G$ 在 $G/H$ 上的传递连续作用，从而 $G/H$ 为齐性空间。
+  \[
+    \begin{CD}
+      G @>\ell_g>> G \\
+      @V\pi VV @VV\pi V \\
+      G/H @>>L_g> G/H
+    \end{CD}
+  \]
+\end{proposition}
+\begin{proof}
+  先证 $L_g$ 良定义：若 $xH=yH$，则 $y=xh$（某个 $h\in H$），故 $gy=gxh$，于是 $(gx)H=(gy)H$。
+
+  显然有 $\pi\circ\ell_g=L_g\circ\pi$。因 $\ell_g$ 连续且 $\pi$ 为商映射，套用命题 \ref{prop:quotient-map-test} 得 $L_g$ 连续。
+
+  易验 $L_e=\mathrm{id}$ 且 $L_{gh}=L_g\circ L_h$，从而得到作用。
+  传递性：任取 $xH,yH\in G/H$，取 $g=yx^{-1}$，则 $L_g(xH)=yH$。
+  最后由命题 \ref{prop:transitive-action-homogeneous} 得 $G/H$ 齐性。
+\end{proof}
+
+\subsection{Sorgenfrey 线与 Lindel\"off 齐性空间}
+
+\begin{example}\label{ex:sorgenfrey-semitopological-not-topological}
+  令 $\tau_\ell$ 为 $\mathbb R$ 上由半开区间族
+  \[
+    \{[a,b):\ a<b\}
+  \]
+  生成的拓扑（下限拓扑，Sorgenfrey 线）。则 $(\mathbb R,+,\tau_\ell)$ 为分别连续群，但不是拓扑群。
+  事实上，对任意 $y\in\mathbb R$，平移 $x\mapsto x+y$ 满足 $[a,b)+y=[a+y,b+y)$，故连续（同理 $x\mapsto x-y$ 连续），从而分别连续。
+  但取逆映射 $x\mapsto -x$ 将基开集 $[a,b)$ 送到 $(-b,-a]$，而 $(-b,-a]$ 不为 $\tau_\ell$-开集，因此取逆不连续。
+\end{example}
+
+\begin{theorem}\label{thm:homogeneous-lindeloff-baire}
+  设 $X$ 为齐性空间且为 Lindel\"off 空间，则以下条件等价：
+  \begin{enumerate}[(1)]
+    \item $X$ 为 Baire 空间；
+    \item $X$ 为第二纲集。
+  \end{enumerate}
+\end{theorem}
+\begin{proof}
+  (1)$\Rightarrow$(2) 对任意拓扑空间成立。
+
+  (2)$\Rightarrow$(1) 反设 $X$ 不是 Baire 空间，则存在非空开集 $U\subseteq X$ 为第一纲集。任取 $x_0\in U$。
+  由齐性，对每个 $x\in X$ 存在同胚 $\varphi_x:X\to X$ 使 $\varphi_x(x_0)=x$。
+  因为 $\varphi_x(U)$ 是 $x$ 的开邻域，故
+  \[
+    X=\bigcup_{x\in X}\varphi_x(U)
+  \]
+  给出 $X$ 的一个开覆盖。由 Lindel\"off 性，存在可数点列 $(x_n)_{n\in\mathbb N}$ 使
+  \[
+    X=\bigcup_{n\in\mathbb N}\varphi_{x_n}(U)
+  \]
+  因 $U$ 为第一纲集且同胚保持第一纲性，$\varphi_{x_n}(U)$ 均为第一纲集，故 $X$ 为第一纲集，矛盾。
+\end{proof}
+
+\subsection{可数齐性与 Baire 性}
+
+\begin{remark}
+  在定理 \ref{thm:homogeneous-lindeloff-baire} 的证明中，Lindel\"off 性仅用于从开覆盖 $\{\varphi_x(U)\}_{x\in X}$ 中抽取可数子覆盖。
+  因而可用下述“可数齐性”条件替代 Lindel\"off 性。
+\end{remark}
+
+\begin{definition}[$\sigma$-齐性空间]\label{def:sigma-homogeneous}
+  称拓扑空间 $X$ 为\emph{$\sigma$-齐性空间}，若存在非空开集 $U\subseteq X$ 及可数个同胚 $\varphi_n:X\to X$ 使
+  \[
+    X=\bigcup_{n\in\mathbb N}\varphi_n(U).
+  \]
+\end{definition}
+
+\begin{proposition}\label{prop:sigma-homogeneous-second-category-baire}
+  若 $X$ 为 $\sigma$-齐性空间且为第二纲集，则 $X$ 为 Baire 空间。
+\end{proposition}
+\begin{proof}
+  反设 $X$ 不是 Baire 空间，则存在非空开集 $U\subseteq X$ 为第一纲集。
+  由定义 \ref{def:sigma-homogeneous}，存在同胚列 $(\varphi_n)_n$ 使 $X=\bigcup_n\varphi_n(U)$。
+  因同胚保持第一纲性，$\varphi_n(U)$ 均为第一纲集，故 $X$ 为第一纲集，矛盾。
+\end{proof}
+
+\section{乘积与截面}
+
+\subsection{闭包与内部}
+
+\begin{proposition}\label{prop:product-closure-interior}
+  设 $X,Y$ 为拓扑空间，$A\subseteq X$，$B\subseteq Y$。则在积空间 $X\times Y$ 中有
+  \[
+    \overline{A\times B}=\overline A\times\overline B,\qquad (A\times B)^\circ=A^\circ\times B^\circ.
+  \]
+\end{proposition}
+\begin{proof}
+  对闭包：任取 $(x,y)\in X\times Y$。由于积拓扑的邻域基由形如 $U\times V$（$U$ 为 $x$ 的开邻域，$V$ 为 $y$ 的开邻域）给出，
+  \[
+    (x,y)\in\overline{A\times B}\ \Leftrightarrow\ \forall U\ni x,\ \forall V\ni y,\ (U\times V)\cap(A\times B)\neq\varnothing.
+  \]
+  而 $(U\times V)\cap(A\times B)=(U\cap A)\times(V\cap B)$，故上式等价于 $\forall U\ni x,\ U\cap A\neq\varnothing$ 且 $\forall V\ni y,\ V\cap B\neq\varnothing$，即 $x\in\overline A$ 且 $y\in\overline B$。
+  因而 $\overline{A\times B}=\overline A\times\overline B$。
+
+  对内部：同理，$(x,y)\in(A\times B)^\circ$ 当且仅当存在开邻域 $U\times V$ 满足 $U\times V\subseteq A\times B$，即 $U\subseteq A$ 且 $V\subseteq B$，等价于 $x\in A^\circ$ 且 $y\in B^\circ$。
+\end{proof}
+
+\begin{proposition}\label{prop:baire-product-second-countable}
+  设 $X,Y$ 为 Baire 空间，且 $Y$ 为第二可数空间，则 $X\times Y$ 为 Baire 空间。
+\end{proposition}
+\begin{proof}
+  取 $Y$ 的可数拓扑基 $(V_m)_{m\in\mathbb N}$。
+
+  先证一个引理：若 $G\subseteq X\times Y$ 为稠密开集，则
+  \[
+    D(G):=\bigcap_{m\in\mathbb N}\pi_X\big(G\cap(X\times V_m)\big)
+  \]
+  为 $X$ 的稠密 $G_\delta$ 集，且对任意 $x\in D(G)$，截面 $G_x:=\{y\in Y:(x,y)\in G\}$ 在 $Y$ 中稠密开。
+  其中 $\pi_X:X\times Y\to X$ 为投影。
+  
+  事实上，$G\cap(X\times V_m)$ 为开集，投影 $\pi_X$ 为开映射，故 $\pi_X(G\cap(X\times V_m))$ 在 $X$ 中开。
+  又因 $G$ 稠密，任取 $X$ 中非空开集 $U$，有 $G\cap(U\times V_m)\neq\varnothing$，从而 $U\cap\pi_X(G\cap(X\times V_m))\neq\varnothing$，故该投影集合稠密。
+  由于 $X$ 为 Baire 空间，$D(G)$ 为可数个稠密开集的交，仍为稠密。
+  若 $x\in D(G)$，则对每个基元 $V_m$ 有 $G\cap(\{x\}\times V_m)\neq\varnothing$，即 $G_x\cap V_m\neq\varnothing$。
+  因 $(V_m)$ 为基，得 $G_x$ 在 $Y$ 中稠密；且 $G$ 开蕴含 $G_x$ 开。
+
+  现在设 $(G_n)_{n\in\mathbb N}$ 为 $X\times Y$ 中的稠密开集列。
+  由上引理，每个 $D(G_n)$ 为 $X$ 的稠密 $G_\delta$ 集。
+  写 $U_{n,m}:=\pi_X\big(G_n\cap(X\times V_m)\big)$，则每个 $U_{n,m}$ 为 $X$ 的稠密开集且 $D(G_n)=\bigcap_m U_{n,m}$。
+  因而
+  \[
+    D:=\bigcap_{n\in\mathbb N}D(G_n)=\bigcap_{n,m\in\mathbb N}U_{n,m}
+  \]
+  为 $X$ 的稠密 $G_\delta$ 集。
+  任取 $X\times Y$ 中非空基开集 $U_0\times W_0$。
+  取 $x\in U_0\cap D$。
+  则对每个 $n$，$(G_n)_x$ 在 $Y$ 中稠密开。
+  因 $Y$ 为 Baire 空间，$\bigcap_n (G_n)_x$ 稠密，故可取 $y\in W_0\cap\bigcap_n (G_n)_x$。
+  于是 $(x,y)\in (U_0\times W_0)\cap\bigcap_n G_n$，从而 $\bigcap_n G_n$ 稠密。
+\end{proof}
+
+\begin{proposition}\label{prop:product-nowhere-dense}
+  设 $X,Y$ 为拓扑空间，$A\subseteq X$，$B\subseteq Y$。则
+  \[
+    A\text{ 稀疏}\ \text{或}\ B\text{ 稀疏}\ \Leftrightarrow\ A\times B\text{ 稀疏}.
+  \]
+\end{proposition}
+\begin{proof}
+  由命题 \ref{prop:product-closure-interior}，
+  \[
+    \overline{A\times B}^\circ=(\overline A\times\overline B)^\circ=\overline A^\circ\times\overline B^\circ.
+  \]
+  因而 $\overline{A\times B}^\circ=\varnothing$ 当且仅当 $\overline A^\circ=\varnothing$ 或 $\overline B^\circ=\varnothing$，即 $A$ 稀疏或 $B$ 稀疏。
+\end{proof}
+
+\begin{proposition}\label{prop:product-meager}
+  设 $X,Y$ 为拓扑空间，$A\subseteq X$，$B\subseteq Y$。若 $A$ 为第一纲集，则 $A\times B$ 为 $X\times Y$ 中的第一纲集。
+\end{proposition}
+\begin{proof}
+  设 $A=\bigcup_{n\in\mathbb N}E_n$，其中每个 $E_n$ 稀疏。
+  则
+  \[
+    A\times B=\bigcup_{n\in\mathbb N}(E_n\times B).
+  \]
+  由命题 \ref{prop:product-nowhere-dense}，每个 $E_n\times B$ 稀疏，故 $A\times B$ 为第一纲集。
+\end{proof}
+
+\subsection{截面与 Kuratowski--Ulam 型结论}
+
+\begin{definition}[截面]\label{def:sections}
+  设 $X,Y$ 为拓扑空间，$E\subseteq X\times Y$。
+  对 $x\in X$ 与 $y\in Y$，定义
+  \[
+    E_x:=\{y\in Y:(x,y)\in E\},\qquad E^y:=\{x\in X:(x,y)\in E\}.
+  \]
+\end{definition}
+
+\begin{proposition}\label{prop:section-preimage}
+  对任意 $x\in X$ 与 $y\in Y$，令
+  \[
+    \eta_x:Y\to X\times Y,\ y\mapsto (x,y),\qquad \eta^y:X\to X\times Y,\ x\mapsto (x,y).
+  \]
+  则 $\eta_x^{-1}(E)=E_x$ 且 $(\eta^y)^{-1}(E)=E^y$。
+  特别地，截面与补、并、交交换：
+  \[
+    (E^c)_x=(E_x)^c,\qquad \Big(\bigcup_\alpha E_\alpha\Big)_x=\bigcup_\alpha (E_\alpha)_x,\qquad \Big(\bigcap_\alpha E_\alpha\Big)_x=\bigcap_\alpha (E_\alpha)_x,
+  \]
+  并且对 $E^y$ 亦同理。
+\end{proposition}
+\begin{proof}
+  由定义直接验证。
+\end{proof}
+
+\begin{lemma}\label{lem:dense-sections-Gdelta}
+  设 $X,Y$ 为拓扑空间，$Y$ 第二可数，$E\subseteq X\times Y$ 为稠密开集。
+  则集合
+  \[
+    S:=\{x\in X:\ E_x\text{ 在 }Y\text{ 中稠密}\}
+  \]
+  为 $X$ 中的稠密 $G_\delta$ 集。
+\end{lemma}
+\begin{proof}
+  取 $Y$ 的可数拓扑基 $\mathcal B$。
+  对每个 $B\in\mathcal B$，令
+  \[
+    P_B:=\pi_X\big(E\cap(X\times B)\big)\subseteq X.
+  \]
+  因 $E\cap(X\times B)$ 为开集且投影 $\pi_X$ 为开映射，$P_B$ 为 $X$ 中开集。
+  又因 $E$ 稠密，任取 $X$ 中非空开集 $U$ 与 $Y$ 中非空开集 $B$，有
+  \[
+    E\cap(U\times B)\neq\varnothing,
+  \]
+  从而 $U\cap P_B\neq\varnothing$，故 $P_B$ 稠密。
+  又对任意 $x\in X$，$E_x$ 稠密当且仅当对任意非空基元 $B\in\mathcal B$，有 $E_x\cap B\neq\varnothing$。
+  这等价于：对任意非空 $B\in\mathcal B$，存在 $y\in B$ 使 $(x,y)\in E$，即 $x\in P_B$。
+  因而
+  \[
+    S=\bigcap_{\substack{B\in\mathcal B\\ B\neq\varnothing}} P_B,
+  \]
+  为可数个稠密开集的交，即稠密 $G_\delta$ 集。
+\end{proof}
+
+\begin{lemma}\label{lem:nowhere-dense-sections-comeager}
+  设 $X,Y$ 为拓扑空间，$Y$ 第二可数，$E\subseteq X\times Y$ 为稀疏集。
+  则存在 $X$ 的余稀疏集 $\Omega\subseteq X$ 使得对任意 $x\in\Omega$，截面 $E_x$ 在 $Y$ 中稀疏。
+\end{lemma}
+\begin{proof}
+  令 $F:=(X\times Y)\setminus\overline E$，则 $F$ 为 $X\times Y$ 中的稠密开集。
+  由引理 \ref{lem:dense-sections-Gdelta}，集合
+  \[
+    \Omega:=\{x\in X:\ F_x\text{ 在 }Y\text{ 中稠密}\}
+  \]
+  为 $X$ 的稠密 $G_\delta$ 集，因而为余稀疏集。
+  对任意 $x\in\Omega$，$F_x=Y\setminus(\overline E)_x$ 稠密，故 $(\overline E)_x$ 的内部为空。
+  又有 $\overline{E_x}\subseteq (\overline E)_x$，从而 $\overline{E_x}$ 的内部亦为空，即 $E_x$ 稀疏。
+\end{proof}
+
+\begin{lemma}\label{lem:meager-sections-comeager}
+  设 $X,Y$ 为拓扑空间，$Y$ 第二可数，$E\subseteq X\times Y$ 为第一纲集。
+  则存在 $X$ 的余稀疏集 $\Omega\subseteq X$ 使得对任意 $x\in\Omega$，截面 $E_x$ 在 $Y$ 中为第一纲集。
+\end{lemma}
+\begin{proof}
+  取稀疏集列 $(E_n)_{n\in\mathbb N}$ 使 $E=\bigcup_{n\in\mathbb N}E_n$。
+  由命题 \ref{prop:section-preimage} 得对任意 $x\in X$，$E_x=\bigcup_n (E_n)_x$。
+  由引理 \ref{lem:nowhere-dense-sections-comeager}，对每个 $n$ 存在余稀疏集 $\Omega_n\subseteq X$ 使得对任意 $x\in\Omega_n$，$(E_n)_x$ 稀疏。
+  令 $\Omega:=\bigcap_n\Omega_n$，则 $\Omega$ 仍为余稀疏集，且对任意 $x\in\Omega$，$E_x$ 为可数个稀疏集之并，从而为第一纲集。
+\end{proof}
+
+\begin{theorem}\label{thm:rectangle-meager-iff}
+  设 $X,Y$ 为拓扑空间，$Y$ 第二可数，$A\subseteq X$，$B\subseteq Y$。
+  则 $A\times B$ 在 $X\times Y$ 中为第一纲集当且仅当 $A$ 在 $X$ 中为第一纲集或 $B$ 在 $Y$ 中为第一纲集。
+\end{theorem}
+\begin{proof}
+  ($\Leftarrow$) 若 $A$ 为第一纲集，则由命题 \ref{prop:product-meager} 得 $A\times B$ 为第一纲集；若 $B$ 为第一纲集，同理（交换两个因子即可）。
+
+  ($\Rightarrow$) 设 $A\times B$ 为第一纲集且 $A$ 不是第一纲集。
+  由引理 \ref{lem:meager-sections-comeager}，存在余稀疏集 $\Omega\subseteq X$ 使得对任意 $x\in\Omega$，$(A\times B)_x$ 为第一纲集。
+  因 $A$ 不是第一纲集，必有 $A\cap\Omega\neq\varnothing$。
+  任取 $x\in A\cap\Omega$，则 $(A\times B)_x=B$，故 $B$ 为第一纲集。
+\end{proof}
+
+\begin{corollary}\label{cor:product-baire-second-countable-factor}
+  若 $X,Y$ 为 Baire 空间，且 $X$ 或 $Y$ 第二可数，则 $X\times Y$ 为 Baire 空间。
+\end{corollary}
+ \begin{proof}
+  不妨设 $X$ 第二可数。
+  任取 $X\times Y$ 中非空开集 $W$，则存在非空开集 $U\subseteq X$、$V\subseteq Y$ 使 $U\times V\subseteq W$。
+  因 $X,Y$ 为 Baire 空间，$U$ 与 $V$ 都不是第一纲集。
+  由定理 \ref{thm:rectangle-meager-iff}（交换两个因子）知 $U\times V$ 不是第一纲集，从而 $W$ 不是第一纲集。
+  故 $X\times Y$ 为 Baire 空间。
+ \end{proof}
+
+\section{$G_\delta$ 集与完备度量化}
+
+\begin{definition}[$F_\sigma$ 集与 $G_\delta$ 集]
+  设 $X$ 为拓扑空间，$\Omega\subseteq X$。
+  若存在闭集列 $(F_n)_{n\in\mathbb N}$ 使
+  \[
+    \Omega=\bigcup_{n\in\mathbb N}F_n,
+  \]
+  则称 $\Omega$ 为 $F_\sigma$ 集。
+  若存在开集列 $(U_n)_{n\in\mathbb N}$ 使
+  \[
+    \Omega=\bigcap_{n\in\mathbb N}U_n,
+  \]
+  则称 $\Omega$ 为 $G_\delta$ 集。
+\end{definition}
+
+\begin{remark}
+  $F_\sigma$ 与 $G_\delta$ 互为对偶：$\Omega$ 为 $F_\sigma$ 集当且仅当 $X\setminus\Omega$ 为 $G_\delta$ 集。
+\end{remark}
+
+\begin{example}
+  在 $\mathbb R$ 的通常拓扑中，$\mathbb Q$ 为 $F_\sigma$ 集：由于 $\mathbb Q$ 可数，且单点集 $\{q\}$ 为闭集，故
+  \[
+    \mathbb Q=\bigcup_{q\in\mathbb Q}\{q\}.
+  \]
+  因而
+  \[
+    \mathbb R\setminus\mathbb Q=\bigcap_{q\in\mathbb Q}(\mathbb R\setminus\{q\})
+  \]
+  为 $G_\delta$ 集。
+\end{example}
+
+\begin{lemma}\label{lem:diagonal-embedding-closed-image}
+  设 $X$ 为 $T_2$ 空间，$I$ 为基数满足 $|I|\ge 2$ 的指标集。
+  对每个 $\alpha\in I$，令 $Y_\alpha\subseteq X$ 为子空间。
+  定义映射
+  \[
+    \theta:\bigcap_{\alpha\in I}Y_\alpha\to\prod_{\alpha\in I}Y_\alpha,\qquad x\mapsto (x)_\alpha.
+  \]
+  则 $\theta$ 为到其像的同胚，且 $\mathrm{Im}\,\theta$ 在 $\prod_{\alpha\in I}Y_\alpha$ 中为闭集。
+\end{lemma}
+\begin{proof}
+  取任意 $\alpha_0\in I$。
+  显然 $p_{\alpha_0}\circ\theta=\mathrm{id}$。
+  另一方面，对任意 $(y_\alpha)_\alpha\in\mathrm{Im}\,\theta$，存在 $x$ 使 $y_\alpha=x$（对所有 $\alpha$），从而 $\theta\circ p_{\alpha_0}=\mathrm{id}$（在 $\mathrm{Im}\,\theta$ 上）。
+  因此 $\theta$ 为到其像的同胚。
+
+  下证 $\mathrm{Im}\,\theta$ 闭。
+  任取 $(y_\alpha)_\alpha\in\prod_{\alpha\in I}Y_\alpha\setminus\mathrm{Im}\,\theta$。
+  由 $|I|\ge 2$ 知存在 $\alpha_0,\beta_0\in I$ 使 $y_{\alpha_0}\ne y_{\beta_0}$。
+  因 $X$ 为 $T_2$，可取不交开集 $U,V\subseteq X$ 使 $y_{\alpha_0}\in U$ 且 $y_{\beta_0}\in V$。
+  则
+  \[
+    p_{\alpha_0}^{-1}(U\cap Y_{\alpha_0})\cap p_{\beta_0}^{-1}(V\cap Y_{\beta_0})
+  \]
+  为 $(y_\alpha)_\alpha$ 的开邻域，且与 $\mathrm{Im}\,\theta$ 不交。
+  故 $\prod_{\alpha\in I}Y_\alpha\setminus\mathrm{Im}\,\theta$ 为开集，从而 $\mathrm{Im}\,\theta$ 为闭集。
+ \end{proof}
+
+
+\begin{lemma}\label{lem:distance-to-set-lipschitz}
+  设 $(X,d)$ 为度量空间，$\varnothing\ne A\subseteq X$。
+  定义
+  \[
+    d(x,A)=\inf\{d(x,a):\ a\in A\},\qquad x\in X.
+  \]
+  则映射 $x\mapsto d(x,A)$ 为 $1$-Lipschitz，从而连续。
+\end{lemma}
+\begin{proof}
+  任取 $x,y\in X$。
+  对任意 $a\in A$，由三角不等式有 $d(x,a)\le d(x,y)+d(y,a)$。
+  取下确界得
+  \[
+    d(x,A)\le d(x,y)+d(y,A).
+  \]
+  交换 $x,y$ 同理得 $d(y,A)\le d(x,y)+d(x,A)$。
+  因此 $|d(x,A)-d(y,A)|\le d(x,y)$。
+\end{proof}
+
+\begin{theorem}\label{thm:open-subspace-completely-metrizable}
+  设 $X$ 可完备度量化，$U\subseteq X$ 为非空开集，则 $U$ 可完备度量化。
+\end{theorem}
+\begin{proof}
+  若 $U=X$，结论显然。
+  下设 $U\ne X$。
+  由定义 \ref{def:completely-metrizable}，存在度量 $d$ 使 $(X,d)$ 完备且诱导拓扑为 $X$ 的原拓扑。
+  令 $F=X\setminus U$，则 $F$ 为闭集且非空。
+  由引理 \ref{lem:distance-to-set-lipschitz}，函数 $x\mapsto d(x,F)$ 连续。
+  又因 $F$ 闭，有 $x\in U$ 当且仅当 $d(x,F)>0$。
+
+  定义映射
+  \[
+    \psi:U\to X\times\mathbb R,\qquad x\mapsto \Bigl(x,\frac{1}{d(x,F)}\Bigr).
+  \]
+  则 $\psi$ 连续且单射，且在其像 $\psi(U)$ 上有连续逆映射 $p_X\vert_{\psi(U)}$，故 $\psi$ 为到其像的同胚。
+
+  下证 $\psi(U)$ 在 $X\times\mathbb R$ 中闭。
+  任取序列 $\psi(x_n)\to (x,r)$（其中 $x_n\in U$）。则 $x_n\to x$ 且 $\frac{1}{d(x_n,F)}\to r$。
+  因 $d(x_n,F)>0$，得 $r\ne 0$ 且 $d(x_n,F)\to \frac{1}{r}$。
+  再由引理 \ref{lem:distance-to-set-lipschitz} 给出的连续性，$d(x_n,F)\to d(x,F)$，故 $d(x,F)=\frac{1}{r}>0$，从而 $x\in U$ 且 $r=\frac{1}{d(x,F)}$。
+  因此 $(x,r)=\psi(x)\in\psi(U)$，闭性得证。
+
+  由于 $X$ 与 $\mathbb R$ 均可由完备度量诱导其拓扑，$X\times\mathbb R$ 可完备度量化，闭子空间 $\psi(U)$ 亦可完备度量化。
+  又 $U\cong\psi(U)$，故 $U$ 可完备度量化。
+\end{proof}
+
+\begin{corollary}\label{cor:gdelta-subspace-completely-metrizable}
+  设 $X$ 可完备度量化，且 $Y\subseteq X$ 为 $G_\delta$ 集，则 $Y$ 可完备度量化。
+\end{corollary}
+\begin{proof}
+  取开集列 $(U_n)_{n\in\mathbb N}$ 使 $Y=\bigcap_n U_n$。
+  由定理 \ref{thm:open-subspace-completely-metrizable}，$U_n$ 可完备度量化。
+  将引理 \ref{lem:diagonal-embedding-closed-image}（关于对角嵌入 $\theta$ 的闭像）应用于 $I=\mathbb N$ 与子空间列 $(U_n)_n$，知 $Y$ 同胚于 $\prod_n U_n$ 的闭子空间。
+  由引理 \ref{lem:countable-product-metrizable} 的证明（可数乘积在各因子完备时仍完备）知 $\prod_n U_n$ 可完备度量化，故其闭子空间亦可完备度量化，从而 $Y$ 可完备度量化。
+\end{proof}
+
+\subsection{Lavrentiev 延拓与完备性等价刻画}
+
+\begin{theorem}[Lavrentiev 延拓定理]\label{thm:lavrentiev-extension}
+  设 $X,Z$ 为可完备度量化空间，$Y\subseteq X$，且 $f:Y\to Z$ 为同胚到其像 $f(Y)$。
+  则存在 $G_\delta$ 集 $Y'\subseteq X$ 与 $Z'\subseteq Z$，满足 $Y\subseteq Y'$、$f(Y)\subseteq Z'$，以及同胚 $\widetilde f:Y'\to Z'$ 使得 $\widetilde f\vert_{Y}=f$。
+\end{theorem}
+
+\begin{definition}[直径]
+  设 $(X,d)$ 为度量空间，$\varnothing\ne F\subseteq X$。
+  定义 $F$ 的直径为
+  \[
+    \operatorname{diam}F=\sup\{d(x,y):\ x,y\in F\}\in[0,+\infty].
+  \]
+\end{definition}
+
+\begin{definition}[Cauchy 滤子基]
+  设 $(X,d)$ 为度量空间，$\mathcal B$ 为 $X$ 上的滤子基。
+  若对任意 $\varepsilon>0$，存在 $B\in\mathcal B$ 使 $\operatorname{diam}B\le\varepsilon$，则称 $\mathcal B$ 为 Cauchy 滤子基。
+\end{definition}
+
+\begin{definition}[Cauchy 网]
+  设 $(X,d)$ 为度量空间，$(x_\alpha)_{\alpha\in\Omega}$ 为 $X$ 中的网。
+  若对任意 $\varepsilon>0$，存在 $\alpha_0\in\Omega$，使得对任意 $\alpha,\beta\succeq\alpha_0$ 都有 $d(x_\alpha,x_\beta)<\varepsilon$，则称该网为 Cauchy 网。
+\end{definition}
+
+\begin{proposition}\label{prop:cauchy-net-tail-filter-base}
+  设 $(X,d)$ 为度量空间，$(x_\alpha)_{\alpha\in\Omega}$ 为 $X$ 中的网。
+  对每个 $\alpha\in\Omega$，令
+  \[
+    E_\alpha=\{x_\beta:\ \beta\succeq\alpha\},
+  \]
+  并令 $\mathcal B=\{E_\alpha:\ \alpha\in\Omega\}$。
+  则 $\mathcal B$ 为滤子基，且 $(x_\alpha)$ 为 Cauchy 网当且仅当滤子基 $\mathcal B$ 为 Cauchy（即对任意 $\varepsilon>0$，存在 $\alpha$ 使 $\operatorname{diam}E_\alpha\le\varepsilon$）。
+\end{proposition}
+\begin{proof}
+  由 $\Omega$ 定向性知对任意 $\alpha,\beta$ 存在 $\gamma\succeq\alpha,\beta$，从而 $E_\gamma\subseteq E_\alpha\cap E_\beta$，故 $\mathcal B$ 为滤子基。
+
+  若 $(x_\alpha)$ 为 Cauchy 网，则对任意 $\varepsilon>0$，取 $\alpha_0$ 使 $\alpha,\beta\succeq\alpha_0$ 时 $d(x_\alpha,x_\beta)<\varepsilon$。
+  则对任意 $u,v\in E_{\alpha_0}$，存在 $\alpha,\beta\succeq\alpha_0$ 使 $u=x_\alpha,v=x_\beta$，从而 $d(u,v)<\varepsilon$，故 $\operatorname{diam}E_{\alpha_0}\le\varepsilon$。
+
+  反之，若对任意 $\varepsilon>0$ 存在 $\alpha_0$ 使 $\operatorname{diam}E_{\alpha_0}\le\varepsilon$，则任取 $\alpha,\beta\succeq\alpha_0$，有 $x_\alpha,x_\beta\in E_{\alpha_0}$，从而 $d(x_\alpha,x_\beta)\le\operatorname{diam}E_{\alpha_0}\le\varepsilon$。
+  故 $(x_\alpha)$ 为 Cauchy 网。
+\end{proof}
+
+\begin{theorem}\label{thm:completeness-equivalences}
+  设 $(X,d)$ 为度量空间，则以下命题等价：
+  \begin{enumerate}
+    \item $X$ 中任意 Cauchy 列都收敛（即 $(X,d)$ 完备）；
+    \item $X$ 中任意 Cauchy 网都收敛；
+    \item $X$ 中任意 Cauchy 滤子基都收敛；
+    \item $X$ 中任意 Cauchy 滤子都收敛。
+  \end{enumerate}
+\end{theorem}
+\begin{proof}
+  $(1)\Rightarrow(2)$：设 $(x_\alpha)_{\alpha\in\Omega}$ 为 Cauchy 网。
+  对每个 $n\in\mathbb N$，取 $\alpha_n\in\Omega$ 使得当 $\alpha,\beta\succeq\alpha_n$ 时 $d(x_\alpha,x_\beta)<1/n$。
+  由定向性可取 $\beta_n\in\Omega$ 使 $\beta_n\succeq\alpha_1,\dots,\alpha_n$ 且 $\beta_{n+1}\succeq\beta_n$。
+  则序列 $(x_{\beta_n})$ 为 Cauchy 列，完备性给出 $x_{\beta_n}\to x$。
+  任取 $\varepsilon>0$，取 $n$ 使 $1/n<\varepsilon/2$ 且存在 $N$ 使得 $k\ge N$ 时 $d(x_{\beta_k},x)<\varepsilon/2$。
+  令 $\alpha_0=\beta_{\max\{n,N\}}$。
+  则对任意 $\alpha\succeq\alpha_0$，有
+  \[
+    d(x_\alpha,x)\le d(x_\alpha,x_{\alpha_0})+d(x_{\alpha_0},x)<\varepsilon/2+\varepsilon/2=\varepsilon,
+  \]
+  故 $(x_\alpha)\to x$。
+
+  $(2)\Rightarrow(3)$：设 $\mathcal B$ 为 Cauchy 滤子基。
+  以 $\mathcal B$ 为指标集并按逆包含定向：$B\preceq C\iff C\subseteq B$。
+  对每个 $B\in\mathcal B$ 取一点 $x_B\in B$，得到网 $(x_B)_{B\in\mathcal B}$。
+  任取 $\varepsilon>0$，由 Cauchy 性可取 $B_0\in\mathcal B$ 使 $\operatorname{diam}B_0\le\varepsilon$。
+  若 $B,C\preceq B_0$，则 $x_B,x_C\in B_0$，从而 $d(x_B,x_C)\le\varepsilon$，故该网为 Cauchy 网。
+  由 (2) 知存在 $x\in X$ 使 $x_B\to x$。
+  现证 $\mathcal B\to x$：任取 $r>0$。
+  由 Cauchy 性取 $B_0\in\mathcal B$ 使 $\operatorname{diam}B_0\le r/2$。
+  由 $x_B\to x$ 取 $B_1\in\mathcal B$ 使得对任意 $B\preceq B_1$ 都有 $x_B\in B_d(x,r/2)$。
+  由滤子基性质取 $C\in\mathcal B$ 使 $C\subseteq B_0\cap B_1$。
+  则 $x_C\in C$ 且 $x_C\in B_d(x,r/2)$。
+  对任意 $y\in C$，有
+  \[
+    d(y,x)\le d(y,x_C)+d(x_C,x)\le \operatorname{diam}C+\frac{r}{2}\le \operatorname{diam}B_0+\frac{r}{2}\le r.
+  \]
+  因此 $C\subseteq B_d(x,r)$，从而 $\mathcal B\to x$。
+
+  $(3)\Rightarrow(2)$：设 $(x_\alpha)$ 为 Cauchy 网，取其尾集滤子基 $\mathcal B=\{E_\alpha\}$。
+  由命题 \ref{prop:cauchy-net-tail-filter-base} 知 $\mathcal B$ 为 Cauchy 滤子基，故由 (3) 存在 $x$ 使 $\mathcal B\to x$。
+  由 $E_{\alpha_0}\subseteq U$ 蕴含对所有 $\alpha\succeq\alpha_0$ 有 $x_\alpha\in U$，知 $(x_\alpha)\to x$。
+
+  $(3)\Leftrightarrow(4)$：设 $\mathcal B$ 为滤子基，记其生成的滤子为 $\mathcal B_{\uparrow}$。
+  易验证 $\mathcal B$ 为 Cauchy 当且仅当 $\mathcal B_{\uparrow}$ 为 Cauchy，且二者收敛点相同。
+\end{proof}
+
+
+\begin{theorem}\label{thm:continuous-extension-to-gdelta}
+  设 $X$ 为拓扑空间，$Y\subseteq X$，$Z$ 为可完备度量化空间，且 $f:Y\to Z$ 连续。
+  则存在 $G_\delta$ 集 $G\subseteq X$ 满足 $Y\subseteq G\subseteq\overline{Y}$，以及连续映射 $\widetilde f:G\to Z$ 使得 $\widetilde f\vert_Y=f$。
+\end{theorem}
+\begin{proof}
+  取与 $Z$ 的拓扑相容且完备的度量 $d$。
+  对 $A\subseteq Z$，记 $\operatorname{diam}A=\sup\{d(a,b):a,b\in A\}$。
+  对每个 $x\in X$，记
+  \[
+    \mathcal B_x:=\{f(U\cap Y):\ U\in\mathcal N(x)\},
+  \]
+  其中 $\mathcal N(x)$ 为 $x$ 在 $X$ 中的邻域系。
+  定义
+  \[
+    G:=\{x\in X:\ \mathcal B_x\text{ 为 Cauchy 滤子基}\}.
+  \]
+
+  先证 $G$ 为 $G_\delta$ 集。
+  对每个 $n\in\mathbb N$，令
+  \[
+    E_n:=\Bigl\{x\in X:\ \exists\,U\in\mathcal N(x)\ \text{s.t.}\ \operatorname{diam}f(U\cap Y)<\frac{1}{n}\Bigr\}.
+  \]
+  若 $x\in E_n$，取开邻域 $U$ 满足 $\operatorname{diam}f(U\cap Y)<1/n$。
+  则对任意 $x'\in U$，有 $U\in\mathcal N(x')$，从而 $x'\in E_n$。
+  故 $E_n$ 为开集。
+  又可验证
+  \[
+    G=\bigcap_{n\in\mathbb N}E_n,
+  \]
+  因此 $G$ 为 $G_\delta$ 集。
+
+  下证 $Y\subseteq G$。
+  任取 $y\in Y$ 与 $n\in\mathbb N$。由 $f$ 在 $y$ 处连续，存在 $U\in\mathcal N(y)$ 使
+  \[
+    f(U\cap Y)\subseteq B_d\Bigl(f(y),\frac{1}{2n}\Bigr),
+  \]
+  从而 $\operatorname{diam}f(U\cap Y)<1/n$，故 $y\in E_n$。
+  因 $n$ 任意，$y\in G$。
+  于是 $Y\subseteq G$。
+
+  由定义知对任意 $x\in G$ 与任意 $n$，存在邻域 $U\in\mathcal N(x)$ 使 $U\cap Y\ne\varnothing$，故 $x\in\overline{Y}$。
+  从而 $G\subseteq\overline{Y}$。
+
+  对任意 $x\in G$，$\mathcal B_x$ 为 $Z$ 上 Cauchy 滤子基。
+  由定理 \ref{thm:completeness-equivalences}（在 $(Z,d)$ 完备的情形下），$\mathcal B_x$ 收敛于某点，且极限唯一。
+  定义
+  \[
+    \widetilde f(x):=\lim \mathcal B_x,\qquad x\in G.
+  \]
+
+  现证 $\widetilde f\vert_Y=f$。
+  任取 $y\in Y$。由 $f$ 在 $y$ 处连续，任取 $\varepsilon>0$，存在 $U\in\mathcal N(y)$ 使 $f(U\cap Y)\subseteq B_d(f(y),\varepsilon)$。
+  故 $\mathcal B_y\to f(y)$，从而 $\widetilde f(y)=f(y)$。
+
+  最后证 $\widetilde f$ 连续。
+  任取 $x_0\in G$ 与 $\varepsilon>0$。
+  由 $\mathcal B_{x_0}\to \widetilde f(x_0)$，存在 $U_0\in\mathcal N(x_0)$ 使
+  \[
+    f(U_0\cap Y)\subseteq B_d\Bigl(\widetilde f(x_0),\frac{\varepsilon}{2}\Bigr).
+  \]
+  由 $x_0\in G$，存在 $U_1\in\mathcal N(x_0)$ 使 $\operatorname{diam}f(U_1\cap Y)<\varepsilon/2$。
+  令 $U:=U_0\cap U_1$，则 $U$ 为 $x_0$ 的邻域。
+  对任意 $x\in U\cap G$，由 $U\in\mathcal N(x)$，有 $f(U\cap Y)\in\mathcal B_x$。
+  因而
+  \[
+    \widetilde f(x)\in \overline{f(U\cap Y)}\subseteq B_d\bigl(\widetilde f(x_0),\varepsilon\bigr),
+  \]
+  其中最后包含关系由 $f(U\cap Y)\subseteq B_d(\widetilde f(x_0),\varepsilon/2)$ 与 $\operatorname{diam}f(U\cap Y)<\varepsilon/2$ 得出。
+  故 $\widetilde f(U\cap G)\subseteq B_d(\widetilde f(x_0),\varepsilon)$，$\widetilde f$ 于 $x_0$ 连续。因 $x_0$ 任意，$\widetilde f$ 连续。
+\end{proof}
+
+\begin{theorem}\label{thm:completely-metrizable-gdelta-in-closure}
+  设 $X$ 为 $T_2$ 空间，$\Omega\subseteq X$ 为可完备度量化子空间。
+  则 $\Omega$ 在 $\overline{\Omega}$（以子空间拓扑）中为 $G_\delta$ 集。
+\end{theorem}
+\begin{proof}
+  在子空间 $\overline{\Omega}$ 上考虑恒等映射
+  \[
+    \operatorname{id}:\Omega\to\Omega.
+  \]
+  由定理 \ref{thm:continuous-extension-to-gdelta}（取 $X=\overline{\Omega}$，$Y=\Omega$，$Z=\Omega$，$f=\operatorname{id}$），存在 $G_\delta$ 集 $G\subseteq\overline{\Omega}$ 满足 $\Omega\subseteq G\subseteq\overline{\Omega}$，以及连续映射 $\widetilde f:G\to\Omega$ 使 $\widetilde f\vert_{\Omega}=\operatorname{id}$。
+
+  现证 $G=\Omega$。
+  任取 $x\in G$。
+  因 $x\in\overline{\Omega}$，存在网 $(x_\alpha)\subseteq\Omega$ 使 $x_\alpha\to x$。
+  由 $\widetilde f\vert_{\Omega}=\operatorname{id}$，得 $\widetilde f(x_\alpha)=x_\alpha\to x$。
+  又由 $\widetilde f$ 连续，$\widetilde f(x_\alpha)\to\widetilde f(x)$。
+  因 $\overline{\Omega}$ 为 $T_2$ 空间，极限唯一，故 $x=\widetilde f(x)\in\Omega$。
+  于是 $G\subseteq\Omega$，从而 $G=\Omega$。
+  因 $G$ 为 $\overline{\Omega}$ 中 $G_\delta$ 集，故 $\Omega$ 亦为 $\overline{\Omega}$ 中 $G_\delta$ 集。
+\end{proof}
+
+\subsection{$G_\delta$ 集的传递性与 Polish 子空间}
+
+\begin{proposition}\label{prop:gdelta-transitivity}
+  设 $X$ 为拓扑空间，$E\subseteq X$，$A\subseteq E$。
+  若 $E$ 在 $X$ 中为 $G_\delta$ 集且 $A$ 在 $E$（子空间拓扑）中为 $G_\delta$ 集，则 $A$ 在 $X$ 中为 $G_\delta$ 集。
+\end{proposition}
+\begin{proof}
+  由 $E$ 在 $X$ 中为 $G_\delta$ 集，存在 $X$ 中开集列 $(U_n)_{n\in\mathbb{N}}$ 使
+  \[
+    E=\bigcap_{n\in\mathbb{N}}U_n.
+  \]
+  又由 $A$ 在 $E$ 中为 $G_\delta$ 集，存在 $E$ 中开集列 $(V_n)_{n\in\mathbb{N}}$ 使
+  \[
+    A=\bigcap_{n\in\mathbb{N}}V_n.
+  \]
+  对每个 $n$，由子空间拓扑，存在 $X$ 中开集 $W_n$ 使 $V_n=W_n\cap E$。
+  因而
+  \[
+    A=\bigcap_{n\in\mathbb{N}}(W_n\cap E)=\left(\bigcap_{n\in\mathbb{N}}W_n\right)\cap E=\left(\bigcap_{n\in\mathbb{N}}W_n\right)\cap\left(\bigcap_{n\in\mathbb{N}}U_n\right).
+  \]
+  上式为 $X$ 中可数个开集的交，故 $A$ 在 $X$ 中为 $G_\delta$ 集。
+\end{proof}
+
+\begin{proposition}\label{prop:closed-set-gdelta}
+  设 $(X,d)$ 为度量空间，$F\subseteq X$ 为闭集，则 $F$ 为 $G_\delta$ 集。
+\end{proposition}
+\begin{proof}
+  对 $r>0$，令
+  \[
+    B_d(F,r)\triangleq\{x\in X: d(x,F)<r\}.
+  \]
+  则每个 $B_d(F,r)$ 为开集。
+  由于 $F$ 闭，任取 $x\in F$，有 $d(x,F)=0$，从而 $x\in B_d(F,1/n)$ 对所有 $n\in\mathbb{N}^*$ 成立，故
+  \[
+    F\subseteq \bigcap_{n=1}^{\infty}B_d\left(F,\frac{1}{n}\right).
+  \]
+  反之，若 $x\notin F$，则 $d(x,F)>0$。
+  取 $n\in\mathbb{N}^*$ 使 $\frac{1}{n}<d(x,F)$，则 $x\notin B_d(F,1/n)$，从而
+  \[
+    x\notin \bigcap_{n=1}^{\infty}B_d\left(F,\frac{1}{n}\right).
+  \]
+  因此 $F=\bigcap_{n=1}^{\infty}B_d\left(F,\frac{1}{n}\right)$，从而 $F$ 为 $G_\delta$ 集。
+\end{proof}
+
+\begin{corollary}\label{cor:completely-metrizable-iff-gdelta}
+  设 $X$ 为可完备度量化 $T_2$ 空间，$\Omega\subseteq X$。
+  则 $\Omega$ 可完备度量化当且仅当 $\Omega$ 为 $X$ 中的 $G_\delta$ 集。
+\end{corollary}
+\begin{proof}
+  设 $\Omega$ 可完备度量化。由定理 \ref{thm:completely-metrizable-gdelta-in-closure} 知 $\Omega$ 在 $\overline{\Omega}$ 中为 $G_\delta$ 集。
+  又由命题 \ref{prop:closed-set-gdelta}，闭集 $\overline{\Omega}$ 为 $X$ 中的 $G_\delta$ 集。
+  由命题 \ref{prop:gdelta-transitivity}（相对 $G_\delta$ 的传递性）可知 $\Omega$ 为 $X$ 中的 $G_\delta$ 集。
+
+  反之，设 $\Omega=\bigcap_{n=1}^{\infty}U_n$，其中 $U_n$ 为 $X$ 中开集。
+  取度量 $d$ 使 $X$ 在 $d$ 下完备且诱导其拓扑。
+  对 $x\in\Omega$，令
+  \[
+    \rho(x,y)\triangleq d(x,y)+\sum_{n=1}^{\infty}2^{-n}\left|\frac{1}{d\bigl(x,X\setminus U_n\bigr)}-\frac{1}{d\bigl(y,X\setminus U_n\bigr)}\right|.
+  \]
+  则 $\rho$ 为 $\Omega$ 上的度量，且 $\rho$ 诱导的拓扑与 $\Omega$ 的子空间拓扑一致。
+  并且任取 $\rho$-柯西列 $(x_k)$，它在 $d$ 下亦为柯西列，从而在 $X$ 中收敛到某个 $x$。
+  由 $\rho$ 的定义可得对每个 $n$，$d(x_k,X\setminus U_n)$ 不能趋于 $0$，从而 $x\in U_n$。
+  故 $x\in\bigcap_{n=1}^{\infty}U_n=\Omega$。
+  于是 $(\Omega,\rho)$ 完备，$\Omega$ 可完备度量化。
+\end{proof}
+
+\begin{proposition}\label{prop:polish-intersection}
+  设 $X$ 为 $T_2$ 空间，$(E_n)_{n\in\mathbb{N}}$ 为 $X$ 的一列 Polish 子空间。
+  则 $\bigcap_{n\in\mathbb{N}}E_n$ 仍为 Polish 子空间。
+\end{proposition}
+\begin{proof}
+  由于 $E_0$ 为 Polish 空间，且对每个 $n$，$E_n\subseteq E_0$ 在子空间拓扑下仍为 Polish。
+  由推论 \ref{cor:completely-metrizable-iff-gdelta}（在 Polish 空间中，子空间为 Polish 当且仅当其为 $G_\delta$ 集）可知每个 $E_n$ 都是 $E_0$ 中的 $G_\delta$ 集。
+  因而 $\bigcap_{n\in\mathbb{N}}E_n$ 为 $E_0$ 中 $G_\delta$ 集。
+  再次由推论 \ref{cor:completely-metrizable-iff-gdelta} 得 $\bigcap_{n\in\mathbb{N}}E_n$ 为 Polish 空间。
+\end{proof}
+
+\section{Polish 空间的基数与 Cantor--Bendixson 分解}
+
+\begin{lemma}\label{lem:second-countable-embedding}
+  设 $X$ 为第二可数 $T_0$ 空间，则存在连续单射
+  \[
+    \theta:X\to\mathcal{P}(\mathbb{N})\cong\{0,1\}^{\mathbb{N}},
+  \]
+  使得 $\theta$ 为拓扑嵌入（即 $\theta$ 给出 $X$ 到其像的同胚）。
+\end{lemma}
+\begin{proof}
+  取 $X$ 的一组可数基 $\mathcal{B}=\{B_n:n\in\mathbb{N}\}$。
+  定义
+  \[
+    \theta(x)\triangleq\{n\in\mathbb{N}: x\in B_n\}\in\mathcal{P}(\mathbb{N}).
+  \]
+  由 $T_0$ 性质，若 $x\ne y$，存在开集 $U$ 使得 $x\in U,\ y\notin U$ 或相反。
+  由 $\mathcal{B}$ 为基，存在 $n$ 使 $x\in B_n\subseteq U$，于是 $n\in\theta(x)$ 而 $n\notin\theta(y)$，从而 $\theta$ 为单射。
+
+  将 $\mathcal{P}(\mathbb{N})$ 视为积空间 $\{0,1\}^{\mathbb{N}}$。
+  对每个 $n$，柱集
+  \[
+    C_n\triangleq\{A\subseteq\mathbb{N}: n\in A\}
+  \]
+  为开集，且
+  \[
+    \theta^{-1}(C_n)=B_n,
+  \]
+  故 $\theta$ 连续。
+  又因为 $\{B_n\}$ 生成 $X$ 的拓扑，$\{C_n\cap\theta(X)\}$ 生成 $\theta(X)$ 的子空间拓扑，因而 $\theta$ 作为 $X\to\theta(X)$ 的映射为同胚。
+\end{proof}
+
+\begin{definition}[孤立点]
+  设 $X$ 为拓扑空间，$x\in X$。
+  若 $\{x\}$ 在 $X$ 中为开集，则称 $x$ 为 $X$ 的孤立点。
+\end{definition}
+
+\begin{definition}[完全集]
+  设 $X$ 为拓扑空间。
+  若 $X$ 无孤立点，则称 $X$ 为完全集（perfect space）。
+\end{definition}
+
+\begin{proposition}\label{prop:perfect-open-subset}
+  若 $X$ 为完全集，则 $X$ 的任意非空开子集（以子空间拓扑）仍为完全集。
+\end{proposition}
+\begin{proof}
+  设 $U\subseteq X$ 为非空开集。反证若 $U$ 存在孤立点 $x$，则 $\{x\}$ 在 $U$ 中开。
+  于是存在 $X$ 中开集 $V$ 使 $\{x\}=V\cap U$。
+  因 $U$ 在 $X$ 中开，$V\cap U$ 在 $X$ 中亦开，从而 $\{x\}$ 在 $X$ 中开，矛盾。
+\end{proof}
+
+\begin{lemma}\label{lem:second-countable-decomposition}
+  若 $X$ 为第二可数空间，则存在 $X$ 的一个可数开子集 $U$ 与一个完全集 $P\subseteq X$，使得
+  \[
+    X=U\cup P.
+  \]
+\end{lemma}
+\begin{proof}
+  取 $X$ 的一组可数基 $\mathcal{B}=\{B_n:n\in\mathbb{N}\}$。
+  令
+  \[
+    U\triangleq\bigcup\{B\in\mathcal{B}: B\text{ 为可数集}\},\qquad P\triangleq X\setminus U.
+  \]
+  则 $U$ 为开集，且为可数个可数集之并，故 $U$ 为可数集。
+  显然 $X=U\cup P$。
+
+  下证 $P$ 为完全集。任取 $x\in P$。
+  反证若 $x$ 为 $P$ 的孤立点，则 $\{x\}$ 在 $P$ 中开。
+  故存在 $X$ 中开集 $V$ 使得 $\{x\}=V\cap P$。
+  由 $\mathcal{B}$ 为基，存在 $B\in\mathcal{B}$ 满足 $x\in B\subseteq V$。
+  则 $B\cap P=\{x\}$，从而
+  \[
+    B=\bigl(B\cap U\bigr)\cup\{x\}.
+  \]
+  由于 $U$ 可数，$B\cap U$ 可数，故 $B$ 可数。
+  由 $U$ 的定义知 $B\subseteq U$，与 $x\in P=X\setminus U$ 矛盾。
+  因此 $P$ 无孤立点，即 $P$ 为完全集。
+\end{proof}
+
+\begin{lemma}\label{lem:cantor-embedding}
+  设 $(X,d)$ 为非空完备度量空间且 $X$ 为完全集。
+  则存在连续单射
+  \[
+    \psi:\{0,1\}^{\mathbb{N}}\to X.
+  \]
+  特别地，$|X|\ge |\{0,1\}^{\mathbb{N}}|$。
+\end{lemma}
+\begin{proof}
+  记 $2^{<\mathbb{N}}$ 为所有有限 $0$-$1$ 序列组成的集合。
+  对 $s\in 2^{<\mathbb{N}}$，记 $|s|$ 为其长度；对 $\alpha\in\{0,1\}^{\mathbb{N}}$，记 $\alpha\vert_n$ 为其前 $n$ 项截断。
+
+  先构造一族非空开集 $\{U_s\}_{s\in 2^{<\mathbb{N}}}$ 使得：
+  \begin{enumerate}
+    \item $\overline{U_{s0}}\cup\overline{U_{s1}}\subseteq U_s$；
+    \item $\overline{U_{s0}}\cap\overline{U_{s1}}=\varnothing$；
+    \item $\operatorname{diam}(U_s)\le 2^{-|s|}$。
+  \end{enumerate}
+  取 $U_\varnothing=X$。
+  已构造 $U_s$ 后，由 $X$ 为完全集可取 $x\ne y$ 属于 $U_s$。
+  令
+  \[
+    r=\min\left\{2^{-|s|-2},\frac{d(x,y)}{4},\frac{d\bigl(x,X\setminus U_s\bigr)}{2},\frac{d\bigl(y,X\setminus U_s\bigr)}{2}\right\}.
+  \]
+  取
+  \[
+    U_{s0}=B(x,r),\qquad U_{s1}=B(y,r).
+  \]
+  则 $U_{s0},U_{s1}$ 为非空开集。
+  由 $r\le d(x,y)/4$ 得 $\overline{U_{s0}}\cap\overline{U_{s1}}=\varnothing$。
+  又由 $r\le d\bigl(x,X\setminus U_s\bigr)/2$ 与 $r\le d\bigl(y,X\setminus U_s\bigr)/2$ 可知
+  \[
+    \overline{U_{s0}}\cup\overline{U_{s1}}\subseteq U_s.
+  \]
+  另一方面，$\operatorname{diam}(U_{s0})\le 2r\le 2^{-|s|-1}$，$\operatorname{diam}(U_{s1})\le 2r\le 2^{-|s|-1}$，故 (3) 亦成立。
+
+  对 $\alpha\in\{0,1\}^{\mathbb{N}}$，令
+  \[
+    K_{\alpha,n}\triangleq\overline{U_{\alpha\vert_n}}\quad(n\in\mathbb{N}).
+  \]
+  则 $K_{\alpha,n+1}\subseteq K_{\alpha,n}$ 且 $\operatorname{diam}(K_{\alpha,n})\to 0$。
+  由完备性与闭集套性质，交集 $\bigcap_{n\in\mathbb{N}}K_{\alpha,n}$ 为单点集，记其唯一点为 $\psi(\alpha)$。
+
+  若 $\alpha\ne\beta$，取最小 $n$ 使 $\alpha\vert_{n+1}\ne\beta\vert_{n+1}$。
+  则 $\alpha\vert_n=\beta\vert_n=s$，且一个属于 $s0$ 另一个属于 $s1$。
+  由 (2) 得 $K_{\alpha,n+1}\cap K_{\beta,n+1}=\varnothing$，从而 $\psi(\alpha)\ne\psi(\beta)$，故 $\psi$ 为单射。
+
+  现证 $\psi$ 连续。
+  对任意 $s\in 2^{<\mathbb{N}}$，令柱集
+  \[
+    [s]\triangleq\{\alpha\in\{0,1\}^{\mathbb{N}}: \alpha\vert_{|s|}=s\},
+  \]
+  则 $[s]$ 为 $\{0,1\}^{\mathbb{N}}$ 的开集。
+  且由定义 $\psi([s])\subseteq U_s$。
+  给定 $\alpha$ 与 $X$ 中开集 $V$ 使 $\psi(\alpha)\in V$。
+  由 $K_{\alpha,n}$ 递减且直径趋于 $0$，存在 $n$ 使 $K_{\alpha,n}\subseteq V$，从而 $U_{\alpha\vert_n}\subseteq V$。
+  于是 $\psi([\alpha\vert_n])\subseteq V$，即 $\psi$ 于 $\alpha$ 连续。
+\end{proof}
+
+\begin{theorem}[Cantor--Bendixson 分解]\label{thm:cantor-bendixson}
+  设 $X$ 为 Polish 空间。
+  则存在可数开子集 $U\subseteq X$ 与完全集 $P\subseteq X$，使得
+  \[
+    X=U\cup P,\qquad U\cap P=\varnothing.
+  \]
+  并且该分解在如下意义下唯一：若
+  \[
+    X=U_1\cup P_1=U_2\cup P_2,\qquad U_i\cap P_i=\varnothing\ (i=1,2),
+  \]
+  其中 $U_1,U_2$ 为可数开集、$P_1,P_2$ 为完全集且为 Polish 子空间，则 $U_1=U_2$ 且 $P_1=P_2$。
+\end{theorem}
+\begin{proof}
+  存在性由引理 \ref{lem:second-countable-decomposition}（第二可数空间分解）给出：因 Polish 空间第二可数，可取可数开集 $U$ 与完全集 $P=X\setminus U$ 使 $X=U\cup P$ 且 $U\cap P=\varnothing$。
+
+  下证唯一性。
+  只需证 $P_2\subseteq P_1$（对称即得相等）。
+  反证取 $x\in P_2\setminus P_1$，则 $x\in U_1$。
+  因 $U_1$ 在 $X$ 中开，故 $U_1\cap P_2$ 在 $P_2$ 中开，且含 $x$，从而 $U_1\cap P_2\ne\varnothing$。
+  由命题 \ref{prop:perfect-open-subset} 知 $U_1\cap P_2$ 为完全集（非空开子集保持完全集）。
+  又因 $P_2$ 为 Polish 子空间，$U_1\cap P_2$ 作为其开子空间亦为 Polish。
+  由引理 \ref{lem:cantor-embedding}，$U_1\cap P_2$ 至少具有 $|\{0,1\}^{\mathbb{N}}|$ 个点，特别地不可数。
+  但 $U_1\cap P_2\subseteq U_1$ 且 $U_1$ 可数，矛盾。
+  故 $P_2\subseteq P_1$，从而 $P_1=P_2$ 且 $U_1=U_2$。
+\end{proof}
+
+\begin{theorem}\label{thm:polish-cardinality}
+  设 $X$ 为 Polish 空间，则 $X$ 或可数，或 $|X|=|\mathbb{R}|$。
+\end{theorem}
+\begin{proof}
+  若 $X$ 可数则结论成立。
+  下设 $X$ 不可数。
+  由定理 \ref{thm:cantor-bendixson}（Cantor--Bendixson 分解），存在可数开集 $U\subseteq X$ 与完全集 $P\subseteq X$ 使
+  \[
+    X=U\cup P,\qquad U\cap P=\varnothing,
+  \]
+  且 $P$ 为 Polish 子空间。
+  因 $U$ 可数而 $X$ 不可数，故 $P\ne\varnothing$。
+  由引理 \ref{lem:cantor-embedding}，存在连续单射 $\psi:\{0,1\}^{\mathbb{N}}\to P$，从而
+  \[
+    |X|\ge |P|\ge |\{0,1\}^{\mathbb{N}}|=|\mathbb{R}|.
+  \]
+  另一方面，Polish 空间可分。
+  取可数稠密子集 $D=\{x_n:n\in\mathbb{N}\}$。
+  定义映射
+  \[
+    \Phi:X\to\mathbb{R}^{\mathbb{N}},\qquad \Phi(x)=\bigl(d(x,x_n)\bigr)_{n\in\mathbb{N}}.
+  \]
+  若 $\Phi(x)=\Phi(y)$，则对任意 $n$ 有 $d(x,x_n)=d(y,x_n)$。
+  由三角不等式得 $d(x,y)\le d(x,x_n)+d(y,x_n)=2d(x,x_n)$。
+  取 $n$ 使 $d(x,x_n)$ 任意小（因 $D$ 稠密），可得 $d(x,y)=0$，故 $x=y$。
+  从而 $\Phi$ 为单射，故
+  \[
+    |X|\le |\mathbb{R}^{\mathbb{N}}|=|\mathbb{R}|.
+  \]
+  综上 $|X|=|\mathbb{R}|$。
+\end{proof}
+
+\section{Suslin 空间与 Borel 集}
+
+\subsection{Suslin 空间的定义与基本性质}
+
+\begin{definition}[Suslin 空间]
+  设 $\Omega$ 为拓扑空间。
+  若存在 Polish 空间 $X$ 及连续满射 $f:X\to\Omega$，则称 $\Omega$ 为 Suslin 空间。
+\end{definition}
+
+\begin{remark}
+  Suslin 空间为可分空间。
+\end{remark}
+
+\begin{proof}
+  设 $\Omega$ 为 Suslin 空间。
+  取 Polish 空间 $X$ 及连续满射 $f:X\to\Omega$。
+  因 $X$ 可分，取可数稠密集 $D\subseteq X$。
+  则 $f(D)$ 为 $\Omega$ 的可数子集。
+  对任意非空开集 $V\subseteq\Omega$，$f^{-1}(V)$ 为 $X$ 中非空开集，故与 $D$ 相交，从而 $V\cap f(D)\ne\varnothing$。
+  因此 $f(D)$ 在 $\Omega$ 中稠密，$\Omega$ 可分。
+\end{proof}
+
+\begin{theorem}\label{thm:suslin-product-coproduct}
+  设 $(X_n)_{n\in\mathbb{N}}$ 为一列 Suslin 空间。
+  则
+  \begin{enumerate}
+    \item $\prod_{n\in\mathbb{N}}X_n$ 为 Suslin 空间；
+    \item 拓扑和 $\bigsqcup_{n\in\mathbb{N}}X_n$ 为 Suslin 空间。
+  \end{enumerate}
+\end{theorem}
+\begin{proof}
+  对每个 $n$，取 Polish 空间 $P_n$ 及连续满射 $f_n:P_n\to X_n$。
+
+  (1) 由已知结论，$\prod_{n\in\mathbb{N}}P_n$ 仍为 Polish 空间。
+  定义
+  \[
+    f:\prod_{n\in\mathbb{N}}P_n\to\prod_{n\in\mathbb{N}}X_n,\qquad f\bigl((x_n)\bigr)=\bigl(f_n(x_n)\bigr).
+  \]
+  则 $f$ 连续且满射，故 $\prod_{n\in\mathbb{N}}X_n$ 为 Suslin 空间。
+
+  (2) 令 $P\triangleq\bigsqcup_{n\in\mathbb{N}}P_n$。
+  由可数个 Polish 空间的拓扑和仍为 Polish 的事实，$P$ 为 Polish 空间。
+  定义 $f:P\to\bigsqcup_{n\in\mathbb{N}}X_n$：对 $x\in P_n$，令 $f(x)=f_n(x)\in X_n$。
+  则 $f$ 连续且满射，故 $\bigsqcup_{n\in\mathbb{N}}X_n$ 为 Suslin 空间。
+\end{proof}
+
+\subsection{Suslin 空间的封闭性质}
+
+\begin{proposition}\label{prop:suslin-gdelta}
+  设 $X$ 为 Suslin 空间，$\Omega\subseteq X$ 在 $X$（子空间拓扑）中为 $G_\delta$ 集，则 $\Omega$ 为 Suslin 空间。
+\end{proposition}
+\begin{proof}
+  取 Polish 空间 $P$ 及连续满射 $f:P\to X$。
+  因 $\Omega$ 在 $X$ 中为 $G_\delta$ 集，存在 $X$ 中开集列 $(U_n)_{n\in\mathbb{N}}$ 使
+  \[
+    \Omega=\bigcap_{n\in\mathbb{N}}U_n.
+  \]
+  于是
+  \[
+    f^{-1}(\Omega)=\bigcap_{n\in\mathbb{N}}f^{-1}(U_n)
+  \]
+  为 $P$ 中的 $G_\delta$ 集。
+  由推论 \ref{cor:gdelta-subspace-completely-metrizable}（Polish 空间的 $G_\delta$ 子集仍为 Polish），$f^{-1}(\Omega)$ 为 Polish 空间。
+  显然 $f\vert_{f^{-1}(\Omega)}:f^{-1}(\Omega)\to\Omega$ 连续且满射，故 $\Omega$ 为 Suslin 空间。
+\end{proof}
+
+\begin{proposition}\label{prop:suslin-intersection}
+  设 $X$ 为 $T_2$ 空间，$(E_n)_{n\in\mathbb{N}}$ 为 $X$ 的一列 Suslin 子空间，则 $\bigcap_{n\in\mathbb{N}}E_n$ 为 Suslin 空间。
+\end{proposition}
+\begin{proof}
+  由定理 \ref{thm:suslin-product-coproduct}，$Y\triangleq\prod_{n\in\mathbb{N}}E_n$ 为 Suslin 空间。
+  令
+  \[
+    \Delta\triangleq\{(x_n)_{n\in\mathbb{N}}\in Y: \forall m,n\in\mathbb{N},\ x_m=x_n\}
+  \]
+  为 $Y$ 中的对角集。
+  因 $X$ 为 $T_2$ 空间，其对角线在 $X\times X$ 中闭，从而 $\Delta$ 在 $Y$ 中闭。
+  由闭子空间保持 Suslin（取 Polish 覆盖后取闭原像并限制映射）知 $\Delta$ 为 Suslin 空间。
+
+  定义映射
+  \[
+    \pi:\Delta\to X,\qquad \pi((x_n))=x_0.
+  \]
+  则 $\pi$ 连续，且 $\pi(\Delta)=\bigcap_{n\in\mathbb{N}}E_n$。
+  因此 $\bigcap_{n\in\mathbb{N}}E_n$ 为 Suslin 空间。
+\end{proof}
+
+\begin{proposition}\label{prop:suslin-union}
+  设 $X$ 为第二可数空间，$(E_n)_{n\in\mathbb{N}}$ 为 $X$ 的一列 Suslin 子空间，则 $\bigcup_{n\in\mathbb{N}}E_n$ 为 Suslin 空间。
+\end{proposition}
+\begin{proof}
+  由定理 \ref{thm:suslin-product-coproduct}，拓扑和 $Y\triangleq\bigsqcup_{n\in\mathbb{N}}E_n$ 为 Suslin 空间。
+  定义映射 $\varphi:Y\to X$：对 $x\in E_n$，令 $\varphi(x)=x$。
+  则 $\varphi$ 连续且满射到 $\bigcup_{n\in\mathbb{N}}E_n$。
+  因此 $\bigcup_{n\in\mathbb{N}}E_n$ 为 Suslin 空间。
+\end{proof}
+
+\subsection{$\sigma$-代数与 Borel 集}
+
+\begin{definition}[$\sigma$-代数]
+  设 $X$ 为非空集合，$\mathcal{A}\subseteq\mathcal{P}(X)$。
+  若满足：
+  \begin{enumerate}
+    \item $\varnothing\in\mathcal{A}$；
+    \item 若 $E\in\mathcal{A}$，则 $E^c\in\mathcal{A}$；
+    \item 若 $(E_n)_{n\in\mathbb{N}}\subseteq\mathcal{A}$，则 $\bigcup_{n\in\mathbb{N}}E_n\in\mathcal{A}$，
+  \end{enumerate}
+  则称 $\mathcal{A}$ 为 $X$ 上的一个 $\sigma$-代数。
+\end{definition}
+
+\begin{definition}[Borel $\sigma$-代数与 Borel 集]
+  设 $X$ 为拓扑空间。
+  记 $\mathcal{B}(X)$ 为由 $X$ 的所有开集生成的最小 $\sigma$-代数（称为 $X$ 的 Borel $\sigma$-代数）。
+  若 $E\in\mathcal{B}(X)$，则称 $E$ 为 $X$ 的 Borel 集。
+\end{definition}
+
+\begin{theorem}\label{thm:borel-suslin}
+  设 $X$ 为 $T_2$ 的 Suslin 空间，则 $X$ 的任意 Borel 子集（以子空间拓扑）都是 Suslin 空间。
+\end{theorem}
+\begin{proof}
+  令
+  \[
+    \mathcal{F}\triangleq\{E\subseteq X: E\text{ 与 }E^c\text{（以子空间拓扑）均为 Suslin 空间}\}.
+  \]
+  易见 $\varnothing\in\mathcal{F}$，且 $E\in\mathcal{F}\Rightarrow E^c\in\mathcal{F}$。
+
+  下证 $\mathcal{F}$ 对可数并封闭。
+  设 $(E_n)_{n\in\mathbb{N}}\subseteq\mathcal{F}$。
+  记 $Y\triangleq\bigsqcup_{n\in\mathbb{N}}E_n$。
+  由定理 \ref{thm:suslin-product-coproduct}（Suslin 空间对可数拓扑和封闭），$Y$ 为 Suslin 空间。
+  定义 $\varphi:Y\to X$：对 $x\in E_n$，则 $\varphi(x)=x$。
+  则 $\varphi$ 连续且满射到 $\bigcup_{n\in\mathbb{N}}E_n$，故 $\bigcup_{n\in\mathbb{N}}E_n$ 为 Suslin 空间。
+  又因 $E_n^c$ 为 Suslin 空间，由命题 \ref{prop:suslin-intersection}（$T_2$ 空间中可数交 Suslin 子集仍 Suslin）知
+  \[
+    \left(\bigcup_{n\in\mathbb{N}}E_n\right)^c=\bigcap_{n\in\mathbb{N}}E_n^c
+  \]
+  亦为 Suslin 空间。
+  因此 $\bigcup_{n\in\mathbb{N}}E_n\in\mathcal{F}$。
+  故 $\mathcal{F}$ 为 $\sigma$-代数。
+
+  现证 $\mathcal{B}(X)\subseteq\mathcal{F}$。
+  任取 $X$ 中开集 $U$。
+  因 $X$ 为 Suslin 空间，取 Polish 空间 $P$ 及连续满射 $f:P\to X$。
+  则 $f^{-1}(U)$ 为 $P$ 中开集，从而为 Polish 空间。
+  因 $f\vert_{f^{-1}(U)}:f^{-1}(U)\to U$ 连续满射，故 $U$ 为 Suslin 空间。
+  同理，$f^{-1}(X\setminus U)=P\setminus f^{-1}(U)$ 为 Polish 空间且满射到 $X\setminus U$，故 $X\setminus U$ 亦为 Suslin 空间。
+  因此 $U\in\mathcal{F}$。
+  由于 $\mathcal{F}$ 为 $\sigma$-代数且包含全体开集，必包含由开集生成的最小 $\sigma$-代数 $\mathcal{B}(X)$。
+
+  综上，若 $E\in\mathcal{B}(X)$，则 $E\in\mathcal{F}$，从而 $E$ 为 Suslin 空间。
+
+ \end{proof}
+
+\begin{proposition}
+  设 $X$ 为集合，$\{\mathcal{A}_\alpha\}_{\alpha\in\Lambda}$ 为 $X$ 上的一族 $\sigma$-代数，则
+  \[
+    \bigcap_{\alpha\in\Lambda}\mathcal{A}_\alpha
+  \]
+  仍为 $X$ 上的 $\sigma$-代数。
+\end{proposition}
+
+\begin{proof}
+  记 $\mathcal{A}\triangleq\bigcap_{\alpha\in\Lambda}\mathcal{A}_\alpha$。
+  因 $\varnothing\in\mathcal{A}_\alpha$ 对任意 $\alpha$ 成立，故 $\varnothing\in\mathcal{A}$。
+  若 $E\in\mathcal{A}$，则对任意 $\alpha$ 有 $E\in\mathcal{A}_\alpha$，从而 $E^c\in\mathcal{A}_\alpha$，故 $E^c\in\mathcal{A}$。
+  若 $(E_n)_{n\in\mathbb{N}}\subseteq\mathcal{A}$，则对任意 $\alpha$ 有 $(E_n)\subseteq\mathcal{A}_\alpha$，从而 $\bigcup_{n\in\mathbb{N}}E_n\in\mathcal{A}_\alpha$，故 $\bigcup_{n\in\mathbb{N}}E_n\in\mathcal{A}$。
+\end{proof}
+
+ \begin{definition}[可测空间]
+   设 $X$ 为集合，$\mathcal{B}$ 为 $X$ 上的 $\sigma$-代数，则称 $(X,\mathcal{B})$ 为一个可测空间。
+ \end{definition}
+
+ \begin{example}
+   设 $X$ 为集合，则 $\mathcal{P}(X)$ 为 $X$ 上的 $\sigma$-代数，从而 $(X,\mathcal{P}(X))$ 为可测空间。
+ \end{example}
+
+ \begin{example}
+   设 $X$ 为集合，则 $\{\varnothing,X\}$ 为 $X$ 上的 $\sigma$-代数。
+ \end{example}
+
+\begin{definition}[由集合族生成的 $\sigma$-代数]
+  设 $X$ 为集合，$\mathcal{S}\subseteq\mathcal{P}(X)$。
+  定义
+  \[
+    \sigma(\mathcal{S})\triangleq\bigcap\{\mathcal{A}\subseteq\mathcal{P}(X):\ \mathcal{A}\text{ 为 }X\text{ 上的 }\sigma\text{-代数且 }\mathcal{S}\subseteq\mathcal{A}\}.
+  \]
+  称 $\sigma(\mathcal{S})$ 为由 $\mathcal{S}$ 生成的最小 $\sigma$-代数。
+\end{definition}
+
+\begin{remark}
+  若 $X$ 为拓扑空间，$\tau$ 为其拓扑，则 Borel $\sigma$-代数满足 $\mathcal{B}(X)=\sigma(\tau)$。
+\end{remark}
+
+\begin{proposition}
+  设 $X$ 为拓扑空间，则 $X$ 的任意开集、闭集、$G_\delta$ 集与 $F_\sigma$ 集均为 Borel 集。
+\end{proposition}
+
+\begin{proof}
+  开集属于生成族 $\tau$，故为 Borel 集。
+  闭集为开集的补，因此为 Borel 集。
+  若 $E$ 为 $G_\delta$ 集，则 $E$ 为可数个开集的交；而 Borel $\sigma$-代数对可数并封闭，故也对可数交封闭，从而 $E$ 为 Borel 集。
+  若 $E$ 为 $F_\sigma$ 集，则 $E$ 为可数个闭集的并，亦为 Borel 集。
+\end{proof}
+
+\begin{proposition}
+  若 $X$ 为 $T_2$ 空间，则 $X$ 的任意紧子集都是 Borel 集。
+\end{proposition}
+
+\begin{proof}
+  $T_2$ 空间中紧集必为闭集，故由上命题知紧集为 Borel 集。
+\end{proof}
+
+\begin{corollary}
+  若 $X$ 为 $T_2$ 的 Suslin 空间，则 $X$ 的任意开集、闭集、$G_\delta$ 集与 $F_\sigma$ 集（以子空间拓扑）都是 Suslin 空间。
+\end{corollary}
+
+\begin{proof}
+  由上命题知这些集合均为 Borel 集，故由定理 \ref{thm:borel-suslin} 得其为 Suslin 空间。
+\end{proof}
+
+\subsection{Baire 空间与 Polish 空间的连续像}
+
+\begin{lemma}\label{lem:polish-baire-surjection}
+  设 $X$ 为 Polish 空间，则存在连续满射
+  \[
+    f:\mathbb{N}^{\mathbb{N}}\to X.
+  \]
+\end{lemma}
+
+\begin{proof}
+  将 $\mathbb{N}$ 视为离散空间，则积空间 $\mathbb{N}^{\mathbb{N}}$ 为 Polish 空间（称为 Baire 空间）。
+
+  取与 $X$ 拓扑相容的完备度量 $d$。
+  记 $\mathbb{N}^{<\mathbb{N}}$ 为所有有限自然数列的集合。
+  对 $s\in\mathbb{N}^{<\mathbb{N}}$，记 $|s|$ 为其长度；对 $\alpha\in\mathbb{N}^{\mathbb{N}}$，记 $\alpha\vert_n$ 为其前 $n$ 项截断。
+
+  对每个 $s\in\mathbb{N}^{<\mathbb{N}}$，定义柱集
+  \[
+    B_s\triangleq\{\alpha\in\mathbb{N}^{\mathbb{N}}:\ \alpha\vert_{|s|}=s\}.
+  \]
+  则 $\{B_s\}_{s\in\mathbb{N}^{<\mathbb{N}}}$ 构成 $\mathbb{N}^{\mathbb{N}}$ 的一组拓扑基。
+
+  下构造一族非空开集 $\{U_s\}_{s\in\mathbb{N}^{<\mathbb{N}}}$，满足：
+  \begin{enumerate}
+    \item $U_\varnothing=X$；
+    \item 对任意 $s$，存在一列非空开集 $(U_{sn})_{n\in\mathbb{N}}$ 使得
+    \[
+      U_s=\bigcup_{n\in\mathbb{N}}U_{sn};
+    \]
+    \item 对任意 $s,n$，有 $\overline{U_{sn}}\subseteq U_s$ 且 $\operatorname{diam}(U_{sn})\le 2^{-|s|-1}$。
+  \end{enumerate}
+
+  设已构造出非空开集 $U_s$。
+  对每个 $x\in U_s$，令
+  \[
+    r_x\triangleq\min\left\{2^{-|s|-2},\frac{d\bigl(x,X\setminus U_s\bigr)}{2}\right\}>0.
+  \]
+  则开球族 $\{B(x,r_x)\}_{x\in U_s}$ 覆盖 $U_s$。
+  因 $X$ 为第二可数从而 Lindel\"of，存在可数子覆盖 $(B(x_{sn},r_{sn}))_{n\in\mathbb{N}}$。
+  令
+  \[
+    U_{sn}\triangleq B(x_{sn},r_{sn}).
+  \]
+  则 $U_s=\bigcup_{n\in\mathbb{N}}U_{sn}$。
+  又由 $r_{sn}\le d(x_{sn},X\setminus U_s)/2$ 得 $\overline{U_{sn}}\subseteq U_s$。
+  由于 $r_{sn}\le 2^{-|s|-2}$，有 $\operatorname{diam}(U_{sn})\le 2r_{sn}\le 2^{-|s|-1}$。
+
+  现对 $\alpha\in\mathbb{N}^{\mathbb{N}}$ 定义
+  \[
+    K_{\alpha,n}\triangleq\overline{U_{\alpha\vert_n}}\quad(n\in\mathbb{N}).
+  \]
+  则 $K_{\alpha,n+1}\subseteq K_{\alpha,n}$ 且 $\operatorname{diam}(K_{\alpha,n})\to 0$。
+  由完备性与闭集套性质，交集 $\bigcap_{n\in\mathbb{N}}K_{\alpha,n}$ 为单点集，记其唯一点为 $f(\alpha)$。
+
+  下证 $f$ 满射。
+  任取 $x\in X$。
+  因 $U_\varnothing=X$，可递归选取 $\alpha\in\mathbb{N}^{\mathbb{N}}$ 使得对每个 $n$，都有
+  \[
+    x\in U_{\alpha\vert_n}.
+  \]
+  于是 $x\in K_{\alpha,n}$ 对所有 $n$ 成立，从而 $x\in\bigcap_{n\in\mathbb{N}}K_{\alpha,n}=\{f(\alpha)\}$，即 $f(\alpha)=x$。
+
+  最后证 $f$ 连续。
+  任取 $\alpha\in\mathbb{N}^{\mathbb{N}}$ 及 $X$ 中开集 $V$ 使 $f(\alpha)\in V$。
+  由 $K_{\alpha,n}$ 递减且直径趋于 $0$，存在 $n$ 使 $K_{\alpha,n}\subseteq V$。
+  若 $\beta\in B_{\alpha\vert_n}$，则 $\beta\vert_n=\alpha\vert_n$，从而 $K_{\beta,n}=K_{\alpha,n}\subseteq V$，故 $f(\beta)\in V$。
+  因此 $B_{\alpha\vert_n}\subseteq f^{-1}(V)$，说明 $f^{-1}(V)$ 为开集，$f$ 连续。
+\end{proof}
+
+\subsection{Borel 可分离与 Lusin 分离定理}
+
+\begin{definition}[Borel 可分离]\label{def:borel-separable}
+  设 $X$ 为拓扑空间，$A,B\subseteq X$。
+  若存在 Borel 集 $E,F\in\mathcal{B}(X)$ 使得
+  \[
+    A\subseteq E,\qquad B\subseteq F,\qquad E\cap F=\varnothing,
+  \]
+  则称 $A$ 与 $B$ 在 $X$ 中 Borel 可分离。
+\end{definition}
+
+\begin{proposition}\label{prop:borel-separable-countable-union}
+  设 $X$ 为拓扑空间，$(A_n)_{n\in\mathbb{N}}$ 与 $(B_n)_{n\in\mathbb{N}}$ 为 $X$ 的子集列。
+  若对任意 $n,m\in\mathbb{N}$，$A_n$ 与 $B_m$ 在 $X$ 中 Borel 可分离，则
+  \[
+    \bigcup_{n\in\mathbb{N}}A_n\quad\text{与}\quad\bigcup_{n\in\mathbb{N}}B_n
+  \]
+  在 $X$ 中 Borel 可分离。
+\end{proposition}
+
+\begin{proof}
+  对每个 $n,m$，取 Borel 集 $E_{n,m},F_{n,m}\in\mathcal{B}(X)$ 使得
+  \[
+    A_n\subseteq E_{n,m},\qquad B_m\subseteq F_{n,m},\qquad E_{n,m}\cap F_{n,m}=\varnothing.
+  \]
+  令 $E_n\triangleq\bigcap_{m\in\mathbb{N}}E_{n,m}$，并令 $E\triangleq\bigcup_{n\in\mathbb{N}}E_n$。
+  则 $E\in\mathcal{B}(X)$ 且 $\bigcup_n A_n\subseteq E$。
+
+  对任意 $m$ 与任意 $n$，由 $E_n\subseteq E_{n,m}$ 得 $E_n\cap F_{n,m}=\varnothing$。
+  因 $B_m\subseteq F_{n,m}$，从而 $E_n\cap B_m=\varnothing$。
+  于是 $E\cap B_m=\varnothing$ 对所有 $m$ 成立，即 $E\cap\bigcup_m B_m=\varnothing$。
+
+  取 $F\triangleq X\setminus E$，则 $F\in\mathcal{B}(X)$ 且 $\bigcup_m B_m\subseteq F$，并且 $E\cap F=\varnothing$。
+\end{proof}
+
+\begin{theorem}[Lusin 分离定理]\label{thm:lusin-separation}
+  设 $X$ 为 $T_2$ 空间，$A,B\subseteq X$ 为不交子集，且 $A,B$（以子空间拓扑）均为 Suslin 空间。
+  则 $A$ 与 $B$ 在 $X$ 中 Borel 可分离。
+\end{theorem}
+
+\begin{proof}
+  由 Suslin 空间定义，存在 Polish 空间 $P,Q$ 及连续满射 $p:P\to A$、$q:Q\to B$。
+  由引理~\ref{lem:polish-baire-surjection}，存在连续满射 $u:\mathbb{N}^{\mathbb{N}}\to P$ 与 $v:\mathbb{N}^{\mathbb{N}}\to Q$。
+  令
+  \[
+    f\triangleq p\circ u:\mathbb{N}^{\mathbb{N}}\to A\subseteq X,\qquad g\triangleq q\circ v:\mathbb{N}^{\mathbb{N}}\to B\subseteq X.
+  \]
+  则 $f,g$ 皆为连续满射。
+
+  反证设 $A,B$ 在 $X$ 中不 Borel 可分离。
+  由
+  \[
+    A=f\bigl(\mathbb{N}^{\mathbb{N}}\bigr)=\bigcup_{i\in\mathbb{N}} f(B_{(i)}),\qquad
+    B=g\bigl(\mathbb{N}^{\mathbb{N}}\bigr)=\bigcup_{j\in\mathbb{N}} g(B_{(j)}),
+  \]
+  以及命题~\ref{prop:borel-separable-countable-union} 的逆否命题，可取 $i_0,j_0\in\mathbb{N}$ 使得
+  \[
+    f\bigl(B_{(i_0)}\bigr)\quad\text{与}\quad g\bigl(B_{(j_0)}\bigr)
+  \]
+  在 $X$ 中不 Borel 可分离。
+
+  假设已取 $i_0,\dots,i_n$ 与 $j_0,\dots,j_n$ 使得
+  \[
+    f\bigl(B_{(i_0,\dots,i_n)}\bigr)\quad\text{与}\quad g\bigl(B_{(j_0,\dots,j_n)}\bigr)
+  \]
+  在 $X$ 中不 Borel 可分离。
+  注意到
+  \[
+    B_{(i_0,\dots,i_n)}=\bigcup_{k\in\mathbb{N}}B_{(i_0,\dots,i_n,k)},\qquad
+    B_{(j_0,\dots,j_n)}=\bigcup_{\ell\in\mathbb{N}}B_{(j_0,\dots,j_n,\ell)}.
+  \]
+  再次由命题~\ref{prop:borel-separable-countable-union} 的逆否命题，可取 $i_{n+1},j_{n+1}\in\mathbb{N}$ 使得
+  \[
+    f\bigl(B_{(i_0,\dots,i_n,i_{n+1})}\bigr)\quad\text{与}\quad g\bigl(B_{(j_0,\dots,j_n,j_{n+1})}\bigr)
+  \]
+  在 $X$ 中不 Borel 可分离。
+  由归纳可得序列 $\alpha=(i_n)_{n\in\mathbb{N}}\in\mathbb{N}^{\mathbb{N}}$ 与 $\beta=(j_n)_{n\in\mathbb{N}}\in\mathbb{N}^{\mathbb{N}}$，并且对任意 $n$ 有
+  \[
+    f\bigl(B_{\alpha\vert_n}\bigr)\quad\text{与}\quad g\bigl(B_{\beta\vert_n}\bigr)
+  \]
+  在 $X$ 中不 Borel 可分离。
+
+  令 $x\triangleq f(\alpha)\in A$、$y\triangleq g(\beta)\in B$。
+  因 $A\cap B=\varnothing$，有 $x\ne y$。
+  由 $X$ 为 $T_2$ 空间，存在不交开集 $V,W\subseteq X$ 使 $x\in V$ 且 $y\in W$。
+
+  由 $f$ 连续，$f^{-1}(V)$ 为 $\mathbb{N}^{\mathbb{N}}$ 的开集且含 $\alpha$，故存在 $n$ 使 $B_{\alpha\vert_n}\subseteq f^{-1}(V)$，从而 $f(B_{\alpha\vert_n})\subseteq V$。
+  同理存在 $n$（取更大者亦可）使得 $g(B_{\beta\vert_n})\subseteq W$。
+  于是 $f(B_{\alpha\vert_n})$ 与 $g(B_{\beta\vert_n})$ 被不交开集 $V,W$ 分离，从而在 $X$ 中 Borel 可分离，与构造矛盾。
+
+  故 $A,B$ 在 $X$ 中 Borel 可分离。
+\end{proof}
+
+\begin{theorem}[Suslin 定理]\label{thm:souslin}
+  设 $X$ 为 $T_2$ 空间，$E\subseteq X$ 满足 $E$ 与 $E^c$（以子空间拓扑）均为 Suslin 空间。
+  则 $E\in\mathcal{B}(X)$。
+\end{theorem}
+
+\begin{proof}
+  由定理~\ref{thm:lusin-separation}，存在 Borel 集 $A,B\in\mathcal{B}(X)$ 使得
+  \[
+    E\subseteq A,\qquad E^c\subseteq B,\qquad A\cap B=\varnothing.
+  \]
+  由 $A\cap B=\varnothing$ 得 $A\subseteq X\setminus B$。
+  又由 $E^c\subseteq B$ 得 $X\setminus B\subseteq X\setminus E^c=E$。
+  因此 $E\subseteq A\subseteq E$，从而 $E=A\in\mathcal{B}(X)$。
+\end{proof}
+
+\subsection{Borel 可测映射}
+
+\begin{definition}[Borel 可测映射]\label{def:borel-measurable}
+  设 $X,Y$ 为拓扑空间，$f:X\to Y$ 为映射。
+  若对任意 $Y$ 中 Borel 集 $B\in\mathcal{B}(Y)$，都有 $f^{-1}(B)\in\mathcal{B}(X)$，则称 $f$ 为 Borel 可测映射。
+\end{definition}
+
+\begin{proposition}\label{prop:continuous-borel-measurable}
+  设 $X,Y$ 为拓扑空间，$f:X\to Y$ 连续，则 $f$ 为 Borel 可测映射。
+\end{proposition}
+
+\begin{proof}
+  任取 $Y$ 中开集 $U$。
+  由连续性，$f^{-1}(U)$ 在 $X$ 中开，故为 Borel 集。
+  因 $\mathcal{B}(Y)=\sigma(\tau_Y)$ 由开集生成，且 $f^{-1}$ 与补、可数并可交换，故对任意 $B\in\mathcal{B}(Y)$ 有 $f^{-1}(B)\in\mathcal{B}(X)$。
+\end{proof}
+
+\begin{corollary}\label{cor:continuous-injective-borel-image}
+  设 $X$ 为 $T_2$ 的 Suslin 空间，$Y$ 为 $T_2$ 空间，$f:X\to Y$ 为连续单射。
+  则对任意 $E\in\mathcal{B}(X)$，都有 $f(E)\in\mathcal{B}(f(X))$（其中 $f(X)$ 取子空间拓扑）。
+\end{corollary}
+
+\begin{proof}
+  因 $X$ 为 $T_2$ 的 Suslin 空间，由定理~\ref{thm:borel-suslin}，$E$ 与 $E^c$（以子空间拓扑）均为 Suslin 空间。
+  因 $f$ 连续，$f(E)$ 与 $f(E^c)$ 皆为 Suslin 空间（连续像保持 Suslin）。
+
+  又由 $f$ 为单射知 $f(X)\setminus f(E)=f(E^c)$。
+  因 $Y$ 为 $T_2$，其子空间 $f(X)$ 亦为 $T_2$。
+  由 Suslin 定理~\ref{thm:souslin}（应用于空间 $f(X)$ 与子集 $f(E)$）得 $f(E)\in\mathcal{B}(f(X))$。
+\end{proof}
+
+\subsection{Lusin 空间}
+
+\begin{definition}[Lusin 空间]\label{def:lusin-space}
+  设 $X$ 为拓扑空间。
+  若存在 Polish 空间 $P$ 及连续双射 $f:P\to X$，则称 $X$ 为 \textbf{Lusin 空间}。
+\end{definition}
+
+\begin{remark}
+  Lusin 空间必为 Suslin 空间（连续双射特别是连续满射）。
+\end{remark}
+
+\begin{example}
+  Polish 空间 $\Rightarrow$ Lusin 空间 $\Rightarrow$ Suslin 空间。
+\end{example}
+
+\begin{proposition}\label{prop:lusin-closed-properties}
+  Lusin 空间满足以下封闭性：
+  \begin{enumerate}
+    \item Lusin 空间的可数积仍为 Lusin 空间；
+    \item Lusin 空间的可数拓扑和仍为 Lusin 空间；
+    \item Lusin 空间的开集、闭集及 $G_\delta$ 集（取子空间拓扑）仍为 Lusin 空间。
+  \end{enumerate}
+\end{proposition}
+
+\begin{proposition}\label{prop:lusin-countable-intersection}
+  设 $X$ 为 $T_2$ 空间，$(E_n)_{n\in\mathbb{N}}$ 为 $X$ 中一列 Lusin 子空间。
+  则 $\bigcap_{n\in\mathbb{N}}E_n$（取子空间拓扑）仍为 Lusin 空间。
+\end{proposition}
+
+\begin{proposition}\label{prop:lusin-disjoint-union}
+  设 $X$ 为拓扑空间，$(E_n)_{n\in\mathbb{N}}$ 为 $X$ 中一列两两不交的 Lusin 子空间。
+  则 $\bigcup_{n\in\mathbb{N}}E_n$（取子空间拓扑）仍为 Lusin 空间。
+\end{proposition}
+
+\begin{proof}
+  因各 $E_n$ 为 Lusin 空间，其可数拓扑和 $\bigsqcup_{n\in\mathbb{N}}E_n$ 仍为 Lusin 空间。
+  定义映射
+  \[
+    \varphi:\bigsqcup_{n\in\mathbb{N}}E_n\to\bigcup_{n\in\mathbb{N}}E_n,\quad (x,n)\mapsto x.
+  \]
+  因各 $E_n$ 两两不交，$\varphi$ 为连续双射，故 $\bigcup_{n\in\mathbb{N}}E_n$ 为 Lusin 空间。
+\end{proof}
+
+\begin{theorem}\label{thm:borel-lusin}
+  设 $X$ 为 $T_2$ 的 Lusin 空间。
+  则任意 Borel 子集 $E\in\mathcal{B}(X)$（取子空间拓扑）均为 Lusin 空间。
+\end{theorem}
+
+\begin{proof}
+  令
+  \[
+    \mathcal{A}=\{E\subseteq X:\ E\text{ 与 }E^c\text{ 均为 Lusin 子空间}\}.
+  \]
+  下证 $\mathcal{A}$ 为包含所有开集的 $\sigma$-代数，从而 $\mathcal{B}(X)\subseteq\mathcal{A}$。
+
+  首先，$\varnothing,X\in\mathcal{A}$。
+  又因 Lusin 空间的开集、闭集仍为 Lusin（命题~\ref{prop:lusin-closed-properties}），
+  故任意开集 $U$ 满足 $U$ 与 $U^c$（闭集）均为 Lusin，即 $U\in\mathcal{A}$。
+
+  $\mathcal{A}$ 对补封闭显然。
+  下证 $\mathcal{A}$ 对可数交封闭。
+
+  设 $(E_n)_{n\in\mathbb{N}}\subseteq\mathcal{A}$。
+  由命题~\ref{prop:lusin-countable-intersection}，因各 $E_n$ 为 Lusin 且 $X$ 为 $T_2$，
+  故 $\bigcap_{n\in\mathbb{N}}E_n$ 为 Lusin 空间。
+
+  还需证 $\bigl(\bigcap_{n\in\mathbb{N}}E_n\bigr)^c=\bigcup_{n\in\mathbb{N}}E_n^c$ 为 Lusin 空间。
+  记 $A_n=E_n^c$，则各 $A_n$ 为 Lusin 空间。
+  将 $\bigcup_{n\in\mathbb{N}}A_n$ 写成两两不交的并：
+  \[
+    \bigcup_{n\in\mathbb{N}}A_n=A_1\cup\bigl(A_2\setminus A_1\bigr)\cup\bigl(A_3\setminus(A_1\cup A_2)\bigr)\cup\cdots
+    =\bigcup_{n\in\mathbb{N}}\Bigl(A_n\cap\bigcap_{k<n}A_k^c\Bigr).
+  \]
+  其中
+  \[
+    A_n\cap\bigcap_{k<n}A_k^c=A_n\cap\bigcap_{k<n}E_k.
+  \]
+  因 $A_n,E_1,\dotsc,E_{n-1}$ 均为 Lusin 空间，
+  由命题~\ref{prop:lusin-countable-intersection}（$T_2$ 下 Lusin 的有限/可数交仍 Lusin），
+  上述各项均为 Lusin 空间，且它们两两不交。
+  由命题~\ref{prop:lusin-disjoint-union}，$\bigcup_{n\in\mathbb{N}}A_n$ 为 Lusin 空间。
+
+  综上，$\mathcal{A}$ 为包含所有开集的 $\sigma$-代数，故 $\mathcal{B}(X)\subseteq\mathcal{A}$。
+\end{proof}
+
+\begin{theorem}\label{thm:lusin-continuous-injection-borel}
+  设 $X$ 为 Lusin 空间，$Y$ 为 $T_2$ 空间，$f:X\to Y$ 为连续映射。
+  若 $E\in\mathcal{B}(X)$ 且 $f|_E$ 为单射，则 $f(E)\in\mathcal{B}(Y)$。
+\end{theorem}
+
+\begin{proof}
+  因 $X$ 为 Lusin 空间，存在 Polish 空间 $P$ 与连续双射 $g:P\to X$。
+  令 $\widetilde{E}=g^{-1}(E)\in\mathcal{B}(P)$（连续映射的原像保持 Borel 集）。
+  由定理~\ref{thm:borel-lusin}（或直接由 Polish 空间的 Borel 子集仍为 Lusin），$\widetilde{E}$ 为 Lusin 空间。
+
+  考虑复合映射 $f\circ g|_{\widetilde{E}}:\widetilde{E}\to Y$。
+  因 $g$ 为双射且 $f|_E$ 为单射，故 $f\circ g|_{\widetilde{E}}$ 为单射。
+  从而 $f(E)=(f\circ g)(\widetilde{E})$ 为 $T_2$ 空间 $Y$ 中的 Lusin 子空间的连续单射像。
+
+  因 $\widetilde{E}$ 为 Lusin（从而为 Suslin），$f(E)$ 为 Suslin 空间。
+  又 $\widetilde{E}^c=g^{-1}(E^c)$ 亦为 Lusin（由定理~\ref{thm:borel-lusin}），
+  故 $f(E^c\cap g(P))=f(E^c)$（当 $g$ 为满射时）亦为 Suslin。
+  由 $f|_E$ 单射知 $f(X)\setminus f(E)\supseteq f(E^c)$；
+  进一步，因 $g$ 为双射，$f(E)^c\cap f(X)=f(E^c)$ 为 Suslin。
+
+  由 Suslin 定理~\ref{thm:souslin}（$T_2$ 空间中 $E$ 与 $E^c$ 均为 Suslin 则 $E$ 为 Borel），
+  得 $f(E)\in\mathcal{B}(f(X))\subseteq\mathcal{B}(Y)$。
+\end{proof}
 
 \end{document}

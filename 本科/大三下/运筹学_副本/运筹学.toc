@@ -1,4 +1,0 @@
-\contentsline {chapter}{\numberline {1}看前须知}{1}{chapter.1}%
-\contentsline {chapter}{\numberline {2}单纯型法}{2}{chapter.2}%
-\contentsline {section}{\numberline {2.1}单纯型法原理}{2}{section.2.1}%
-\contentsline {subsection}{\numberline {2.1.1}解的概念}{2}{subsection.2.1.1}%

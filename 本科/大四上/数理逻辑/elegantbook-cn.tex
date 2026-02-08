@@ -1,0 +1,5087 @@
+\documentclass[lang=cn,a4paper,newtx,section]{elegantbook}
+
+\title{数理逻辑}
+
+
+\author{h and m}
+
+\date{April 9, 2022}
+
+
+\setcounter{tocdepth}{3}
+
+\logo{logo-blue.jpg}
+\cover{cover.jpg}
+
+% 本文档命令
+\usepackage{array}
+\usepackage{tikz-cd}
+\newcommand{\ccr}[1]{\makecell{{\color{#1}\rule{1cm}{1cm}}}}
+
+% 修改标题页的橙色带
+% \definecolor{customcolor}{RGB}{32,178,170}
+% \colorlet{coverlinecolor}{customcolor}
+
+\begin{document}
+
+\maketitle
+\frontmatter
+
+\tableofcontents
+
+\mainmatter
+
+\chapter{一阶语言与结构}
+
+\section{一阶语言}
+
+\begin{definition}[一阶语言]
+一个（单排序）一阶语言 $L$ 是一个四元组
+\[
+  L=(V,C,(n_f)_{f\in F},(n_R)_{R\in R}),
+\]
+其中 $V$ 为变元符号集合，$C$ 为常元符号集合，$F$ 为函数符号集合，$R$ 为关系符号集合；并且
+\[
+  V\ \text{为无限集},\qquad V,C,F,R,\mathbb N\ \text{两两不交},
+\]
+以及对任意 $f\in F$ 与 $R\in R$，其元数满足 $n_f\in\mathbb N^{*}$、$n_R\in\mathbb N^{*}$。
+\end{definition}
+
+\begin{remark}
+集合 $C,F,R$ 均允许为空集。
+\end{remark}
+
+\section{结构（解释）}
+
+\begin{definition}[$L$-结构]
+设 $L=(V,C,(n_f)_{f\in F},(n_R)_{R\in R})$ 为一阶语言。一个 $L$-结构（或称 $L$ 的解释）是一个四元组
+\[
+  \mathcal M=\bigl(M,(c^{\mathcal M})_{c\in C},(f^{\mathcal M})_{f\in F},(R^{\mathcal M})_{R\in R}\bigr),
+\]
+满足：
+\begin{enumerate}
+  \item $M$ 是一个非空集合（称为论域）；
+  \item 对每个 $c\in C$，有 $c^{\mathcal M}\in M$；
+  \item 对每个 $f\in F$，有 $f^{\mathcal M}:M^{n_f}\to M$ 为一个 $n_f$ 元函数；
+  \item 对每个 $R\in R$，有 $R^{\mathcal M}\subseteq M^{n_R}$ 为一个 $n_R$ 元关系。
+\end{enumerate}
+\end{definition}
+
+\section{例子}
+
+\begin{example}
+令
+\[
+  L=(V,\varnothing,F=\{\circ\},\varnothing),\qquad n_{\circ}=2,
+\]
+则 $L$ 是只有一个二元函数符号 $\circ$ 的语言。一个 $L$-结构就是
+\[
+  \bigl(M,\varnothing,\{\circ^{\mathcal M}\},\varnothing\bigr),
+\]
+其中 $M\neq\varnothing$ 且 $\circ^{\mathcal M}:M\times M\to M$ 是二元运算。
+
+例如，取 $M=\mathbb Z$ 且令 $\circ^{\mathcal M}(x,y)=x+y$，就得到一个 $L$-结构。
+\end{example}
+
+\begin{example}
+令
+\[
+  L=(V,\varnothing,F=\{\sigma,\tau\},\varnothing),\qquad n_{\sigma}=n_{\tau}=2,
+\]
+则一个 $L$-结构等价于给定非空集合 $M$ 并在其上指定两个二元运算
+\[
+  \sigma^{\mathcal M},\tau^{\mathcal M}:M\times M\to M.
+\]
+例如，取 $M=\mathbb Z$，并令
+\[
+  \sigma^{\mathcal M}(x,y)=x+y,\qquad \tau^{\mathcal M}(x,y)=x\cdot y,
+\]
+则得到一个 $L$-结构。
+\end{example}
+
+\begin{example}
+令
+\[
+  L=(V,\varnothing,\varnothing,R=\{\le\}),\qquad n_{\le}=2,
+\]
+则一个 $L$-结构等价于在非空集合 $M$ 上指定一个二元关系 $\le^{\mathcal M}\subseteq M\times M$。
+
+例如，取 $M=\mathbb R$ 并令
+\[
+  \le^{\mathcal M}=\{(x,y)\in\mathbb R\times\mathbb R: x\le y\},
+\]
+得到通常的有序结构。又如取 $M=\mathbb Z$ 并令
+\[
+  \le^{\mathcal M}=\{(x,y)\in\mathbb Z\times\mathbb Z: x\mid y\},
+\]
+则得到“整除”关系对应的 $L$-结构。
+\end{example}
+
+\begin{example}[有向图作为结构]
+设 $U$ 为非空集合，$E\subseteq U\times U$。称 $(U,E)$ 为一个有向图。
+它可以看成语言
+\[
+  L=(V,\varnothing,\varnothing,R=\{E\}),\qquad n_E=2,
+\]
+的一个结构，其中 $E^{\mathcal G}=E$。
+
+例如令 $U=\{a,b,c,d\}$，并取
+\[
+  E=\{(a,a),(a,b),(b,a),(a,d),(b,c)\},
+\]
+则得到一个有向图（也就是一个 $L$-结构）。
+\end{example}
+
+\chapter{词、项与公式}
+
+\section{词与项}
+
+\begin{definition}[词（word）]
+设 $\Omega$ 为一个集合。对 $n\in\mathbb N$，记 $\Omega^{n}$ 为由 $\Omega$ 中元素组成的长度为 $n$ 的序列（或字符串）全体，并规定 $\Omega^{0}=\{\epsilon\}$，其中 $\epsilon$ 表示空词。定义
+\[
+  \Omega^{<\omega}:=\bigcup_{n\in\mathbb N}\Omega^{n}.
+\]
+$\Omega^{<\omega}$ 的元素称为以 $\Omega$ 为字母表的词。
+\end{definition}
+
+\begin{definition}[拼接]
+若 $u\in\Omega^{m}$、$v\in\Omega^{n}$，其拼接记作 $uv\in\Omega^{m+n}$。
+\end{definition}
+
+\begin{definition}[$L$-项]
+设 $L=(V,C,(n_f)_{f\in F},(n_R)_{R\in R})$ 为一阶语言。
+令
+\[
+  \Omega_L:=V\cup C\cup F\cup\{\mathtt{(},\mathtt{)},\mathtt{,}\}.
+\]
+并将 $\Omega_L^{<\omega}$ 的元素理解为由这些符号写成的有限字符串。称一个字符串为 $L$-项（$L$-term），若它由下述归纳规则生成：
+\begin{enumerate}
+  \item 任意变元 $x\in V$ 与任意常元符号 $c\in C$ 都是 $L$-项；
+  \item 若 $f\in F$ 且 $n_f=n$，并且 $t_1,\dots,t_n$ 是 $L$-项，则 $f(t_1,\dots,t_n)$ 是 $L$-项。
+\end{enumerate}
+\end{definition}
+
+\begin{example}
+在语言 $L=(V,\varnothing,F=\{\sigma,\tau\},\varnothing)$ 且 $n_{\sigma}=n_{\tau}=2$ 中，若 $x,y,z\in V$，则
+\[
+  \sigma(x,y),\qquad \tau(\sigma(x,y),z),\qquad \sigma(\sigma(x,x),\tau(y,z))
+\]
+都是 $L$-项。
+\end{example}
+
+\begin{definition}[$\mathrm{Term}_k(L)$ 与 $\mathrm{Term}(L)$]
+令
+\[
+  \mathrm{Term}_0(L):=V\cup C.
+\]
+已定义 $\mathrm{Term}_k(L)$ 后，令
+\[
+  \mathrm{Term}_{k+1}(L):=\mathrm{Term}_k(L)\cup\bigl\{f(t_1,\dots,t_n): f\in F,\ n_f=n,\ t_1,\dots,t_n\in\mathrm{Term}_k(L)\bigr\}.
+\]
+定义
+\[
+  \mathrm{Term}(L):=\bigcup_{k\in\mathbb N}\mathrm{Term}_k(L).
+\]
+\end{definition}
+
+\begin{proposition}
+$\mathrm{Term}(L)$ 满足：
+\begin{enumerate}
+  \item $V\cup C\subseteq \mathrm{Term}(L)$；
+  \item 若 $f\in F$ 且 $n_f=n$，并且 $t_1,\dots,t_n\in \mathrm{Term}(L)$，则 $f(t_1,\dots,t_n)\in \mathrm{Term}(L)$。
+\end{enumerate}
+并且 $\mathrm{Term}(L)$ 是满足上述 (1)(2) 的最小集合：若 $A\subseteq \Omega_L^{<\omega}$ 满足 (1)(2)（将其中的 $\mathrm{Term}(L)$ 换成 $A$），则 $\mathrm{Term}(L)\subseteq A$。
+\end{proposition}
+
+\begin{proof}
+(1) 由定义 $\mathrm{Term}_0(L)=V\cup C$ 且 $\mathrm{Term}_0(L)\subseteq \mathrm{Term}(L)$ 立即得到。
+
+(2) 取 $t_1,\dots,t_n\in\mathrm{Term}(L)$。则存在 $k\in\mathbb N$ 使得 $t_1,\dots,t_n\in\mathrm{Term}_k(L)$，从而按递推定义有 $f(t_1,\dots,t_n)\in\mathrm{Term}_{k+1}(L)\subseteq\mathrm{Term}(L)$。
+
+最小性：设 $A\subseteq\Omega_L^{<\omega}$ 满足 (1)(2)。对 $k$ 作归纳证明 $\mathrm{Term}_k(L)\subseteq A$。
+当 $k=0$ 时，$\mathrm{Term}_0(L)=V\cup C\subseteq A$。
+若 $\mathrm{Term}_k(L)\subseteq A$，则由 (2) 的闭包性知
+\[
+  \{f(t_1,\dots,t_n): f\in F,\ n_f=n,\ t_1,\dots,t_n\in\mathrm{Term}_k(L)\}\subseteq A,
+\]
+从而 $\mathrm{Term}_{k+1}(L)\subseteq A$。
+因此对一切 $k$ 都有 $\mathrm{Term}_k(L)\subseteq A$，取并得 $\mathrm{Term}(L)\subseteq A$。
+\end{proof}
+
+\begin{lemma}
+设 $t\in\mathrm{Term}(L)$。则以下两种情形恰有一种成立：
+\begin{enumerate}
+  \item $t\in V\cup C$；
+  \item 存在 $f\in F$（$n_f=n$）及 $t_1,\dots,t_n\in\mathrm{Term}(L)$ 使得 $t=f(t_1,\dots,t_n)$。
+\end{enumerate}
+\end{lemma}
+
+\begin{proof}
+对 $t\in\mathrm{Term}(L)$，取最小的 $k$ 使得 $t\in\mathrm{Term}_k(L)$。
+若 $k=0$，则 $t\in\mathrm{Term}_0(L)=V\cup C$，落入 (1)。
+若 $k>0$，则由 $\mathrm{Term}_k(L)$ 的递推定义知，$t\notin\mathrm{Term}_{k-1}(L)$ 只能意味着 $t=f(t_1,\dots,t_n)$，其中 $t_i\in\mathrm{Term}_{k-1}(L)\subseteq\mathrm{Term}(L)$，落入 (2)。
+两种情形互斥。
+\end{proof}
+
+\section{公式}
+
+\begin{definition}[$L$-公式]
+设 $L=(V,C,(n_f)_{f\in F},(n_R)_{R\in R})$ 为一阶语言，且已定义项集 $\mathrm{Term}(L)$。
+一个字符串称为 $L$-公式（$L$-formula），若它由下述归纳规则生成：
+\begin{enumerate}
+  \item （原子公式）若 $t,s\in\mathrm{Term}(L)$，则 $(t=s)$ 是 $L$-公式；若 $R\in R$ 且 $n_R=n$，并且 $t_1,\dots,t_n\in\mathrm{Term}(L)$，则 $R(t_1,\dots,t_n)$ 是 $L$-公式；
+  \item （复合公式）若 $\varphi,\psi$ 为 $L$-公式，则 $(\neg\varphi)$ 与 $(\varphi\to\psi)$ 为 $L$-公式；
+  \item （量词公式）若 $\varphi$ 为 $L$-公式且 $x\in V$，则 $(\exists x\,\varphi)$ 为 $L$-公式。
+\end{enumerate}
+\end{definition}
+
+\begin{remark}
+在此基础上可以按通常方式把其他联结词与量词视为缩写。例如定义
+\[
+  (\varphi\vee\psi):=((\neg\varphi)\to\psi),\qquad (\varphi\wedge\psi):=(\neg(\varphi\to(\neg\psi))),
+\]
+并定义
+\[
+  (\varphi\leftrightarrow\psi):=((\varphi\to\psi)\wedge(\psi\to\varphi)),\qquad (\forall x\,\varphi):=(\neg\exists x\,(\neg\varphi)).
+\]
+\end{remark}
+
+\begin{example}
+在语言 $L=(V,\varnothing,F=\{\sigma\},R=\{R\})$ 且 $n_{\sigma}=2,n_R=2$ 中，取变元 $x,y\in V$。
+则 $R(\sigma(x,y),y)$ 是原子公式，从而 $(\exists x\,R(\sigma(x,y),y))$ 是 $L$-公式。
+\end{example}
+ 
+ \begin{definition}[$F_n(L)$ 与 $F(L)$]
+ 定义 $F_0(L)$ 为全体原子公式的集合，即
+ \[
+   F_0(L):=\{(t=s): t,s\in\mathrm{Term}(L)\}\ \cup\ \{R(t_1,\dots,t_n): R\in R,\ n_R=n,\ t_1,\dots,t_n\in\mathrm{Term}(L)\}.
+ \]
+ 已定义 $F_n(L)$ 后，令
+ \[
+   \begin{aligned}
+   F_{n+1}(L):=&\ F_n(L)
+   \cup\{(\neg\varphi):\varphi\in F_n(L)\}
+   \cup\{(\varphi\to\psi):\varphi,\psi\in F_n(L)\}\\
+   &\ \cup\{(\exists x\,\varphi): x\in V,\ \varphi\in F_n(L)\}.
+   \end{aligned}
+ \]
+ 定义
+ \[
+   F(L):=\bigcup_{n\in\mathbb N}F_n(L).
+ \]
+ 并令
+ \[
+   \Omega_{L,\mathrm{fml}}:=V\cup C\cup F\cup R\cup\{\mathtt{(},\mathtt{)},\mathtt{,},\mathtt{=},\neg,\to,\exists\}.
+ \]
+ \end{definition}
+ 
+ \begin{remark}
+ 分层构造满足
+ \[
+   F_0(L)\subseteq F_1(L)\subseteq\cdots\subseteq F(L).
+ \]
+ 可以用如下包含链示意：
+ \[
+ \begin{tikzcd}
+ F_0(L) \arrow[r, hook] & F_1(L) \arrow[r, hook] & \cdots \arrow[r, hook] & F(L)
+ \end{tikzcd}
+ \]
+ \end{remark}
+ 
+ \begin{lemma}
+ 每个 $L$-公式都是一个以字母表 $\Omega_{L,\mathrm{fml}}$ 写成的词，即
+ \[
+   F(L)\subseteq \Omega_{L,\mathrm{fml}}^{<\omega}.
+ \]
+ \end{lemma}
+ 
+ \begin{proof}
+ 对 $n$ 归纳证明 $F_n(L)\subseteq\Omega_{L,\mathrm{fml}}^{<\omega}$。
+ 当 $n=0$ 时，由 $F_0(L)$ 的定义可知每个原子公式只使用了 $V\cup C\cup R$ 以及括号、逗号、等号等符号，因而属于 $\Omega_{L,\mathrm{fml}}^{<\omega}$。
+ 
+ 若 $F_n(L)\subseteq\Omega_{L,\mathrm{fml}}^{<\omega}$，则由 $F_{n+1}(L)$ 的构造可知：对任意 $\varphi,\psi\in F_n(L)$ 与 $x\in V$，字符串 $(\neg\varphi)$、$(\varphi\to\psi)$、$(\exists x\,\varphi)$ 仍由 $\Omega_{L,\mathrm{fml}}$ 中符号拼接而成，因此属于 $\Omega_{L,\mathrm{fml}}^{<\omega}$。
+ 从而 $F_{n+1}(L)\subseteq\Omega_{L,\mathrm{fml}}^{<\omega}$。
+ 
+ 取并得到 $F(L)=\bigcup_n F_n(L)\subseteq\Omega_{L,\mathrm{fml}}^{<\omega}$。
+ \end{proof}
+ 
+ \begin{lemma}[层级（公式复杂度）]
+ 对任意 $\varphi\in F(L)$，集合
+ \[
+   \{n\in\mathbb N: \varphi\in F_n(L)\}
+ \]
+ 非空，因而存在最小元。记
+ \[
+   \mathrm{rk}(\varphi):=\min\{n\in\mathbb N: \varphi\in F_n(L)\}.
+ \]
+ \end{lemma}
+ 
+ \begin{proposition}
+ $F(L)$ 满足：
+ \begin{enumerate}
+   \item $F_0(L)\subseteq F(L)$；
+   \item 若 $\varphi\in F(L)$，则 $(\neg\varphi)\in F(L)$；
+   \item 若 $\varphi,\psi\in F(L)$，则 $(\varphi\to\psi)\in F(L)$；
+   \item 若 $x\in V$ 且 $\varphi\in F(L)$，则 $(\exists x\,\varphi)\in F(L)$。
+ \end{enumerate}
+ 并且 $F(L)$ 是满足上述 (1)--(4) 的最小集合：若 $A\subseteq \Omega_{L,\mathrm{fml}}^{<\omega}$ 满足 (1)--(4)（将其中的 $F(L)$ 换成 $A$），则 $F(L)\subseteq A$。
+ \end{proposition}
+ 
+ \begin{proof}
+ (1) 由 $F_0(L)\subseteq\bigcup_n F_n(L)$ 立即得到。
+ 
+ (2)(3)(4) 由分层定义同理：例如 $\varphi\in F(L)$ 时存在 $n$ 使 $\varphi\in F_n(L)$，从而 $(\neg\varphi)\in F_{n+1}(L)\subseteq F(L)$；其余两条同理。
+ 
+ 最小性：设 $A\subseteq\Omega_{L,\mathrm{fml}}^{<\omega}$ 满足 (1)--(4)。对 $n$ 作归纳证明 $F_n(L)\subseteq A$。
+ 基础步 $n=0$ 由 (1) 得 $F_0(L)\subseteq A$。
+ 若 $F_n(L)\subseteq A$，则由 (2)(3)(4) 的闭包性知
+ \[
+   F_{n+1}(L)=F_n(L)\cup\{(\neg\varphi):\varphi\in F_n(L)\}\cup\{(\varphi\to\psi):\varphi,\psi\in F_n(L)\}\cup\{(\exists x\,\varphi): x\in V,\ \varphi\in F_n(L)\}\subseteq A.
+ \]
+ 因此对一切 $n$ 都有 $F_n(L)\subseteq A$，取并得 $F(L)\subseteq A$。
+ \end{proof}
+ 
+ \begin{remark}
+ 上述闭包也可理解为三个构造算子对层的作用：
+ \[
+ \begin{tikzcd}
+ F_n(L) \arrow[r, hook] \arrow[d, "{\varphi\mapsto(\neg\varphi)}"'] & F_{n+1}(L) \\
+ F_n(L) \arrow[r, "{(\varphi,\psi)\mapsto(\varphi\to\psi)}"'] & F_{n+1}(L) \arrow[u, hook] \\
+ F_n(L) \arrow[r, "{(x,\varphi)\mapsto(\exists x\,\varphi)}"'] & F_{n+1}(L) \arrow[u, hook]
+ \end{tikzcd}
+ \]
+ \end{remark}
+ 
+ \begin{remark}
+ 也可把上述三类构造视为 $\Omega_{L,\mathrm{fml}}^{<\omega}$ 上的运算：令
+ \[
+   \sigma_{\neg}:\Omega_{L,\mathrm{fml}}^{<\omega}\to\Omega_{L,\mathrm{fml}}^{<\omega},\ \alpha\longmapsto(\neg\alpha),
+ \]
+ \[
+   \tau_{\to}:\Omega_{L,\mathrm{fml}}^{<\omega}\times\Omega_{L,\mathrm{fml}}^{<\omega}\to\Omega_{L,\mathrm{fml}}^{<\omega},\ \ (\alpha,\beta)\longmapsto(\alpha\to\beta),
+ \]
+ 并对每个 $x\in V$ 定义
+ \[
+   \sigma_x:\Omega_{L,\mathrm{fml}}^{<\omega}\to\Omega_{L,\mathrm{fml}}^{<\omega},\ \alpha\longmapsto(\exists x\,\alpha).
+ \]
+ 由 $F_{n+1}(L)$ 的递推定义，以上运算在层级上满足下列交换图：
+ \[
+ \begin{tikzcd}
+ F_n(L) \arrow[r, hook] \arrow[d, "{\sigma_{\neg}}"'] & \Omega_{L,\mathrm{fml}}^{<\omega} \arrow[d, "{\sigma_{\neg}}"] \\
+ F_{n+1}(L) \arrow[r, hook] & \Omega_{L,\mathrm{fml}}^{<\omega}
+ \end{tikzcd}
+ \qquad
+ \begin{tikzcd}
+ F_n(L)\times F_n(L) \arrow[r, hook] \arrow[d, "{\tau_{\to}}"'] & (\Omega_{L,\mathrm{fml}}^{<\omega})^{2} \arrow[d, "{\tau_{\to}}"] \\
+ F_{n+1}(L) \arrow[r, hook] & \Omega_{L,\mathrm{fml}}^{<\omega}
+ \end{tikzcd}
+ \qquad
+ \begin{tikzcd}
+ F_n(L) \arrow[r, hook] \arrow[d, "{\sigma_x}"'] & \Omega_{L,\mathrm{fml}}^{<\omega} \arrow[d, "{\sigma_x}"] \\
+ F_{n+1}(L) \arrow[r, hook] & \Omega_{L,\mathrm{fml}}^{<\omega}
+ \end{tikzcd}
+ \]
+ \end{remark}
+ 
+ \begin{lemma}[按层分解（公式的唯一可读性）]
+ 设 $n\in\mathbb N$ 且 $n>0$，并设 $\varphi\in F_n(L)$。
+ 则以下四种情形至少有一种成立：
+ \begin{enumerate}
+   \item $\varphi\in F_{n-1}(L)$；
+   \item 存在 $\psi\in F_{n-1}(L)$ 使得 $\varphi=(\neg\psi)$；
+   \item 存在 $\alpha,\beta\in F_{n-1}(L)$ 使得 $\varphi=(\alpha\to\beta)$；
+   \item 存在 $x\in V$ 与 $\psi\in F_{n-1}(L)$ 使得 $\varphi=(\exists x\,\psi)$。
+ \end{enumerate}
+ 并且 (2)(3)(4) 两两互斥。
+ \end{lemma}
+ 
+ \begin{proof}
+ 由 $F_n(L)\subseteq F_{n}(L)$ 的递推定义可知：任意 $\varphi\in F_n(L)$ 或者已经属于 $F_{n-1}(L)$，或者是由 $F_{n-1}(L)$ 中公式经过一次构造得到。
+ 因此 (1)--(4) 至少有一种成立。
+ 
+ 互斥性来自构造的最外层符号：$(\neg\psi)$ 以 $\neg$ 开头，$(\alpha\to\beta)$ 的最外层主联结词为 $\to$，而 $(\exists x\,\psi)$ 的最外层为量词 $\exists$，三者不可能相同。
+ \end{proof}
+ 
+ \begin{example}[群语言中的公理公式]
+ 令
+ \[
+   L=(V,C=\{e\},F=\{\sigma\},\varnothing),\qquad n_{\sigma}=2.
+ \]
+ 将 $\sigma(x,y)$ 视作乘法 $xy$ 的记号。下列 $L$-公式刻画群的基本公理：
+ \begin{enumerate}
+   \item （结合律）
+   \[
+     (\forall x\,\forall y\,\forall z\,((\sigma(\sigma(x,y),z))=(\sigma(x,\sigma(y,z))))) .
+   \]
+   \item （单位元）
+   \[
+     (\forall x\,(\sigma(x,e)=x)),\qquad (\forall x\,(\sigma(e,x)=x)).
+   \]
+   \item （逆元）
+   \[
+     (\forall x\,\exists y\,(\sigma(x,y)=e)),\qquad (\forall x\,\exists y\,(\sigma(y,x)=e)).
+   \]
+ \end{enumerate}
+ \end{example}
+
+\chapter{一阶语义：满足关系}
+
+ \section{满足关系}
+
+ \begin{definition}[满足关系]
+ 设 $L=(V,C,(n_f)_{f\in F},(n_R)_{R\in R})$ 为一阶语言，$\mathcal M$ 为一个 $L$-结构，$v:V\to M$ 为变元赋值。
+ 对任意 $L$-公式 $\varphi\in F(L)$，定义 ``$\mathcal M$ 在赋值 $v$ 下满足 $\varphi$''，记作
+ \[
+   (\mathcal M,v)\models\varphi
+ \]
+ 其定义按 $\varphi$ 的生成方式递归给出：
+ \begin{enumerate}
+   \item （原子公式）若 $\varphi=(t=s)$，则
+   \[
+     (\mathcal M,v)\models(t=s)\ \Longleftrightarrow\ \bar v(t)=\bar v(s);
+   \]
+   若 $\varphi=R(t_1,\dots,t_n)$，则
+   \[
+     (\mathcal M,v)\models R(t_1,\dots,t_n)\ \Longleftrightarrow\ (\bar v(t_1),\dots,\bar v(t_n))\in R^{\mathcal M}.
+   \]
+   \item （否定）
+   \[
+     (\mathcal M,v)\models(\neg\psi)\ \Longleftrightarrow\ (\mathcal M,v)\not\models\psi.
+   \]
+   \item （蕴含）
+   \[
+     (\mathcal M,v)\models(\alpha\to\beta)\ \Longleftrightarrow\ \bigl((\mathcal M,v)\models\alpha\ \Rightarrow\ (\mathcal M,v)\models\beta\bigr).
+   \]
+   \item （存在量词）
+   \[
+     (\mathcal M,v)\models(\exists x\,\psi)\ \Longleftrightarrow\ \exists a\in M\ \text{使 }(\mathcal M,v^{x}_{a})\models\psi.
+   \]
+ \end{enumerate}
+ 其中 $\bar v:\mathrm{Term}(L)\to M$ 为由 $v$ 诱导的项解释。
+ \end{definition}
+
+ \begin{definition}[替换赋值]
+ 设 $v:V\to M$ 为变元赋值，$x\in V$，$a\in M$。
+ 定义新的赋值 $v_a^{x}:V\to M$ 为
+ \[
+   v_a^{x}(z):=
+   \begin{cases}
+     v(z), & z\neq x,\\
+     a, & z=x.
+   \end{cases}
+ \]
+ 即 $v_a^{x}$ 在 $V\setminus\{x\}$ 上与 $v$ 一致且将 $x$ 送到 $a$。
+ \end{definition}
+
+ \begin{remark}
+ 设 $j:V\setminus\{x\}\hookrightarrow V$ 为包含映射，则 $v\circ j=v_a^{x}\circ j$。
+ 因此下面图表交换：
+ \[
+ \begin{tikzcd}
+ V\setminus\{x\} \arrow[r, hook, "j"] \arrow[dr, "v\vert_{V\setminus\{x\}}"'] & V \arrow[d, shift left=1.1ex, "v"] \arrow[d, shift right=1.1ex, "v_a^{x}"'] \\
+ & M
+ \end{tikzcd}
+ \]
+ \end{remark}
+
+ \begin{lemma}
+ 设 $\theta:\mathcal M\to\mathcal N$ 为 $L$-同态，$v:V\to M$ 为赋值，$x\in V$，$a\in M$。
+ 则有
+ \[
+   \theta\circ v_a^{x}=(\theta\circ v)_{\theta(a)}^{x}.
+ \]
+ \end{lemma}
+
+ \begin{proof}
+ 对任意 $z\in V$：
+ 若 $z\neq x$，则 $(\theta\circ v_a^{x})(z)=\theta(v_a^{x}(z))=\theta(v(z))=((\theta\circ v)_{\theta(a)}^{x})(z)$。
+ 若 $z=x$，则 $(\theta\circ v_a^{x})(x)=\theta(v_a^{x}(x))=\theta(a)=((\theta\circ v)_{\theta(a)}^{x})(x)$。
+ \end{proof}
+
+ \begin{theorem}[同态与满足关系]
+ 设 $\theta:\mathcal M\to\mathcal N$ 为 $L$-同态，$v:V\to M$ 为赋值，并记 $v':=\theta\circ v:V\to N$。
+ \begin{enumerate}
+   \item 若 $\varphi$ 不含符号 $=$ 且不含量词符号 $\exists$，则
+   \[
+     (\mathcal M,v)\models\varphi\ \Longleftrightarrow\ (\mathcal N,v')\models\varphi.
+   \]
+   \item 若 $\theta$ 为单射且 $\varphi$ 不含 $\exists$，则
+   \[
+     (\mathcal M,v)\models\varphi\ \Longleftrightarrow\ (\mathcal N,v')\models\varphi.
+   \]
+   \item 若 $\theta$ 为满射且 $\varphi$ 不含 $=$，则
+   \[
+     (\mathcal M,v)\models\varphi\ \Longleftrightarrow\ (\mathcal N,v')\models\varphi.
+   \]
+   \item 若 $\theta$ 为同构，则对任意 $L$-公式 $\varphi$ 都有
+   \[
+     (\mathcal M,v)\models\varphi\ \Longleftrightarrow\ (\mathcal N,v')\models\varphi.
+   \]
+ \end{enumerate}
+ \end{theorem}
+
+ \begin{remark}
+ 对应赋值与项解释满足如下交换图（$\bar v,\overline{v'}$ 为项解释）：
+ \[
+ \begin{tikzcd}
+ V \arrow[r, "v"] \arrow[dr, "v'"'] & M \arrow[d, "\theta"] \\
+ & N
+ \end{tikzcd}
+ \qquad
+ \begin{tikzcd}
+ \mathrm{Term}(L) \arrow[r, "\bar v"] \arrow[dr, "\overline{v'}"'] & M \arrow[d, "\theta"] \\
+ & N
+ \end{tikzcd}
+ \]
+ \end{remark}
+
+ \begin{proof}
+ 四条结论证明方法相同：对 $\mathrm{rk}(\varphi)$ 作归纳，并按 $\varphi$ 的生成方式分四类讨论。
+ 下面给出统一证明，并在需要时指出额外假设（单射/满射）在何处使用。
+
+ \textbf{(A) 原子公式。}
+ \begin{enumerate}
+   \item 若 $\varphi=R(t_1,\dots,t_n)$，则
+   \[
+     (\mathcal M,v)\models R(t_1,\dots,t_n)\ \Longleftrightarrow\ (\bar v(t_1),\dots,\bar v(t_n))\in R^{\mathcal M}.
+   \]
+   由项解释与同态相容性（前述命题 $\theta(\bar v(t))=\overline{v'}(t)$）以及 $\theta$ 的关系保持（当且仅当）得到
+   \[
+     (\bar v(t_1),\dots,\bar v(t_n))\in R^{\mathcal M}\ \Longleftrightarrow\ (\overline{v'}(t_1),\dots,\overline{v'}(t_n))\in R^{\mathcal N},
+   \]
+   即 $(\mathcal M,v)\models\varphi\Longleftrightarrow(\mathcal N,v')\models\varphi$。
+
+   \item 若 $\varphi=(t=s)$，则
+   \[
+     (\mathcal M,v)\models(t=s)\ \Longleftrightarrow\ \bar v(t)=\bar v(s).
+   \]
+   进而 $\bar v(t)=\bar v(s)\Rightarrow\theta(\bar v(t))=\theta(\bar v(s))$，结合 $\theta(\bar v(\cdot))=\overline{v'}(\cdot)$ 得
+   \[
+     (\mathcal M,v)\models(t=s)\ \Longrightarrow\ (\mathcal N,v')\models(t=s).
+   \]
+   若还假设 $\theta$ 单射，则上式可逆，从而得到双向等价。
+ \end{enumerate}
+
+ \textbf{(B) 否定与蕴含。}
+ 若 $\varphi=(\neg\psi)$ 或 $\varphi=(\alpha\to\beta)$，结论直接由满足关系定义与归纳假设推出（对四条结论分别应用归纳假设即可）。
+
+ \textbf{(C) 存在量词。}
+ 设 $\varphi=(\exists x\,\psi)$。
+ 先证明从左到右：若 $(\mathcal M,v)\models(\exists x\,\psi)$，则存在 $a\in M$ 使 $(\mathcal M,v_a^{x})\models\psi$。
+ 由归纳假设（对应于第 (3) 或第 (4) 条的情形）得
+ \[
+   (\mathcal N,\theta\circ v_a^{x})\models\psi.
+ \]
+ 由上引理 $\theta\circ v_a^{x}=(\theta\circ v)_{\theta(a)}^{x}$，从而
+ \[
+   (\mathcal N,(\theta\circ v)_{\theta(a)}^{x})\models\psi,
+ \]
+ 即 $(\mathcal N,v')\models(\exists x\,\psi)$。
+
+ 再证明从右到左：若 $(\mathcal N,v')\models(\exists x\,\psi)$，则存在 $b\in N$ 使 $(\mathcal N,(v')_{b}^{x})\models\psi$。
+ 若还假设 $\theta$ 满射，则取 $a\in M$ 使 $\theta(a)=b$。
+ 注意到 $(v')_{b}^{x}=(\theta\circ v)_{\theta(a)}^{x}=\theta\circ v_a^{x}$，再由归纳假设得 $(\mathcal M,v_a^{x})\models\psi$，故 $(\mathcal M,v)\models(\exists x\,\psi)$。
+
+ 综上，在不含 $=$ 的情形下需要满射性以处理 ``从右到左''；若 $\theta$ 为同构则自动满足单射与满射，从而对任意公式得到等价。
+ \end{proof}
+
+\chapter{项代数、同态与商结构}
+
+\section{项代数与生成子代数}
+
+\begin{definition}[项代数（term algebra）]
+设 $L=(V,C,(n_f)_{f\in F},(n_R)_{R\in R})$ 为一阶语言。令
+\[
+  \Omega:=V\cup C\cup F\cup\{\mathtt{(},\mathtt{)},\mathtt{,}\},\qquad \Omega^{<\omega}:=\bigcup_{n\in\mathbb N}\Omega^{n}.
+\]
+对每个 $f\in F$（$n_f=n$），定义一个运算
+\[
+  \widehat f:(\Omega^{<\omega})^{n}\to\Omega^{<\omega},\qquad (\alpha_1,\dots,\alpha_n)\longmapsto f(\alpha_1,\dots,\alpha_n),
+\]
+其中右侧表示将符号 $f$ 与括号、逗号以及 $\alpha_1,\dots,\alpha_n$ 按照通常写法拼接成一个词。
+于是
+\[
+  \mathbb T(L):=\bigl(\Omega^{<\omega},(\widehat f)_{f\in F}\bigr)
+\]
+称为 $L$ 的项代数。
+\end{definition}
+
+\begin{definition}[生成子代数]
+设 $\mathcal X=(X,(g_\lambda)_{\lambda\in\Lambda})$ 为一个代数结构。
+称 $Y\subseteq X$ 为 $\mathcal X$ 的子代数，若 $Y\neq\varnothing$ 且对任意 $\lambda\in\Lambda$（设 $g_\lambda$ 为 $m$ 元运算）都有 $g_\lambda(Y^{m})\subseteq Y$。
+给定 $A\subseteq X$，定义由 $A$ 生成的子代数为
+\[
+  \langle A\rangle:=\bigcap\{Y\subseteq X: Y\ \text{是子代数且}\ A\subseteq Y\}.
+\]
+\end{definition}
+
+\begin{remark}
+当 $A=\varnothing$ 时，上述交集可能为空集，从而未必给出子代数（例如没有常元/零元运算时）。
+\end{remark}
+
+\begin{proposition}
+在项代数 $\mathbb T(L)=\bigl(\Omega^{<\omega},(\widehat f)_{f\in F}\bigr)$ 中，集合 $\mathrm{Term}(L)$ 是一个子代数，并且
+\[
+  \mathrm{Term}(L)=\langle V\cup C\rangle.
+\]
+\end{proposition}
+
+\begin{proof}
+由项的定义可知 $V\cup C\subseteq\mathrm{Term}(L)$，并且对任意 $f\in F$（$n_f=n$）若 $t_1,\dots,t_n\in\mathrm{Term}(L)$，则 $f(t_1,\dots,t_n)\in\mathrm{Term}(L)$，从而 $\widehat f\bigl((\mathrm{Term}(L))^{n}\bigr)\subseteq\mathrm{Term}(L)$。因此 $\mathrm{Term}(L)$ 是 $\mathbb T(L)$ 的子代数。
+
+由于 $\mathrm{Term}(L)$ 是包含 $V\cup C$ 的子代数，故 $\langle V\cup C\rangle\subseteq\mathrm{Term}(L)$。
+
+反之设 $Y\subseteq\Omega^{<\omega}$ 为任一包含 $V\cup C$ 的子代数。对 $k$ 归纳证明 $\mathrm{Term}_k(L)\subseteq Y$：
+$k=0$ 时 $\mathrm{Term}_0(L)=V\cup C\subseteq Y$。
+
+若 $\mathrm{Term}_k(L)\subseteq Y$，则由 $Y$ 对各 $\widehat f$ 闭包知
+\[
+  \{f(t_1,\dots,t_n): f\in F,\ n_f=n,\ t_1,\dots,t_n\in\mathrm{Term}_k(L)\}\subseteq Y,
+\]
+从而 $\mathrm{Term}_{k+1}(L)\subseteq Y$。
+
+因此 $\mathrm{Term}(L)=\bigcup_k\mathrm{Term}_k(L)\subseteq Y$。
+
+由于 $Y$ 任意，得到 $\mathrm{Term}(L)\subseteq\bigcap\{Y: Y\ \text{是子代数且}\ V\cup C\subseteq Y\}=\langle V\cup C\rangle$。
+\end{proof}
+
+ \begin{lemma}
+ 对任意 $k\in\mathbb N$ 与任意 $t\in\mathrm{Term}_{k+1}(L)$，以下两种情形至少有一种成立：
+ \begin{enumerate}
+   \item $t\in\mathrm{Term}_k(L)$；
+   \item 存在 $f\in F$（$n_f=n$）与 $t_1,\dots,t_n\in\mathrm{Term}_k(L)$ 使得 $t=f(t_1,\dots,t_n)$。
+ \end{enumerate}
+ \end{lemma}
+ 
+ \begin{proof}
+ 直接由 $\mathrm{Term}_{k+1}(L)$ 的递推定义得到。
+ \end{proof}
+ 
+ \begin{lemma}[按层分解（归纳证明形式）]
+ 对任意 $n\in\mathbb N$ 与任意 $t\in\mathrm{Term}_{n+1}(L)$，以下两种情形至少有一种成立：
+ \begin{enumerate}
+   \item $t\in V\cup C$；
+   \item 存在 $f\in F$（$n_f=m$）与 $t_1,\dots,t_m\in\mathrm{Term}_n(L)$ 使得 $t=f(t_1,\dots,t_m)$。
+ \end{enumerate}
+ \end{lemma}
+ 
+ \begin{proof}
+ 对 $n$ 作归纳。
+ 
+ 当 $n=0$ 时，$\mathrm{Term}_1(L)=\mathrm{Term}_0(L)\cup\{f(t_1,\dots,t_m): f\in F,\ n_f=m,\ t_i\in\mathrm{Term}_0(L)\}$。
+ 由于 $\mathrm{Term}_0(L)=V\cup C$，结论成立。
+ 
+ 假设结论对 $n$ 成立。任取 $t\in\mathrm{Term}_{n+2}(L)$。
+ 若 $t\in\mathrm{Term}_{n+1}(L)$，则由归纳假设得到所需结论。
+ 若 $t\notin\mathrm{Term}_{n+1}(L)$，则按递推定义必存在 $f\in F$（$n_f=m$）与 $t_1,\dots,t_m\in\mathrm{Term}_{n+1}(L)$ 使得 $t=f(t_1,\dots,t_m)$。
+ 此时取 $n+1$ 代入命题即得结论成立。
+ \end{proof}
+ 
+ \begin{lemma}[唯一可读性（唯一分解）]
+ 设 $t\in\mathrm{Term}(L)\setminus (V\cup C)$。则存在唯一的 $f\in F$（记 $n_f=n$）以及唯一的 $n$-元组 $(t_1,\dots,t_n)\in(\mathrm{Term}(L))^{n}$ 使得
+ \[
+   t=f(t_1,\dots,t_n).
+ \]
+ \end{lemma}
+ 
+ \begin{proof}
+ 先说明存在性：由项的归纳定义，任意 $t\in\mathrm{Term}(L)$ 不是变元/常元时必可写为 $f(t_1,\dots,t_n)$。
+ 
+ 为证明唯一性，设 $A\subseteq\Omega^{<\omega}$ 为全体满足“唯一可读性”的项组成的集合：
+ \[
+   A:=\{u\in\mathrm{Term}(L):\ \text{若 }u=f(u_1,\dots,u_n)=g(v_1,\dots,v_m)\ \text{则 }f=g,\ n=m,\ u_i=v_i\}.
+ \]
+ 显然 $V\cup C\subseteq A$。
+ 
+ 下面验证 $A$ 对函数符号闭包：取 $f\in F$（$n_f=n$）与 $u_1,\dots,u_n\in A$，令 $u:=f(u_1,\dots,u_n)$。
+ 若 $u=g(v_1,\dots,v_m)$ 也是一个表示，则比较该词的首个符号与最外层括号结构可知 $g=f$ 且 $m=n$；进一步由括号匹配与逗号分隔确定参数串的唯一切分，得到 $v_i=u_i$。
+ 因此 $u\in A$。
+ 
+ 于是 $A$ 满足 $V\cup C\subseteq A$ 且对任意 $f\in F$ 都有：若 $t_1,\dots,t_n\in A$ 则 $f(t_1,\dots,t_n)\in A$。
+ 由上文关于 $\mathrm{Term}(L)$ 的最小性结论（$\mathrm{Term}(L)$ 是满足上述闭包条件的最小集合）推出 $\mathrm{Term}(L)\subseteq A$。
+ 因而对任意 $t\in\mathrm{Term}(L)\setminus (V\cup C)$，其表示 $t=f(t_1,\dots,t_n)$ 的外层函数符号与参数项均唯一。
+ \end{proof}
+
+\begin{definition}[$L$-代数]
+设 $L=(V,C,(n_f)_{f\in F},(n_R)_{R\in R})$ 为一阶语言。一个 $L$-代数是一个三元组
+\[
+  \mathcal A=\bigl(A,(c^{\mathcal A})_{c\in C},(f^{\mathcal A})_{f\in F}\bigr),
+\]
+其中 $A\neq\varnothing$，对每个 $c\in C$ 有 $c^{\mathcal A}\in A$，对每个 $f\in F$（$n_f=n$）有 $f^{\mathcal A}:A^{n}\to A$。
+\end{definition}
+
+\begin{definition}[$L$-代数同态]
+设 $\mathcal A,\mathcal B$ 为两个 $L$-代数。一个映射 $h:A\to B$ 称为 $L$-代数同态，若满足：
+\begin{enumerate}
+  \item 对任意 $c\in C$，$h(c^{\mathcal A})=c^{\mathcal B}$；
+  \item 对任意 $f\in F$（$n_f=n$）与任意 $a_1,\dots,a_n\in A$，有
+  \[
+    h\bigl(f^{\mathcal A}(a_1,\dots,a_n)\bigr)=f^{\mathcal B}\bigl(h(a_1),\dots,h(a_n)\bigr).
+  \]
+\end{enumerate}
+\end{definition}
+
+\begin{theorem}[项代数的泛性质（自由性）]
+设 $L$ 为一阶语言，$\mathcal A$ 为一个 $L$-代数。令 $\iota:V\cup C\hookrightarrow \mathrm{Term}(L)$ 为自然包含映射。
+给定一个函数 $\sigma:V\cup C\to A$，并满足对任意 $c\in C$ 都有 $\sigma(c)=c^{\mathcal A}$。
+则存在唯一的 $L$-代数同态 $\bar\sigma:\mathrm{Term}(L)\to A$ 使得
+\[
+  \bar\sigma\circ\iota=\sigma.
+\]
+换言之，下面图表交换：
+\[
+\begin{tikzcd}
+V\cup C \arrow[r, hook, "\iota"] \arrow[dr, "\sigma"'] & \mathrm{Term}(L) \arrow[d, "\bar\sigma"] \\
+& A
+\end{tikzcd}
+\]
+\end{theorem}
+
+\begin{proof}
+存在性：对 $k\in\mathbb N$ 归纳构造映射 $\bar\sigma_k:\mathrm{Term}_k(L)\to A$。
+令 $\bar\sigma_0:=\sigma\vert_{V\cup C}$。
+已定义 $\bar\sigma_k$ 后，对 $t\in\mathrm{Term}_{k+1}(L)$ 定义
+\[
+  \bar\sigma_{k+1}(t):=
+  \begin{cases}
+    \bar\sigma_k(t), & t\in\mathrm{Term}_k(L),\\
+    f^{\mathcal A}\bigl(\bar\sigma_k(t_1),\dots,\bar\sigma_k(t_n)\bigr), & t=f(t_1,\dots,t_n)\ \text{且 }t_i\in\mathrm{Term}_k(L).
+  \end{cases}
+\]
+这一定义与前一步相容（在交集 $\mathrm{Term}_k(L)$ 上一致）。
+令 $\bar\sigma:=\bigcup_{k\in\mathbb N}\bar\sigma_k$，则 $\bar\sigma:\mathrm{Term}(L)\to A$ 良定义，并且由定义立即满足 $\bar\sigma\circ\iota=\sigma$。
+同时对任意 $f\in F$（$n_f=n$）与 $t_1,\dots,t_n\in\mathrm{Term}(L)$，取 $k$ 使 $t_i\in\mathrm{Term}_k(L)$，则
+\[
+  \bar\sigma\bigl(f(t_1,\dots,t_n)\bigr)=f^{\mathcal A}\bigl(\bar\sigma(t_1),\dots,\bar\sigma(t_n)\bigr),
+\]
+从而 $\bar\sigma$ 为 $L$-代数同态。
+
+唯一性：设 $h:\mathrm{Term}(L)\to A$ 为任一同态且 $h\circ\iota=\sigma$。
+对 $k$ 归纳证明 $h\vert_{\mathrm{Term}_k(L)}=\bar\sigma_k$。
+$k=0$ 时由假设成立。
+若对 $k$ 成立，则对任意 $t\in\mathrm{Term}_{k+1}(L)$：
+若 $t\in\mathrm{Term}_k(L)$ 则由归纳假设成立；若 $t=f(t_1,\dots,t_n)$ 且 $t_i\in\mathrm{Term}_k(L)$，则由同态性质与归纳假设
+\[
+  h(t)=h\bigl(f(t_1,\dots,t_n)\bigr)=f^{\mathcal A}\bigl(h(t_1),\dots,h(t_n)\bigr)=f^{\mathcal A}\bigl(\bar\sigma_k(t_1),\dots,\bar\sigma_k(t_n)\bigr)=\bar\sigma_{k+1}(t).
+\]
+因此 $h=\bar\sigma$。
+\end{proof}
+
+\begin{remark}
+设 $\mathcal M=\bigl(M,(c^{\mathcal M})_{c\in C},(f^{\mathcal M})_{f\in F},(R^{\mathcal M})_{R\in R}\bigr)$ 为一个 $L$-结构。
+则 $\mathcal M$ 的常元与函数部分
+\[
+  \mathcal M_{\mathrm{alg}}:=\bigl(M,(c^{\mathcal M})_{c\in C},(f^{\mathcal M})_{f\in F}\bigr)
+\]
+是一个 $L$-代数（忽略关系符号的解释）。因此上一定理可用于定义项在结构中的解释。
+\end{remark}
+
+\begin{definition}[变元赋值]
+设 $\mathcal M$ 为 $L$-结构。一个变元赋值是一个映射 $v:V\to M$。
+由 $v$ 诱导出一个映射 $\hat v:V\cup C\to M$，定义为
+\[
+  \hat v(x)=v(x)\ (x\in V),\qquad \hat v(c)=c^{\mathcal M}\ (c\in C).
+\]
+\end{definition}
+
+\begin{proposition}[项的解释]
+设 $\mathcal M$ 为 $L$-结构，$v:V\to M$ 为变元赋值，$\hat v:V\cup C\to M$ 如上。
+则存在唯一的映射 $\bar v:\mathrm{Term}(L)\to M$ 使得
+\begin{enumerate}
+  \item 对任意 $x\in V$，$\bar v(x)=v(x)$；对任意 $c\in C$，$\bar v(c)=c^{\mathcal M}$；
+  \item 对任意 $f\in F$（$n_f=n$）与任意 $t_1,\dots,t_n\in\mathrm{Term}(L)$，
+\[
+  \bar v\bigl(f(t_1,\dots,t_n)\bigr)=f^{\mathcal M}\bigl(\bar v(t_1),\dots,\bar v(t_n)\bigr).
+\]
+\end{enumerate}
+并且 $\bar v$ 恰为同态扩张：作为 $L$-代数同态 $\bar v:\mathbb T(L)\to \mathcal M_{\mathrm{alg}}$，满足
+\[
+  \bar v\circ\iota=\hat v.
+\]
+因而图表交换：
+\[
+\begin{tikzcd}
+V\cup C \arrow[r, hook, "\iota"] \arrow[dr, "\hat v"'] & \mathrm{Term}(L) \arrow[d, "\bar v"] \\
+& M
+\end{tikzcd}
+\]
+\end{proposition}
+
+\begin{remark}
+将 $\mathcal M$ 视为 $L$-代数 $\mathcal M_{\mathrm{alg}}$ 后，$\bar v:\mathrm{Term}(L)\to M$ 可以看作是一个保持常元与函数符号的同态：
+对任意 $c\in C$ 有 $\bar v(c)=c^{\mathcal M}$，对任意 $f\in F$（$n_f=n$）有
+\[
+  \bar v\bigl(f(t_1,\dots,t_n)\bigr)=f^{\mathcal M}\bigl(\bar v(t_1),\dots,\bar v(t_n)\bigr).
+\]
+因此 $\bar v$ 正是从项代数（或 $\mathrm{Term}(L)$ 作为子代数）到 $\mathcal M_{\mathrm{alg}}$ 的同态扩张。
+\end{remark}
+
+\begin{example}[在 $\mathbb R$ 上解释项]
+令
+\[
+  L=(V,C=\{0,1\},F=\{+ ,\cdot\},\varnothing),\qquad n_{+}=n_{\cdot}=2.
+\]
+考虑 $L$-结构
+\[
+  \mathcal R=\bigl(\mathbb R,0^{\mathcal R}=0,1^{\mathcal R}=1,+^{\mathcal R},\cdot^{\mathcal R}\bigr),
+\]
+其中 $+^{\mathcal R}$ 与 $\cdot^{\mathcal R}$ 分别为实数加法与乘法。
+取变元赋值 $v(x)=a,\ v(y)=b,\ v(z)=c$（$a,b,c\in\mathbb R$）。
+由上面的构造得到唯一的项解释 $\bar v:\mathrm{Term}(L)\to\mathbb R$。
+ 并且对应于 $\hat v:V\cup C\to\mathbb R$，有交换图：
+ \[
+ \begin{tikzcd}
+ V\cup C \arrow[r, hook, "\iota"] \arrow[dr, "\hat v"'] & \mathrm{Term}(L) \arrow[d, "\bar v"] \\
+ & \mathbb R
+ \end{tikzcd}
+ \]
+ 
+ 例如对项
+ \[
+   t:=+\bigl(+\bigl(\cdot(1,z),0\bigr),\cdot(x,y)\bigr),
+\]
+用通常记号它可写作 $t=(1\cdot z+0)+x\cdot y$。
+于是
+\[
+  \bar v(t)=(1\cdot c+0)+a\cdot b=c+a b.
+\]
+\end{example}
+ 
+ \begin{proposition}[同态与项解释的相容性]
+ 设 $\varphi:\mathcal M\to\mathcal N$ 为 $L$-同态，$v:V\to M$ 为变元赋值。
+ 令 $v':=\varphi\circ v:V\to N$ 为诱导的赋值，并记 $\bar v:\mathrm{Term}(L)\to M$、$\overline{v'}:\mathrm{Term}(L)\to N$ 为对应的项解释。
+ 则对任意 $t\in\mathrm{Term}(L)$，有
+ \[
+   \varphi\bigl(\bar v(t)\bigr)=\overline{v'}(t).
+ \]
+ 换言之，下面图表交换：
+ \[
+ \begin{tikzcd}
+ \mathrm{Term}(L) \arrow[r, "\bar v"] \arrow[dr, "\overline{v'}"'] & M \arrow[d, "\varphi"] \\
+ & N
+ \end{tikzcd}
+ \]
+ \end{proposition}
+ 
+ \begin{proof}
+ 令
+ \[
+   \Omega:=\{t\in\mathrm{Term}(L):\ \varphi(\bar v(t))=\overline{v'}(t)\}.
+ \]
+ 首先 $V\cup C\subseteq \Omega$：若 $x\in V$，则
+ \[
+   \varphi(\bar v(x))=\varphi(v(x))=v'(x)=\overline{v'}(x).
+ \]
+ 若 $c\in C$，则
+ \[
+   \varphi(\bar v(c))=\varphi(c^{\mathcal M})=c^{\mathcal N}=\overline{v'}(c).
+ \]
+ 
+ 其次验证 $\Omega$ 对函数符号闭包：取 $f\in F$（$n_f=n$）与 $t_1,\dots,t_n\in\Omega$，则
+ \[
+   \varphi\bigl(\bar v(f(t_1,\dots,t_n))\bigr)=\varphi\bigl(f^{\mathcal M}(\bar v(t_1),\dots,\bar v(t_n))\bigr)=f^{\mathcal N}\bigl(\varphi(\bar v(t_1)),\dots,\varphi(\bar v(t_n))\bigr)
+ \]
+ 而由 $t_i\in\Omega$ 得 $\varphi(\bar v(t_i))=\overline{v'}(t_i)$，故上式等于
+ \[
+   f^{\mathcal N}(\overline{v'}(t_1),\dots,\overline{v'}(t_n))=\overline{v'}(f(t_1,\dots,t_n)).
+ \]
+ 因而 $f(t_1,\dots,t_n)\in\Omega$。
+ 
+ 由 $\mathrm{Term}(L)$ 的最小性（包含 $V\cup C$ 且对函数符号闭包的最小集合）得 $\Omega=\mathrm{Term}(L)$。
+ \end{proof}
+ 
+ \begin{lemma}[等化子为子代数]
+ 设 $\mathcal A,\mathcal B$ 为 $L$-代数，且 $f,g:\mathcal A\to\mathcal B$ 为 $L$-代数同态。
+ 定义等化子
+ \[
+   \mathrm{Eq}(f,g):=\{a\in A: f(a)=g(a)\}.
+ \]
+ 则 $\mathrm{Eq}(f,g)$ 是 $\mathcal A$ 的子代数。
+ \end{lemma}
+ 
+ \begin{proof}
+ 先看常元：对任意 $c\in C$，有 $f(c^{\mathcal A})=c^{\mathcal B}=g(c^{\mathcal A})$，故 $c^{\mathcal A}\in\mathrm{Eq}(f,g)$。
+ 再看函数闭包：对任意 $h\in F$（$n_h=n$）与任意 $a_1,\dots,a_n\in\mathrm{Eq}(f,g)$，由同态性质
+ \[
+   f\bigl(h^{\mathcal A}(a_1,\dots,a_n)\bigr)=h^{\mathcal B}(f(a_1),\dots,f(a_n))=h^{\mathcal B}(g(a_1),\dots,g(a_n))=g\bigl(h^{\mathcal A}(a_1,\dots,a_n)\bigr),
+ \]
+ 从而 $h^{\mathcal A}(a_1,\dots,a_n)\in\mathrm{Eq}(f,g)$。
+ \end{proof}
+ 
+ \begin{remark}
+ 对任意 $h\in F$（$n_h=n$），等化子闭包性可用交换图理解：
+ \[
+ \begin{tikzcd}
+ A^{n} \arrow[r, "h^{\mathcal A}"] \arrow[d, "f^{n}"'] \arrow[dr, "g^{n}"] & A \arrow[d, shift left=1.1ex, "f"] \arrow[d, shift right=1.1ex, "g"'] \\
+ B^{n} \arrow[r, "h^{\mathcal B}"'] & B
+ \end{tikzcd}
+ \]
+ \end{remark}
+
+\section{同态与商结构}
+
+\begin{definition}[$L$-同态]
+设 $\mathcal M,\mathcal N$ 为两个 $L$-结构。一个映射 $\varphi:M\to N$ 称为 $L$-同态，若满足：
+\begin{enumerate}
+  \item （常元保持）对任意 $c\in C$，$\varphi(c^{\mathcal M})=c^{\mathcal N}$；
+  \item （函数保持）对任意 $f\in F$（$n_f=n$）与任意 $a_1,\dots,a_n\in M$，
+  \[
+    \varphi\bigl(f^{\mathcal M}(a_1,\dots,a_n)\bigr)=f^{\mathcal N}\bigl(\varphi(a_1),\dots,\varphi(a_n)\bigr);
+  \]
+  \item （关系保持）对任意 $R\in R$（$n_R=n$）与任意 $a_1,\dots,a_n\in M$，
+  \[
+    (a_1,\dots,a_n)\in R^{\mathcal M}\ \Longleftrightarrow\ (\varphi(a_1),\dots,\varphi(a_n))\in R^{\mathcal N}.
+  \]
+\end{enumerate}
+\end{definition}
+
+\begin{remark}
+函数保持可以用如下交换图表示（$\varphi^{n}:M^{n}\to N^{n}$ 表示逐点作用）：
+\[
+\begin{tikzcd}
+M^{n} \arrow[r, "f^{\mathcal M}"] \arrow[d, "\varphi^{n}"'] & M \arrow[d, "\varphi"] \\
+N^{n} \arrow[r, "f^{\mathcal N}"'] & N
+\end{tikzcd}
+\]
+\end{remark}
+
+\begin{definition}[同构]
+一个 $L$-同态 $\varphi:\mathcal M\to\mathcal N$ 若为双射并且对任意 $R\in R$（$n_R=n$）与任意 $\bar a\in M^{n}$ 都满足
+\[
+  \bar a\in R^{\mathcal M}\ \Longleftrightarrow\ \varphi(\bar a)\in R^{\mathcal N},
+\]
+则称 $\varphi$ 为同构，记 $\mathcal M\cong\mathcal N$。
+\end{definition}
+
+\begin{proposition}
+\begin{enumerate}
+  \item 对任意 $L$-结构 $\mathcal M$，恒等映射 $\mathrm{id}_M$ 是 $L$-同态；
+  \item 若 $\varphi:\mathcal M\to\mathcal N$、$\psi:\mathcal N\to\mathcal P$ 为 $L$-同态，则 $\psi\circ\varphi:\mathcal M\to\mathcal P$ 亦为 $L$-同态；
+  \item 若 $\varphi:\mathcal M\to\mathcal N$ 为同构，则 $\varphi^{-1}:\mathcal N\to\mathcal M$ 亦为 $L$-同态。
+\end{enumerate}
+\end{proposition}
+
+\begin{definition}[$L$-同余关系]
+设 $\mathcal M$ 为 $L$-结构，$\sim$ 为 $M$ 上的一个等价关系。称 $\sim$ 为 $\mathcal M$ 上的 $L$-同余，若满足：
+\begin{enumerate}
+  \item （与函数相容）对任意 $f\in F$（$n_f=n$）与任意 $a_i,b_i\in M$，若 $a_i\sim b_i$（$i=1,\dots,n$），则
+  \[
+    f^{\mathcal M}(a_1,\dots,a_n)\sim f^{\mathcal M}(b_1,\dots,b_n);
+  \]
+  \item （与关系相容）对任意 $R\in R$（$n_R=n$）与任意 $a_i,b_i\in M$，若 $a_i\sim b_i$（$i=1,\dots,n$），则
+  \[
+    (a_1,\dots,a_n)\in R^{\mathcal M}\ \Longleftrightarrow\ (b_1,\dots,b_n)\in R^{\mathcal M}.
+  \]
+\end{enumerate}
+\end{definition}
+
+\begin{definition}[商结构]
+设 $\mathcal M$ 为 $L$-结构，$\sim$ 为一个 $L$-同余。记 $M/\!\sim$ 为商集，$[a]$ 表示 $a$ 的等价类。
+定义 $L$-结构 $\mathcal M/\!\sim$：其论域为 $M/\!\sim$，并令
+\begin{enumerate}
+  \item 对任意 $c\in C$，$c^{\mathcal M/\!\sim}:=[c^{\mathcal M}]$；
+  \item 对任意 $f\in F$（$n_f=n$），定义
+  \[
+    f^{\mathcal M/\!\sim}([a_1],\dots,[a_n]):=[f^{\mathcal M}(a_1,\dots,a_n)];
+  \]
+  \item 对任意 $R\in R$（$n_R=n$），定义
+  \[
+    ([a_1],\dots,[a_n])\in R^{\mathcal M/\!\sim}\ \Longleftrightarrow\ (a_1,\dots,a_n)\in R^{\mathcal M}.
+  \]
+\end{enumerate}
+上述定义由 $L$-同余条件保证良定义。
+\end{definition}
+
+\begin{proposition}
+设 $\sim$ 为 $\mathcal M$ 上的 $L$-同余，令 $\pi:M\to M/\!\sim$ 为自然投影 $\pi(a)=[a]$。
+则 $\pi:\mathcal M\to\mathcal M/\!\sim$ 是 $L$-同态。
+\end{proposition}
+
+\begin{proof}
+对任意 $c\in C$，有
+\[
+  \pi(c^{\mathcal M})=[c^{\mathcal M}]=c^{\mathcal M/\!\sim},
+\]
+故常元保持。
+
+对任意 $f\in F$（$n_f=n$）与任意 $a_1,\dots,a_n\in M$，有
+\[
+  \pi\bigl(f^{\mathcal M}(a_1,\dots,a_n)\bigr)=[f^{\mathcal M}(a_1,\dots,a_n)]=f^{\mathcal M/\!\sim}([a_1],\dots,[a_n])=f^{\mathcal M/\!\sim}\bigl(\pi(a_1),\dots,\pi(a_n)\bigr),
+\]
+故函数保持。
+
+对任意 $R\in R$（$n_R=n$）与任意 $a_1,\dots,a_n\in M$，若 $(a_1,\dots,a_n)\in R^{\mathcal M}$，则按商结构中对 $R^{\mathcal M/\!\sim}$ 的定义有
+\[
+  (\pi(a_1),\dots,\pi(a_n))=([a_1],\dots,[a_n])\in R^{\mathcal M/\!\sim},
+\]
+故关系保持。
+因此 $\pi$ 为 $L$-同态。
+\end{proof}
+
+\begin{remark}
+自然投影满足如下交换图（$\pi^{n}$ 为逐点作用）：
+\[
+\begin{tikzcd}
+M^{n} \arrow[r, "f^{\mathcal M}"] \arrow[d, "\pi^{n}"'] & M \arrow[d, "\pi"] \\
+(M/\!\sim)^{n} \arrow[r, "f^{\mathcal M/\!\sim}"'] & M/\!\sim
+\end{tikzcd}
+\]
+\end{remark}
+
+\begin{proposition}[商结构的泛性质]
+设 $\sim$ 为 $\mathcal M$ 上的 $L$-同余，$\pi:M\to M/\!\sim$ 为自然投影。
+若 $f:\mathcal M\to\mathcal N$ 是 $L$-同态并满足
+\[
+  a\sim b\ \Longrightarrow\ f(a)=f(b),
+\]
+则存在唯一的 $L$-同态 $\bar f:\mathcal M/\!\sim\to\mathcal N$ 使得 $f=\bar f\circ\pi$。
+换言之，下面图表交换：
+\[
+\begin{tikzcd}
+M \arrow[r, "f"] \arrow[d, "\pi"'] & N \\
+M/\!\sim \arrow[ur, "\bar f"'] &
+\end{tikzcd}
+\]
+\end{proposition}
+
+\begin{proof}
+定义 $\bar f:M/\!\sim\to N$ 为 $\bar f([a])=f(a)$。
+若 $[a]=[b]$，则 $a\sim b$，由假设得 $f(a)=f(b)$，故 $\bar f$ 良定义。
+
+对任意 $c\in C$，
+\[
+  \bar f\bigl(c^{\mathcal M/\!\sim}\bigr)=\bar f([c^{\mathcal M}])=f(c^{\mathcal M})=c^{\mathcal N},
+\]
+常元保持。
+
+对任意 $f_0\in F$（$n_{f_0}=n$）与任意 $[a_1],\dots,[a_n]\in M/\!\sim$，有
+\[
+  \bar f\bigl(f_0^{\mathcal M/\!\sim}([a_1],\dots,[a_n])\bigr)=\bar f([f_0^{\mathcal M}(a_1,\dots,a_n)])=f\bigl(f_0^{\mathcal M}(a_1,\dots,a_n)\bigr)=f_0^{\mathcal N}(f(a_1),\dots,f(a_n))
+\]
+且右端等于 $f_0^{\mathcal N}(\bar f([a_1]),\dots,\bar f([a_n]))$，故函数保持。
+
+对任意 $R\in R$（$n_R=n$）与任意 $[a_1],\dots,[a_n]\in M/\!\sim$，若 $([a_1],\dots,[a_n])\in R^{\mathcal M/\!\sim}$，则按定义 $(a_1,\dots,a_n)\in R^{\mathcal M}$。
+由 $f$ 为同态得 $(f(a_1),\dots,f(a_n))\in R^{\mathcal N}$，从而 $(\bar f([a_1]),\dots,\bar f([a_n]))\in R^{\mathcal N}$，故关系保持。
+因此 $\bar f$ 为 $L$-同态。
+
+最后，对任意 $a\in M$，有 $(\bar f\circ\pi)(a)=\bar f([a])=f(a)$，故 $f=\bar f\circ\pi$。
+若另有 $g:\mathcal M/\!\sim\to\mathcal N$ 使得 $f=g\circ\pi$，则对任意 $[a]\in M/\!\sim$，
+\[
+  g([a])=g(\pi(a))=f(a)=\bar f([a]),
+\]
+故 $g=\bar f$，唯一性得证。
+\end{proof}
+
+\begin{definition}[同态核诱导的同余]
+设 $\varphi:\mathcal M\to\mathcal N$ 为 $L$-同态。定义 $M$ 上的二元关系
+\[
+  a\sim_{\varphi} b\ \Longleftrightarrow\ \varphi(a)=\varphi(b).
+\]
+称 $\sim_{\varphi}$ 为 $\varphi$ 的核同余。
+\end{definition}
+
+\begin{proposition}
+若 $\varphi:\mathcal M\to\mathcal N$ 为 $L$-同态，则 $\sim_{\varphi}$ 是 $\mathcal M$ 上的 $L$-同余。
+\end{proposition}
+
+\begin{proof}
+易见 $\sim_{\varphi}$ 为等价关系。
+
+对函数符号：取 $f\in F$（$n_f=n$）与 $a_i\sim_{\varphi} b_i$（$i=1,\dots,n$）。则 $\varphi(a_i)=\varphi(b_i)$。
+由函数保持得
+\[
+  \varphi\bigl(f^{\mathcal M}(a_1,\dots,a_n)\bigr)=f^{\mathcal N}\bigl(\varphi(a_1),\dots,\varphi(a_n)\bigr)=f^{\mathcal N}\bigl(\varphi(b_1),\dots,\varphi(b_n)\bigr)=\varphi\bigl(f^{\mathcal M}(b_1,\dots,b_n)\bigr),
+\]
+因而 $f^{\mathcal M}(a_1,\dots,a_n)\sim_{\varphi} f^{\mathcal M}(b_1,\dots,b_n)$。
+
+对关系符号：取 $R\in R$（$n_R=n$）与 $a_i\sim_{\varphi} b_i$。则
+\[
+  (a_1,\dots,a_n)\in R^{\mathcal M}\ \Longleftrightarrow\ (\varphi(a_1),\dots,\varphi(a_n))\in R^{\mathcal N}\ \Longleftrightarrow\ (\varphi(b_1),\dots,\varphi(b_n))\in R^{\mathcal N}\ \Longleftrightarrow\ (b_1,\dots,b_n)\in R^{\mathcal M},
+\]
+故与关系相容。
+\end{proof}
+
+\begin{definition}[像结构]
+设 $\varphi:\mathcal M\to\mathcal N$ 为 $L$-同态。令 $\mathrm{Im}(\varphi):=\varphi(M)\subseteq N$。
+定义 $L$-结构 $\mathrm{Im}(\varphi)$：其论域为 $\varphi(M)$，并令
+\begin{enumerate}
+  \item $c^{\mathrm{Im}(\varphi)}:=c^{\mathcal N}$；
+  \item $f^{\mathrm{Im}(\varphi)}$ 为 $f^{\mathcal N}$ 在 $(\varphi(M))^{n_f}$ 上的限制；
+  \item $R^{\mathrm{Im}(\varphi)}:=R^{\mathcal N}\cap (\varphi(M))^{n_R}$。
+\end{enumerate}
+\end{definition}
+
+\begin{proposition}[诱导同态]
+设 $\varphi:\mathcal M\to\mathcal N$ 为 $L$-同态，$\pi:M\to M/\!\sim_{\varphi}$ 为自然投影。
+则存在唯一的 $L$-同态 $\bar\varphi:\mathcal M/\!\sim_{\varphi}\to\mathrm{Im}(\varphi)$ 使得
+\[
+  \varphi=\iota\circ\bar\varphi\circ\pi,
+\]
+其中 $\iota:\mathrm{Im}(\varphi)\hookrightarrow N$ 为包含映射。并且
+\[
+  \bar\varphi([a])=\varphi(a).
+\]
+换言之，下面图表交换：
+\[
+\begin{tikzcd}
+M \arrow[r, "\varphi"] \arrow[d, "\pi"'] & N \\
+M/\!\sim_{\varphi} \arrow[r, "\bar\varphi"'] & \mathrm{Im}(\varphi) \arrow[u, hook, "\iota"']
+\end{tikzcd}
+\]
+\end{proposition}
+
+\begin{proof}
+定义 $\bar\varphi([a])=\varphi(a)$。若 $[a]=[b]$，则 $a\sim_{\varphi} b$，故 $\varphi(a)=\varphi(b)$，从而 $\bar\varphi$ 良定义。
+易验证 $\bar\varphi$ 保持常元与函数。
+对关系符号 $R\in R$，若 $([a_1],\dots,[a_n])\in R^{\mathcal M/\!\sim_{\varphi}}$，则 $(a_1,\dots,a_n)\in R^{\mathcal M}$。
+由 $\varphi$ 的关系保持得 $(\varphi(a_1),\dots,\varphi(a_n))\in R^{\mathcal N}$，且显然属于 $(\varphi(M))^{n}$，故属于 $R^{\mathrm{Im}(\varphi)}$。
+反向同理，因而 $\bar\varphi$ 为 $L$-同态。
+交换图由定义立得。
+唯一性：若 $g:\mathcal M/\!\sim_{\varphi}\to\mathrm{Im}(\varphi)$ 满足 $\varphi=\iota\circ g\circ\pi$，则对任意 $[a]$ 有
+\[
+  g([a])=g(\pi(a))=\varphi(a)=\bar\varphi([a]).
+\]
+\end{proof}
+
+\begin{theorem}[第一同构定理]
+设 $\varphi:\mathcal M\to\mathcal N$ 为 $L$-同态。则诱导同态 $\bar\varphi:\mathcal M/\!\sim_{\varphi}\to\mathrm{Im}(\varphi)$ 是同构。
+\end{theorem}
+
+\begin{proof}
+由定义可知 $\bar\varphi$ 满射到 $\mathrm{Im}(\varphi)$。
+若 $\bar\varphi([a])=\bar\varphi([b])$，则 $\varphi(a)=\varphi(b)$，即 $a\sim_{\varphi} b$，从而 $[a]=[b]$，故 $\bar\varphi$ 单射。
+因此 $\bar\varphi$ 为双射的 $L$-同态，亦即同构。
+\end{proof}
+
+\chapter{超滤子、超积与超幂}
+
+\section{滤子}
+
+\begin{definition}[滤子]
+设 $X$ 为集合，$\mathcal F\subseteq\mathcal P(X)$。
+若满足：
+\begin{enumerate}
+  \item $X\in\mathcal F$；
+  \item $\varnothing\notin\mathcal F$；
+  \item 对任意 $A,B\in\mathcal F$，有 $A\cap B\in\mathcal F$；
+  \item （向上封闭）对任意 $A\in\mathcal F$ 与任意 $E\subseteq X$，若 $A\subseteq E$，则 $E\in\mathcal F$；
+\end{enumerate}
+则称 $\mathcal F$ 为 $X$ 上的一个滤子（filter）。
+\end{definition}
+
+\begin{example}
+\begin{enumerate}
+  \item （主滤子）给定 $A_0\subseteq X$ 且 $A_0\neq\varnothing$，令
+  \[
+    \mathcal F_{A_0}:=\{E\subseteq X: A_0\subseteq E\}.
+  \]
+  则 $\mathcal F_{A_0}$ 是 $X$ 上的一个滤子。
+  \item （余有限滤子）若 $X$ 为无限集合，令
+  \[
+    \mathcal F_{\mathrm{cof}}:=\{E\subseteq X: X\setminus E\ \text{为有限集}\}.
+  \]
+  则 $\mathcal F_{\mathrm{cof}}$ 是 $X$ 上的一个滤子。
+\end{enumerate}
+\end{example}
+
+\begin{remark}
+若 $\mathcal F_1\subseteq\mathcal F_2$，则称 $\mathcal F_2$ 比 $\mathcal F_1$ 更细。
+例如若 $A_1\subseteq A_2$ 且二者均非空，则 $\mathcal F_{A_2}\subseteq\mathcal F_{A_1}$。
+\end{remark}
+
+\begin{definition}[有限交性质]
+设 $X$ 为集合，$\mathcal C\subseteq\mathcal P(X)$。
+若对任意 $n\ge 1$ 与任意 $A_1,\dots,A_n\in\mathcal C$ 都有
+\[
+  A_1\cap\cdots\cap A_n\neq\varnothing,
+\]
+则称 $\mathcal C$ 具有有限交性质（finite intersection property）。
+\end{definition}
+
+\begin{proposition}
+若 $\mathcal F$ 是 $X$ 上的滤子，则 $\mathcal F$ 具有有限交性质。
+\end{proposition}
+
+\begin{proof}
+对 $n\ge 1$ 归纳。
+当 $n=1$ 时，任取 $A_1\in\mathcal F$，由于 $\varnothing\notin\mathcal F$，故 $A_1\neq\varnothing$。
+若命题对 $n$ 成立，取 $A_1,\dots,A_{n+1}\in\mathcal F$。
+由滤子对交封闭性知 $A:=A_1\cap\cdots\cap A_n\in\mathcal F$，再由交封闭性得 $A\cap A_{n+1}\in\mathcal F$。
+由于 $\varnothing\notin\mathcal F$，故 $A\cap A_{n+1}=A_1\cap\cdots\cap A_{n+1}\neq\varnothing$。
+\end{proof}
+
+\begin{definition}
+给定 $\mathcal C\subseteq\mathcal P(X)$，对 $n\ge 1$ 定义
+\[
+  \mathcal C_{+n}:=\{A_1\cap\cdots\cap A_n: A_1,\dots,A_n\in\mathcal C\},\qquad \mathcal C_{+}:=\bigcup_{n\ge 1}\mathcal C_{+n}.
+\]
+并定义其上闭包
+\[
+  \mathcal C^{\uparrow}:=\{E\subseteq X:\exists A\in\mathcal C\ \text{使 }A\subseteq E\}.
+\]
+\end{definition}
+
+\begin{remark}
+显然 $\mathcal C\subseteq\mathcal C_{+}\subseteq(\mathcal C_{+})^{\uparrow}$。
+\end{remark}
+
+\begin{proposition}[由有限交性质生成滤子]
+设 $\mathcal C\subseteq\mathcal P(X)$ 非空且具有有限交性质。
+则
+\[
+  \langle\mathcal C\rangle:=\bigl(\mathcal C_{+}\bigr)^{\uparrow}
+\]
+是 $X$ 上的一个滤子，并且是包含 $\mathcal C$ 的最小滤子：若 $\mathcal F$ 是 $X$ 上的滤子且 $\mathcal C\subseteq\mathcal F$，则 $\langle\mathcal C\rangle\subseteq\mathcal F$。
+\end{proposition}
+
+\begin{proof}
+首先由有限交性质知对任意 $n\ge 1$ 有 $\varnothing\notin\mathcal C_{+n}$，从而 $\varnothing\notin\mathcal C_{+}$。
+又因 $\mathcal C\neq\varnothing$，取 $A\in\mathcal C\subseteq\mathcal C_{+}$，则 $A\subseteq X$，从而 $X\in\langle\mathcal C\rangle$。
+
+下面验证 $\langle\mathcal C\rangle$ 为滤子。
+显然 $\varnothing\notin\langle\mathcal C\rangle$。
+
+对交封闭：设 $E_1,E_2\in\langle\mathcal C\rangle$。
+则存在 $A_1,A_2\in\mathcal C_{+}$ 使得 $A_1\subseteq E_1$ 且 $A_2\subseteq E_2$。
+设 $A_1\in\mathcal C_{+m}$、$A_2\in\mathcal C_{+n}$，则 $A_1\cap A_2\in\mathcal C_{+(m+n)}\subseteq\mathcal C_{+}$，并且 $A_1\cap A_2\subseteq E_1\cap E_2$。
+故 $E_1\cap E_2\in\langle\mathcal C\rangle$。
+
+向上封闭由上闭包的定义直接得到。
+因此 $\langle\mathcal C\rangle$ 是滤子。
+
+最小性：设 $\mathcal F$ 是滤子且 $\mathcal C\subseteq\mathcal F$。
+由 $\mathcal F$ 对有限交封闭得对任意 $n\ge 1$ 都有 $\mathcal C_{+n}\subseteq\mathcal F$，从而 $\mathcal C_{+}\subseteq\mathcal F$。
+再由 $\mathcal F$ 的向上封闭性得 $(\mathcal C_{+})^{\uparrow}\subseteq\mathcal F$，即 $\langle\mathcal C\rangle\subseteq\mathcal F$。
+\end{proof}
+
+\subsection{超滤子}
+
+\begin{definition}[超滤子]
+设 $X$ 为集合。称 $X$ 上的滤子 $\mathcal U$ 为超滤子（ultrafilter），若它在所有滤子（按包含关系）中是极大的：
+对任意滤子 $\mathcal F$，若 $\mathcal U\subseteq\mathcal F$，则 $\mathcal F=\mathcal U$。
+\end{definition}
+
+\begin{example}[主超滤子]
+设 $X\neq\varnothing$ 且 $x\in X$。
+令
+\[
+  \mathcal U_x:=\{E\subseteq X: x\in E\}.
+\]
+则 $\mathcal U_x$ 是 $X$ 上的滤子，称为由点 $x$ 生成的主滤子。
+\end{example}
+
+\begin{proposition}
+对任意 $x\in X$，$\mathcal U_x$ 是超滤子。
+\end{proposition}
+
+\begin{proof}
+先证 $\mathcal U_x$ 是滤子：显然 $X\in\mathcal U_x$ 且 $\varnothing\notin\mathcal U_x$。
+若 $A,B\in\mathcal U_x$，则 $x\in A\cap B$，故 $A\cap B\in\mathcal U_x$。
+若 $A\in\mathcal U_x$ 且 $A\subseteq E\subseteq X$，则 $x\in E$，故 $E\in\mathcal U_x$。
+
+再证极大性：设 $\mathcal F$ 为滤子且 $\mathcal U_x\subseteq\mathcal F$。
+若存在 $A\in\mathcal F$ 使得 $x\notin A$，则 $\{x\}\in\mathcal U_x\subseteq\mathcal F$。
+由滤子对交封闭性得 $A\cap\{x\}\in\mathcal F$，但 $A\cap\{x\}=\varnothing$，这与 $\varnothing\notin\mathcal F$ 矛盾。
+因此对任意 $A\in\mathcal F$ 都有 $x\in A$，即 $\mathcal F\subseteq\mathcal U_x$。
+故 $\mathcal F=\mathcal U_x$，从而 $\mathcal U_x$ 为超滤子。
+\end{proof}
+
+\begin{theorem}[任意滤子可扩张为超滤子]
+设 $\mathcal F$ 为 $X$ 上的滤子。
+则存在超滤子 $\mathcal U$ 使得 $\mathcal F\subseteq\mathcal U$。
+\end{theorem}
+
+\begin{lemma}[Zorn 引理]
+设 $(P,\le)$ 为偏序集。若 $P$ 的每一条链都有上界，则 $P$ 存在极大元。
+\end{lemma}
+
+\begin{proof}
+令
+\[
+  \mathscr P:=\{\mathcal G\subseteq\mathcal P(X): \mathcal G\ \text{是滤子且 }\mathcal F\subseteq\mathcal G\},
+\]
+并以包含关系作为偏序。
+显然 $\mathcal F\in\mathscr P$，故 $\mathscr P\neq\varnothing$。
+
+取 $\mathscr C\subseteq\mathscr P$ 为一条链（全序子集），令
+\[
+  \mathcal G:=\bigcup_{\mathcal H\in\mathscr C}\mathcal H.
+\]
+下面验证 $\mathcal G\in\mathscr P$，从而它是 $\mathscr C$ 的上界。
+
+首先 $X\in\mathcal G$：因为任取 $\mathcal H\in\mathscr C$，有 $X\in\mathcal H\subseteq\mathcal G$。
+并且 $\varnothing\notin\mathcal G$：否则存在 $\mathcal H\in\mathscr C$ 使 $\varnothing\in\mathcal H$，与 $\mathcal H$ 为滤子矛盾。
+
+对交封闭：设 $A,B\in\mathcal G$。
+则存在 $\mathcal H_1,\mathcal H_2\in\mathscr C$ 使得 $A\in\mathcal H_1$ 且 $B\in\mathcal H_2$。
+由于 $\mathscr C$ 为链，不妨设 $\mathcal H_1\subseteq\mathcal H_2$，则 $A,B\in\mathcal H_2$，从而 $A\cap B\in\mathcal H_2\subseteq\mathcal G$。
+
+向上封闭：设 $A\in\mathcal G$ 且 $A\subseteq E\subseteq X$。
+取 $\mathcal H\in\mathscr C$ 使 $A\in\mathcal H$，则由 $\mathcal H$ 的向上封闭性得 $E\in\mathcal H\subseteq\mathcal G$。
+
+因此 $\mathcal G$ 是滤子。又因为对任意 $\mathcal H\in\mathscr C$ 都有 $\mathcal F\subseteq\mathcal H\subseteq\mathcal G$，故 $\mathcal G\in\mathscr P$。
+于是每条链都有上界。
+
+由 Zorn 引理，$\mathscr P$ 存在极大元 $\mathcal U$。
+按定义 $\mathcal U$ 是包含 $\mathcal F$ 的极大滤子，即超滤子。
+\end{proof}
+
+\begin{theorem}[超滤子的等价刻画]
+设 $\mathcal U$ 为 $X$ 上的滤子。以下条件等价：
+\begin{enumerate}
+  \item $\mathcal U$ 是超滤子；
+  \item （二分性）对任意 $A\subseteq X$，有 $A\in\mathcal U$ 或 $A^{c}\in\mathcal U$；
+  \item （素性）对任意 $A,B\subseteq X$，若 $A\cup B\in\mathcal U$，则 $A\in\mathcal U$ 或 $B\in\mathcal U$。
+\end{enumerate}
+\end{theorem}
+
+\begin{remark}
+对 $A\subseteq X$，记 $A^{c}:=X\setminus A$。
+\end{remark}
+
+\begin{proof}
+$(1)\Rightarrow(2)$：设 $A\subseteq X$ 且 $A\notin\mathcal U$。
+若对任意 $E\in\mathcal U$ 都有 $E\cap A\neq\varnothing$，则 $\mathcal U\cup\{A\}$ 具有有限交性质。
+事实上，取任意 $n\ge 1$ 与任意 $E_1,\dots,E_n\in\mathcal U$，由于 $\mathcal U$ 对有限交封闭，$E:=E_1\cap\cdots\cap E_n\in\mathcal U$，从而 $E\cap A\neq\varnothing$。
+因此对任意有限个来自 $\mathcal U\cup\{A\}$ 的集合，它们的交非空。
+由前述命题可生成包含 $\mathcal U\cup\{A\}$ 的滤子 $\langle\mathcal U\cup\{A\}\rangle$。
+又因为 $A\in\mathcal U\cup\{A\}\subseteq\langle\mathcal U\cup\{A\}\rangle$ 且 $A\notin\mathcal U$，所以 $\mathcal U\subsetneq\langle\mathcal U\cup\{A\}\rangle$，与 $\mathcal U$ 极大性矛盾。
+因此存在 $E\in\mathcal U$ 使得 $E\cap A=\varnothing$，于是 $E\subseteq A^{c}$。
+由向上封闭性得 $A^{c}\in\mathcal U$。
+
+$(2)\Rightarrow(3)$：设 $A\cup B\in\mathcal U$。
+若 $A\notin\mathcal U$，则由 (2) 得 $A^{c}\in\mathcal U$。
+于是
+\[
+  B\supseteq A^{c}\cap(A\cup B)\in\mathcal U,
+\]
+故 $B\in\mathcal U$。
+
+$(3)\Rightarrow(2)$：对任意 $A\subseteq X$，有 $A\cup A^{c}=X\in\mathcal U$。
+由 (3) 得 $A\in\mathcal U$ 或 $A^{c}\in\mathcal U$。
+
+$(2)\Rightarrow(1)$：设 $\mathcal F$ 为滤子且 $\mathcal U\subseteq\mathcal F$。
+若存在 $A\in\mathcal F$ 且 $A\notin\mathcal U$，则由 (2) 得 $A^{c}\in\mathcal U\subseteq\mathcal F$。
+由交封闭性得 $A\cap A^{c}=\varnothing\in\mathcal F$，矛盾。
+故 $\mathcal F=\mathcal U$，即 $\mathcal U$ 极大。
+\end{proof}
+
+\subsection{超积与超幂}
+
+\begin{definition}[超积]
+\label{ultraproduct}
+设 $\Lambda$ 为非空集合，$\mathcal U$ 为 $\Lambda$ 上的一个超滤子，并设 $(\mathcal M_{\alpha})_{\alpha\in\Lambda}$ 为一族 $L$-结构，其中
+\[
+  \mathcal M_{\alpha}=\bigl(M_{\alpha},(c^{\mathcal M_{\alpha}})_{c\in C},(f^{\mathcal M_{\alpha}})_{f\in F},(R^{\mathcal M_{\alpha}})_{R\in R}\bigr).
+\]
+令直积集合 $\prod_{\alpha\in\Lambda}M_{\alpha}$ 的元素记为 $a=(a_{\alpha})_{\alpha\in\Lambda}$。
+定义 $L$-结构的直积
+\[
+\prod_{\alpha\in\Lambda}\mathcal M_{\alpha}
+\]
+其论域为 $\prod_{\alpha\in\Lambda}M_{\alpha}$，并令
+\begin{enumerate}
+\item 对任意 $c\in C$，$c^{\prod_{\alpha}\mathcal M_{\alpha}}:=(c^{\mathcal M_{\alpha}})_{\alpha\in\Lambda}$；
+\item 对任意 $f\in F$（$n_f=n$），
+\[
+f^{\prod_{\alpha}\mathcal M_{\alpha}}(a^{1},\dots,a^{n}):=\bigl(f^{\mathcal M_{\alpha}}(a^{1}_{\alpha},\dots,a^{n}_{\alpha})\bigr)_{\alpha\in\Lambda};
+\]
+\item 对任意 $R\in R$（$n_R=n$），
+\[
+(a^{1},\dots,a^{n})\in R^{\prod_{\alpha}\mathcal M_{\alpha}}\ \Longleftrightarrow\ \forall\alpha\in\Lambda\ ((a^{1}_{\alpha},\dots,a^{n}_{\alpha})\in R^{\mathcal M_{\alpha}}).
+\]
+\end{enumerate}
+并定义等价关系 $\sim_{\mathcal U}$：
+\[
+a\sim_{\mathcal U} b\ \Longleftrightarrow\ \{\alpha\in\Lambda: a_{\alpha}=b_{\alpha}\}\in\mathcal U.
+\]
+记 $\prod_{\alpha}M_{\alpha}/\!\sim_{\mathcal U}$ 为商集，$[a]$ 表示 $a$ 的等价类，令
+\[
+\prod_{\mathcal U}\mathcal M_{\alpha}
+\]
+为以下 $L$-结构（称为超积）：其论域为 $\prod_{\alpha}M_{\alpha}/\!\sim_{\mathcal U}$，并令
+\begin{enumerate}
+\item 对任意 $c\in C$，
+\[
+c^{\prod_{\mathcal U}\mathcal M_{\alpha}}:=[(c^{\mathcal M_{\alpha}})_{\alpha\in\Lambda}];
+\]
+\item 对任意 $f\in F$（$n_f=n$），
+\[
+f^{\prod_{\mathcal U}\mathcal M_{\alpha}}\bigl([a^{1}],\dots,[a^{n}]\bigr):=\Bigl[\bigl(f^{\mathcal M_{\alpha}}(a^{1}_{\alpha},\dots,a^{n}_{\alpha})\bigr)_{\alpha\in\Lambda}\Bigr];
+\]
+\item 对任意 $R\in R$（$n_R=n$），
+\[
+([a^{1}],\dots,[a^{n}])\in R^{\prod_{\mathcal U}\mathcal M_{\alpha}}\ \Longleftrightarrow\ \{\alpha\in\Lambda:(a^{1}_{\alpha},\dots,a^{n}_{\alpha})\in R^{\mathcal M_{\alpha}}\}\in\mathcal U.
+\]
+\end{enumerate}
+上述定义对代表元的选择无关。
+\end{definition}
+
+\begin{lemma}
+\label{ultraproduct-well-defined}
+$\sim_{\mathcal U}$ 是 $\prod_{\alpha\in\Lambda}M_{\alpha}$ 上的等价关系。
+并且 $\prod_{\mathcal U}\mathcal M_{\alpha}$ 中常元、函数与关系的解释良定义。
+\end{lemma}
+
+\begin{proof}
+等价关系的自反与对称显然。
+若 $a\sim_{\mathcal U} b$ 且 $b\sim_{\mathcal U} c$，则集合
+\[
+E_{ab}:=\{\alpha:a_{\alpha}=b_{\alpha}\}\in\mathcal U,\qquad E_{bc}:=\{\alpha:b_{\alpha}=c_{\alpha}\}\in\mathcal U.
+\]
+由 $\mathcal U$ 对交封闭性得 $E_{ab}\cap E_{bc}\in\mathcal U$。
+而对任意 $\alpha\in E_{ab}\cap E_{bc}$ 有 $a_{\alpha}=c_{\alpha}$，故
+\[
+E_{ab}\cap E_{bc}\subseteq\{\alpha:a_{\alpha}=c_{\alpha}\}.
+\]
+由向上封闭性得 $\{\alpha:a_{\alpha}=c_{\alpha}\}\in\mathcal U$，即 $a\sim_{\mathcal U} c$。
+
+良定义性：
+\begin{enumerate}
+\item 常元的等价类定义显然与代表元无关。
+\item 设 $[a^{i}]=[b^{i}]$（$i=1,\dots,n$）。令
+\[
+E_i:=\{\alpha:a^{i}_{\alpha}=b^{i}_{\alpha}\}\in\mathcal U.
+\]
+则 $E:=\bigcap_i E_i\in\mathcal U$。
+对 $\alpha\in E$，有
+\[
+f^{\mathcal M_{\alpha}}(a^{1}_{\alpha},\dots,a^{n}_{\alpha})=f^{\mathcal M_{\alpha}}(b^{1}_{\alpha},\dots,b^{n}_{\alpha}).
+\]
+因此
+\[
+E\subseteq\Bigl\{\alpha: f^{\mathcal M_{\alpha}}(a^{1}_{\alpha},\dots,a^{n}_{\alpha})=f^{\mathcal M_{\alpha}}(b^{1}_{\alpha},\dots,b^{n}_{\alpha})\Bigr\}.
+\]
+由向上封闭性得右侧集合属于 $\mathcal U$，从而函数解释良定义。
+\item 若 $[a^{i}]=[b^{i}]$，同样令 $E:=\bigcap_i\{\alpha:a^{i}_{\alpha}=b^{i}_{\alpha}\}\in\mathcal U$。
+则对 $\alpha\in E$，有
+\[
+(a^{1}_{\alpha},\dots,a^{n}_{\alpha})\in R^{\mathcal M_{\alpha}}\ \Longleftrightarrow\ (b^{1}_{\alpha},\dots,b^{n}_{\alpha})\in R^{\mathcal M_{\alpha}}.
+\]
+ 记
+\[
+S:=\{\alpha:(a^{1}_{\alpha},\dots,a^{n}_{\alpha})\in R^{\mathcal M_{\alpha}}\},\qquad T:=\{\alpha:(b^{1}_{\alpha},\dots,b^{n}_{\alpha})\in R^{\mathcal M_{\alpha}}\}.
+\]
+则由上式知 $S\cap E=T\cap E$。
+若 $S\in\mathcal U$，则 $S\cap E\in\mathcal U$，且 $S\cap E=T\cap E\subseteq T$，由向上封闭性得 $T\in\mathcal U$。
+反向同理，故 $S\in\mathcal U\Longleftrightarrow T\in\mathcal U$，关系解释良定义。
+ \end{enumerate}
+ \end{proof}
+
+ \begin{proposition}[同余与自然投影]
+ \label{ultraproduct-congruence-projection}
+ 将每个 $\mathcal M_{\alpha}$ 的常元与函数部分视为 $L$-代数，并取其直积代数
+ \[
+   \Bigl(\prod_{\alpha\in\Lambda}M_{\alpha},(c^{\prod_{\alpha}\mathcal M_{\alpha}})_{c\in C},(f^{\prod_{\alpha}\mathcal M_{\alpha}})_{f\in F}\Bigr).
+ \]
+ 则 $\sim_{\mathcal U}$ 与该直积代数运算相容：对任意 $f\in F$（$n_f=n$），若 $a^{i}\sim_{\mathcal U} b^{i}$（$i=1,\dots,n$），则
+ \[
+   f^{\prod_{\alpha}\mathcal M_{\alpha}}(a^{1},\dots,a^{n})\sim_{\mathcal U} f^{\prod_{\alpha}\mathcal M_{\alpha}}(b^{1},\dots,b^{n}).
+ \]
+ 并且自然商映射 $q:\prod_{\alpha}M_{\alpha}\to\prod_{\alpha}M_{\alpha}/\!\sim_{\mathcal U}$ 是 $L$-代数同态：
+ \begin{enumerate}
+  \item 对任意 $c\in C$，$q\bigl(c^{\prod_{\alpha}\mathcal M_{\alpha}}\bigr)=c^{\prod_{\mathcal U}\mathcal M_{\alpha}}$；
+  \item 对任意 $f\in F$（$n_f=n$）与任意 $a^{1},\dots,a^{n}\in\prod_{\alpha}M_{\alpha}$，有
+  \[
+    q\bigl(f^{\prod_{\alpha}\mathcal M_{\alpha}}(a^{1},\dots,a^{n})\bigr)=f^{\prod_{\mathcal U}\mathcal M_{\alpha}}\bigl(q(a^{1}),\dots,q(a^{n})\bigr).
+  \]
+ \end{enumerate}
+ 从而函数保持可用交换图表示（$q^{n}$ 为逐点作用）：
+ \[
+ \begin{tikzcd}
+ (\prod_{\alpha}M_{\alpha})^{n} \arrow[r, "f^{\prod_{\alpha}\mathcal M_{\alpha}}"] \arrow[d, "q^{n}"'] & \prod_{\alpha}M_{\alpha} \arrow[d, "q"] \\
+ (\prod_{\mathcal U}\mathcal M_{\alpha})^{n} \arrow[r, "f^{\prod_{\mathcal U}\mathcal M_{\alpha}}"'] & \prod_{\mathcal U}\mathcal M_{\alpha}
+ \end{tikzcd}
+ \]
+ \end{proposition}
+
+ \begin{proof}
+ 设 $f\in F$ 且 $n_f=n$。
+ 若 $a^{i}\sim_{\mathcal U} b^{i}$，令
+ \[
+   E_i:=\{\alpha\in\Lambda: a^{i}_{\alpha}=b^{i}_{\alpha}\}\in\mathcal U,\qquad E:=\bigcap_{i=1}^{n}E_i\in\mathcal U.
+ \]
+ 对任意 $\alpha\in E$，有 $a^{i}_{\alpha}=b^{i}_{\alpha}$，从而
+ \[
+   f^{\mathcal M_{\alpha}}(a^{1}_{\alpha},\dots,a^{n}_{\alpha})=f^{\mathcal M_{\alpha}}(b^{1}_{\alpha},\dots,b^{n}_{\alpha}).
+ \]
+ 因此
+ \[
+   E\subseteq\Bigl\{\alpha\in\Lambda: f^{\mathcal M_{\alpha}}(a^{1}_{\alpha},\dots,a^{n}_{\alpha})=f^{\mathcal M_{\alpha}}(b^{1}_{\alpha},\dots,b^{n}_{\alpha})\Bigr\},
+ \]
+ 由向上封闭性得右侧集合属于 $\mathcal U$，从而
+ $f^{\prod_{\alpha}\mathcal M_{\alpha}}(a^{1},\dots,a^{n})\sim_{\mathcal U} f^{\prod_{\alpha}\mathcal M_{\alpha}}(b^{1},\dots,b^{n})$。
+
+ 接着证明 $q$ 为同态。
+ 对常元 $c$，由定义
+ \[
+   q\bigl(c^{\prod_{\alpha}\mathcal M_{\alpha}}\bigr)=q\bigl((c^{\mathcal M_{\alpha}})_{\alpha}\bigr)=[(c^{\mathcal M_{\alpha}})_{\alpha}]=c^{\prod_{\mathcal U}\mathcal M_{\alpha}}.
+ \]
+ 对函数符号 $f$，由直积与超积中函数解释的定义直接计算得
+ \[
+   q\bigl(f^{\prod_{\alpha}\mathcal M_{\alpha}}(a^{1},\dots,a^{n})\bigr)
+   =\Bigl[\bigl(f^{\mathcal M_{\alpha}}(a^{1}_{\alpha},\dots,a^{n}_{\alpha})\bigr)_{\alpha}\Bigr]
+   =f^{\prod_{\mathcal U}\mathcal M_{\alpha}}\bigl([a^{1}],\dots,[a^{n}]\bigr)
+   =f^{\prod_{\mathcal U}\mathcal M_{\alpha}}\bigl(q(a^{1}),\dots,q(a^{n})\bigr).
+ \]
+ \end{proof}
+
+ \begin{definition}[超幂]
+ \label{ultrapower}
+ 若存在 $L$-结构 $\mathcal M$ 使得对所有 $\alpha\in\Lambda$ 都有 $\mathcal M_{\alpha}=\mathcal M$，
+ 则超积 $\prod_{\mathcal U}\mathcal M_{\alpha}$ 也记作 $\prod_{\mathcal U}\mathcal M$，称为 $\mathcal M$ 关于 $\mathcal U$ 的超幂（ultrapower）。
+ \end{definition}
+
+ \begin{definition}[乘积赋值与超积赋值]
+ \label{ultraproduct-assignment}
+ 设对每个 $\alpha\in\Lambda$ 给定赋值 $v_{\alpha}:V\to M_{\alpha}$。
+ 定义乘积赋值 $v^{\Pi}:V\to\prod_{\alpha}M_{\alpha}$ 为
+ \[
+   v^{\Pi}(x):=(v_{\alpha}(x))_{\alpha\in\Lambda}.
+ \]
+ 令 $q:\prod_{\alpha}M_{\alpha}\to\prod_{\alpha}M_{\alpha}/\!\sim_{\mathcal U}$ 为自然商映射 $q(a)=[a]$。
+ 定义超积赋值 $v:V\to\prod_{\mathcal U}\mathcal M_{\alpha}$ 为
+ \[
+   v(x):=q\bigl(v^{\Pi}(x)\bigr)=[(v_{\alpha}(x))_{\alpha\in\Lambda}].
+ \]
+ \end{definition}
+
+\begin{lemma}[真值集的基本运算]
+\label{truth-set}
+设 $(\mathcal M_{\alpha})_{\alpha\in\Lambda}$ 为一族 $L$-结构，并对每个 $\alpha\in\Lambda$ 给定赋值 $v_{\alpha}:V\to M_{\alpha}$。
+对任意 $L$-公式 $\varphi$，定义其真值集
+\[
+\llbracket\varphi\rrbracket:=\{\alpha\in\Lambda:(\mathcal M_{\alpha},v_{\alpha})\models\varphi\}.
+\]
+则对任意公式 $\varphi,\psi$ 有：
+\begin{enumerate}
+\item $\llbracket\neg\varphi\rrbracket=\Lambda\setminus\llbracket\varphi\rrbracket$；
+\item $\llbracket\varphi\to\psi\rrbracket=(\Lambda\setminus\llbracket\varphi\rrbracket)\cup\llbracket\psi\rrbracket$。
+\end{enumerate}
+\end{lemma}
+
+ \begin{proof}
+ \begin{enumerate}
+  \item 对任意 $\alpha\in\Lambda$，
+   \[
+     \alpha\in\llbracket\neg\varphi\rrbracket\ \Longleftrightarrow\ (\mathcal M_{\alpha},v_{\alpha})\models(\neg\varphi)\ \Longleftrightarrow\ (\mathcal M_{\alpha},v_{\alpha})\not\models\varphi\ \Longleftrightarrow\ \alpha\notin\llbracket\varphi\rrbracket.
+   \]
+  \item 对任意 $\alpha\in\Lambda$，
+  \[
+    \alpha\in\llbracket\varphi\to\psi\rrbracket\ \Longleftrightarrow\ (\mathcal M_{\alpha},v_{\alpha})\models(\varphi\to\psi)
+    \ \Longleftrightarrow\ \bigl((\mathcal M_{\alpha},v_{\alpha})\models\varphi\Rightarrow(\mathcal M_{\alpha},v_{\alpha})\models\psi\bigr).
+  \]
+  上式等价于 ``$\alpha\notin\llbracket\varphi\rrbracket$ 或 $\alpha\in\llbracket\psi\rrbracket$''，从而结论成立。
+\end{enumerate}
+\end{proof}
+
+\begin{proposition}[项在超积中的解释按分量计算]
+\label{ultraproduct-term}
+沿用上面的记号。设 $\overline{v^{\Pi}}:\mathrm{Term}(L)\to\prod_{\alpha}M_{\alpha}$ 为乘积赋值 $v^{\Pi}$ 诱导的项解释，
+并设 $\bar v:\mathrm{Term}(L)\to\prod_{\mathcal U}\mathcal M_{\alpha}$ 为超积赋值 $v$ 诱导的项解释。
+则对任意 $t\in\mathrm{Term}(L)$，都有
+\[
+  \bar v(t)=q\bigl(\overline{v^{\Pi}}(t)\bigr)=\Bigl[(\overline{v_{\alpha}}(t))_{\alpha\in\Lambda}\Bigr].
+\]
+换言之，下面图表交换：
+\[
+\begin{tikzcd}
+V \arrow[r, "v^{\Pi}"] \arrow[dr, "v"'] & \prod_{\alpha}M_{\alpha} \arrow[d, "q"] \\
+& \prod_{\mathcal U}\mathcal M_{\alpha}
+\end{tikzcd}
+\qquad
+\begin{tikzcd}
+\mathrm{Term}(L) \arrow[r, "\overline{v^{\Pi}}"] \arrow[dr, "\bar v"'] & \prod_{\alpha}M_{\alpha} \arrow[d, "q"] \\
+& \prod_{\mathcal U}\mathcal M_{\alpha}
+\end{tikzcd}
+\]
+\end{proposition}
+
+\begin{proof}
+令
+\[
+  A:=\{t\in\mathrm{Term}(L):\ \bar v(t)=q(\overline{v^{\Pi}}(t))\}.
+\]
+先证 $V\cup C\subseteq A$。
+若 $x\in V$，则 $\bar v(x)=v(x)=q(v^{\Pi}(x))=q(\overline{v^{\Pi}}(x))$。
+若 $c\in C$，则由超积中常元的定义与项解释对常元的要求，
+\[
+  \bar v(c)=c^{\prod_{\mathcal U}\mathcal M_{\alpha}}=[(c^{\mathcal M_{\alpha}})_{\alpha}]=q\bigl((c^{\mathcal M_{\alpha}})_{\alpha}\bigr)=q(\overline{v^{\Pi}}(c)).
+\]
+
+再证 $A$ 对函数符号闭包。
+取 $f\in F$（$n_f=n$）与 $t_1,\dots,t_n\in A$。
+由项解释递归定义与超积中函数解释的定义，有
+\[
+  \bar v(f(t_1,\dots,t_n))=f^{\prod_{\mathcal U}\mathcal M_{\alpha}}(\bar v(t_1),\dots,\bar v(t_n))
+  =\Bigl[\bigl(f^{\mathcal M_{\alpha}}(a^{1}_{\alpha},\dots,a^{n}_{\alpha})\bigr)_{\alpha}\Bigr],
+\]
+其中 $a^{i}$ 是 $\overline{v^{\Pi}}(t_i)$ 的代表元，即 $a^{i}=(\overline{v_{\alpha}}(t_i))_{\alpha}$。
+另一方面，由乘积结构中函数逐点定义，
+\[
+  \overline{v^{\Pi}}(f(t_1,\dots,t_n))=\bigl(f^{\mathcal M_{\alpha}}(\overline{v_{\alpha}}(t_1),\dots,\overline{v_{\alpha}}(t_n))\bigr)_{\alpha}.
+\]
+取商映射 $q$ 即得 $\bar v(f(t_1,\dots,t_n))=q(\overline{v^{\Pi}}(f(t_1,\dots,t_n)))$，故 $f(t_1,\dots,t_n)\in A$。
+
+由 $\mathrm{Term}(L)$ 的最小性（包含 $V\cup C$ 且对函数符号闭包的最小集合）得 $A=\mathrm{Term}(L)$，命题成立。
+\end{proof}
+
+\begin{proposition}[关系符号的良定义（重述）]
+\label{ultraproduct-relation-well-defined}
+设 $R\in R$ 且 $n_R=n$。
+若 $[a^{i}]=[b^{i}]$（$i=1,\dots,n$），则
+\[
+  ([a^{1}],\dots,[a^{n}])\in R^{\prod_{\mathcal U}\mathcal M_{\alpha}}\ \Longleftrightarrow\ ([b^{1}],\dots,[b^{n}])\in R^{\prod_{\mathcal U}\mathcal M_{\alpha}}.
+\]
+\end{proposition}
+
+\begin{proof}
+令
+\[
+  E:=\bigcap_{i=1}^{n}\{\alpha\in\Lambda: a^{i}_{\alpha}=b^{i}_{\alpha}\}\in\mathcal U,
+\]
+并记
+\[
+  S:=\{\alpha:(a^{1}_{\alpha},\dots,a^{n}_{\alpha})\in R^{\mathcal M_{\alpha}}\},\qquad T:=\{\alpha:(b^{1}_{\alpha},\dots,b^{n}_{\alpha})\in R^{\mathcal M_{\alpha}}\}.
+\]
+则对任意 $\alpha\in E$，有 $(a^{1}_{\alpha},\dots,a^{n}_{\alpha})=(b^{1}_{\alpha},\dots,b^{n}_{\alpha})$，从而 $S\cap E=T\cap E$。
+若 $S\in\mathcal U$，则 $S\cap E\in\mathcal U$，且 $S\cap E=T\cap E\subseteq T$，由向上封闭性得 $T\in\mathcal U$。
+反向同理，故 $S\in\mathcal U\Longleftrightarrow T\in\mathcal U$。
+再由 $R^{\prod_{\mathcal U}\mathcal M_{\alpha}}$ 的定义即得结论。
+\end{proof}
+
+\begin{lemma}[赋值的逐分量替换]
+\label{ultraproduct-assignment-replacement}
+设 $a=(a_{\alpha})_{\alpha\in\Lambda}\in\prod_{\alpha}M_{\alpha}$，并记 $[a]:=q(a)\in\prod_{\mathcal U}\mathcal M_{\alpha}$。
+令 $v:V\to\prod_{\mathcal U}\mathcal M_{\alpha}$ 为由 $(v_{\alpha})_{\alpha}$ 诱导的超积赋值。
+对每个 $\alpha$ 定义 $v'_{\alpha}:=(v_{\alpha})^{x}_{a_{\alpha}}$，并令 $v':=v^{x}_{[a]}$。
+则对任意 $y\in V$，有
+\[
+  v'(y)=[(v'_{\alpha}(y))_{\alpha\in\Lambda}].
+\]
+\end{lemma}
+
+\begin{proof}
+若 $y\neq x$，则 $v'(y)=v(y)=[(v_{\alpha}(y))_{\alpha}]$，而此时 $v'_{\alpha}(y)=v_{\alpha}(y)$，故结论成立。
+若 $y=x$，则 $v'(x)=[a]=[(a_{\alpha})_{\alpha}]$，而 $v'_{\alpha}(x)=a_{\alpha}$，亦成立。
+\end{proof}
+
+\begin{theorem}[Łoś 定理]
+\label{los}
+设 $\mathcal U$ 为 $\Lambda$ 上的超滤子，$(\mathcal M_{\alpha})_{\alpha\in\Lambda}$ 为一族 $L$-结构，并对每个 $\alpha$ 给定赋值 $v_{\alpha}:V\to M_{\alpha}$。
+令 $v:V\to\prod_{\mathcal U}\mathcal M_{\alpha}$ 为诱导的超积赋值。
+则对任意 $L$-公式 $\varphi$，有
+\[
+  \bigl(\prod_{\mathcal U}\mathcal M_{\alpha},v\bigr)\models\varphi\ \Longleftrightarrow\ \llbracket\varphi\rrbracket\in\mathcal U,
+\]
+其中 $\llbracket\varphi\rrbracket:=\{\alpha\in\Lambda:(\mathcal M_{\alpha},v_{\alpha})\models\varphi\}$。
+\end{theorem}
+
+\begin{proof}
+对 $\mathrm{rk}(\varphi)$ 作归纳，并按 $\varphi$ 的生成方式分类。
+
+\textbf{(A) 原子公式：} 
+\begin{enumerate}
+  \item 若 $\varphi=(t=s)$。
+  由满足关系定义，
+  \[
+    \bigl(\prod_{\mathcal U}\mathcal M_{\alpha},v\bigr)\models(t=s)\ \Longleftrightarrow\ \bar v(t)=\bar v(s).
+  \]
+  由命题~\ref{pro:ultraproduct-term} 知
+  \[
+    \bar v(t)=[(\overline{v_{\alpha}}(t))_{\alpha}],\qquad \bar v(s)=[(\overline{v_{\alpha}}(s))_{\alpha}].
+  \]
+  因而 $\bar v(t)=\bar v(s)$ 当且仅当
+  \[
+    \{\alpha\in\Lambda: \overline{v_{\alpha}}(t)=\overline{v_{\alpha}}(s)\}\in\mathcal U.
+  \]
+  而对每个 $\alpha$，
+  \[
+    (\mathcal M_{\alpha},v_{\alpha})\models(t=s)\ \Longleftrightarrow\ \overline{v_{\alpha}}(t)=\overline{v_{\alpha}}(s),
+  \]
+  故上式等价于 $\llbracket(t=s)\rrbracket\in\mathcal U$。
+
+  \item 若 $\varphi=R(t_1,\dots,t_n)$。
+  由满足关系与超积中关系解释定义，
+  \[
+    \bigl(\prod_{\mathcal U}\mathcal M_{\alpha},v\bigr)\models R(t_1,\dots,t_n)
+    \Longleftrightarrow
+    \{\alpha:(\bar v(t_1),\dots,\bar v(t_n))\ \text{在 }\mathcal M_{\alpha}\ \text{处满足 }R\}\in\mathcal U.
+  \]
+  更直接地，由 $R^{\prod_{\mathcal U}\mathcal M_{\alpha}}$ 的定义与命题~\ref{pro:ultraproduct-term}，有
+  \[
+    \bigl(\prod_{\mathcal U}\mathcal M_{\alpha},v\bigr)\models R(t_1,\dots,t_n)
+    \Longleftrightarrow
+    \{\alpha:(\overline{v_{\alpha}}(t_1),\dots,\overline{v_{\alpha}}(t_n))\in R^{\mathcal M_{\alpha}}\}\in\mathcal U.
+  \]
+  而对每个 $\alpha$，右侧括号内条件等价于 $(\mathcal M_{\alpha},v_{\alpha})\models R(t_1,\dots,t_n)$，故等价于 $\llbracket R(t_1,\dots,t_n)\rrbracket\in\mathcal U$。
+\end{enumerate}
+
+\textbf{(B) 否定：}
+若 $\varphi=(\neg\psi)$，则
+\[
+  \bigl(\prod_{\mathcal U}\mathcal M_{\alpha},v\bigr)\models(\neg\psi)\Longleftrightarrow\bigl(\prod_{\mathcal U}\mathcal M_{\alpha},v\bigr)\not\models\psi.
+\]
+由归纳假设，后者等价于 $\llbracket\psi\rrbracket\notin\mathcal U$。
+由于 $\mathcal U$ 为超滤子，$\llbracket\psi\rrbracket\notin\mathcal U$ 当且仅当 $\Lambda\setminus\llbracket\psi\rrbracket\in\mathcal U$。
+而 $\Lambda\setminus\llbracket\psi\rrbracket=\llbracket\neg\psi\rrbracket$（引理~\ref{lem:truth-set}），故等价于 $\llbracket\neg\psi\rrbracket\in\mathcal U$。
+
+\textbf{(C) 蕴含：}
+若 $\varphi=(\alpha\to\beta)$，则
+\[
+  \bigl(\prod_{\mathcal U}\mathcal M_{\alpha},v\bigr)\models(\alpha\to\beta)
+  \Longleftrightarrow\ \bigl(\bigl(\prod_{\mathcal U}\mathcal M_{\alpha},v\bigr)\models\alpha\Rightarrow\bigl(\prod_{\mathcal U}\mathcal M_{\alpha},v\bigr)\models\beta\bigr).
+\]
+由归纳假设，上式等价于：若 $\llbracket\alpha\rrbracket\in\mathcal U$，则 $\llbracket\beta\rrbracket\in\mathcal U$。
+这等价于 $\llbracket\alpha\rrbracket\notin\mathcal U$ 或 $\llbracket\beta\rrbracket\in\mathcal U$。
+又因 $\mathcal U$ 为超滤子，$\llbracket\alpha\rrbracket\notin\mathcal U$ 当且仅当 $\Lambda\setminus\llbracket\alpha\rrbracket\in\mathcal U$。
+因此等价于
+\[
+  (\Lambda\setminus\llbracket\alpha\rrbracket)\cup\llbracket\beta\rrbracket\in\mathcal U.
+\]
+由引理~\ref{lem:truth-set} 该集合正是 $\llbracket\alpha\to\beta\rrbracket$，故得到结论。
+
+\textbf{(D) 存在量词：}
+若 $\varphi=(\exists x\,\psi)$。
+
+($\Rightarrow$) 设 $\bigl(\prod_{\mathcal U}\mathcal M_{\alpha},v\bigr)\models(\exists x\,\psi)$。
+则存在 $[a]\in\prod_{\mathcal U}\mathcal M_{\alpha}$ 使得 $\bigl(\prod_{\mathcal U}\mathcal M_{\alpha},v^{x}_{[a]}\bigr)\models\psi$。
+取代表元 $a=(a_{\alpha})_{\alpha}\in\prod_{\alpha}M_{\alpha}$。
+令 $v'_{\alpha}:=(v_{\alpha})^{x}_{a_{\alpha}}$，并记 $v':=v^{x}_{[a]}$。
+由引理~\ref{lem:ultraproduct-assignment-replacement}，$v'$ 正是由 $(v'_{\alpha})_{\alpha}$ 诱导的超积赋值。
+由归纳假设得 $\llbracket\psi\rrbracket'\in\mathcal U$，其中
+\[
+  \llbracket\psi\rrbracket':=\{\alpha:(\mathcal M_{\alpha},v'_{\alpha})\models\psi\}.
+\]
+而对任意 $\alpha\in\llbracket\psi\rrbracket'$，显然 $(\mathcal M_{\alpha},v_{\alpha})\models(\exists x\,\psi)$，故
+$\llbracket\psi\rrbracket'\subseteq\llbracket\exists x\,\psi\rrbracket$。
+由向上封闭性得 $\llbracket\exists x\,\psi\rrbracket\in\mathcal U$。
+
+($\Leftarrow$) 设 $\llbracket\exists x\,\psi\rrbracket\in\mathcal U$。
+对每个 $\alpha\in\llbracket\exists x\,\psi\rrbracket$，选取一个见证元 $a_{\alpha}\in M_{\alpha}$ 使得 $(\mathcal M_{\alpha},(v_{\alpha})^{x}_{a_{\alpha}})\models\psi$。
+对其余 $\alpha$ 任取 $a_{\alpha}\in M_{\alpha}$（论域非空）。
+令 $a=(a_{\alpha})_{\alpha}$ 且 $[a]=q(a)$。
+令 $v'_{\alpha}:=(v_{\alpha})^{x}_{a_{\alpha}}$，并令 $v':=v^{x}_{[a]}$。
+则
+\[
+  \llbracket\exists x\,\psi\rrbracket\subseteq\{\alpha:(\mathcal M_{\alpha},v'_{\alpha})\models\psi\}=:\llbracket\psi\rrbracket'.
+\]
+由向上封闭性得 $\llbracket\psi\rrbracket'\in\mathcal U$。
+由归纳假设得 $\bigl(\prod_{\mathcal U}\mathcal M_{\alpha},v'\bigr)\models\psi$。
+ 因此 $\bigl(\prod_{\mathcal U}\mathcal M_{\alpha},v\bigr)\models(\exists x\,\psi)$。
+
+ 综上，对所有公式成立。
+\end{proof}
+
+\begin{definition}[超幂上的诱导赋值（常值情形）]
+\label{ultrapower-constant-assignment}
+沿用定义~\ref{def:ultrapower}。
+设对所有 $\alpha\in\Lambda$ 都有 $\mathcal M_{\alpha}=\mathcal M$，并取同一赋值 $v_{\alpha}=v:V\to M$。
+令 $v^{\mathcal U}:V\to \prod_{\mathcal U}\mathcal M$ 为由 $(v_{\alpha})_{\alpha}$ 诱导的超积赋值，则对任意 $x\in V$，有
+\[
+  v^{\mathcal U}(x)=[(v(x))_{\alpha\in\Lambda}].
+\]
+记对角映射（常值嵌入）$\delta:M\to\prod_{\mathcal U}\mathcal M$ 为
+\[
+  \delta(a):=[(a)_{\alpha\in\Lambda}].
+\]
+则 $v^{\mathcal U}=\delta\circ v$，并且有交换图：
+\[
+\begin{tikzcd}
+V \arrow[r, "v"] \arrow[dr, "v^{\mathcal U}"'] & M \arrow[d, "\delta"] \\
+& \prod_{\mathcal U}\mathcal M
+\end{tikzcd}
+\]
+\end{definition}
+
+\begin{proposition}[超幂保持满足关系（常值情形）]
+\label{ultrapower-preserve-satisfaction}
+在上述记号下，对任意 $L$-公式 $\varphi$，有
+\[
+  (\mathcal M,v)\models\varphi \ \Longleftrightarrow\ \bigl(\prod_{\mathcal U}\mathcal M, v^{\mathcal U}\bigr)\models\varphi.
+\]
+\end{proposition}
+
+\begin{proof}
+由定理~\ref{thm:los}，
+\[
+  \bigl(\prod_{\mathcal U}\mathcal M, v^{\mathcal U}\bigr)\models\varphi
+  \ \Longleftrightarrow\ \llbracket\varphi\rrbracket\in\mathcal U,
+\]
+其中 $\llbracket\varphi\rrbracket:=\{\alpha\in\Lambda:(\mathcal M,v)\models\varphi\}$。
+但右端要么为 $\Lambda$（若 $(\mathcal M,v)\models\varphi$），要么为空集（否则）。
+又 $\Lambda\in\mathcal U$ 且 $\varnothing\notin\mathcal U$，故结论成立。
+\end{proof}
+
+\begin{definition}[初等嵌入]
+\label{elementary-embedding}
+设 $\mathcal M,\mathcal N$ 为 $L$-结构，$\theta:M\to N$ 为映射。
+若对任意赋值 $v:V\to M$ 与任意 $L$-公式 $\varphi$ 都有
+\[
+  (\mathcal M,v)\models\varphi \ \Longleftrightarrow\ (\mathcal N,\theta\circ v)\models\varphi,
+\]
+则称 $\theta$ 为从 $\mathcal M$ 到 $\mathcal N$ 的一个初等嵌入（elementary embedding）。
+对应关系可用交换图表示：
+\[
+\begin{tikzcd}
+& V \arrow[dl, "v"'] \arrow[dr, "\theta\circ v"] & \\
+M \arrow[rr, "\theta"] & & N
+\end{tikzcd}
+\]
+\end{definition}
+
+在一些文献中也写作：若给定 $L$-结构 $\mathcal N,\mathcal M$ 与映射 $\theta:N\to M$，并对任意赋值 $v:V\to N$ 与任意 $L$-公式 $\varphi$ 有
+\[
+  (\mathcal N,v)\models\varphi \ \Longleftrightarrow\ (\mathcal M,\theta\circ v)\models\varphi,
+\]
+则称 $\theta$ 为初等嵌入；其交换图为
+\[
+\begin{tikzcd}
+& V \arrow[dl, "v"'] \arrow[dr, "\theta\circ v"] & \\
+N \arrow[rr, "\theta"] & & M
+\end{tikzcd}
+\]
+
+\begin{proposition}[初等嵌入的基本性质]
+\label{elementary-embedding-basic-properties}
+设 $\mathcal M,\mathcal N$ 为 $L$-结构，$\theta:M\to N$ 为从 $\mathcal M$ 到 $\mathcal N$ 的初等嵌入（定义~\ref{def:elementary-embedding}）。
+则：
+\begin{enumerate}
+  \item $\theta$ 为单射；
+  \item 对任意常元符号 $c\in C$，有 $\theta(c^{\mathcal M})=c^{\mathcal N}$；
+  \item 对任意函数符号 $f\in F$（$n_f=n$）与任意 $a_1,\dots,a_n\in M$，有
+  \[
+    \theta\bigl(f^{\mathcal M}(a_1,\dots,a_n)\bigr)=f^{\mathcal N}\bigl(\theta(a_1),\dots,\theta(a_n)\bigr),
+  \]
+  从而下图交换：
+  \[
+  \begin{tikzcd}
+  M^{n} \arrow[r, "f^{\mathcal M}"] \arrow[d, "\theta^{n}"'] & M \arrow[d, "\theta"] \\
+  N^{n} \arrow[r, "f^{\mathcal N}"'] & N
+  \end{tikzcd}
+  \]
+  \item 对任意关系符号 $R\in R$（$n_R=n$）与任意 $a_1,\dots,a_n\in M$，有
+  \[
+    (a_1,\dots,a_n)\in R^{\mathcal M}\ \Longleftrightarrow\ (\theta(a_1),\dots,\theta(a_n))\in R^{\mathcal N}.
+  \]
+\end{enumerate}
+\end{proposition}
+
+\begin{proof}
+\begin{enumerate}
+  \item 取 $a,b\in M$ 且 $a\neq b$。
+  令赋值 $v:V\to M$ 满足 $v(x)=a$、$v(y)=b$。
+  则 $(\mathcal M,v)\models\neg(x=y)$。
+  由初等性得 $(\mathcal N,\theta\circ v)\models\neg(x=y)$，即 $\theta(a)\neq\theta(b)$。
+  故 $\theta$ 单射。
+  \item 取任意 $c\in C$。
+  令赋值 $v:V\to M$ 满足 $v(x)=c^{\mathcal M}$。
+  则 $(\mathcal M,v)\models(c=x)$。
+  由初等性得 $(\mathcal N,\theta\circ v)\models(c=x)$。
+  于是 $c^{\mathcal N}=(\theta\circ v)(x)=\theta(c^{\mathcal M})$。
+  \item 取 $f\in F$（$n_f=n$）与 $a_1,\dots,a_n\in M$，并令 $b:=f^{\mathcal M}(a_1,\dots,a_n)$。
+  取赋值 $v:V\to M$ 满足 $v(x_i)=a_i$（$i=1,\dots,n$）且 $v(y)=b$。
+  则 $(\mathcal M,v)\models\bigl(f(x_1,\dots,x_n)=y\bigr)$。
+  由初等性得 $(\mathcal N,\theta\circ v)\models\bigl(f(x_1,\dots,x_n)=y\bigr)$，
+  即
+  \[
+    f^{\mathcal N}(\theta(a_1),\dots,\theta(a_n))=(\theta\circ v)(y)=\theta(b)=\theta\bigl(f^{\mathcal M}(a_1,\dots,a_n)\bigr).
+  \]
+  \item 取 $R\in R$（$n_R=n$）与 $a_1,\dots,a_n\in M$。
+  取赋值 $v:V\to M$ 满足 $v(x_i)=a_i$（$i=1,\dots,n$）。
+  则
+  \[
+    (a_1,\dots,a_n)\in R^{\mathcal M}\ \Longleftrightarrow\ (\mathcal M,v)\models R(x_1,\dots,x_n).
+  \]
+  由初等性得
+  \[
+    (\mathcal M,v)\models R(x_1,\dots,x_n)\ \Longleftrightarrow\ (\mathcal N,\theta\circ v)\models R(x_1,\dots,x_n)
+    \ \Longleftrightarrow\ (\theta(a_1),\dots,\theta(a_n))\in R^{\mathcal N}.
+  \]
+\end{enumerate}
+\end{proof}
+
+\begin{theorem}[对角嵌入是初等嵌入]
+\label{diagonal-elementary}
+设 $\mathcal U$ 为 $\Lambda$ 上的超滤子，$\mathcal M$ 为 $L$-结构。
+令 $\delta:M\to\prod_{\mathcal U}\mathcal M$ 为对角嵌入 $a\mapsto[(a)_{\alpha\in\Lambda}]$。
+则 $\delta$ 是初等嵌入。
+\end{theorem}
+
+\begin{proof}
+任取赋值 $v:V\to M$。
+对每个 $\alpha\in\Lambda$ 取 $v_{\alpha}=v$，并令 $v^{\mathcal U}$ 为由 $(v_{\alpha})_{\alpha}$ 诱导的超幂赋值。
+由定义~\ref{def:ultrapower-constant-assignment} 知 $v^{\mathcal U}=\delta\circ v$。
+于是对任意 $L$-公式 $\varphi$，由命题~\ref{pro:ultrapower-preserve-satisfaction} 有
+\[
+  (\mathcal M,v)\models\varphi\ \Longleftrightarrow\ \bigl(\prod_{\mathcal U}\mathcal M, v^{\mathcal U}\bigr)\models\varphi
+  \ \Longleftrightarrow\ \bigl(\prod_{\mathcal U}\mathcal M, \delta\circ v\bigr)\models\varphi.
+ \]
+ 故 $\delta$ 为初等嵌入。
+ \end{proof}
+ 
+\chapter{紧致性定理与应用}
+
+\section{可满足性与紧致性}
+
+\begin{definition}[可满足与有限可满足]
+\label{satisfiable-and-finitely-satisfiable}
+设 $T$ 为一族 $L$-句（sentence）。
+\begin{enumerate}
+  \item 若存在 $L$-结构 $\mathcal M$ 与赋值 $v:V\to M$ 使得对任意 $\varphi\in T$ 都有 $(\mathcal M,v)\models\varphi$，则称 $T$ \emph{可满足}。
+  \item 若对任意有限子集 $\Delta\subseteq T$ 都有 $\Delta$ 可满足，则称 $T$ \emph{有限可满足}。
+\end{enumerate}
+\end{definition}
+
+\begin{theorem}[紧致性定理]
+\label{compactness}
+若 $T$ 为一族 $L$-句且 $T$ 有限可满足，则 $T$ 可满足。
+\end{theorem}
+
+\begin{proof}
+令
+\[
+  \Lambda:=\{\alpha\subseteq T:|\alpha|<\omega\}
+\]
+为 $T$ 的全体有限子集所成集合。
+由有限可满足性，对每个 $\alpha\in\Lambda$ 可取 $L$-结构 $\mathcal M_{\alpha}$ 与赋值 $v_{\alpha}:V\to M_{\alpha}$ 使得对任意 $\psi\in\alpha$ 都有 $(\mathcal M_{\alpha},v_{\alpha})\models\psi$。
+
+对任意 $\varphi\in T$，令
+\[
+  \Omega_{\varphi}:=\{\alpha\in\Lambda:\varphi\in\alpha\}.
+\]
+则族 $\{\Omega_{\varphi}:\varphi\in T\}$ 具有有限交性质：
+若 $\varphi_1,\dots,\varphi_n\in T$，则
+\[
+  \Omega_{\varphi_1}\cap\cdots\cap\Omega_{\varphi_n}\supseteq\{\{\varphi_1,\dots,\varphi_n\}\}\neq\varnothing.
+\]
+因此由前述“具有有限交性质的族可生成滤子并可扩张为超滤子”的结论，可取 $\Lambda$ 上超滤子 $\mathcal U$ 使得对一切 $\varphi\in T$ 都有 $\Omega_{\varphi}\in\mathcal U$。
+
+令 $v:V\to\prod_{\mathcal U}\mathcal M_{\alpha}$ 为由 $(v_{\alpha})_{\alpha\in\Lambda}$ 诱导的超积赋值。
+任取 $\varphi\in T$，其真值集为
+\[
+  \llbracket\varphi\rrbracket:=\{\alpha\in\Lambda:(\mathcal M_{\alpha},v_{\alpha})\models\varphi\}.
+\]
+若 $\alpha\in\Omega_{\varphi}$，则 $\varphi\in\alpha$，从而按 $\mathcal M_{\alpha}$ 的选取有 $(\mathcal M_{\alpha},v_{\alpha})\models\varphi$。
+因此 $\Omega_{\varphi}\subseteq\llbracket\varphi\rrbracket$。
+又 $\Omega_{\varphi}\in\mathcal U$ 且 $\mathcal U$ 向上封闭，得 $\llbracket\varphi\rrbracket\in\mathcal U$。
+由 Łoś 定理（定理~\ref{thm:los}）可知
+\[
+  \bigl(\prod_{\mathcal U}\mathcal M_{\alpha},v\bigr)\models\varphi.
+\]
+由于 $\varphi\in T$ 任意，故 $\bigl(\prod_{\mathcal U}\mathcal M_{\alpha},v\bigr)$ 满足 $T$，即 $T$ 可满足。
+\end{proof}
+
+\begin{proposition}[有限群不能由一句子刻画]
+\label{finite-group-not-definable}
+设 $L_{\mathrm{grp}}=(V,\{e\},\{\cdot\},\varnothing)$ 为群语言，其中 $\cdot$ 为二元函数符号，$e$ 为常元符号，并约定以 $xy$ 表示 $x\cdot y$。
+则不存在 $L_{\mathrm{grp}}$-句 $\varphi$ 使得对任意 $L_{\mathrm{grp}}$-结构（群）$\mathcal G$ 都有
+\[
+  \mathcal G\models\varphi\ \Longleftrightarrow\ \text{$\mathcal G$ 的论域有限}.
+\]
+\end{proposition}
+
+\begin{proof}
+反设存在这样的句子 $\varphi$。
+令 $T$ 为群公理所成的句子集合：
+\begin{enumerate}
+  \item $\forall x\,\forall y\,\forall z\,\bigl((xy)z=x(yz)\bigr)$；
+  \item $\forall x\,\bigl(xe=x\wedge ex=x\bigr)$；
+  \item $\forall x\,\exists y\,\bigl(xy=e\wedge yx=e\bigr)$。
+\end{enumerate}
+
+对每个 $n\in\mathbb N$，令 $\psi_n$ 为“至少有 $n$ 个元素”的 $L_{\mathrm{grp}}$-句：
+\[
+  \psi_n:=\exists x_1\cdots\exists x_n\,\bigwedge_{1\le i<j\le n}\neg(x_i=x_j).
+\]
+并令
+\[
+  \Omega:=T\cup\{\psi_n:n\in\mathbb N\}\cup\{\varphi\}.
+\]
+
+先证 $\Omega$ 有限可满足。
+任取有限子集 $\Delta\subseteq\Omega$。
+则存在 $N\in\mathbb N$ 使得 $\Delta$ 中出现的所有 $\psi_n$ 都满足 $n\le N$。
+取循环群 $\mathbb Z/(N+1)\mathbb Z$ 作为 $L_{\mathrm{grp}}$-结构（$e$ 解释为 $0$，$\cdot$ 解释为加法），显然它满足 $T$，并且论域大小为 $N+1$，故满足 $\psi_n$（$n\le N$）。
+又它是有限群，所以满足 $\varphi$。
+从而 $\Delta$ 可满足。
+
+由紧致性定理（定理~\ref{thm:compactness}），$\Omega$ 可满足。
+取 $\mathcal M\models\Omega$。
+则 $\mathcal M\models\psi_n$ 对所有 $n$ 成立，从而 $|M|\ge n$ 对所有 $n$，故 $M$ 无限。
+ 但同时 $\mathcal M\models\varphi$，按 $\varphi$ 的性质应推出 $M$ 有限，矛盾。
+\end{proof}
+
+\section{自由变量与语句}
+
+\begin{definition}[项中出现的变量]
+\label{vars-in-term}
+设 $t\in\mathrm{Term}(L)$。
+递归定义其出现变量集 $\mathrm{Var}(t)\subseteq V$：
+\begin{enumerate}
+  \item 若 $t=x\in V$，则 $\mathrm{Var}(t)=\{x\}$；
+  \item 若 $t=c\in C$，则 $\mathrm{Var}(t)=\varnothing$；
+  \item 若 $t=f(t_1,\dots,t_n)$（$f\in F,\ n_f=n$），则
+  \[
+    \mathrm{Var}(t)=\mathrm{Var}(t_1)\cup\cdots\cup\mathrm{Var}(t_n).
+  \]
+\end{enumerate}
+\end{definition}
+
+\begin{lemma}[项的解释只依赖其出现变量]
+\label{term-depends-on-vars}
+设 $\mathcal M$ 为 $L$-结构，$v,u:V\to M$ 为赋值，$t\in\mathrm{Term}(L)$。
+若对任意 $x\in\mathrm{Var}(t)$ 都有 $v(x)=u(x)$，则
+\[
+  \bar v(t)=\bar u(t),
+\]
+其中 $\bar v,\bar u:\mathrm{Term}(L)\to M$ 分别为由 $v,u$ 诱导的项解释。
+并且记 $\iota_t:\mathrm{Var}(t)\hookrightarrow V$ 为包含映射，则条件 $v(x)=u(x)$（$x\in\mathrm{Var}(t)$）等价于下图交换：
+\[
+\begin{tikzcd}
+\mathrm{Var}(t) \arrow[r, hook, "\iota_t"] \arrow[dr, "v\circ\iota_t"'] & V \arrow[d, shift left, "v"] \arrow[d, shift right, "u"'] \\
+& M
+\end{tikzcd}
+\]
+\end{lemma}
+
+\begin{proof}
+令
+\[
+  \Omega:=\{t\in\mathrm{Term}(L):\ \forall v,u:V\to M\,\bigl(v|_{\mathrm{Var}(t)}=u|_{\mathrm{Var}(t)}\Rightarrow \bar v(t)=\bar u(t)\bigr)\}.
+\]
+先证 $V\cup C\subseteq\Omega$。
+若 $t=x\in V$，则 $\mathrm{Var}(t)=\{x\}$，从而 $v(x)=u(x)$，故 $\bar v(t)=v(x)=u(x)=\bar u(t)$。
+若 $t=c\in C$，则 $\mathrm{Var}(t)=\varnothing$，且 $\bar v(c)=c^{\mathcal M}=\bar u(c)$。
+
+再证 $\Omega$ 对函数符号闭包。
+设 $t=f(t_1,\dots,t_n)$，并设对任意 $x\in\mathrm{Var}(t)$ 有 $v(x)=u(x)$。
+由定义~\ref{def:vars-in-term}，对每个 $i$ 有 $\mathrm{Var}(t_i)\subseteq\mathrm{Var}(t)$，故 $v|_{\mathrm{Var}(t_i)}=u|_{\mathrm{Var}(t_i)}$。
+若已知 $t_1,\dots,t_n\in\Omega$，则对每个 $i$ 有 $\bar v(t_i)=\bar u(t_i)$。
+于是由项解释的递归定义，
+\[
+  \bar v(t)=f^{\mathcal M}\bigl(\bar v(t_1),\dots,\bar v(t_n)\bigr)=f^{\mathcal M}\bigl(\bar u(t_1),\dots,\bar u(t_n)\bigr)=\bar u(t).
+\]
+故 $t\in\Omega$。
+
+由 $\mathrm{Term}(L)$ 的最小性（包含 $V\cup C$ 且对函数符号闭包的最小集合）得 $\Omega=\mathrm{Term}(L)$，结论成立。
+\end{proof}
+
+\begin{definition}[公式中的自由出现与自由变量]
+\label{free-vars-in-formula}
+设 $\varphi$ 为 $L$-公式。
+递归定义其自由变量集 $\mathrm{FV}(\varphi)\subseteq V$：
+\begin{enumerate}
+  \item 若 $\varphi=(t=s)$，则 $\mathrm{FV}(\varphi)=\mathrm{Var}(t)\cup\mathrm{Var}(s)$；
+  \item 若 $\varphi=R(t_1,\dots,t_n)$（$R\in R,\ n_R=n$），则
+  \[
+    \mathrm{FV}(\varphi)=\mathrm{Var}(t_1)\cup\cdots\cup\mathrm{Var}(t_n)
+  \]
+  \item 若 $\varphi=\neg\psi$，则 $\mathrm{FV}(\varphi)=\mathrm{FV}(\psi)$；
+  \item 若 $\varphi=(\alpha\to\beta)$，则 $\mathrm{FV}(\varphi)=\mathrm{FV}(\alpha)\cup\mathrm{FV}(\beta)$；
+  \item 若 $\varphi=(\exists x\,\psi)$，则 $\mathrm{FV}(\varphi)=\mathrm{FV}(\psi)\setminus\{x\}$。
+\end{enumerate}
+若 $x\in\mathrm{FV}(\varphi)$，则称 $x$ 在 $\varphi$ 中自由出现。
+例如在公式 $\exists x\,(x=x)$ 中，变量 $x$ 出现但不自由出现。
+\end{definition}
+
+\begin{remark}
+\label{rem:fv-exists-subset}
+设 $\psi$ 为 $L$-公式，$x\in V$ 且 $A\subseteq V$。
+若 $\mathrm{FV}(\exists x\,\psi)\subseteq A$，则 $\mathrm{FV}(\psi)\subseteq A\cup\{x\}$。
+\end{remark}
+
+\begin{proof}
+取任意 $y\in\mathrm{FV}(\psi)$。
+若 $y=x$，则 $y\in A\cup\{x\}$。
+若 $y\neq x$，则 $y\in\mathrm{FV}(\psi)\setminus\{x\}=\mathrm{FV}(\exists x\,\psi)\subseteq A$，亦得 $y\in A\cup\{x\}$。
+\end{proof}
+
+\begin{lemma}[满足关系只依赖自由变量]
+\label{satisfaction-depends-on-free-vars}
+设 $\mathcal M$ 为 $L$-结构，$v,u:V\to M$ 为赋值，$\varphi$ 为 $L$-公式。
+若 $v|_{\mathrm{FV}(\varphi)}=u|_{\mathrm{FV}(\varphi)}$，则
+\[
+  (\mathcal M,v)\models\varphi\ \Longleftrightarrow\ (\mathcal M,u)\models\varphi.
+\]
+并且记 $\iota_{\varphi}:\mathrm{FV}(\varphi)\hookrightarrow V$ 为包含映射，则条件 $v|_{\mathrm{FV}(\varphi)}=u|_{\mathrm{FV}(\varphi)}$ 等价于下图交换：
+\[
+\begin{tikzcd}
+\mathrm{FV}(\varphi) \arrow[r, hook, "\iota_{\varphi}"] \arrow[dr, "v\circ\iota_{\varphi}"'] & V \arrow[d, shift left, "v"] \arrow[d, shift right, "u"'] \\
+& M
+\end{tikzcd}
+\]
+\end{lemma}
+
+\begin{proof}
+对公式 $\varphi$ 的生成方式作归纳。
+
+\textbf{(A) 原子公式：}
+\begin{enumerate}
+  \item 若 $\varphi=(t=s)$。
+  由 $\mathrm{FV}(\varphi)=\mathrm{Var}(t)\cup\mathrm{Var}(s)$，假设 $v|_{\mathrm{FV}(\varphi)}=u|_{\mathrm{FV}(\varphi)}$。
+  则分别有 $v|_{\mathrm{Var}(t)}=u|_{\mathrm{Var}(t)}$ 与 $v|_{\mathrm{Var}(s)}=u|_{\mathrm{Var}(s)}$。
+  由引理~\ref{lem:term-depends-on-vars} 得 $\bar v(t)=\bar u(t)$ 且 $\bar v(s)=\bar u(s)$。
+  因此
+  \[
+    (\mathcal M,v)\models(t=s)\ \Longleftrightarrow\ \bar v(t)=\bar v(s)\ \Longleftrightarrow\ \bar u(t)=\bar u(s)\ \Longleftrightarrow\ (\mathcal M,u)\models(t=s).
+  \]
+  \item 若 $\varphi=R(t_1,\dots,t_n)$。
+  由 $\mathrm{FV}(\varphi)=\bigcup_i\mathrm{Var}(t_i)$ 与假设 $v|_{\mathrm{FV}(\varphi)}=u|_{\mathrm{FV}(\varphi)}$，可得对每个 $i$ 有 $v|_{\mathrm{Var}(t_i)}=u|_{\mathrm{Var}(t_i)}$。
+  由引理~\ref{lem:term-depends-on-vars} 得 $\bar v(t_i)=\bar u(t_i)$。
+  故
+  \[
+    (\mathcal M,v)\models R(t_1,\dots,t_n)
+    \Longleftrightarrow
+    (\bar v(t_1),\dots,\bar v(t_n))\in R^{\mathcal M}
+    \Longleftrightarrow
+    (\bar u(t_1),\dots,\bar u(t_n))\in R^{\mathcal M}
+    \Longleftrightarrow
+    (\mathcal M,u)\models R(t_1,\dots,t_n).
+  \]
+\end{enumerate}
+
+\textbf{(B) 否定：} 若 $\varphi=\neg\psi$。
+此时 $\mathrm{FV}(\varphi)=\mathrm{FV}(\psi)$。
+由归纳假设，$v|_{\mathrm{FV}(\psi)}=u|_{\mathrm{FV}(\psi)}$ 蕴含
+$(\mathcal M,v)\models\psi\Longleftrightarrow(\mathcal M,u)\models\psi$。
+取否即得
+$(\mathcal M,v)\models\neg\psi\Longleftrightarrow(\mathcal M,u)\models\neg\psi$。
+
+\textbf{(C) 蕴涵：} 若 $\varphi=(\alpha\to\beta)$。
+此时 $\mathrm{FV}(\varphi)=\mathrm{FV}(\alpha)\cup\mathrm{FV}(\beta)$。
+由假设可得 $v|_{\mathrm{FV}(\alpha)}=u|_{\mathrm{FV}(\alpha)}$ 且 $v|_{\mathrm{FV}(\beta)}=u|_{\mathrm{FV}(\beta)}$。
+由归纳假设分别得到
+$(\mathcal M,v)\models\alpha\Longleftrightarrow(\mathcal M,u)\models\alpha$ 与
+$(\mathcal M,v)\models\beta\Longleftrightarrow(\mathcal M,u)\models\beta$。
+于是
+\[
+  (\mathcal M,v)\models(\alpha\to\beta)\ \Longleftrightarrow\ (\mathcal M,u)\models(\alpha\to\beta).
+\]
+
+\textbf{(D) 存在量词：} 若 $\varphi=(\exists x\,\psi)$。
+此时 $\mathrm{FV}(\varphi)=\mathrm{FV}(\psi)\setminus\{x\}$。
+设 $v|_{\mathrm{FV}(\varphi)}=u|_{\mathrm{FV}(\varphi)}$。
+($\Rightarrow$) 若 $(\mathcal M,v)\models\exists x\,\psi$，则存在 $a\in M$ 使得 $(\mathcal M,v^{x}_{a})\models\psi$。
+令 $u^{x}_{a}$ 为 $u$ 关于 $x$ 的替换赋值。
+由注记~\ref{rem:fv-exists-subset}（取 $A:=\mathrm{FV}(\varphi)$）可知 $\mathrm{FV}(\psi)\subseteq\mathrm{FV}(\varphi)\cup\{x\}$。
+因此对任意 $y\in\mathrm{FV}(\psi)$：
+若 $y=x$，则 $v^{x}_{a}(y)=a=u^{x}_{a}(y)$；
+若 $y\neq x$，则 $y\in\mathrm{FV}(\varphi)$，从而 $v(y)=u(y)$，进而 $v^{x}_{a}(y)=u^{x}_{a}(y)$。
+故 $v^{x}_{a}|_{\mathrm{FV}(\psi)}=u^{x}_{a}|_{\mathrm{FV}(\psi)}$。
+由归纳假设得 $(\mathcal M,u^{x}_{a})\models\psi$，从而 $(\mathcal M,u)\models\exists x\,\psi$。
+($\Leftarrow$) 反向同理。
+\end{proof}
+
+\begin{definition}[语句（句子）]
+\label{sentence}
+称 $L$-公式 $\varphi$ 为一个 $L$-语句（sentence，或称句子），若它没有自由变量，即
+\[
+  \mathrm{FV}(\varphi)=\varnothing.
+\]
+\end{definition}
+
+\begin{remark}
+若 $\varphi$ 为 $L$-语句，则对任意 $L$-结构 $\mathcal M$ 与任意赋值 $v,u:V\to M$，都有
+\[
+  (\mathcal M,v)\models\varphi\ \Longleftrightarrow\ (\mathcal M,u)\models\varphi.
+\]
+\end{remark}
+
+\begin{definition}[结构满足语句]
+\label{structure-satisfies-sentence}
+若 $\varphi$ 为 $L$-语句且 $\mathcal M$ 为 $L$-结构。
+若存在（等价地：任取）赋值 $v:V\to M$ 使得 $(\mathcal M,v)\models\varphi$，则记
+\[
+  \mathcal M\models\varphi.
+\]
+并称 $\mathcal M$ 满足语句 $\varphi$。
+\end{definition}
+
+\begin{remark}
+设 $\varphi,\psi$ 为 $L$-语句。
+则
+\begin{enumerate}
+  \item $\mathcal M\models\neg\varphi\ \Longleftrightarrow\ \mathcal M\not\models\varphi$；
+ \item $\mathcal M\models(\varphi\to\psi)\ \Longleftrightarrow\ \bigl(\mathcal M\models\varphi\Rightarrow\mathcal M\models\psi\bigr)$。
+ \end{enumerate}
+ \end{remark}
+
+ \begin{proposition}[析取与合取的语义]
+ \label{semantics-or-and}
+ 设 $\mathcal M$ 为 $L$-结构，$v:V\to M$ 为赋值，$\varphi,\psi$ 为 $L$-公式。
+ 则
+ \begin{enumerate}
+   \item $(\mathcal M,v)\models(\varphi\vee\psi)\ \Longleftrightarrow\ (\mathcal M,v)\models\varphi\ \text{或}\ (\mathcal M,v)\models\psi$；
+   \item $(\mathcal M,v)\models(\varphi\wedge\psi)\ \Longleftrightarrow\ (\mathcal M,v)\models\varphi\ \text{且}\ (\mathcal M,v)\models\psi$。
+ \end{enumerate}
+ \end{proposition}
+
+ \begin{proof}
+ \begin{enumerate}
+   \item 由缩写定义 $\varphi\vee\psi:=((\neg\varphi)\to\psi)$，有
+   \[
+     (\mathcal M,v)\models(\varphi\vee\psi)
+     \Longleftrightarrow
+     (\mathcal M,v)\models\bigl((\neg\varphi)\to\psi\bigr).
+   \]
+   再由满足关系对 $\to$ 的定义，上式等价于
+   \[
+     \bigl((\mathcal M,v)\models\neg\varphi\Rightarrow(\mathcal M,v)\models\psi\bigr),
+   \]
+   又 $(\mathcal M,v)\models\neg\varphi$ 等价于 $(\mathcal M,v)\not\models\varphi$，故等价于
+   \[
+     (\mathcal M,v)\models\varphi\ \text{或}\ (\mathcal M,v)\models\psi.
+   \]
+   \item 由缩写定义 $\varphi\wedge\psi:=\neg\bigl(\varphi\to(\neg\psi)\bigr)$。
+   于是
+   \[
+     (\mathcal M,v)\models(\varphi\wedge\psi)
+     \Longleftrightarrow
+     (\mathcal M,v)\not\models\bigl(\varphi\to(\neg\psi)\bigr).
+   \]
+   上式等价于“$(\mathcal M,v)\models\varphi$ 且 $(\mathcal M,v)\not\models\neg\psi$”，
+   即“$(\mathcal M,v)\models\varphi$ 且 $(\mathcal M,v)\models\psi$”。
+ \end{enumerate}
+ \end{proof}
+
+ \begin{proposition}[语句的析取与合取]
+ \label{sentence-or-and}
+ 设 $\varphi,\psi$ 为 $L$-语句。
+ 则对任意 $L$-结构 $\mathcal M$，有
+ \begin{enumerate}
+   \item $\mathcal M\models(\varphi\vee\psi)\ \Longleftrightarrow\ \mathcal M\models\varphi\ \text{或}\ \mathcal M\models\psi$；
+   \item $\mathcal M\models(\varphi\wedge\psi)\ \Longleftrightarrow\ \mathcal M\models\varphi\ \text{且}\ \mathcal M\models\psi$。
+ \end{enumerate}
+ \end{proposition}
+
+ \begin{proof}
+ 取任意赋值 $v:V\to M$。
+ 由定义~\ref{def:structure-satisfies-sentence} 与命题~\ref{pro:semantics-or-and} 立即得到两条等价式。
+ \end{proof}
+
+\section{初等等价与初等子结构}
+
+ \begin{definition}[初等等价]
+ \label{elementary-equivalence}
+ 设 $\mathcal M,\mathcal N$ 为 $L$-结构。
+ 若对任意 $L$-语句 $\varphi$ 都有
+ \[
+   \mathcal M\models\varphi\ \Longleftrightarrow\ \mathcal N\models\varphi,
+ \]
+ 则称 $\mathcal M$ 与 $\mathcal N$ \emph{初等等价}，记作 $\mathcal M\equiv\mathcal N$。
+ \end{definition}
+
+ \begin{definition}[初等子结构]
+ \label{elementary-substructure}
+ 设 $\mathcal M,\mathcal N$ 为 $L$-结构，且 $\mathcal M$ 是 $\mathcal N$ 的子结构。
+ 若对任意 $L$-语句 $\varphi$ 都有
+ \[
+   \mathcal M\models\varphi\ \Longrightarrow\ \mathcal N\models\varphi,
+ \]
+ 则称 $\mathcal M$ 为 $\mathcal N$ 的一个初等子结构，记作 $\mathcal M\preccurlyeq\mathcal N$。
+ \end{definition}
+
+ \begin{remark}
+ 在上述定义中，若 $\mathcal M\preccurlyeq\mathcal N$，则对任意语句 $\varphi$ 都有
+ \[
+   \mathcal M\models\varphi\ \Longleftrightarrow\ \mathcal N\models\varphi.
+ \]
+ \end{remark}
+
+ \begin{proof}
+ 已知“$\Rightarrow$”。
+ 若 $\mathcal N\models\varphi$ 而 $\mathcal M\not\models\varphi$，则 $\mathcal M\models\neg\varphi$。
+ 由 $\mathcal M\preccurlyeq\mathcal N$ 得 $\mathcal N\models\neg\varphi$，与 $\mathcal N\models\varphi$ 矛盾。
+ \end{proof}
+
+ \begin{proposition}
+ \label{elementary-embedding-implies-equivalence}
+ 若 $\theta:\mathcal M\to\mathcal N$ 为初等嵌入，则 $\mathcal M\equiv\mathcal N$。
+ \end{proposition}
+
+ \begin{proof}
+ 任取语句 $\varphi$。
+ 取任意赋值 $v:V\to M$。
+ 则
+ \[
+   \mathcal M\models\varphi
+   \Longleftrightarrow
+   (\mathcal M,v)\models\varphi
+   \Longleftrightarrow
+   (\mathcal N,\theta\circ v)\models\varphi
+   \Longleftrightarrow
+   \mathcal N\models\varphi,
+ \]
+ 其中第二个等价号用到语句与赋值无关，第三个等价号用到 $\theta$ 的初等性。
+ \end{proof}
+
+ \begin{theorem}
+ \label{finite-elementary-substructure}
+ 若 $\mathcal M\preccurlyeq\mathcal N$ 且 $\mathcal N$ 为有限结构，则
+ \[
+   \mathcal M\cong\mathcal N\ \Longleftrightarrow\ \mathcal M=\mathcal N.
+ \]
+ \end{theorem}
+
+ \begin{proof}
+ 若 $\mathcal M=\mathcal N$ 则显然同构。
+ 反之若 $\mathcal M\cong\mathcal N$，则 $|M|=|N|$。
+ 又因 $\mathcal M$ 是 $\mathcal N$ 的子结构，故 $M\subseteq N$。
+ 由 $N$ 有限即得 $M=N$，从而 $\mathcal M=\mathcal N$。
+ \end{proof}
+
+ \begin{remark}
+ 定理~\ref{thm:finite-elementary-substructure} 中“$\mathcal N$ 有限”的条件不可去。
+ \end{remark}
+
+ \begin{example}[同构但非初等子结构]
+ 取语言 $L=(V,\varnothing,\varnothing, R=\{\le\})$，其中 $\le$ 为二元关系符号。
+ 令 $\mathcal N:=(\mathbb N,\le)$，并令 $\mathcal M:=(\mathbb N^{*},\le)$，其中 $\mathbb N^{*}:=\mathbb N\setminus\{0\}$，并把 $\le$ 理解为通常的大小关系。
+ 则显然 $\mathcal M$ 是 $\mathcal N$ 的子结构。
+ 定义同构 $\sigma:\mathbb N\to\mathbb N^{*}$ 为 $\sigma(n)=n+1$。
+ 则 $\sigma$ 保持 $\le$ 且双射，故 $\mathcal M\cong\mathcal N$。
+ 但包含映射 $\iota:\mathbb N^{*}\hookrightarrow\mathbb N$ 不是初等嵌入，因此 $\mathcal M\not\preccurlyeq\mathcal N$。
+ \end{example}
+
+ \begin{theorem}[有限结构：初等等价当且仅当同构]
+ \label{finite-equivalence-iff-isomorphism}
+ 设 $\mathcal M,\mathcal N$ 为有限 $L$-结构。
+ 则
+ \[
+   \mathcal M\equiv\mathcal N\ \Longleftrightarrow\ \mathcal M\cong\mathcal N.
+ \]
+ \end{theorem}
+
+ \begin{proof}
+ ($\Leftarrow$) 若 $\mathcal M\cong\mathcal N$，取同构 $\theta:\mathcal N\to\mathcal M$。
+ 则 $\theta$ 是初等嵌入，从而由命题~\ref{pro:elementary-embedding-implies-equivalence} 得 $\mathcal M\equiv\mathcal N$。
+
+ ($\Rightarrow$) 设 $\mathcal M\equiv\mathcal N$。
+ 先证 $|M|=|N|$。
+ 设 $|N|=n$，则 $\mathcal N\models\exists x_1\cdots\exists x_n\,\bigwedge_{1\le i<j\le n}\neg(x_i=x_j)$。
+ 由 $\mathcal M\equiv\mathcal N$ 得 $\mathcal M$ 亦满足该语句，故 $|M|\ge n$。
+ 交换 $\mathcal M,\mathcal N$ 同理得 $|N|\ge|M|$，从而 $|M|=|N|$。
+ 
+ 现在设 $|M|=|N|=n$。
+ 若 $\mathcal M\not\cong\mathcal N$，取枚举 $N=\{a_1,\dots,a_n\}$。
+ 令 $\Omega$ 为从 $N$ 到 $M$ 的全体双射之集（故 $|\Omega|=n!$）。
+ 对每个 $\theta\in\Omega$，由于 $\theta$ 不是同构，必存在下列三种情形之一：
+ \begin{enumerate}
+   \item 存在常元符号 $c\in C$ 使得 $\theta(c^{\mathcal N})\neq c^{\mathcal M}$；
+   \item 存在函数符号 $f\in F$（$n_f=k$）与 $a_{i_1},\dots,a_{i_k}\in N$ 使得
+   \[
+     \theta\bigl(f^{\mathcal N}(a_{i_1},\dots,a_{i_k})\bigr)\neq f^{\mathcal M}\bigl(\theta(a_{i_1}),\dots,\theta(a_{i_k})\bigr);
+   \]
+   \item 存在关系符号 $R\in R$（$n_R=k$）与 $a_{i_1},\dots,a_{i_k}\in N$ 使得
+   \[
+     (a_{i_1},\dots,a_{i_k})\in R^{\mathcal N}\ \text{而}\ (\theta(a_{i_1}),\dots,\theta(a_{i_k}))\notin R^{\mathcal M},
+   \]
+   或反之。
+ \end{enumerate}
+ 因而可为每个 $\theta\in\Omega$ 选取一个量词自由公式 $\varphi_{\theta}(x_1,\dots,x_n)$，使得令赋值 $v:V\to N$ 满足 $v(x_i)=a_i$（$i=1,\dots,n$）时
+ \[
+   (\mathcal N,v)\models\varphi_{\theta}\quad\text{但}\quad (\mathcal M,\theta\circ v)\not\models\varphi_{\theta}.
+ \]
+ （例如在情形 (1) 中取 $\varphi_{\theta}$ 为 $c=x_i$；在情形 (2) 中取 $x_j=f(x_{i_1},\dots,x_{i_k})$；在情形 (3) 中取 $R(x_{i_1},\dots,x_{i_k})$ 或其否定。）
+ 上述赋值与复合可用交换图表示：
+ \[
+ \begin{tikzcd}
+ & V \arrow[dl, "v"'] \arrow[dr, "\theta\circ v"] & \\
+ N \arrow[rr, "\theta"] & & M
+ \end{tikzcd}
+ \]
+
+ 令
+ \[
+   \Psi:=\exists x_1\cdots\exists x_n\,\Bigl(\bigwedge_{1\le i<j\le n}\neg(x_i=x_j)\ \wedge\ \bigwedge_{\theta\in\Omega}\varphi_{\theta}(x_1,\dots,x_n)\Bigr).
+ \]
+ 则由构造知 $\mathcal N\models\Psi$（取见证 $a_1,\dots,a_n$）。
+ 另一方面，对任意赋值 $u:V\to M$ 使得 $u(x_1),\dots,u(x_n)$ 两两不同，定义双射 $\theta_u:N\to M$ 为 $\theta_u(a_i)=u(x_i)$。
+ 由于 $\theta_u\in\Omega$，按 $\varphi_{\theta_u}$ 的选取，有 $(\mathcal M,\theta_u\circ v)\not\models\varphi_{\theta_u}$。
+ 注意到对每个 $i$，有 $(\theta_u\circ v)(x_i)=\theta_u(a_i)=u(x_i)$，故 $(\mathcal M,u)\not\models\varphi_{\theta_u}$。
+ 因而 $(\mathcal M,u)\not\models\bigwedge_{\theta\in\Omega}\varphi_{\theta}$，从而 $\mathcal M\not\models\Psi$。
+ 这与 $\mathcal M\equiv\mathcal N$ 矛盾。
+ 故必有 $\mathcal M\cong\mathcal N$。
+ \end{proof}
+
+\section{理论与模型}
+
+ \begin{definition}[语义蕴涵]
+ \label{semantic-entailment}
+ 设 $T$ 为一族 $L$-公式，$\varphi$ 为一个 $L$-公式。
+ 称 $T$ \emph{语义蕴涵} $\varphi$，记为 $T\models\varphi$，若对任意 $L$-结构 $\mathcal M$ 与任意赋值 $v:V\to M$，都有
+ \[
+   \bigl((\mathcal M,v)\models T\bigr)\ \Longrightarrow\ \bigl((\mathcal M,v)\models\varphi\bigr),
+ \]
+ 其中 $(\mathcal M,v)\models T$ 表示对任意 $\psi\in T$ 都有 $(\mathcal M,v)\models\psi$。
+ \end{definition}
+
+ \begin{definition}[理论与模型]
+ \label{theory-and-model}
+ 设 $T$ 为一族 $L$-语句。
+ 称 $T$ 为一个 $L$-理论（或公理集）。
+ 若 $\mathcal M$ 为 $L$-结构并且对任意 $\varphi\in T$ 都有 $\mathcal M\models\varphi$，则记 $\mathcal M\models T$，并称 $\mathcal M$ 为 $T$ 的一个模型。
+ \end{definition}
+
+ \begin{example}[群论公理]
+ \label{example:group-theory}
+ 取语言 $L=(V, C=\{e\}, F=\{\cdot\}, R=\varnothing)$，其中 $\cdot$ 为二元函数符号。
+ 令 $T$ 为下列语句组成的集合：
+ \begin{enumerate}
+   \item $\forall x\,\forall y\,\forall z\,\bigl((x\cdot y)\cdot z=x\cdot(y\cdot z)\bigr)$；
+   \item $\forall x\,\bigl(x\cdot e=x\bigr)$ 与 $\forall x\,\bigl(e\cdot x=x\bigr)$；
+   \item $\forall x\,\exists y\,\bigl(x\cdot y=e\ \wedge\ y\cdot x=e\bigr)$。
+ \end{enumerate}
+ 则 $T$ 的模型恰为群：例如
+ \[
+   (\mathbb Z,0,+)\models T,\qquad (\mathrm{GL}_n(\mathbb R),I_n,\cdot)\models T,\qquad (S_n,\mathrm{id},\circ)\models T.
+ \]
+ \end{example}
+
+ \begin{definition}[一致与不一致]
+ \label{consistency}
+ 设 $T$ 为一族 $L$-语句。
+ 若存在 $L$-结构 $\mathcal M$ 使得 $\mathcal M\models T$，则称 $T$ \emph{一致}（或可满足）。
+ 若不存在这样的 $\mathcal M$，则称 $T$ \emph{不一致}（或不可满足）。
+ \end{definition}
+
+ \begin{proposition}
+ \label{entailment-and-inconsistency}
+ 设 $T$ 为一族 $L$-语句，$\varphi$ 为一个 $L$-语句。
+ 则
+ \begin{enumerate}
+   \item $T\models\varphi\ \Longleftrightarrow\ T\cup\{\neg\varphi\}\ \text{不一致}$；
+   \item $T\models\neg\varphi\ \Longleftrightarrow\ T\cup\{\varphi\}\ \text{不一致}$。
+ \end{enumerate}
+ \end{proposition}
+
+ \begin{proof}
+ 只证 (1)，(2) 同理。
+
+ ($\Rightarrow$) 设 $T\models\varphi$。
+ 若 $T\cup\{\neg\varphi\}$ 一致，则存在 $\mathcal M$ 使得 $\mathcal M\models T\cup\{\neg\varphi\}$。
+ 从而 $\mathcal M\models T$ 且 $\mathcal M\models\neg\varphi$。
+ 但由 $T\models\varphi$ 得 $\mathcal M\models\varphi$，矛盾。
+
+ ($\Leftarrow$) 设 $T\cup\{\neg\varphi\}$ 不一致。
+ 任取 $\mathcal M$ 使得 $\mathcal M\models T$。
+ 若 $\mathcal M\not\models\varphi$，则 $\mathcal M\models\neg\varphi$，从而 $\mathcal M\models T\cup\{\neg\varphi\}$，与不一致矛盾。
+ 故 $\mathcal M\models\varphi$。
+ \end{proof}
+
+ \begin{definition}[完备理论]
+ \label{complete-theory}
+ 设 $T$ 为一族 $L$-语句。
+ 若对任意 $L$-语句 $\varphi$，都有
+ \[
+   T\models\varphi\ \text{或}\ T\models\neg\varphi,
+ \]
+ 则称 $T$ 为一个（语义）完备理论。
+ \end{definition}
+
+ \begin{proposition}
+ \label{entailment-via-models}
+ 设 $T$ 为一族 $L$-语句，$\varphi$ 为一个 $L$-语句。
+ 则
+ \[
+   T\models\varphi\ \Longleftrightarrow\ \bigl(\forall\,\mathcal M\ (\mathcal M\models T\Rightarrow\mathcal M\models\varphi)\bigr).
+ \]
+ \end{proposition}
+
+ \begin{proof}
+ ($\Rightarrow$) 设 $T\models\varphi$ 且 $\mathcal M\models T$。
+ 取任意赋值 $v:V\to M$。
+ 由于 $T$ 中皆为语句，故 $(\mathcal M,v)\models T$。
+ 由 $T\models\varphi$ 得 $(\mathcal M,v)\models\varphi$。
+ 再由 $\varphi$ 为语句知 $\mathcal M\models\varphi$。
+
+ ($\Leftarrow$) 设对任意 $\mathcal M$，若 $\mathcal M\models T$ 则 $\mathcal M\models\varphi$。
+ 任取 $\mathcal M$ 与赋值 $v$ 使得 $(\mathcal M,v)\models T$。
+ 因为 $T$ 为语句集，所以 $\mathcal M\models T$。
+ 于是 $\mathcal M\models\varphi$，从而 $(\mathcal M,v)\models\varphi$。
+ 故 $T\models\varphi$。
+ \end{proof}
+
+ \begin{example}[群论理论不完备]
+ 令 $T$ 为例~\ref{example:group-theory} 中的群论公理集。
+ 取语句
+ \[
+   \varphi:=\forall x\,\bigl(x\cdot x=e\bigr).
+ \]
+ 则 $(\mathbb Z_2,0,+)\models T\cup\{\varphi\}$。
+ 但 $(\mathbb Z_3,0,+)\models T$ 且 $(\mathbb Z_3,0,+)\not\models\varphi$（例如在 $\mathbb Z_3$ 中 $1+1=2\neq 0$）。
+ 因此 $T\not\models\varphi$ 且 $T\not\models\neg\varphi$，从而 $T$ 不是完备理论。
+ \end{example}
+
+ \begin{proposition}
+ \label{inconsistent-theory-characterizations}
+ 设 $T$ 为一族 $L$-语句。
+ 则下列条件等价：
+ \begin{enumerate}
+   \item $T$ 不一致；
+   \item 对任意 $L$-语句 $\psi$ 都有 $T\models\psi$；
+   \item $T\models\exists x\,(x\neq x)$。
+ \end{enumerate}
+ \end{proposition}
+
+ \begin{proof}
+ (1)$\Rightarrow$(2) 若 $T$ 不一致，则不存在 $\mathcal M$ 使 $\mathcal M\models T$。
+ 因而对任意语句 $\psi$，命题~\ref{pro:entailment-via-models} 右端的全称命题恒真，于是 $T\models\psi$。
+
+ (2)$\Rightarrow$(3) 取 $\psi:=\exists x\,(x\neq x)$ 即得。
+
+ (3)$\Rightarrow$(1) 若 $T$ 一致，则存在 $\mathcal M$ 使 $\mathcal M\models T$。
+ 由命题~\ref{pro:entailment-via-models} 得 $\mathcal M\models\exists x\,(x\neq x)$。
+ 但任意结构中恒有 $\mathcal M\models\forall x\,(x=x)$，故不可能满足 $\exists x\,(x\neq x)$，矛盾。
+ \end{proof}
+
+ \begin{theorem}
+ \label{complete-theory-characterization-by-models}
+ 设 $T$ 为一族一致的 $L$-语句。
+ 则 $T$ 完备当且仅当对任意两个 $T$ 的模型 $\mathcal M,\mathcal N$ 都有
+ \[
+   \mathcal M\equiv\mathcal N.
+ \]
+ \end{theorem}
+
+ \begin{proof}
+ ($\Rightarrow$) 设 $T$ 完备且 $\mathcal M,\mathcal N\models T$。
+ 任取语句 $\varphi$ 并设 $\mathcal M\models\varphi$。
+ 由 $T$ 完备知 $T\models\varphi$ 或 $T\models\neg\varphi$。
+ 若 $T\models\neg\varphi$，则由命题~\ref{pro:entailment-via-models} 得 $\mathcal M\models\neg\varphi$，与假设矛盾。
+ 故必有 $T\models\varphi$。
+ 再由 $\mathcal N\models T$ 与命题~\ref{pro:entailment-via-models} 得 $\mathcal N\models\varphi$。
+ 因此对任意语句 $\varphi$ 有 $\mathcal M\models\varphi\Rightarrow\mathcal N\models\varphi$。
+ 交换 $\mathcal M,\mathcal N$ 同理，故 $\mathcal M\equiv\mathcal N$。
+
+ ($\Leftarrow$) 设任意两个 $T$ 的模型都初等等价。
+ 任取语句 $\varphi$。
+ 若 $T\models\varphi$ 或 $T\models\neg\varphi$ 成立则已证。
+ 否则 $T\not\models\varphi$ 且 $T\not\models\neg\varphi$。
+ 由命题~\ref{pro:entailment-and-inconsistency} 得
+ \[
+   T\cup\{\neg\varphi\}\ \text{一致}\quad\text{且}\quad T\cup\{\varphi\}\ \text{一致}.
+ \]
+ 因而存在模型 $\mathcal M,\mathcal N$ 使得
+ \[
+   \mathcal M\models T\cup\{\neg\varphi\},\qquad \mathcal N\models T\cup\{\varphi\}.
+ \]
+ 于是 $\mathcal M\models\neg\varphi$ 而 $\mathcal N\models\varphi$，从而 $\mathcal M\not\equiv\mathcal N$，与假设矛盾。
+ 故对任意语句 $\varphi$ 必有 $T\models\varphi$ 或 $T\models\neg\varphi$，即 $T$ 完备。
+ \end{proof}
+
+ \begin{definition}[结构的理论]
+ \label{theory-of-a-structure}
+ 设 $\mathcal M$ 为 $L$-结构。
+ 定义 $\mathcal M$ 的理论为
+ \[
+   \mathrm{Th}(\mathcal M):=\{\varphi:\ \varphi\ \text{是 $L$-语句且}\ \mathcal M\models\varphi\}.
+ \]
+ \end{definition}
+
+ \begin{proposition}
+ \label{theory-of-a-structure-complete-consistent}
+ 对任意 $L$-结构 $\mathcal M$，理论 $\mathrm{Th}(\mathcal M)$ 一致且完备。
+ \end{proposition}
+
+ \begin{proof}
+ \textbf{一致性：} 由于对任意 $\varphi\in\mathrm{Th}(\mathcal M)$ 都有 $\mathcal M\models\varphi$，故 $\mathcal M\models\mathrm{Th}(\mathcal M)$，于是 $\mathrm{Th}(\mathcal M)$ 一致。
+
+ \textbf{完备性：} 任取 $L$-语句 $\varphi$。
+ 若 $\mathcal M\models\varphi$，则 $\varphi\in\mathrm{Th}(\mathcal M)$，从而 $\mathrm{Th}(\mathcal M)\models\varphi$。
+ 若 $\mathcal M\not\models\varphi$，则 $\mathcal M\models\neg\varphi$，从而 $\neg\varphi\in\mathrm{Th}(\mathcal M)$，进而 $\mathrm{Th}(\mathcal M)\models\neg\varphi$。
+ 因此 $\mathrm{Th}(\mathcal M)$ 完备。
+ \end{proof}
+
+ \begin{remark}
+ “完备”的定义是针对语句而言。
+ 若把“对任意公式 $\psi$ 都有 $T\models\psi$ 或 $T\models\neg\psi$”当作完备性的定义，则一般不成立。
+ \end{remark}
+
+ \begin{example}
+ 取环语言 $L=(V, C=\{0,1\}, F=\{+,-,\cdot\}, R=\varnothing)$，并令 $\mathcal M:=(\mathbb R,0,1,+,-,\cdot)$。
+ 设 $T:=\mathrm{Th}(\mathcal M)$，取公式 $\psi(x):=(x\cdot x=1)$。
+ 则 $T\not\models\psi$：取赋值 $v:V\to\mathbb R$ 使 $v(x)=2$，由于 $T$ 是语句集，故 $(\mathcal M,v)\models T$，但 $(\mathcal M,v)\not\models\psi$。
+ 同理 $T\not\models\neg\psi$：取赋值 $u$ 使 $u(x)=1$，则 $(\mathcal M,u)\models T$ 且 $(\mathcal M,u)\models\psi$。
+ \end{example}
+
+ \begin{definition}[$x_1,\dots,x_n$-公式]
+ \label{formula-in-variables}
+ 设 $\varphi$ 为 $L$-公式。
+ 若存在互不相同的变量 $x_1,\dots,x_n\in V$（$n\ge 1$）使得
+ \begin{enumerate}
+   \item 对任意 $i\neq j$，都有 $x_i\neq x_j$；
+   \item $\mathrm{FV}(\varphi)\subseteq\{x_1,\dots,x_n\}$，
+ \end{enumerate}
+ 则称 $\varphi$ 是一个关于 $x_1,\dots,x_n$ 的公式，记作 $\varphi[x_1,\dots,x_n]$。
+ \end{definition}
+
+ \begin{definition}[带参数的满足]
+ \label{satisfaction-with-parameters}
+ 设 $\varphi[x_1,\dots,x_n]$ 为一个 $L$-公式，$\mathcal M$ 为 $L$-结构，$a_1,\dots,a_n\in M$。
+ 定义
+ \[
+   \mathcal M\models\varphi[a_1,\dots,a_n]
+ \]
+ 当且仅当存在赋值 $v:V\to M$ 使得 $v(x_i)=a_i$（$i=1,\dots,n$）并且 $(\mathcal M,v)\models\varphi$。
+ \end{definition}
+
+ \begin{remark}
+ \label{remark:satisfaction-with-fixed-assignment}
+ 设 $\varphi[x_1,\dots,x_n]$，$\mathcal M$ 与 $a_1,\dots,a_n\in M$ 如上。
+ 若 $u:V\to M$ 为满足 $u(x_i)=a_i$（$i=1,\dots,n$）的赋值，则
+ \[
+   \mathcal M\models\varphi[a_1,\dots,a_n]\ \Longleftrightarrow\ (\mathcal M,u)\models\varphi.
+ \]
+ 因而定义~\ref{def:satisfaction-with-parameters} 中的“存在 $v$”可等价改为“任取 $v$”。
+ \end{remark}
+
+ \begin{proof}
+ ($\Rightarrow$) 由定义~\ref{def:satisfaction-with-parameters}，存在 $v$ 满足 $v(x_i)=a_i$ 且 $(\mathcal M,v)\models\varphi$。
+ 由于 $\mathrm{FV}(\varphi)\subseteq\{x_1,\dots,x_n\}$ 且 $u,v$ 在 $\{x_1,\dots,x_n\}$ 上一致，故 $u|_{\mathrm{FV}(\varphi)}=v|_{\mathrm{FV}(\varphi)}$。
+ 由引理~\ref{lem:satisfaction-depends-on-free-vars} 得 $(\mathcal M,u)\models\varphi$。
+
+ ($\Leftarrow$) 若 $(\mathcal M,u)\models\varphi$，则取 $v:=u$ 即得 $\mathcal M\models\varphi[a_1,\dots,a_n]$。
+ \end{proof}
+
+ \begin{proposition}
+ \label{semantics-neg-imp-with-parameters}
+ 设 $\varphi[x_1,\dots,x_n],\psi[x_1,\dots,x_n]$ 为 $L$-公式，$\mathcal M$ 为 $L$-结构，$a_1,\dots,a_n\in M$。
+ 则
+ \begin{enumerate}
+   \item $\mathcal M\models(\neg\varphi)[a_1,\dots,a_n]\ \Longleftrightarrow\ \mathcal M\not\models\varphi[a_1,\dots,a_n]$；
+   \item $\mathcal M\models(\varphi\to\psi)[a_1,\dots,a_n]\ \Longleftrightarrow\ \bigl(\mathcal M\models\varphi[a_1,\dots,a_n]\Rightarrow\mathcal M\models\psi[a_1,\dots,a_n]\bigr)$。
+ \end{enumerate}
+ \end{proposition}
+
+ \begin{proof}
+ 取赋值 $u:V\to M$ 使得 $u(x_i)=a_i$（$i=1,\dots,n$）。
+ 由注记~\ref{remark:satisfaction-with-fixed-assignment}，两条等价式分别等价于
+ \begin{enumerate}
+   \item $(\mathcal M,u)\models\neg\varphi\ \Longleftrightarrow\ (\mathcal M,u)\not\models\varphi$；
+   \item $(\mathcal M,u)\models(\varphi\to\psi)\ \Longleftrightarrow\ \bigl((\mathcal M,u)\models\varphi\Rightarrow(\mathcal M,u)\models\psi\bigr)$。
+ \end{enumerate}
+ 这两条恰为满足关系对 $\neg$ 与 $\to$ 的语义定义。
+ \end{proof}
+
+\begin{proposition}[存在量词的参数语义]
+\label{semantics-exists-with-parameters}
+设 $\varphi[x,x_1,\dots,x_n]$ 为 $L$-公式，其中 $x,x_1,\dots,x_n$ 两两不同，并令
+\[
+  \psi[x_1,\dots,x_n]:=(\exists x\,\varphi)[x_1,\dots,x_n].
+\]
+设 $\mathcal M$ 为 $L$-结构，$a_1,\dots,a_n\in M$。
+则
+\[
+  \mathcal M\models\psi[a_1,\dots,a_n]
+  \Longleftrightarrow
+  \exists a\in M\ \bigl(\mathcal M\models\varphi[a,a_1,\dots,a_n]\bigr).
+\]
+\end{proposition}
+
+\begin{proof}
+取任意赋值 $u:V\to M$ 使得 $u(x_i)=a_i$（$i=1,\dots,n$）。
+由注记~\ref{remark:satisfaction-with-fixed-assignment}，左式等价于 $(\mathcal M,u)\models(\exists x\,\varphi)$。
+由满足关系对存在量词的语义定义，上式等价于存在 $a\in M$ 使得 $(\mathcal M,u^{x}_{a})\models\varphi$。
+再次由注记~\ref{remark:satisfaction-with-fixed-assignment}（对公式 $\varphi[x,x_1,\dots,x_n]$ 取参数 $(a,a_1,\dots,a_n)$）可知
+\[
+  (\mathcal M,u^{x}_{a})\models\varphi\ \Longleftrightarrow\ \mathcal M\models\varphi[a,a_1,\dots,a_n].
+\]
+因此得到所需等价式。
+\end{proof}
+
+\section{Tarski--Vaught 判别法}
+
+\begin{theorem}[Tarski--Vaught 判别法]
+\label{tarski-vaught-test}
+设 $\mathcal N\subseteq\mathcal M$ 为 $L$-子结构，记 $\iota:N\hookrightarrow M$ 为包含映射。
+则下列条件等价：
+\begin{enumerate}
+  \item $\iota:\mathcal N\to\mathcal M$ 是初等嵌入；
+  \item 对任意 $L$-公式 $\varphi[x,x_1,\dots,x_n]$（其中 $x,x_1,\dots,x_n$ 两两不同）与任意 $a_1,\dots,a_n\in N$，若
+  \[
+    \mathcal M\models(\exists x\,\varphi)[a_1,\dots,a_n],
+  \]
+  则存在 $b\in N$ 使得
+  \[
+    \mathcal M\models\varphi[b,a_1,\dots,a_n].
+  \]
+\end{enumerate}
+\end{theorem}
+
+\begin{proof}
+(1)$\Rightarrow$(2)
+设 $\iota$ 为初等嵌入。
+任取 $\varphi[x,x_1,\dots,x_n]$ 与 $a_1,\dots,a_n\in N$，并设 $\mathcal M\models(\exists x\,\varphi)[a_1,\dots,a_n]$。
+记 $\psi[x_1,\dots,x_n]:=(\exists x\,\varphi)[x_1,\dots,x_n]$。
+由 $\iota$ 的初等性得
+\[
+  \mathcal N\models\psi[a_1,\dots,a_n].
+\]
+由命题~\ref{pro:semantics-exists-with-parameters}（把 $\mathcal M$ 换成 $\mathcal N$）可取 $b\in N$ 使得
+\[
+  \mathcal N\models\varphi[b,a_1,\dots,a_n].
+\]
+再由 $\iota$ 的初等性得到 $\mathcal M\models\varphi[b,a_1,\dots,a_n]$。
+
+(2)$\Rightarrow$(1)
+设 (2) 成立。
+我们证明对任意公式 $\psi[x_1,\dots,x_n]$ 与任意 $a_1,\dots,a_n\in N$，都有
+\[
+  \mathcal N\models\psi[a_1,\dots,a_n]\ \Longleftrightarrow\ \mathcal M\models\psi[a_1,\dots,a_n].
+\]
+对 $\psi$ 的构造作归纳。
+
+\textbf{(A) 原子公式：} 由 $\mathcal N\subseteq\mathcal M$ 是子结构直接得到。
+
+\textbf{(B) 否定与蕴含：} 由命题~\ref{pro:semantics-neg-imp-with-parameters} 与归纳假设立得。
+
+\textbf{(C) 存在量词：} 设 $\psi[x_1,\dots,x_n]=(\exists x\,\varphi)[x_1,\dots,x_n]$。
+
+($\Rightarrow$) 若 $\mathcal N\models\psi[a_1,\dots,a_n]$，由命题~\ref{pro:semantics-exists-with-parameters}（把 $\mathcal M$ 换成 $\mathcal N$）可取 $b\in N$ 使得
+\[
+  \mathcal N\models\varphi[b,a_1,\dots,a_n].
+\]
+由归纳假设得 $\mathcal M\models\varphi[b,a_1,\dots,a_n]$。
+再由命题~\ref{pro:semantics-exists-with-parameters} 得 $\mathcal M\models\psi[a_1,\dots,a_n]$。
+
+($\Leftarrow$) 若 $\mathcal M\models\psi[a_1,\dots,a_n]$，由命题~\ref{pro:semantics-exists-with-parameters} 可取 $b\in M$ 使得
+\[
+  \mathcal M\models\varphi[b,a_1,\dots,a_n].
+\]
+由 (2)（这一步对应板书“图3 另一边”的推导）可取 $c\in N$ 使得 $\mathcal M\models\varphi[c,a_1,\dots,a_n]$。
+再由归纳假设得 $\mathcal N\models\varphi[c,a_1,\dots,a_n]$。
+由命题~\ref{pro:semantics-exists-with-parameters}（把 $\mathcal M$ 换成 $\mathcal N$）推出 $\mathcal N\models\psi[a_1,\dots,a_n]$。
+
+由 (A)--(C) 得到对一切公式的参数满足等价，从而 $\iota$ 为初等嵌入。
+\end{proof}
+
+ 
+\begin{remark}
+上面的 Tarski--Vaught 判别法在证明 (2)$\Rightarrow$(1) 时，也可按板书用“集合 $A$ 的闭包法”来组织论证。
+定义
+\[
+  A:=\{\psi:\ \psi\ \text{是 $L$-公式且对任意赋值 }v:V\to N,\ (\mathcal N,v)\models\psi\Longleftrightarrow(\mathcal M,\iota\circ v)\models\psi\}.
+\]
+由 $\mathcal N\subseteq\mathcal M$ 为子结构知，原子公式属于 $A$；且若 $\psi,\chi\in A$，则 $\neg\psi\in A$ 且 $(\psi\to\chi)\in A$。
+对存在量词：设 $\psi\in A$ 且 $x\in V$，取任意赋值 $v:V\to N$。
+若 $(\mathcal M,\iota\circ v)\models\exists x\,\psi$，则存在 $b\in M$ 使得 $(\mathcal M,(\iota\circ v)^{x}_{b})\models\psi$。
+由条件 (2) 可取 $c\in N$ 使得 $(\mathcal M,(\iota\circ v)^{x}_{c})\models\psi$。
+又因 $(\iota\circ v)^{x}_{c}=\iota\circ(v^{x}_{c})$ 且 $\psi\in A$，得 $(\mathcal N,v^{x}_{c})\models\psi$，从而 $(\mathcal N,v)\models\exists x\,\psi$。
+反向蕴含同理。
+因此 $A$ 对 $\neg,\to,\exists$ 闭合，进而由结构归纳得任意公式都在 $A$ 中，于是 $\iota$ 为初等嵌入。
+\end{remark}
+
+\begin{proposition}[初等嵌入的参数刻画]
+ \label{elementary-embedding-parameter-characterization}
+ 设 $\theta:\mathcal N\to\mathcal M$ 为 $L$-嵌入。
+ 则 $\theta$ 为初等嵌入当且仅当对任意 $L$-公式 $\varphi[x_1,\dots,x_n]$ 与任意 $a_1,\dots,a_n\in N$ 都有
+ \[
+   \mathcal N\models\varphi[a_1,\dots,a_n]\ \Longleftrightarrow\ \mathcal M\models\varphi[\theta(a_1),\dots,\theta(a_n)].
+ \]
+ \end{proposition}
+
+ \begin{proof}
+ ($\Rightarrow$) 设 $\theta$ 为初等嵌入。
+ 任取 $\varphi[x_1,\dots,x_n]$ 与 $a_1,\dots,a_n\in N$。
+ 取赋值 $v:V\to N$ 使得 $v(x_i)=a_i$（$i=1,\dots,n$）。
+ 则由注记~\ref{remark:satisfaction-with-fixed-assignment} 得
+ \[
+   \mathcal N\models\varphi[a_1,\dots,a_n]\ \Longleftrightarrow\ (\mathcal N,v)\models\varphi.
+ \]
+ 由于 $\theta$ 初等，上式等价于 $(\mathcal M,\theta\circ v)\models\varphi$。
+ 注意到对每个 $i$，有 $(\theta\circ v)(x_i)=\theta(a_i)$。
+ 再次由注记~\ref{remark:satisfaction-with-fixed-assignment} 得
+ \[
+   (\mathcal M,\theta\circ v)\models\varphi\ \Longleftrightarrow\ \mathcal M\models\varphi[\theta(a_1),\dots,\theta(a_n)].
+ \]
+ 合并即得结论。
+
+ ($\Leftarrow$) 设对任意 $\varphi[x_1,\dots,x_n]$ 与 $a_1,\dots,a_n\in N$ 上述等价式成立。
+ 任取 $L$-公式 $\psi$ 与赋值 $v:V\to N$。
+ 令 $\{x_1,\dots,x_n\}$ 为包含 $\mathrm{FV}(\psi)$ 的一组互不相同的变量，并设 $a_i:=v(x_i)$。
+ 由注记~\ref{remark:satisfaction-with-fixed-assignment} 有
+ \[
+   (\mathcal N,v)\models\psi\ \Longleftrightarrow\ \mathcal N\models\psi[a_1,\dots,a_n].
+ \]
+ 由假设可得
+ \[
+   \mathcal N\models\psi[a_1,\dots,a_n]\ \Longleftrightarrow\ \mathcal M\models\psi[\theta(a_1),\dots,\theta(a_n)].
+ \]
+ 另一方面，令 $u:=\theta\circ v:V\to M$，则 $u(x_i)=\theta(a_i)$。
+ 再由注记~\ref{remark:satisfaction-with-fixed-assignment} 得
+ \[
+   \mathcal M\models\psi[\theta(a_1),\dots,\theta(a_n)]\ \Longleftrightarrow\ (\mathcal M,u)\models\psi.
+ \]
+ 综上 $(\mathcal N,v)\models\psi\Longleftrightarrow(\mathcal M,\theta\circ v)\models\psi$，故 $\theta$ 为初等嵌入。
+ \end{proof}
+
+\chapter{Löwenheim--Skolem 定理}
+
+\section{Löwenheim--Skolem 定理}
+
+ \begin{theorem}[向下 Löwenheim--Skolem 定理]
+ \label{downward-loewenheim-skolem}
+ 设 $\mathcal M$ 为 $L$-结构，$\Omega\subseteq M$。
+ 令
+ \[
+   \kappa:=\max\{\lvert\Omega\rvert,\lvert L\rvert,\aleph_0\}.
+ \]
+ 则存在 $\mathcal M$ 的初等子结构 $\mathcal N\preccurlyeq\mathcal M$ 使得
+ \[
+   \Omega\subseteq N\qquad\text{且}\qquad \lvert N\rvert\le\kappa.
+ \]
+ \end{theorem}
+
+ \begin{proof}
+ 记 $\kappa=\max\{\lvert\Omega\rvert,\lvert L\rvert,\aleph_0\}$。
+ 取 $\mathcal M$ 中由 $\Omega$ 生成的子结构 $\mathcal N_0:=\langle\Omega\rangle$。
+ 下面说明 $\lvert N_0\rvert\le\kappa$。
+ 令
+ \[
+   A_0:=\Omega\cup\{c^{\mathcal M}:c\in C\},
+ \]
+ 并递归定义
+ \[
+   A_{n+1}:=A_n\cup\{f^{\mathcal M}(a_1,\dots,a_{n_f}):f\in F,\ a_1,\dots,a_{n_f}\in A_n\}\qquad(n\in\omega).
+ \]
+ 则 $\lvert A_0\rvert\le\lvert\Omega\rvert+\lvert L\rvert\le\kappa$。
+ 由基数运算（$\kappa\ge\aleph_0$）可得对每个 $n$ 都有 $\lvert A_{n+1}\rvert\le\kappa$，从而
+ \[
+   A:=\bigcup_{n\in\omega}A_n\quad\text{满足}\quad \lvert A\rvert\le\aleph_0\cdot\kappa=\kappa.
+ \]
+ 注意到 $A$ 对所有函数符号在 $\mathcal M$ 中的解释闭合且包含所有常元解释，因此 $\langle\Omega\rangle\subseteq A$，故 $\lvert N_0\rvert\le\kappa$。
+
+ 现在递归构造一个子结构链
+ \[
+   \mathcal N_0\subseteq\mathcal N_1\subseteq\cdots\subseteq\mathcal N_k\subseteq\cdots
+ \]
+ 满足对每个 $k\in\omega$ 都有 $\lvert N_k\rvert\le\kappa$，并且每一步加入所有需要的存在量词见证。
+
+ 对给定 $k\in\omega$，令 $\Lambda_k$ 为所有对偶对
+ \[
+   \alpha=\bigl(\varphi[x,x_1,\dots,x_n],a_1,\dots,a_n\bigr)
+ \]
+ 组成的集合，其中 $a_1,\dots,a_n\in N_k$ 且
+ \[
+   \mathcal M\models(\exists x\,\varphi)[a_1,\dots,a_n].
+ \]
+ 对每个 $\alpha\in\Lambda_k$ 选取一个元素 $b_{\alpha}\in M$ 使得
+ \[
+   \mathcal M\models\varphi[b_{\alpha},a_1,\dots,a_n].
+ \]
+ 令 $B_k:=\{b_{\alpha}:\alpha\in\Lambda_k\}$，并定义
+ \[
+   \mathcal N_{k+1}:=\langle N_k\cup B_k\rangle.
+ \]
+ 下面估计基数。
+ 因为 $\lvert N_k\rvert\le\kappa$，而公式族的基数不超过 $\lvert L\rvert\le\kappa$，故
+ \[
+   \lvert\Lambda_k\rvert\le \lvert L\rvert\cdot\lvert N_k\rvert^{<\omega}\le\kappa\cdot\kappa=\kappa.
+ \]
+ 从而 $\lvert B_k\rvert\le\kappa$。
+ 再由上面对“由集合生成子结构”的基数估计可得 $\lvert N_{k+1}\rvert\le\kappa$。
+
+ 最后令
+ \[
+   N:=\bigcup_{k\in\omega}N_k.
+ \]
+ 则 $\lvert N\rvert\le\aleph_0\cdot\kappa=\kappa$，且显然 $\Omega\subseteq N$。
+ 又因为 $\{\mathcal N_k\}$ 为递增的子结构链，故 $\mathcal N$ 亦为 $\mathcal M$ 的子结构。
+
+ 我们用 Tarski--Vaught 判别法（定理~\ref{thm:tarski-vaught-test}）证明 $\mathcal N\preccurlyeq\mathcal M$。
+ 取任意公式 $\varphi[x,x_1,\dots,x_n]$ 与参数 $a_1,\dots,a_n\in N$。
+ 若 $\mathcal M\models(\exists x\,\varphi)[a_1,\dots,a_n]$，则存在 $k\in\omega$ 使得 $a_1,\dots,a_n\in N_k$。
+ 因而
+ \[
+   \alpha:=\bigl(\varphi[x,x_1,\dots,x_n],a_1,\dots,a_n\bigr)\in\Lambda_k,
+ \]
+ 于是相应见证 $b_{\alpha}\in B_k\subseteq N_{k+1}\subseteq N$ 且 $\mathcal M\models\varphi[b_{\alpha},a_1,\dots,a_n]$。
+ 由定理~\ref{thm:tarski-vaught-test} 得包含映射 $\iota:\mathcal N\to\mathcal M$ 为初等嵌入，即 $\mathcal N\preccurlyeq\mathcal M$。
+ \end{proof}
+
+ \begin{definition}[局部有限]
+ 设 $\mathcal M$ 为 $L$-结构。对任意 $A\subseteq M$，记 $\langle A\rangle$ 为 $\mathcal M$ 中由 $A$ 生成的子结构。
+ 若对每个有限集 $A\subseteq M$ 都有 $\lvert\langle A\rangle\rvert<\infty$，则称 $\mathcal M$ 为\emph{局部有限}（locally finite）。
+ \end{definition}
+
+ \begin{proposition}
+ 设 $L$ 为可数语言，$\mathcal M$ 为 $L$-结构。
+ 若 $\mathcal M$ 不是局部有限的，则存在可数 $L$-结构 $\mathcal N\preccurlyeq\mathcal M$ 使得 $\mathcal N$ 也不是局部有限的。
+ \end{proposition}
+
+ \begin{proof}
+ 因为 $\mathcal M$ 不是局部有限的，存在有限集 $A\subseteq M$ 使得 $\lvert\langle A\rangle\rvert=\infty$。
+ 由向下 Löwenheim--Skolem 定理（定理~\ref{thm:downward-loewenheim-skolem}）可取 $\mathcal N\preccurlyeq\mathcal M$，使得 $A\subseteq N$ 且 $\lvert N\rvert\le\aleph_0$。
+ 因 $\mathcal N$ 为 $\mathcal M$ 的子结构，故对任意项 $t(\bar x)$ 与 $\bar a\in A^{<\omega}$ 有 $t^{\mathcal M}(\bar a)=t^{\mathcal N}(\bar a)\in N$，从而 $\langle A\rangle\subseteq N$。
+ 因此 $\lvert\langle A\rangle^{\mathcal N}\rvert\ge\lvert\langle A\rangle^{\mathcal M}\rvert=\infty$，故 $\mathcal N$ 不是局部有限的。
+ \end{proof}
+
+ \begin{theorem}[向上 Löwenheim--Skolem 定理]
+ \label{upward-loewenheim-skolem}
+ 设 $\mathcal M$ 为无限 $L$-结构，$\kappa$ 为无限基数并满足
+ \[
+   \kappa\ge \max\{\lvert M\rvert,\lvert L\rvert,\aleph_0\}.
+ \]
+ 则存在 $L$-结构 $\mathcal N$ 使得 $\mathcal M\preccurlyeq\mathcal N$ 且 $\lvert N\rvert=\kappa$。
+ \end{theorem}
+
+ \begin{proof}
+ 令 $L(M)$ 为在 $L$ 上加入常元符号 $c_a$（$a\in M$）所得语言。
+ 再取一族两两不同的新常元符号 $\{d_i:i<\kappa\}$，令
+ \[
+   L':=L(M)\cup\{d_i:i<\kappa\}.
+ \]
+ 记 $\operatorname{Th}_{L(M)}(\mathcal M)$ 为 $\mathcal M$ 在语言 $L(M)$ 下所满足的所有句子组成的理论，并令
+ \[
+   T:=\operatorname{Th}_{L(M)}(\mathcal M)\cup\{d_i\neq d_j: i<j<\kappa\}.
+ \]
+ 任取 $T_0\subseteq T$ 有限，则只涉及有限多个 $d_i$。
+ 因 $\mathcal M$ 无限，可在 $M$ 中为这些 $d_i$ 指派互不相同的值，从而 $\mathcal M$ 可扩充为 $L'$-结构满足 $T_0$。
+ 由紧致性定理，$T$ 有模型 $\mathcal N_0$。
+
+ 在 $\mathcal N_0$ 中，$\{d_i^{\mathcal N_0}:i<\kappa\}$ 为 $\kappa$ 个互异元素，故 $\lvert N_0\rvert\ge\kappa$。
+ 令
+ \[
+   \Omega:=\{c_a^{\mathcal N_0}:a\in M\}\cup\{d_i^{\mathcal N_0}:i<\kappa\}.
+ \]
+ 则 $\lvert\Omega\rvert\le\kappa$。
+ 由向下 Löwenheim--Skolem 定理（定理~\ref{thm:downward-loewenheim-skolem}）可取 $\mathcal N\preccurlyeq\mathcal N_0$，使得 $\Omega\subseteq N$ 且 $\lvert N\rvert\le\kappa$。
+ 由于 $\{d_i^{\mathcal N_0}:i<\kappa\}\subseteq N$，知 $\lvert N\rvert\ge\kappa$，故 $\lvert N\rvert=\kappa$。
+
+ 设 $\mathcal M'$ 为 $\mathcal N$ 中由 $\{c_a^{\mathcal N_0}:a\in M\}$ 诱导的子结构。
+ 因 $\mathcal N\preccurlyeq\mathcal N_0$，对任意带参数于 $M$ 的 $L$-公式，$\mathcal N$ 与 $\mathcal N_0$ 的满足关系一致。
+ 又因 $\mathcal N_0\models\operatorname{Th}_{L(M)}(\mathcal M)$，故 $\mathcal M$ 与 $\mathcal M'$ 在带参数于 $M$ 的公式上也一致，从而 $\mathcal M\preccurlyeq\mathcal M'\preccurlyeq\mathcal N$。
+ 因此 $\mathcal M\preccurlyeq\mathcal N$。
+ \end{proof}
+
+ 取语言
+ \[
+   L_f:=(V,\varnothing,\{f\},\varnothing),
+ \]
+ 其中 $f$ 为二元函数符号。
+ 记 $\varphi$ 为下述 $L_f$-句子：
+ \[
+   \Bigl(\forall x\,\forall y\,\forall x'\,\forall y'\,\bigl(f(x,y)=f(x',y')\rightarrow(x=x'\wedge y=y')\bigr)\Bigr)
+   \wedge
+   \Bigl(\forall z\,\exists x\,\exists y\,\bigl(f(x,y)=z\bigr)\Bigr).
+ \]
+
+ \begin{proposition}
+ \label{m2-to-m-sentence}
+ 对任意 $L_f$-结构 $\mathcal M$，有 $\mathcal M\models\varphi$ 当且仅当 $f^{\mathcal M}:M\times M\to M$ 为双射。
+ \end{proposition}
+
+ \begin{proof}
+ 由 $\varphi$ 的第一部分可知 $f^{\mathcal M}$ 为单射；由第二部分可知 $f^{\mathcal M}$ 为满射。
+ 反之若 $f^{\mathcal M}$ 为双射，则单射与满射条件恰对应 $\varphi$ 的两部分，从而 $\mathcal M\models\varphi$。
+ \end{proof}
+
+ \begin{theorem}
+ \label{infinite-cardinal-square}
+ 若 $\kappa$ 为无限基数，则 $\kappa\times\kappa=\kappa$。
+ \end{theorem}
+
+ \begin{proof}
+ 取任一双射 $g:\mathbb N\times\mathbb N\to\mathbb N$，并令 $\mathcal M$ 为 $L_f$-结构，底集为 $\mathbb N$ 且 $f^{\mathcal M}:=g$。
+ 由命题~\ref{pro:m2-to-m-sentence} 得 $\mathcal M\models\varphi$。
+ 由向上 Löwenheim--Skolem 定理（定理~\ref{thm:upward-loewenheim-skolem}），对任意无限基数 $\kappa$ 存在 $\mathcal N\succcurlyeq\mathcal M$ 使得 $\lvert N\rvert=\kappa$。
+ 由初等扩张的定义，$\mathcal N\models\varphi$，再由命题~\ref{pro:m2-to-m-sentence} 得 $f^{\mathcal N}:N\times N\to N$ 为双射。
+ 因此 $\lvert N\times N\rvert=\lvert N\rvert=\kappa$，即 $\kappa\times\kappa=\kappa$。
+ \end{proof}
+
+\section{子语言与结构约化}
+
+ \begin{definition}[子语言与扩充语言]
+ \label{sublanguage}
+ 设
+ \[
+   L=(V,C,F,R),\qquad L^*=(V^*,C^*,F^*,R^*)
+ \]
+ 为一阶语言。
+ 若满足
+ \[
+   V\subseteq V^*,\quad C\subseteq C^*,\quad F\subseteq F^*,\quad R\subseteq R^*,
+ \]
+ 并且对任意符号 $a\in C\cup F\cup R$，$a$ 在 $L$ 中的元数与其在 $L^*$ 中的元数相同，
+ 则称 $L$ 为 $L^*$ 的\emph{子语言}，也称 $L^*$ 为 $L$ 的\emph{扩充语言}，记作 $L\le L^*$。
+ \end{definition}
+
+ \begin{lemma}
+ 设 $L\le L^*$。
+ 则对任意 $k\in\mathbb N$，有
+ \[
+   \mathrm{Term}_k(L)\subseteq \mathrm{Term}_k(L^*).
+ \]
+ 从而
+ \[
+   \mathrm{Term}(L)\subseteq \mathrm{Term}(L^*).
+ \]
+ \end{lemma}
+
+ \begin{proof}
+ 对 $k$ 归纳。
+ 当 $k=0$ 时，$\mathrm{Term}_0(L)=V\cup C\subseteq V^*\cup C^*=\mathrm{Term}_0(L^*)$。
+ 若 $\mathrm{Term}_k(L)\subseteq\mathrm{Term}_k(L^*)$，则由 $\mathrm{Term}_{k+1}$ 的递归定义可得
+ \[
+   \begin{aligned}
+   \mathrm{Term}_{k+1}(L)
+   =&\ \mathrm{Term}_k(L)\cup\bigl\{f(t_1,\dots,t_n): f\in F,\ n_f=n,\ t_1,\dots,t_n\in\mathrm{Term}_k(L)\bigr\}\\
+   \subseteq&\ \mathrm{Term}_k(L^*)\cup\bigl\{f(t_1,\dots,t_n): f\in F^*,\ n_f=n,\ t_1,\dots,t_n\in\mathrm{Term}_k(L^*)\bigr\}
+   =\mathrm{Term}_{k+1}(L^*).
+   \end{aligned}
+ \]
+ 因此对所有 $k$ 都有 $\mathrm{Term}_k(L)\subseteq\mathrm{Term}_k(L^*)$。
+ 取并即得 $\mathrm{Term}(L)=\bigcup_k\mathrm{Term}_k(L)\subseteq\bigcup_k\mathrm{Term}_k(L^*)=\mathrm{Term}(L^*)$。
+ \end{proof}
+
+ \begin{lemma}
+ 设 $L\le L^*$。
+ 则对任意 $n\in\mathbb N$，有
+ \[
+   F_n(L)\subseteq F_n(L^*).
+ \]
+ 从而
+ \[
+   F(L)\subseteq F(L^*).
+ \]
+ \end{lemma}
+
+ \begin{proof}
+ 对 $n$ 归纳。
+ 当 $n=0$ 时，任取 $\varphi\in F_0(L)$。
+ 若 $\varphi$ 形如 $(t=s)$，则由上引理知 $t,s\in\mathrm{Term}(L)\subseteq\mathrm{Term}(L^*)$，故 $\varphi\in F_0(L^*)$。
+ 若 $\varphi$ 形如 $R(t_1,\dots,t_m)$，其中 $R\in R$，则 $R\in R\subseteq R^*$，且 $t_i\in\mathrm{Term}(L)\subseteq\mathrm{Term}(L^*)$，故亦有 $\varphi\in F_0(L^*)$。
+ 因此 $F_0(L)\subseteq F_0(L^*)$。
+
+ 若 $F_n(L)\subseteq F_n(L^*)$，则由 $F_{n+1}$ 的递归定义知：对任意 $\varphi,\psi\in F_n(L)$ 与 $x\in V$，有
+ \[
+   (\neg\varphi),(\varphi\to\psi),(\exists x\,\varphi)\in F_{n+1}(L^*),
+ \]
+ 因为此时 $\varphi,\psi\in F_n(L^*)$ 且 $x\in V\subseteq V^*$。
+ 从而 $F_{n+1}(L)\subseteq F_{n+1}(L^*)$。
+ 取并即得 $F(L)=\bigcup_n F_n(L)\subseteq\bigcup_n F_n(L^*)=F(L^*)$。
+ \end{proof}
+
+ \begin{example}
+ 设环语言
+ \[
+   L_{\mathrm{ring}}=(V,\{0,1\},\{+,-,\cdot\},\varnothing).
+ \]
+ 若向其中加入一个二元关系符号 $\le$，得到
+ \[
+   L_{\mathrm{ord\text{-}ring}}=(V,\{0,1\},\{+,-,\cdot\},\{\le\}),
+ \]
+ 则 $L_{\mathrm{ring}}\le L_{\mathrm{ord\text{-}ring}}$。
+ \end{example}
+
+ \begin{definition}[结构的扩张与约化]
+ \label{expansion-and-reduct}
+ 设 $L\le L^*$。
+ 若 $\mathcal M$ 为 $L$-结构，$\mathcal M^*$ 为 $L^*$-结构且满足
+ \begin{enumerate}
+   \item $M^*=M$；
+   \item 对任意 $c\in C$ 有 $c^{\mathcal M^*}=c^{\mathcal M}$；
+   \item 对任意 $f\in F$ 有 $f^{\mathcal M^*}=f^{\mathcal M}$；
+   \item 对任意 $r\in R$ 有 $r^{\mathcal M^*}=r^{\mathcal M}$，
+ \end{enumerate}
+ 则称 $\mathcal M^*$ 为 $\mathcal M$ 的一个\emph{$L^*$-扩张}（expansion）。
+ 此时把 $\mathcal M^*$ 限制到语言 $L$ 上得到的结构称为 $\mathcal M^*$ 的\emph{$L$-约化}（reduct）。
+ \end{definition}
+
+ \begin{proposition}
+ \label{expansion-preserves-satisfaction}
+ 设 $L\le L^*$，$\mathcal M^*$ 为 $\mathcal M$ 的 $L^*$-扩张。
+ 则对任意 $L$-公式 $\psi$ 与任意对变量的赋值 $v:V\to M$，将 $\psi$ 视为 $L^*$-公式时有
+ \[
+   (\mathcal M,v)\models\psi\qquad\Longleftrightarrow\qquad(\mathcal M^*,v)\models\psi.
+ \]
+ 特别地，对任意 $L$-句子 $\sigma$，有 $\mathcal M\models\sigma$ 当且仅当 $\mathcal M^*\models\sigma$。
+ \end{proposition}
+
+ \begin{proof}
+ 因为 $\psi$ 只包含语言 $L$ 中的符号，而这些符号在 $\mathcal M$ 与 $\mathcal M^*$ 中的解释完全一致，
+ 所以对任意项 $t(\bar x)$ 与赋值 $v$，有 $t^{\mathcal M}[v]=t^{\mathcal M^*}[v]$。
+ 再对 $\psi$ 按其构造做归纳，即得两边的满足关系一致。
+ \end{proof}
+
+ \begin{lemma}
+ 设 $L\le L^*$，$\mathcal M$ 为 $L$-结构，$\mathcal M^*$ 为 $\mathcal M$ 的 $L^*$-扩张。
+ 取任意赋值 $v^*:V^*\to M$，并令 $v:=v^*\!\restriction_V:V\to M$。
+ 则对任意 $L$-公式 $\psi$，有
+ \[
+   (\mathcal M,v)\models\psi\qquad\Longleftrightarrow\qquad(\mathcal M^*,v^*)\models\psi.
+ \]
+
+ 若记 $\iota:V\hookrightarrow V^*$ 为包含映射，则 $v=v^*\circ\iota$，对应交换图
+ \[
+ \begin{tikzcd}
+ V \arrow[r, hook, "\iota"] \arrow[dr, "v"'] & V^* \arrow[d, "v^*"] \\
+ & M
+ \end{tikzcd}
+ \]
+ \end{lemma}
+
+ \begin{proof}
+ 先对项做归纳，证明对任意 $L$-项 $t$，都有 $t^{\mathcal M}[v]=t^{\mathcal M^*}[v^*]$。
+ 基础情形 $t\in V\cup C$ 由 $v=v^*\!\restriction_V$ 以及扩张的定义立即得到。
+ 归纳步由函数符号在 $\mathcal M$ 与 $\mathcal M^*$ 中的解释一致得到。
+
+ 再对公式 $\psi$ 按其构造归纳。
+ 原子公式情形由上面对项的结论以及关系符号在两结构中解释一致得到。
+ 联结词情形（$\neg,\to$）由归纳假设直接推出。
+ 若 $\psi$ 形如 $\exists x\,\varphi$（其中 $x\in V$），则对任意 $a\in M$，令
+ \[
+   v_a:=v[x\mapsto a],\qquad v^*_a:=v^*[x\mapsto a].
+ \]
+ 则仍有 $v_a=v^*_a\!\restriction_V$，由归纳假设得
+ $(\mathcal M,v_a)\models\varphi\iff(\mathcal M^*,v^*_a)\models\varphi$。
+ 因而由存在量词的语义定义可得结论。
+ \end{proof}
+
+ \begin{remark}
+ 若 $\psi$ 为 $L$-句子，则其满足关系与赋值无关。
+ 上引理取任意 $v^*:V^*\to M$（例如任意常值赋值）并令 $v:=v^*\!\restriction_V$，即得
+ \[
+   \mathcal M\models\psi\qquad\Longleftrightarrow\qquad\mathcal M^*\models\psi.
+ \]
+ \end{remark}
+
+ \begin{remark}[另一种证明（集合闭包法）]
+ 在上述引理的前提下，令 $\mathcal A$ 为所有 $L$-公式 $\psi$ 组成的集合，使得对任意赋值 $v^*:V^*\to M$ 与 $v:=v^*\!\restriction_V$ 都有
+ \[
+   (\mathcal M,v)\models\psi\qquad\Longleftrightarrow\qquad(\mathcal M^*,v^*)\models\psi.
+ \]
+ 则：
+ \begin{enumerate}
+   \item $F_0(L)\subseteq\mathcal A$。因为原子公式只涉及 $L$ 中的项与关系符号，而这些在 $\mathcal M$ 与 $\mathcal M^*$ 中解释一致；且对 $L$-项 $t$ 有 $t^{\mathcal M}[v]=t^{\mathcal M^*}[v^*]$。
+   \item 若 $\psi\in\mathcal A$，则 $\neg\psi\in\mathcal A$。
+   \item 若 $\psi,\theta\in\mathcal A$，则 $(\psi\to\theta)\in\mathcal A$。
+   \item 若 $\psi\in\mathcal A$ 且 $x\in V$，则 $(\exists x\,\psi)\in\mathcal A$。这是因为对任意 $a\in M$，令 $v_a:=v[x\mapsto a]$ 与 $v^*_a:=v^*[x\mapsto a]$，仍有 $v_a=v^*_a\!\restriction_V$，再用 $\psi\in\mathcal A$ 即可。
+ \end{enumerate}
+ 由 $F_{n+1}(L)$ 的递归定义，易对 $n$ 归纳得 $F_n(L)\subseteq\mathcal A$，于是
+ \[
+   F(L)=\bigcup_{n\in\mathbb N}F_n(L)\subseteq\mathcal A,
+ \]
+ 从而结论对所有 $L$-公式成立。
+ \end{remark}
+
+ \begin{lemma}
+ \label{exist-large-elementary-equivalent-model}
+ 设 $\mathcal M$ 为无限 $L$-结构，$\Omega$ 为无限集合。
+ 则存在 $L$-结构 $\mathcal N$ 使得 $\mathcal N\equiv\mathcal M$ 且 $\lvert N\rvert\ge\lvert\Omega\rvert$。
+ \end{lemma}
+
+ \begin{proof}
+ 设 $L=(V,C,F,R)$。
+ 在语言 $L$ 上加入一族新的常元符号 $\Omega$ 得到扩充语言
+ \[
+   L^*:=(V,C\cup\Omega,F,R).
+ \]
+ 对任意 $a,b\in\Omega$ 且 $a\neq b$，令
+ \[
+   \psi_{a,b}:=\neg(a=b),
+ \]
+ 这是一个 $L^*$-句子。
+ 定义理论
+ \[
+   T:=\mathrm{Th}_L(\mathcal M)\cup\{\psi_{a,b}:a,b\in\Omega,\ a\neq b\}.
+ \]
+
+ 我们证明 $T$ 有模型。
+ 任取 $T_0\subseteq T$ 有限，则只涉及有限多个新常元 $a_1,\dots,a_n\in\Omega$ 及有限多条不等式 $\psi_{a_i,a_j}$。
+ 因 $\mathcal M$ 无限，可在 $M$ 中选取两两不同元素 $m_1,\dots,m_n$，并将每个 $a_i$ 解释为 $m_i$。
+ 这样 $\mathcal M$ 可扩张为某个 $L^*$-结构 $\mathcal M_0^*$，使得 $\mathcal M_0^*\models T_0$。
+ 因此 $T$ 有限可满足。
+ 由紧致性定理，$T$ 有模型 $\mathcal N^*$。
+
+ 令 $\mathcal N$ 为 $\mathcal N^*$ 的 $L$-约化。
+ 由于 $\mathcal N^*\models\mathrm{Th}_L(\mathcal M)$，从而 $\mathcal N\models\mathrm{Th}_L(\mathcal M)$，故 $\mathcal N\equiv\mathcal M$。
+ 又因为 $\mathcal N^*\models\psi_{a,b}$（$a\neq b$）说明 $\{a^{\mathcal N^*}:a\in\Omega\}$ 为 $\lvert\Omega\rvert$ 个互异元素，故 $\lvert N\rvert\ge\lvert\Omega\rvert$。
+ \end{proof}
+
+ \begin{theorem}
+ \label{cardinal-loewenheim-skolem}
+ 设 $\kappa$ 为无限基数且 $\kappa\ge\lvert L\rvert$。
+ 若 $\mathcal M$ 为无限 $L$-结构，则存在 $L$-结构 $\mathcal N$ 满足
+ \[
+   \mathcal N\equiv\mathcal M\qquad\text{且}\qquad \lvert N\rvert=\kappa.
+ \]
+ \end{theorem}
+
+ \begin{proof}
+ 由引理~\ref{lem:exist-large-elementary-equivalent-model}（取 $\Omega$ 使得 $\lvert\Omega\rvert=\kappa$）可取 $L$-结构 $\mathcal N'$，满足
+ \[
+   \mathcal N'\equiv\mathcal M\qquad\text{且}\qquad \lvert N'\rvert\ge\kappa.
+ \]
+ 从 $N'$ 中取子集 $\Omega\subseteq N'$ 使得 $\lvert\Omega\rvert=\kappa$。
+ 由向下 Löwenheim--Skolem 定理（定理~\ref{thm:downward-loewenheim-skolem}）可取 $\mathcal N\preccurlyeq\mathcal N'$，使得
+ \[
+   \Omega\subseteq N\qquad\text{且}\qquad \lvert N\rvert\le \max\{\lvert\Omega\rvert,\lvert L\rvert,\aleph_0\}=\kappa.
+ \]
+ 因 $\Omega\subseteq N$，故 $\lvert N\rvert\ge\kappa$，从而 $\lvert N\rvert=\kappa$。
+ 又因为 $\mathcal N\preccurlyeq\mathcal N'$，故 $\mathcal N\equiv\mathcal N'$，进而 $\mathcal N\equiv\mathcal M$。
+ \end{proof}
+
+ \begin{example}[集合论的一阶公理化]
+ 取语言
+ \[
+   L_{\in}:=(V,\varnothing,\varnothing,\{\in\}),
+ \]
+ 其中 $\in$ 为二元关系符号。
+ 一个 $L_{\in}$-结构 $\mathcal V=(V,\in^{\mathcal V})$ 可视为“集合论宇宙”。
+ 下面列出若干可在 $L_{\in}$ 中写出的基本公理（均为句子，最后一条为公理模式）。
+
+ \begin{enumerate}
+   \item \emph{非空}：$\exists x\,(x=x)$。
+   \item \emph{外延公理}：
+   \[
+     \forall x\,\forall y\,\Bigl(x=y\leftrightarrow\forall z\,(z\in x\leftrightarrow z\in y)\Bigr).
+   \]
+   \item \emph{配对公理}（对任意 $x,y$ 存在 $\{x,y\}$）：
+   \[
+     \forall x\,\forall y\,\exists z\,\forall t\,\Bigl(t\in z\leftrightarrow(t=x\vee t=y)\Bigr).
+   \]
+   \item \emph{并集公理}（对任意非空 $x$ 存在 $\bigcup x$）：
+   \[
+     \forall x\,\Bigl(\exists y\,(y\in x)\to\exists z\,\forall t\,\bigl(t\in z\leftrightarrow\exists s\,(s\in x\wedge t\in s)\bigr)\Bigr).
+   \]
+   \item \emph{幂集公理}（对任意 $x$ 存在 $\mathcal P(x)$）：
+   \[
+     \forall x\,\exists z\,\forall t\,\Bigl(t\in z\leftrightarrow\forall u\,(u\in t\to u\in x)\Bigr).
+   \]
+   \item \emph{分离公理模式}：对任意 $L_{\in}$-公式 $\varphi(t,\bar p)$（允许参数 $\bar p$），都有
+   \[
+     \forall x\,\exists z\,\forall t\,\Bigl(t\in z\leftrightarrow(t\in x\wedge\varphi(t,\bar p))\Bigr).
+   \]
+ \end{enumerate}
+ \end{example}
+
+\section{项与公式的代换}
+
+ \begin{definition}[项的代换]
+ \label{substitution-on-terms}
+ 设 $L=(V,C,F,R)$ 为一阶语言。
+ 称映射 $\sigma:V\to\mathrm{Term}(L)$ 为一个\emph{项代换}。
+ 递归定义其在项上的延拓 $t\longmapsto t^{\sigma}$（$t\in\mathrm{Term}(L)$）：
+ \begin{enumerate}
+   \item 若 $t=x\in V$，则 $t^{\sigma}:=\sigma(x)$；
+   \item 若 $t=c\in C$，则 $t^{\sigma}:=c$；
+   \item 若 $t=f(t_1,\dots,t_n)$（$f\in F,\ n_f=n$），则
+   \[
+     t^{\sigma}:=f\bigl(t_1^{\sigma},\dots,t_n^{\sigma}\bigr).
+   \]
+ \end{enumerate}
+ \end{definition}
+
+ \begin{example}
+ 在语言 $L=(V,\{c\},F=\{f,g\},\varnothing)$ 中，设 $n_f=2,n_g=1$。
+ 若代换 $\sigma:V\to\mathrm{Term}(L)$ 满足 $\sigma(x)=f(x,c)$、$\sigma(y)=g(y)$，则
+ \[
+   \bigl(g(f(x,y))\bigr)^{\sigma}=g\bigl(f(\sigma(x),\sigma(y))\bigr)=g\bigl(f(f(x,c),g(y))\bigr).
+ \]
+ \end{example}
+
+ \begin{lemma}[项代换只依赖其出现变量]
+ \label{substitution-depends-on-vars}
+ 设 $t\in\mathrm{Term}(L)$，$\sigma,\sigma':V\to\mathrm{Term}(L)$ 为代换。
+ 若对任意 $x\in\mathrm{Var}(t)$ 都有 $\sigma(x)=\sigma'(x)$，则
+ \[
+   t^{\sigma}=t^{\sigma'}.
+ \]
+ \end{lemma}
+
+ \begin{proof}
+ 令
+ \[
+   A:=\bigl\{t\in\mathrm{Term}(L):\ \forall\sigma,\sigma':V\to\mathrm{Term}(L)\,\bigl(\sigma|_{\mathrm{Var}(t)}=\sigma'|_{\mathrm{Var}(t)}\Rightarrow t^{\sigma}=t^{\sigma'}\bigr)\bigr\}.
+ \]
+ 显然 $V\cup C\subseteq A$。
+ 若 $t=f(t_1,\dots,t_n)$（$f\in F$）且 $t_1,\dots,t_n\in A$，并设 $\sigma|_{\mathrm{Var}(t)}=\sigma'|_{\mathrm{Var}(t)}$。
+ 由定义~\ref{def:vars-in-term} 知对每个 $i$ 有 $\mathrm{Var}(t_i)\subseteq\mathrm{Var}(t)$，从而 $\sigma|_{\mathrm{Var}(t_i)}=\sigma'|_{\mathrm{Var}(t_i)}$。
+ 因 $t_i\in A$，得 $t_i^{\sigma}=t_i^{\sigma'}$，于是
+ \[
+   t^{\sigma}=f(t_1^{\sigma},\dots,t_n^{\sigma})=f(t_1^{\sigma'},\dots,t_n^{\sigma'})=t^{\sigma'}.
+ \]
+ 故 $A$ 对函数符号闭包。
+ 由 $\mathrm{Term}(L)$ 的最小性（命题后面的最小性结论）可得 $\mathrm{Term}(L)\subseteq A$，从而结论成立。
+ \end{proof}
+
+ \begin{definition}[公式的代换]
+ \label{substitution-on-formulas}
+ 设 $\sigma:V\to\mathrm{Term}(L)$ 为项代换。
+ 对每个 $x\in V$ 定义代换 $\sigma_x:V\to\mathrm{Term}(L)$：
+ \[
+   \sigma_x(z):=
+   \begin{cases}
+     x, & z=x,\\
+     \sigma(z), & z\neq x.
+   \end{cases}
+ \]
+ 递归定义 $\sigma$ 在公式上的延拓 $\varphi\longmapsto\varphi^{\sigma}$（$\varphi\in F(L)$）：
+ \begin{enumerate}
+   \item 若 $\varphi=(t=s)$，则
+   \[
+     \varphi^{\sigma}:=(t^{\sigma}=s^{\sigma});
+   \]
+   \item 若 $\varphi=R(t_1,\dots,t_n)$（$R\in R,\ n_R=n$），则
+   \[
+     \varphi^{\sigma}:=R(t_1^{\sigma},\dots,t_n^{\sigma});
+   \]
+   \item 若 $\varphi=(\neg\psi)$，则
+   \[
+     \varphi^{\sigma}:=(\neg(\psi^{\sigma}));
+   \]
+   \item 若 $\varphi=(\alpha\to\beta)$，则
+   \[
+     \varphi^{\sigma}:=(\alpha^{\sigma}\to\beta^{\sigma});
+   \]
+   \item 若 $\varphi=(\exists x\,\psi)$，则
+   \[
+     \varphi^{\sigma}:=(\exists x\,(\psi^{\sigma_x})).
+   \]
+ \end{enumerate}
+ \end{definition}
+
+ \begin{lemma}[公式代换只依赖自由变量]
+ \label{substitution-depends-on-free-vars}
+ 设 $\varphi\in F(L)$，$\sigma,\sigma':V\to\mathrm{Term}(L)$ 为代换。
+ 若 $\sigma|_{\mathrm{FV}(\varphi)}=\sigma'|_{\mathrm{FV}(\varphi)}$，则
+ \[
+   \varphi^{\sigma}=\varphi^{\sigma'}.
+ \]
+ \end{lemma}
+
+ \begin{proof}
+ 令
+ \[
+   A:=\bigl\{\varphi\in F(L):\ \forall\sigma,\sigma':V\to\mathrm{Term}(L)\,\bigl(\sigma|_{\mathrm{FV}(\varphi)}=\sigma'|_{\mathrm{FV}(\varphi)}\Rightarrow\varphi^{\sigma}=\varphi^{\sigma'}\bigr)\bigr\}.
+ \]
+
+ \textbf{(1) 原子公式属于 $A$。}
+ 若 $\varphi=(t=s)$ 且 $\sigma|_{\mathrm{FV}(\varphi)}=\sigma'|_{\mathrm{FV}(\varphi)}$，则
+ \[\sigma|_{\mathrm{Var}(t)}=\sigma'|_{\mathrm{Var}(t)},\qquad \sigma|_{\mathrm{Var}(s)}=\sigma'|_{\mathrm{Var}(s)}\]
+ 因为 $\mathrm{FV}(\varphi)=\mathrm{Var}(t)\cup\mathrm{Var}(s)$。
+ 由引理~\ref{lem:substitution-depends-on-vars} 得 $t^{\sigma}=t^{\sigma'}$ 且 $s^{\sigma}=s^{\sigma'}$，故 $(t=s)^{\sigma}=(t=s)^{\sigma'}$。
+ 若 $\varphi=R(t_1,\dots,t_n)$ 同理可得 $\varphi^{\sigma}=\varphi^{\sigma'}$。
+ 因此 $F_0(L)\subseteq A$。
+
+ \textbf{(2) $A$ 对 $\neg,\to,\exists$ 闭包。}
+ 若 $\varphi=(\neg\psi)$ 且 $\psi\in A$，并设 $\sigma|_{\mathrm{FV}(\varphi)}=\sigma'|_{\mathrm{FV}(\varphi)}$。
+ 因 $\mathrm{FV}(\varphi)=\mathrm{FV}(\psi)$，由 $\psi\in A$ 得 $\psi^{\sigma}=\psi^{\sigma'}$，从而 $(\neg\psi)^{\sigma}=(\neg\psi)^{\sigma'}$。
+
+ 若 $\varphi=(\alpha\to\beta)$ 且 $\alpha,\beta\in A$，并设 $\sigma|_{\mathrm{FV}(\varphi)}=\sigma'|_{\mathrm{FV}(\varphi)}$。
+ 由 $\mathrm{FV}(\varphi)=\mathrm{FV}(\alpha)\cup\mathrm{FV}(\beta)$ 得
+ $\sigma|_{\mathrm{FV}(\alpha)}=\sigma'|_{\mathrm{FV}(\alpha)}$ 且 $\sigma|_{\mathrm{FV}(\beta)}=\sigma'|_{\mathrm{FV}(\beta)}$。
+ 由 $\alpha,\beta\in A$ 得 $\alpha^{\sigma}=\alpha^{\sigma'}$、$\beta^{\sigma}=\beta^{\sigma'}$，从而 $(\alpha\to\beta)^{\sigma}=(\alpha\to\beta)^{\sigma'}$。
+
+ 若 $\varphi=(\exists x\,\psi)$ 且 $\psi\in A$，并设 $\sigma|_{\mathrm{FV}(\varphi)}=\sigma'|_{\mathrm{FV}(\varphi)}$。
+ 取任意 $y\in\mathrm{FV}(\psi)$。
+ 若 $y=x$，则由定义有 $\sigma_x(x)=x=\sigma'_x(x)$。
+ 若 $y\neq x$，则 $y\in\mathrm{FV}(\psi)\setminus\{x\}=\mathrm{FV}(\exists x\,\psi)=\mathrm{FV}(\varphi)$，从而 $\sigma(y)=\sigma'(y)$，故 $\sigma_x(y)=\sigma(y)=\sigma'(y)=\sigma'_x(y)$。
+ 因此 $\sigma_x|_{\mathrm{FV}(\psi)}=\sigma'_x|_{\mathrm{FV}(\psi)}$。
+ 由 $\psi\in A$ 得 $\psi^{\sigma_x}=\psi^{\sigma'_x}$，从而
+ \[
+   (\exists x\,\psi)^{\sigma}=(\exists x\,(\psi^{\sigma_x}))=(\exists x\,(\psi^{\sigma'_x}))=(\exists x\,\psi)^{\sigma'}.
+ \]
+ 故 $A$ 对 $\exists$ 亦闭包。
+
+ 由 $F(L)$ 的分层构造（定义 $F_{n+1}(L)$ 的递归闭包）可对 $n$ 归纳得 $F_n(L)\subseteq A$，从而 $F(L)\subseteq A$。
+ 因此结论对所有 $\varphi\in F(L)$ 成立。
+ \end{proof}
+
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+  
+ \begin{definition}[公式的语境]
+ \label{formula-context}
+ 设 $L=(V,C,F,R)$ 为一阶语言，$\varphi$ 为 $L$-公式。
+ 若存在两两不等的常元符号 $c_1,\dots,c_k\in C$ 与变元 $x_1,\dots,x_{\ell}\in V$ 使得
+ \begin{enumerate}
+   \item $\varphi$ 中出现的常元符号集合为 $\{c_1,\dots,c_k\}$；
+   \item $\mathrm{FV}(\varphi)=\{x_1,\dots,x_{\ell}\}$；
+ \end{enumerate}
+ 则记作 $\varphi[c_1,\dots,c_k; x_1,\dots,x_{\ell}]$。
+ \end{definition}
+
+ \begin{definition}[带常元的替换与代入记号]
+ \label{substitution-with-constants}
+ 设 $\sigma:V\cup C\to\mathrm{Term}(L)$ 为映射。
+ 递归定义 $\sigma$ 在项上的延拓 $t\longmapsto t^{\sigma}$（$t\in\mathrm{Term}(L)$）：
+ \begin{enumerate}
+   \item 若 $t=x\in V$，则 $t^{\sigma}:=\sigma(x)$；
+   \item 若 $t=c\in C$，则 $t^{\sigma}:=\sigma(c)$；
+   \item 若 $t=f(t_1,\dots,t_n)$（$f\in F,\ n_f=n$），则
+   \[
+     t^{\sigma}:=f\bigl(t_1^{\sigma},\dots,t_n^{\sigma}\bigr).
+   \]
+ \end{enumerate}
+ 对每个 $x\in V$ 定义 $\sigma_x:V\cup C\to\mathrm{Term}(L)$：
+ \[
+   \sigma_x(z):=
+   \begin{cases}
+     x, & z=x,\\
+     \sigma(z), & z\neq x,
+   \end{cases}
+ \qquad (z\in V),
+ \qquad
+ \sigma_x(c):=\sigma(c)\qquad(c\in C).
+ \]
+ 递归定义 $\sigma$ 在公式上的延拓 $\varphi\longmapsto\varphi^{\sigma}$（$\varphi\in F(L)$）：
+ \begin{enumerate}
+   \item 若 $\varphi=(t=s)$，则 $\varphi^{\sigma}:=(t^{\sigma}=s^{\sigma})$；
+   \item 若 $\varphi=R(t_1,\dots,t_n)$，则 $\varphi^{\sigma}:=R(t_1^{\sigma},\dots,t_n^{\sigma})$；
+   \item 若 $\varphi=(\neg\psi)$，则 $\varphi^{\sigma}:=(\neg(\psi^{\sigma}))$；
+   \item 若 $\varphi=(\alpha\to\beta)$，则 $\varphi^{\sigma}:=(\alpha^{\sigma}\to\beta^{\sigma})$；
+   \item 若 $\varphi=(\exists x\,\psi)$，则 $\varphi^{\sigma}:=(\exists x\,(\psi^{\sigma_x}))$。
+ \end{enumerate}
+
+ 若 $\varphi[c_1,\dots,c_k; x_1,\dots,x_{\ell}]$，且 $t_1,\dots,t_k,s_1,\dots,s_{\ell}\in\mathrm{Term}(L)$，则记
+ \[
+   \varphi[t_1,\dots,t_k; s_1,\dots,s_{\ell}]:=\varphi^{\sigma},
+ \]
+ 其中 $\sigma:V\cup C\to\mathrm{Term}(L)$ 定义为
+ \[
+   \sigma(c_i):=t_i\ (i=1,\dots,k),\quad \sigma(c):=c\ (c\in C\setminus\{c_1,\dots,c_k\}),
+ \]
+ \[
+   \sigma(x_j):=s_j\ (j=1,\dots,\ell),\quad \sigma(x):=x\ (x\in V\setminus\{x_1,\dots,x_{\ell}\}).
+ \]
+ \end{definition}
+
+ \begin{definition}[不作约束变元]
+ \label{not-a-bound-variable}
+ 设 $L=(V,C,F,R)$ 为一阶语言，$x\in V$，$\varphi$ 为 $L$-公式。
+ 若 $\varphi$ 中不出现形如 $(\exists x\,\psi)$ 的子公式，则称 $x$ 在 $\varphi$ 中\emph{不作约束变元}。
+ \end{definition}
+
+ \begin{remark}
+ $x\in\mathrm{FV}(\varphi)$ 并不意味着 $x$ 在 $\varphi$ 中不作约束变元。
+ 例如令
+ \[
+   \varphi:=((\exists x\,(x=y))\to(x=z)).
+ \]
+ 则 $x\in\mathrm{FV}(\varphi)$，但 $\varphi$ 中出现了 $\exists x$，因此 $x$ 在 $\varphi$ 中仍作约束变元。
+ \end{remark}
+
+ \begin{definition}[项中出现的常元]
+ \label{consts-in-term}
+ 设 $t\in\mathrm{Term}(L)$。
+ 递归定义其出现常元集 $\mathrm{Con}(t)\subseteq C$：
+ \begin{enumerate}
+   \item 若 $t=x\in V$，则 $\mathrm{Con}(t)=\varnothing$；
+   \item 若 $t=c\in C$，则 $\mathrm{Con}(t)=\{c\}$；
+   \item 若 $t=f(t_1,\dots,t_n)$（$f\in F,\ n_f=n$），则
+   \[
+     \mathrm{Con}(t)=\mathrm{Con}(t_1)\cup\cdots\cup\mathrm{Con}(t_n).
+   \]
+ \end{enumerate}
+ \end{definition}
+
+ \begin{lemma}[项的替换]
+ \label{term-substitution}
+ 设 $\sigma:V\cup C\to\mathrm{Term}(L)$ 为映射，$\mathcal M$ 为 $L$-结构，$v,u:V\to M$ 为赋值。
+ 记 $\bar v,\bar u:\mathrm{Term}(L)\to M$ 为由 $v,u$ 诱导的项解释，并令 $\hat v:V\cup C\to M$ 由
+ \[
+   \hat v(x):=v(x)\ (x\in V),\qquad \hat v(c):=c^{\mathcal M}\ (c\in C)
+ \]
+ 定义。
+ 若对任意 $z\in\mathrm{Var}(t)\cup\mathrm{Con}(t)$ 都有
+ \[
+   \hat v(z)=\bar u\bigl(z^{\sigma}\bigr),
+ \]
+ 则
+ \[
+   \bar v(t)=\bar u\bigl(t^{\sigma}\bigr).
+ \]
+ \end{lemma}
+
+ \begin{proof}
+ 固定 $\sigma,\mathcal M$。
+ 令
+ \[
+   A:=\bigl\{t\in\mathrm{Term}(L):\ \forall v,u:V\to M\,\bigl(\forall z\in\mathrm{Var}(t)\cup\mathrm{Con}(t)\ \hat v(z)=\bar u(z^{\sigma})\Rightarrow \bar v(t)=\bar u(t^{\sigma})\bigr)\bigr\}.
+ \]
+ 我们证明 $A=\mathrm{Term}(L)$。
+
+ 先证 $V\cup C\subseteq A$。
+ 若 $t=x\in V$，则 $\mathrm{Var}(t)\cup\mathrm{Con}(t)=\{x\}$。
+ 若 $\hat v(x)=\bar u(x^{\sigma})$，则
+ \[
+   \bar v(t)=v(x)=\hat v(x)=\bar u(x^{\sigma})=\bar u(t^{\sigma}).
+ \]
+ 若 $t=c\in C$，则 $\mathrm{Var}(t)\cup\mathrm{Con}(t)=\{c\}$。
+ 若 $\hat v(c)=\bar u(c^{\sigma})$，则
+ \[
+   \bar v(t)=c^{\mathcal M}=\hat v(c)=\bar u(c^{\sigma})=\bar u(t^{\sigma}).
+ \]
+
+ 再证 $A$ 对函数符号闭包。
+ 设 $t=f(t_1,\dots,t_n)$（$f\in F$）且 $t_1,\dots,t_n\in A$。
+ 取任意赋值 $v,u:V\to M$，并设对任意 $z\in\mathrm{Var}(t)\cup\mathrm{Con}(t)$ 有 $\hat v(z)=\bar u(z^{\sigma})$。
+ 由定义~\ref{def:vars-in-term} 与定义~\ref{def:consts-in-term} 知对每个 $i$ 有
+ \[
+   \mathrm{Var}(t_i)\subseteq\mathrm{Var}(t),\qquad \mathrm{Con}(t_i)\subseteq\mathrm{Con}(t).
+ \]
+ 从而对任意 $z\in\mathrm{Var}(t_i)\cup\mathrm{Con}(t_i)$ 亦有 $\hat v(z)=\bar u(z^{\sigma})$。
+ 因 $t_i\in A$，得对每个 $i$ 有 $\bar v(t_i)=\bar u(t_i^{\sigma})$。
+ 于是
+ \[
+   \bar v(t)=f^{\mathcal M}(\bar v(t_1),\dots,\bar v(t_n))=f^{\mathcal M}(\bar u(t_1^{\sigma}),\dots,\bar u(t_n^{\sigma}))=\bar u(t^{\sigma}).
+ \]
+ 故 $t\in A$。
+
+ 由 $\mathrm{Term}(L)$ 的最小性（包含 $V\cup C$ 且对函数符号闭包的最小集合）得 $A=\mathrm{Term}(L)$。
+ 取 $t$ 即得结论。
+ \end{proof}
+
+ \begin{theorem}[替换定理]
+ \label{substitution-theorem}
+ 设 $\sigma:V\cup C\to\mathrm{Term}(L)$ 为映射，$\mathcal M$ 为 $L$-结构。
+ 设 $\varphi[c_1,\dots,c_k; x_1,\dots,x_{\ell}]$ 为 $L$-公式，$v,u:V\to M$ 为赋值。
+ 记 $\bar v,\bar u:\mathrm{Term}(L)\to M$ 为由 $v,u$ 诱导的项解释，并令 $\hat v:V\cup C\to M$ 由
+ \[
+   \hat v(x):=v(x)\ (x\in V),\qquad \hat v(c):=c^{\mathcal M}\ (c\in C)
+ \]
+ 定义。
+ 假设对任意 $z\in\{c_1,\dots,c_k,x_1,\dots,x_{\ell}\}$ 都满足：
+ \begin{enumerate}
+   \item $\hat v(z)=\bar u(z^{\sigma})$；
+   \item 或者 $z^{\sigma}=z$，或者对任意 $y\in\mathrm{Var}(z^{\sigma})$，$y$ 在 $\varphi$ 中不作约束变元（定义~\ref{def:not-a-bound-variable}）。
+ \end{enumerate}
+ 则
+ \[
+   (\mathcal M,v)\models\varphi\qquad\Longleftrightarrow\qquad(\mathcal M,u)\models\varphi^{\sigma}.
+ \]
+ \end{theorem}
+
+ \begin{proof}
+ 对 $\varphi$ 的生成方式作归纳。
+
+ \textbf{(A) 原子公式。}
+ 若 $\varphi=(t=s)$。
+ 由 $\mathrm{FV}(\varphi)=\mathrm{Var}(t)\cup\mathrm{Var}(s)$ 与 $\mathrm{Con}(t)\cup\mathrm{Con}(s)\subseteq\{c_1,\dots,c_k\}$ 得
+ \[
+   \forall z\in\mathrm{Var}(t)\cup\mathrm{Con}(t)\ \ \hat v(z)=\bar u(z^{\sigma}),\qquad \forall z\in\mathrm{Var}(s)\cup\mathrm{Con}(s)\ \ \hat v(z)=\bar u(z^{\sigma}).
+ \]
+ 由引理~\ref{lem:term-substitution} 得 $\bar v(t)=\bar u(t^{\sigma})$ 且 $\bar v(s)=\bar u(s^{\sigma})$。
+ 因此
+ \[
+   (\mathcal M,v)\models(t=s)\ \Longleftrightarrow\ \bar v(t)=\bar v(s)\ \Longleftrightarrow\ \bar u(t^{\sigma})=\bar u(s^{\sigma})\ \Longleftrightarrow\ (\mathcal M,u)\models(t^{\sigma}=s^{\sigma}).
+ \]
+ 而 $(t=s)^{\sigma}=(t^{\sigma}=s^{\sigma})$，故结论成立。
+ 若 $\varphi=R(t_1,\dots,t_n)$ 同理可得
+ \[
+   (\mathcal M,v)\models R(t_1,\dots,t_n)\ \Longleftrightarrow\ (\mathcal M,u)\models R(t_1^{\sigma},\dots,t_n^{\sigma}).
+ \]
+
+ \textbf{(B) 否定与蕴涵。}
+ 由满足关系的定义以及 $(\neg\psi)^{\sigma}=\neg(\psi^{\sigma})$、$(\alpha\to\beta)^{\sigma}=(\alpha^{\sigma}\to\beta^{\sigma})$，
+ 结论直接由归纳假设推出。
+
+ \textbf{(C) 存在量词。}
+ 设 $\varphi=(\exists x\,\psi)$。
+ 先证从左到右。
+ 若 $(\mathcal M,v)\models(\exists x\,\psi)$，则存在 $a\in M$ 使 $(\mathcal M,v_a^{x})\models\psi$。
+ 定义赋值 $u_a^{x}:V\to M$ 为 $u_a^{x}(z)=u(z)$（$z\neq x$）且 $u_a^{x}(x)=a$。
+ 对 $\psi$ 应用归纳假设（对应代换 $\sigma_x$ 与赋值 $v_a^{x},u_a^{x}$）：
+ 注意到 $x\notin\mathrm{FV}(\varphi)$，因此 $x\notin\{x_1,\dots,x_{\ell}\}$。
+ 从而对任意 $z\in\{c_1,\dots,c_k,x_1,\dots,x_{\ell}\}$ 都有 $z\neq x$，故
+ \[
+   z^{\sigma_x}=z^{\sigma}.
+ \]
+ 又由定理假设 (2) 可知：若 $z\in\{c_1,\dots,c_k,x_1,\dots,x_{\ell}\}$ 且 $z^{\sigma}\neq z$，则 $\mathrm{Var}(z^{\sigma})$ 中任意变元在 $\varphi$ 中不作约束变元。
+ 由于 $x$ 在 $\varphi=(\exists x\,\psi)$ 中作约束变元，故必有
+ \[
+   x\notin\mathrm{Var}(z^{\sigma}).
+ \]
+ 因此 $u_a^{x}$ 与 $u$ 在 $\mathrm{Var}(z^{\sigma})$ 上一致，从而
+ \[
+   \overline{u_a^{x}}(z^{\sigma_x})=\overline{u_a^{x}}(z^{\sigma})=\bar u(z^{\sigma}).
+ \]
+ 另外，由 $v_a^{x}$ 在 $V\setminus\{x\}$ 上与 $v$ 一致，得 $\widehat{v_a^{x}}(z)=\hat v(z)$（$z\neq x$）。
+ 并且若某变元 $y$ 在 $\varphi$ 中不作约束变元，则 $y$ 亦在 $\psi$ 中不作约束变元。
+ 对 $z\neq x$ 有 $z^{\sigma_x}=z^{\sigma}$ 且 $\widehat{v_a^{x}}(z)=\hat v(z)$；
+ 对 $z=x$ 有 $x^{\sigma_x}=x$ 且 $\widehat{v_a^{x}}(x)=a=\overline{u_a^{x}}(x)$。
+ 并且若某 $y$ 在 $\varphi$ 中不作约束变元，则它也在 $\psi$ 中不作约束变元。
+ 因此可得 $(\mathcal M,u_a^{x})\models\psi^{\sigma_x}$。
+ 于是 $(\mathcal M,u)\models\exists x\,(\psi^{\sigma_x})$，即 $(\mathcal M,u)\models(\exists x\,\psi)^{\sigma}$。
+
+ 再证从右到左。
+ 若 $(\mathcal M,u)\models(\exists x\,\psi)^{\sigma}=\exists x\,(\psi^{\sigma_x})$，则存在 $a\in M$ 使 $(\mathcal M,u_a^{x})\models\psi^{\sigma_x}$。
+ 同理对 $\psi$ 应用归纳假设，可得 $(\mathcal M,v_a^{x})\models\psi$，从而 $(\mathcal M,v)\models(\exists x\,\psi)$。
+
+ 综上，结论对所有 $\varphi\in F(L)$ 成立。
+ \end{proof}
+
+\section{参数扩张与完全图示}
+
+\begin{definition}[参数扩张语言]
+\label{language-with-parameters}
+设 $L=(V,C,F,R)$ 为一阶语言，$\mathcal M$ 为 $L$-结构。
+对每个 $a\in M$ 取一个新的常元记为 $\bar a$，并要求当 $a\neq b$ 时 $\bar a\neq \bar b$。
+令
+\[
+  L_{\mathcal M}:=\bigl(V,\ C\cup\{\bar a:\ a\in M\},\ F,\ R\bigr).
+\]
+称 $L_{\mathcal M}$ 为 $L$ 关于 $\mathcal M$ 的\emph{参数扩张语言}。
+\end{definition}
+
+\begin{definition}[典范参数扩张结构]
+\label{canonical-parameter-expansion}
+在定义~\ref{def:language-with-parameters} 的记号下，定义 $L_{\mathcal M}$-结构 $\mathcal M^*$ 如下：
+其底集仍为 $M$；且对原语言 $L$ 中的符号解释与 $\mathcal M$ 相同；并对每个 $a\in M$ 规定
+\[
+  (\bar a)^{\mathcal M^*}:=a.
+\]
+称 $\mathcal M^*$ 为 $\mathcal M$ 的\emph{典范参数扩张}。
+\end{definition}
+
+\begin{proposition}[带参数公式与句子的等价]
+\label{parameters-as-sentences}
+设 $\varphi(x_1,\dots,x_n)$ 为 $L$-公式且 $\mathrm{FV}(\varphi)\subseteq\{x_1,\dots,x_n\}$。
+取 $a_1,\dots,a_n\in M$ 并令 $v:V\to M$ 为满足 $v(x_i)=a_i$（$1\le i\le n$）的赋值。
+令 $\sigma:V\cup C\cup\{\bar a:\ a\in M\}\to\mathrm{Term}(L_{\mathcal M})$ 满足
+\[
+  \sigma(x_i)=\bar a_i\ (1\le i\le n),\qquad \sigma(z)=z\ (z\notin\{x_1,\dots,x_n\}).
+\]
+则 $\varphi^{\sigma}$ 为 $L_{\mathcal M}$-句子（亦可记作 $\varphi[\bar a_1,\dots,\bar a_n]$），并且
+\[
+  (\mathcal M,v)\models\varphi\qquad\Longleftrightarrow\qquad\mathcal M^*\models\varphi^{\sigma}.
+\]
+\end{proposition}
+
+\begin{proof}
+由于 $L\le L_{\mathcal M}$ 且 $\mathcal M^*$ 是 $\mathcal M$ 的 $L_{\mathcal M}$-扩张，$\varphi$ 只含 $L$ 中的符号，故
+\[
+  (\mathcal M,v)\models\varphi\qquad\Longleftrightarrow\qquad(\mathcal M^*,v)\models\varphi.
+\]
+再把上式右端对语言 $L_{\mathcal M}$ 中的代换 $\sigma$ 应用定理~\ref{thm:substitution-theorem}（取 $u=v$）。
+注意到对 $x_i$ 有 $v(x_i)=a_i=(\bar a_i)^{\mathcal M^*}=\bar v(x_i^{\sigma})$，且对其余 $z$ 有 $z^{\sigma}=z$，从而满足该定理的条件。
+于是得到
+\[
+  (\mathcal M^*,v)\models\varphi\qquad\Longleftrightarrow\qquad(\mathcal M^*,v)\models\varphi^{\sigma}.
+\]
+而 $\varphi^{\sigma}$ 为句子，满足关系与赋值无关，故
+\[
+  (\mathcal M^*,v)\models\varphi^{\sigma}\qquad\Longleftrightarrow\qquad\mathcal M^*\models\varphi^{\sigma}.
+\]
+合并以上等价式即得结论。
+\end{proof}
+
+\begin{definition}[公式中出现的常元]
+\label{consts-in-formula}
+设 $\varphi$ 为 $L$-公式。
+递归定义其出现常元集 $\mathrm{Con}(\varphi)\subseteq C$：
+\begin{enumerate}
+  \item 若 $\varphi=(t=s)$，则 $\mathrm{Con}(\varphi)=\mathrm{Con}(t)\cup\mathrm{Con}(s)$；
+  \item 若 $\varphi=R(t_1,\dots,t_n)$，则 $\mathrm{Con}(\varphi)=\mathrm{Con}(t_1)\cup\cdots\cup\mathrm{Con}(t_n)$；
+  \item 若 $\varphi=(\neg\psi)$，则 $\mathrm{Con}(\varphi)=\mathrm{Con}(\psi)$；
+  \item 若 $\varphi=(\psi\to\theta)$，则 $\mathrm{Con}(\varphi)=\mathrm{Con}(\psi)\cup\mathrm{Con}(\theta)$；
+  \item 若 $\varphi=(\exists x\,\psi)$，则 $\mathrm{Con}(\varphi)=\mathrm{Con}(\psi)$。
+\end{enumerate}
+\end{definition}
+
+\begin{lemma}[置换下项的出现符号]
+\label{term-symbols-under-permutation}
+设 $\sigma:V\cup C\to V\cup C$ 为双射，且 $\sigma(V)=V$、$\sigma(C)=C$。
+将 $\sigma$ 视为映射 $\sigma:V\cup C\to\mathrm{Term}(L)$（把 $\sigma(x)$ 视为变量项，把 $\sigma(c)$ 视为常元项），并按定义~\ref{def:substitution-on-terms} 延拓到项。
+则对任意 $t\in\mathrm{Term}(L)$，有
+\[
+  \mathrm{Var}(t^{\sigma})\cup\mathrm{Con}(t^{\sigma})\subseteq \sigma\bigl(\mathrm{Var}(t)\cup\mathrm{Con}(t)\bigr).
+\]
+\end{lemma}
+
+\begin{proof}
+对 $t$ 的生成方式作归纳。
+若 $t=x\in V$，则 $t^{\sigma}=\sigma(x)\in V$，从而
+\[
+  \mathrm{Var}(t^{\sigma})\cup\mathrm{Con}(t^{\sigma})=\{\sigma(x)\}\subseteq\sigma(\{x\})=\sigma\bigl(\mathrm{Var}(t)\cup\mathrm{Con}(t)\bigr).
+\]
+若 $t=c\in C$，则 $t^{\sigma}=\sigma(c)\in C$，从而
+\[
+  \mathrm{Var}(t^{\sigma})\cup\mathrm{Con}(t^{\sigma})=\{\sigma(c)\}\subseteq\sigma(\{c\})=\sigma\bigl(\mathrm{Var}(t)\cup\mathrm{Con}(t)\bigr).
+\]
+若 $t=f(t_1,\dots,t_n)$，则 $t^{\sigma}=f(t_1^{\sigma},\dots,t_n^{\sigma})$，并由定义~\ref{def:vars-in-term} 与定义~\ref{def:consts-in-term} 得
+\[
+  \mathrm{Var}(t^{\sigma})\cup\mathrm{Con}(t^{\sigma})=\bigcup_{i=1}^n\bigl(\mathrm{Var}(t_i^{\sigma})\cup\mathrm{Con}(t_i^{\sigma})\bigr).
+\]
+对每个 $i$ 用归纳假设，有
+\[
+  \mathrm{Var}(t_i^{\sigma})\cup\mathrm{Con}(t_i^{\sigma})\subseteq\sigma\bigl(\mathrm{Var}(t_i)\cup\mathrm{Con}(t_i)\bigr)\subseteq\sigma\Bigl(\bigcup_{j=1}^n\bigl(\mathrm{Var}(t_j)\cup\mathrm{Con}(t_j)\bigr)\Bigr)=\sigma\bigl(\mathrm{Var}(t)\cup\mathrm{Con}(t)\bigr).
+\]
+取并即得结论。
+\end{proof}
+
+\begin{lemma}[置换下公式的出现符号]
+\label{formula-symbols-under-permutation}
+设 $\sigma:V\cup C\to V\cup C$ 为双射，且 $\sigma(V)=V$、$\sigma(C)=C$。
+将 $\sigma$ 按定义~\ref{def:substitution-on-formulas} 延拓到公式。
+则对任意 $L$-公式 $\varphi$，有
+\[
+  \mathrm{FV}(\varphi^{\sigma})\cup\mathrm{Con}(\varphi^{\sigma})\subseteq \sigma\bigl(\mathrm{FV}(\varphi)\cup\mathrm{Con}(\varphi)\bigr).
+\]
+因此对任意 $\Omega\subseteq V\cup C$，若 $\mathrm{FV}(\varphi)\cup\mathrm{Con}(\varphi)\subseteq\Omega$，则
+\[
+  \mathrm{FV}(\varphi^{\sigma})\cup\mathrm{Con}(\varphi^{\sigma})\subseteq\sigma(\Omega).
+\]
+\end{lemma}
+
+\begin{proof}
+对 $\varphi$ 的生成方式作归纳。
+
+\textbf{(A) 原子公式。}
+若 $\varphi=(t=s)$，则 $\varphi^{\sigma}=(t^{\sigma}=s^{\sigma})$。
+由定义~\ref{def:free-vars-in-formula} 与定义~\ref{def:consts-in-formula} 得
+ \[\
+   \mathrm{FV}(\varphi^{\sigma})\cup\mathrm{Con}(\varphi^{\sigma})\subseteq\bigl(\mathrm{Var}(t^{\sigma})\cup\mathrm{Con}(t^{\sigma})\bigr)\cup\bigl(\mathrm{Var}(s^{\sigma})\cup\mathrm{Con}(s^{\sigma})\bigr).
+ \]
+ 由引理~\ref{lem:term-symbols-under-permutation} 得
+ \[\
+   \mathrm{Var}(t^{\sigma})\cup\mathrm{Con}(t^{\sigma})\subseteq\sigma\bigl(\mathrm{Var}(t)\cup\mathrm{Con}(t)\bigr),\qquad \mathrm{Var}(s^{\sigma})\cup\mathrm{Con}(s^{\sigma})\subseteq\sigma\bigl(\mathrm{Var}(s)\cup\mathrm{Con}(s)\bigr).
+ \]
+ 而 $\mathrm{Var}(t)\subseteq\mathrm{FV}(\varphi)$、$\mathrm{Var}(s)\subseteq\mathrm{FV}(\varphi)$，并且 $\mathrm{Con}(t)\cup\mathrm{Con}(s)=\mathrm{Con}(\varphi)$，故可得
+\[
+  \mathrm{FV}(\varphi^{\sigma})\cup\mathrm{Con}(\varphi^{\sigma})\subseteq\sigma\bigl(\mathrm{FV}(\varphi)\cup\mathrm{Con}(\varphi)\bigr).
+\]
+若 $\varphi=R(t_1,\dots,t_n)$ 同理可证。
+
+\textbf{(B) 否定与蕴涵。}
+若 $\varphi=(\neg\psi)$，则 $\varphi^{\sigma}=\neg(\psi^{\sigma})$。
+由定义~\ref{def:free-vars-in-formula} 与定义~\ref{def:consts-in-formula} 知
+\[
+  \mathrm{FV}(\varphi^{\sigma})\cup\mathrm{Con}(\varphi^{\sigma})=\mathrm{FV}(\psi^{\sigma})\cup\mathrm{Con}(\psi^{\sigma}).
+\]
+由归纳假设得结论。
+若 $\varphi=(\psi\to\theta)$，则 $\varphi^{\sigma}=(\psi^{\sigma}\to\theta^{\sigma})$，再由定义直接由归纳假设推出。
+
+\textbf{(C) 存在量词。}
+若 $\varphi=(\exists x\,\psi)$，则按定义~\ref{def:substitution-on-formulas} 有 $\varphi^{\sigma}=\exists x\,(\psi^{\sigma_x})$，其中 $\sigma_x$ 满足 $\sigma_x(x)=x$ 且对 $z\neq x$ 有 $z^{\sigma_x}=z^{\sigma}$。
+由定义~\ref{def:free-vars-in-formula} 与定义~\ref{def:consts-in-formula} 知
+\[
+  \mathrm{FV}(\varphi)\cup\mathrm{Con}(\varphi)=\bigl(\mathrm{FV}(\psi)\setminus\{x\}\bigr)\cup\mathrm{Con}(\psi),
+\]
+从而
+\[
+  \mathrm{FV}(\psi)\cup\mathrm{Con}(\psi)\subseteq\bigl(\mathrm{FV}(\varphi)\cup\mathrm{Con}(\varphi)\bigr)\cup\{x\}.
+\]
+对 $\psi$ 应用归纳假设（对应置换 $\sigma_x$）得
+\[
+  \mathrm{FV}(\psi^{\sigma_x})\cup\mathrm{Con}(\psi^{\sigma_x})\subseteq\sigma_x\bigl(\mathrm{FV}(\psi)\cup\mathrm{Con}(\psi)\bigr)\subseteq\sigma_x\bigl(\mathrm{FV}(\varphi)\cup\mathrm{Con}(\varphi)\cup\{x\}\bigr)=\sigma\bigl(\mathrm{FV}(\varphi)\cup\mathrm{Con}(\varphi)\bigr)\cup\{x\}.
+\]
+于是
+\[
+  \mathrm{FV}(\varphi^{\sigma})\cup\mathrm{Con}(\varphi^{\sigma})=\bigl(\mathrm{FV}(\psi^{\sigma_x})\setminus\{x\}\bigr)\cup\mathrm{Con}(\psi^{\sigma_x})\subseteq\sigma\bigl(\mathrm{FV}(\varphi)\cup\mathrm{Con}(\varphi)\bigr).
+\]
+
+ 综上，结论对所有 $\varphi$ 成立。
+ 由 $\mathrm{FV}(\varphi)\cup\mathrm{Con}(\varphi)\subseteq\Omega$ 立刻得到 $\mathrm{FV}(\varphi^{\sigma})\cup\mathrm{Con}(\varphi^{\sigma})\subseteq\sigma(\Omega)$。
+ \end{proof}
+
+\begin{definition}[$\mathcal M^*$ 的理论]
+\label{theory-of-canonical-parameter-expansion}
+设 $\mathcal M$ 为 $L$-结构，$L_{\mathcal M}$ 与 $\mathcal M^*$ 如定义~\ref{def:language-with-parameters}、定义~\ref{def:canonical-parameter-expansion}。
+定义
+\[
+  \mathrm{Th}(\mathcal M^*):=\{\psi:\ \psi\ \text{是 $L_{\mathcal M}$-语句且}\ \mathcal M^*\models\psi\}.
+\]
+\end{definition}
+
+\begin{definition}[完全图示]
+\label{diagram-of-a-structure}
+设 $\mathcal M$ 为 $L$-结构。
+定义 $\mathcal M$ 的\emph{完全图示}（complete diagram）为
+\[
+  D(\mathcal M):=\bigl\{\varphi[\bar a_1,\dots,\bar a_n]:\ \varphi(x_1,\dots,x_n)\ \text{是 $L$-公式，}\ a_1,\dots,a_n\in M,\ \mathcal M\models\varphi[a_1,\dots,a_n]\bigr\}.
+\]
+其中 $\mathcal M\models\varphi[a_1,\dots,a_n]$ 表示：取赋值 $v:V\to M$ 满足 $v(x_i)=a_i$（$1\le i\le n$），则 $(\mathcal M,v)\models\varphi$。
+\end{definition}
+
+\begin{proposition}
+\label{diagram-equals-theory}
+在上述记号下，有
+\[
+  D(\mathcal M)=\mathrm{Th}(\mathcal M^*).
+\]
+\end{proposition}
+
+\begin{proof}
+先证 $D(\mathcal M)\subseteq\mathrm{Th}(\mathcal M^*)$。
+任取 $\varphi[\bar a_1,\dots,\bar a_n]\in D(\mathcal M)$。
+由定义知存在赋值 $v$ 使 $v(x_i)=a_i$ 且 $(\mathcal M,v)\models\varphi$。
+令 $\sigma$ 为命题~\ref{pro:parameters-as-sentences} 中的代换（$\sigma(x_i)=\bar a_i$），则 $\varphi[\bar a_1,\dots,\bar a_n]=\varphi^{\sigma}$。
+由命题~\ref{pro:parameters-as-sentences} 得 $\mathcal M^*\models\varphi^{\sigma}$，故 $\varphi[\bar a_1,\dots,\bar a_n]\in\mathrm{Th}(\mathcal M^*)$。
+
+再证 $\mathrm{Th}(\mathcal M^*)\subseteq D(\mathcal M)$。
+任取 $\psi\in\mathrm{Th}(\mathcal M^*)$。
+则 $\psi$ 为 $L_{\mathcal M}$-语句，且仅含有限多个参数常元，设它们为 $\bar a_1,\dots,\bar a_n$。
+取两两不同且不出现在 $\psi$ 中的变元 $x_1,\dots,x_n\in V$。
+定义代换 $\tau:V\cup C\cup\{\bar a:\ a\in M\}\to\mathrm{Term}(L_{\mathcal M})$ 为
+\[
+  \tau(\bar a_i):=x_i\ (1\le i\le n),\qquad \tau(z):=z\ (z\notin\{\bar a_1,\dots,\bar a_n\}),
+\]
+并令 $\varphi:=\psi^{\tau}$。
+由构造知 $\varphi$ 不含任何参数常元，故可视为 $L$-公式，且 $\mathrm{FV}(\varphi)\subseteq\{x_1,\dots,x_n\}$。
+再令 $\sigma$ 为代换 $\sigma(x_i)=\bar a_i$ 且其余符号不变。
+由于 $x_1,\dots,x_n$ 不出现在 $\psi$ 中且 $\tau$ 仅把 $\bar a_i$ 替换为 $x_i$，故有 $(\psi^{\tau})^{\sigma}=\psi$，即 $\varphi^{\sigma}=\psi$。
+由 $\mathcal M^*\models\psi$ 与命题~\ref{pro:parameters-as-sentences}（对 $\varphi$ 与 $a_1,\dots,a_n$ 应用）知存在赋值 $v$ 满足 $v(x_i)=a_i$ 且 $(\mathcal M,v)\models\varphi$。
+ 因此 $\mathcal M\models\varphi[a_1,\dots,a_n]$，从而 $\psi=\varphi^{\sigma}=\varphi[\bar a_1,\dots,\bar a_n]\in D(\mathcal M)$。
+
+ 综上，$D(\mathcal M)=\mathrm{Th}(\mathcal M^*)$。
+ \end{proof}
+
+\begin{lemma}
+\label{elementary-embedding-via-diagram}
+设 $\mathcal M,\mathcal N$ 为 $L$-结构。
+则下列条件等价：
+\begin{enumerate}
+  \item 存在从 $\mathcal M$ 到 $\mathcal N$ 的初等嵌入 $\theta:M\to N$；
+  \item 存在 $L_{\mathcal M}$-结构 $\mathcal N^*$，其 $L$-约化为 $\mathcal N$，并且 $\mathcal N^*\models\mathrm{Th}(\mathcal M^*)$。
+\end{enumerate}
+\end{lemma}
+
+\begin{proof}
+ (1)$\Rightarrow$(2)
+
+设 $\theta:M\to N$ 为从 $\mathcal M$ 到 $\mathcal N$ 的初等嵌入。
+定义 $L_{\mathcal M}$-结构 $\mathcal N^*$ 如下：其底集为 $N$，且对原语言 $L$ 中符号的解释与 $\mathcal N$ 相同；并对每个 $a\in M$ 规定
+\[
+  (\bar a)^{\mathcal N^*}:=\theta(a).
+\]
+我们证明 $\mathcal N^*\models D(\mathcal M)$。
+任取 $\varphi[\bar a_1,\dots,\bar a_n]\in D(\mathcal M)$。
+由定义~\ref{def:diagram-of-a-structure} 知 $\mathcal M\models\varphi[a_1,\dots,a_n]$。
+由命题~\ref{pro:elementary-embedding-parameter-characterization}（对 $\theta$ 应用）得
+\[
+  \mathcal N\models\varphi[\theta(a_1),\dots,\theta(a_n)].
+\]
+取赋值 $v:V\to N$ 使 $v(x_i)=\theta(a_i)$（$1\le i\le n$）。
+由于 $\varphi$ 为 $L$-公式且 $\mathcal N^*$ 为 $\mathcal N$ 的扩张，故 $(\mathcal N^*,v)\models\varphi$。
+令代换 $\sigma$ 满足 $\sigma(x_i)=\bar a_i$（$1\le i\le n$）且其余符号恒等，则 $\varphi^{\sigma}=\varphi[\bar a_1,\dots,\bar a_n]$。
+又对每个 $i$ 有 $\hat v(x_i)=v(x_i)=\theta(a_i)=(\bar a_i)^{\mathcal N^*}=\bar v(x_i^{\sigma})$，并且 $x_i^{\sigma}$ 为常元项，故可对语言 $L_{\mathcal M}$ 中的 $\sigma$ 应用定理~\ref{thm:substitution-theorem}（取 $u=v$）得 $(\mathcal N^*,v)\models\varphi^{\sigma}$。
+而 $\varphi^{\sigma}$ 为句子，满足关系与赋值无关，故 $\mathcal N^*\models\varphi^{\sigma}=\varphi[\bar a_1,\dots,\bar a_n]$。
+于是 $\mathcal N^*\models D(\mathcal M)$。
+由命题~\ref{pro:diagram-equals-theory} 即得 $\mathcal N^*\models\mathrm{Th}(\mathcal M^*)$。
+
+ (2)$\Rightarrow$(1)
+
+设 $\mathcal N^*$ 为 $\mathcal N$ 的 $L_{\mathcal M}$-扩张且 $\mathcal N^*\models\mathrm{Th}(\mathcal M^*)$。
+由命题~\ref{pro:diagram-equals-theory} 得 $\mathcal N^*\models D(\mathcal M)$。
+定义映射 $\theta:M\to N$ 为 $\theta(a):=(\bar a)^{\mathcal N^*}$。
+我们证明对任意 $L$-公式 $\varphi(x_1,\dots,x_n)$ 与任意 $a_1,\dots,a_n\in M$ 都有
+\[
+  \mathcal M\models\varphi[a_1,\dots,a_n]\qquad\Longleftrightarrow\qquad\mathcal N\models\varphi[\theta(a_1),\dots,\theta(a_n)].
+\]
+若 $\mathcal M\models\varphi[a_1,\dots,a_n]$，则 $\varphi[\bar a_1,\dots,\bar a_n]\in D(\mathcal M)$，从而 $\mathcal N^*\models\varphi[\bar a_1,\dots,\bar a_n]$。
+取赋值 $v:V\to N$ 使 $v(x_i)=\theta(a_i)=(\bar a_i)^{\mathcal N^*}$，并令 $\sigma(x_i)=\bar a_i$（$1\le i\le n$）且其余符号恒等。
+由 $\varphi^{\sigma}=\varphi[\bar a_1,\dots,\bar a_n]$ 为句子得 $(\mathcal N^*,v)\models\varphi^{\sigma}$。
+再由定理~\ref{thm:substitution-theorem}（取 $u=v$）得 $(\mathcal N^*,v)\models\varphi$。
+由于 $\varphi$ 为 $L$-公式且 $\mathcal N^*$ 为 $\mathcal N$ 的扩张，故 $\mathcal N\models\varphi[\theta(a_1),\dots,\theta(a_n)]$。
+
+若 $\mathcal M\not\models\varphi[a_1,\dots,a_n]$，则 $\mathcal M\models\neg\varphi[a_1,\dots,a_n]$。
+对 $\neg\varphi$ 重复上一步即可得 $\mathcal N\models\neg\varphi[\theta(a_1),\dots,\theta(a_n)]$，从而 $\mathcal N\not\models\varphi[\theta(a_1),\dots,\theta(a_n)]$。
+
+因此上式成立。
+特别地，取原子公式可知 $\theta$ 为 $L$-嵌入，于是由命题~\ref{pro:elementary-embedding-parameter-characterization} 得 $\theta$ 为初等嵌入。
+\end{proof}
+
+\section{代数闭域的模型论}
+
+\begin{lemma}
+\label{uncountable-acf-isomorphism}
+令 $L$ 为环语言（含常元 $0,1$ 与函数符号 $+,-,\cdot$）。
+设 $E,F$ 为 $L$-结构，且它们分别是代数闭域并满足 $\mathrm{char}(E)=\mathrm{char}(F)$。
+若 $\lvert E\rvert=\lvert F\rvert=\kappa$ 且 $\kappa$ 为不可数基数，则 $E\cong F$。
+\end{lemma}
+
+\begin{proof}
+设 $k$ 为它们的素子域（当特征为 $0$ 时 $k\cong\mathbb Q$，当特征为 $p>0$ 时 $k\cong\mathbb F_p$）。
+取 $B_E\subseteq E$ 为 $E$ 在 $k$ 上的一组超越基。
+则 $E$ 为 $k(B_E)$ 的代数闭包。
+因为代数扩张不改变基数，且
+\[
+  \lvert k(B_E)\rvert=\max\{\aleph_0,\lvert k\rvert,\lvert B_E\rvert\}=\max\{\aleph_0,\lvert B_E\rvert\},
+\]
+又 $\lvert E\rvert=\kappa$ 为不可数，故 $\lvert B_E\rvert=\kappa$。
+同理，取 $F$ 在 $k$ 上的一组超越基 $B_F$，亦有 $\lvert B_F\rvert=\kappa$。
+取双射 $f:B_E\to B_F$，则它诱导出同构 $k(B_E)\cong k(B_F)$。
+于是它们的代数闭包同构，从而 $E\cong F$。
+\end{proof}
+
+\begin{theorem}
+\label{acf-same-char-elementary-equivalence}
+令 $L$ 为环语言。
+设 $E,F$ 为代数闭域。
+若 $\mathrm{char}(E)=\mathrm{char}(F)$，则 $E\equiv F$（作为 $L$-结构）。
+\end{theorem}
+
+\begin{proof}
+取不可数基数
+\[
+  \kappa:=\max\{\lvert E\rvert,\lvert F\rvert,\aleph_1\}.
+\]
+由向上 Löwenheim--Skolem 定理~\ref{thm:upward-loewenheim-skolem}，存在 $L$-结构 $M,N$ 使得
+\[
+  E\equiv M,\qquad F\equiv N,\qquad \lvert M\rvert=\lvert N\rvert=\kappa.
+\]
+由初等等价保持语句真值知 $M,N$ 仍为代数闭域且 $\mathrm{char}(M)=\mathrm{char}(N)$。
+由引理~\ref{lem:uncountable-acf-isomorphism} 得 $M\cong N$，从而 $M\equiv N$。
+ 因此 $E\equiv M\equiv N\equiv F$，结论成立。
+ \end{proof}
+
+\begin{definition}[$\mathrm{ACF}_p$]
+\label{acf_p}
+令 $L$ 为环语言（含常元 $0,1$ 与函数符号 $+,-,\cdot$）。
+对每个 $n\in\mathbb N^{+}$，令 $\chi_n$ 为 $L$-语句
+\[
+  \underbrace{1+\cdots+1}_{n}\neq 0.
+\]
+对每个 $d\in\mathbb N^{+}$，令 $\psi_d$ 为 $L$-语句
+\[
+  \forall a_d\cdots\forall a_0\,\Bigl(a_d\neq 0\to\exists x\,\bigl(a_d x^d+a_{d-1}x^{d-1}+\cdots+a_1x+a_0=0\bigr)\Bigr).
+\]
+令 $\mathrm{Field}$ 为域公理的语句集。
+若 $p=0$，令
+\[
+  \mathrm{Char}_0:=\{\chi_n:n\in\mathbb N^{+}\}.
+\]
+若 $p$ 为素数，令
+\[
+  \mathrm{Char}_p:=\{\chi_n:1\le n<p\}\cup\{\neg\chi_p\}.
+\]
+定义
+\[
+  \mathrm{ACF}_p:=\mathrm{Field}\cup\mathrm{Char}_p\cup\{\psi_d:d\in\mathbb N^{+}\}.
+\]
+称 $\mathrm{ACF}_p$ 为特征 $p$ 的代数闭域理论。
+\end{definition}
+
+\begin{lemma}
+\label{semantic-entailment-via-unsat}
+设 $T$ 为 $L$-语句集，$\varphi$ 为 $L$-语句。
+则
+\[
+  T\models\varphi\qquad\Longleftrightarrow\qquad T\cup\{\neg\varphi\}\ \text{不可满足}.
+\]
+\end{lemma}
+
+\begin{proof}
+($\Rightarrow$)
+若 $T\models\varphi$ 且存在结构 $\mathcal M$ 使 $\mathcal M\models T\cup\{\neg\varphi\}$，
+则 $\mathcal M\models T$ 但 $\mathcal M\not\models\varphi$，与 $T\models\varphi$ 矛盾。
+
+($\Leftarrow$)
+若 $T\not\models\varphi$，则存在结构 $\mathcal M$ 使 $\mathcal M\models T$ 且 $\mathcal M\not\models\varphi$，即 $\mathcal M\models\neg\varphi$。
+于是 $\mathcal M\models T\cup\{\neg\varphi\}$，与 $T\cup\{\neg\varphi\}$ 不可满足矛盾。
+\end{proof}
+
+\begin{lemma}
+\label{finite-subset-entailment}
+设 $T$ 为 $L$-语句集，$\varphi$ 为 $L$-语句。
+则
+\[
+  T\models\varphi\qquad\Longleftrightarrow\qquad \exists\,\Omega\subseteq T\ \text{有限，使得}\ \Omega\models\varphi.
+\]
+\end{lemma}
+
+\begin{proof}
+由引理~\ref{lem:semantic-entailment-via-unsat}，$T\models\varphi$ 当且仅当 $T\cup\{\neg\varphi\}$ 不可满足。
+由紧致性定理，$T\cup\{\neg\varphi\}$ 不可满足当且仅当存在有限子集 $\Delta\subseteq T\cup\{\neg\varphi\}$ 亦不可满足。
+令 $\Omega:=\Delta\cap T$，则 $\Omega\subseteq T$ 有限，且 $\Omega\cup\{\neg\varphi\}$ 不可满足。
+再用引理~\ref{lem:semantic-entailment-via-unsat} 得 $\Omega\models\varphi$。
+
+ 反向蕴含：若存在有限 $\Omega\subseteq T$ 使 $\Omega\models\varphi$，则对任意 $\mathcal M\models T$ 都有 $\mathcal M\models\Omega$，从而 $\mathcal M\models\varphi$，即 $T\models\varphi$。
+ \end{proof}
+
+ \begin{proposition}
+ \label{models-of-acf_p}
+ 令 $L$ 为环语言。
+ 设 $p=0$ 或 $p$ 为素数，$K$ 为 $L$-结构。
+ 则
+ \[
+   K\models\mathrm{ACF}_p\qquad\Longleftrightarrow\qquad K\ \text{是特征 $p$ 的代数闭域}.
+ \]
+ \end{proposition}
+ 
+ \begin{proof}
+ 由定义~\ref{def:acf_p}，$K\models\mathrm{ACF}_p$ 等价于：$K$ 满足域公理 $\mathrm{Field}$、满足特征公理 $\mathrm{Char}_p$，并且对每个 $d\in\mathbb N^{+}$ 满足“每个次数为 $d$ 的一元多项式（首项系数非零）在 $K$ 中有根”的语句 $\psi_d$。
+ 这正是“$K$ 为特征 $p$ 的代数闭域”的一阶刻画。
+ \end{proof}
+ 
+ \begin{corollary}
+ \label{acf_p_complete}
+ 设 $p=0$ 或 $p$ 为素数。
+ 则 $\mathrm{ACF}_p$ 是完备理论：对任意 $L$-语句 $\varphi$，有
+ \[
+   \mathrm{ACF}_p\models\varphi\qquad\text{或}\qquad \mathrm{ACF}_p\models\neg\varphi.
+ \]
+ \end{corollary}
+ 
+ \begin{proof}
+ 任取 $\mathrm{ACF}_p$ 的两个模型 $E,F$。
+ 由命题~\ref{pro:models-of-acf_p}，$E,F$ 为同特征 $p$ 的代数闭域。
+ 由定理~\ref{thm:acf-same-char-elementary-equivalence} 得 $E\equiv F$。
+ 因此 $\mathrm{ACF}_p$ 的所有模型两两初等等价，从而 $\mathrm{ACF}_p$ 完备。
+ \end{proof}
+ 
+ \begin{theorem}[Lefschetz 原理]
+ \label{lefschetz-principle}
+ 令 $L$ 为环语言，$\varphi$ 为 $L$-语句。
+ 则下列条件等价：
+ \begin{enumerate}
+   \item $\mathbb C\models\varphi$；
+   \item $\mathrm{ACF}_0\models\varphi$；
+   \item 存在特征 $0$ 的代数闭域 $F$ 使 $F\models\varphi$；
+   \item 对任意特征 $0$ 的代数闭域 $F$，都有 $F\models\varphi$；
+   \item 存在 $N\in\mathbb N$，使得对任意素数 $p>N$ 都有 $\mathrm{ACF}_p\models\varphi$；
+   \item 存在无穷多个素数 $p$ 使得 $\mathrm{ACF}_p\models\varphi$。
+ \end{enumerate}
+ \end{theorem}
+ 
+ \begin{proof}
+ \textbf{(1)$\Rightarrow$(2).}
+ 由命题~\ref{pro:models-of-acf_p}（取 $p=0$）知 $\mathbb C\models\mathrm{ACF}_0$。
+ 若 $\mathrm{ACF}_0\not\models\varphi$，则存在 $\mathcal M\models\mathrm{ACF}_0$ 使 $\mathcal M\not\models\varphi$。
+ 由推论~\ref{cor:acf_p_complete}（取 $p=0$）知 $\mathrm{ACF}_0$ 完备，从而 $\mathrm{ACF}_0\models\neg\varphi$，与 $\mathbb C\models\varphi$ 矛盾。
+ 故 $\mathrm{ACF}_0\models\varphi$。
+ 
+ \textbf{(2)$\Rightarrow$(4).}
+ 任取特征 $0$ 的代数闭域 $F$。
+ 由命题~\ref{pro:models-of-acf_p}（取 $p=0$）知 $F\models\mathrm{ACF}_0$。
+ 又由 $\mathrm{ACF}_0\models\varphi$ 得 $F\models\varphi$。
+ 
+ \textbf{(4)$\Rightarrow$(3)$\Rightarrow$(1).}
+ (4)$\Rightarrow$(3) 显然。
+ (3)$\Rightarrow$(1) 因为 $\mathbb C$ 也是特征 $0$ 的代数闭域。
+ 
+ \textbf{(2)$\Rightarrow$(5).}
+ 由引理~\ref{lem:finite-subset-entailment}（取 $T:=\mathrm{ACF}_0$）可取有限 $\Omega\subseteq\mathrm{ACF}_0$ 使 $\Omega\models\varphi$。
+ 设 $\Omega$ 中出现的特征语句 $\chi_n$ 的指标 $n$ 之最大者为 $N$（若 $\Omega$ 中不出现任何 $\chi_n$，则取 $N:=0$）。
+ 则对任意素数 $p>N$，有 $\Omega\subseteq\mathrm{ACF}_p$。
+ 因而对任意 $\mathrm{ACF}_p$ 的模型 $K$，都有 $K\models\Omega$，从而 $K\models\varphi$，即 $\mathrm{ACF}_p\models\varphi$。
+ 
+ \textbf{(5)$\Rightarrow$(6).}
+ 显然。
+ 
+ \textbf{(6)$\Rightarrow$(2).}
+ 若 $\mathrm{ACF}_0\not\models\varphi$，则由推论~\ref{cor:acf_p_complete}（取 $p=0$）得 $\mathrm{ACF}_0\models\neg\varphi$。
+ 将 (2)$\Rightarrow$(5) 应用于语句 $\neg\varphi$，存在 $N\in\mathbb N$ 使得对任意素数 $p>N$ 都有 $\mathrm{ACF}_p\models\neg\varphi$。
+ 这说明仅有有限多个素数 $p$ 可能满足 $\mathrm{ACF}_p\models\varphi$，与 (6) 矛盾。
+ 故 $\mathrm{ACF}_0\models\varphi$。
+ \end{proof}
+ 
+ \begin{definition}[多项式映射]
+ \label{polynomial-map}
+ 设 $K$ 为域，$n\in\mathbb N^{+}$。
+ 若 $f:K^n\to K^n$ 形如
+ \[
+   f(x_1,\dots,x_n)=\bigl(f_1(x_1,\dots,x_n),\dots,f_n(x_1,\dots,x_n)\bigr),
+ \]
+ 其中 $f_1,\dots,f_n\in K[x_1,\dots,x_n]$，则称 $f$ 为一个（$n$ 维）\emph{多项式映射}。
+ 定义 $\deg f:=\max\{\deg f_i:1\le i\le n\}$。
+ \end{definition}
+ 
+ \begin{definition}[$\psi_{n,d}$]
+ \label{psi-n-d}
+ 令 $L$ 为环语言，取 $n,d\in\mathbb N^{+}$。
+ 令
+ \[
+   I_{n,d}:=\{\alpha=(\alpha_1,\dots,\alpha_n)\in\mathbb N^n:\ \alpha_1+\cdots+\alpha_n\le d\}.
+ \]
+ 对每个 $i\in\{1,\dots,n\}$ 与 $\alpha\in I_{n,d}$ 引入一个系数变元 $a_{i,\alpha}$。
+ 记
+ \[
+   P_i(\bar a,\bar x):=\sum_{\alpha\in I_{n,d}} a_{i,\alpha}\,x_1^{\alpha_1}\cdots x_n^{\alpha_n}\qquad(1\le i\le n),
+ \]
+ 并记 $P(\bar a,\bar x):=(P_1(\bar a,\bar x),\dots,P_n(\bar a,\bar x))$。
+ 定义 $L$-语句 $\psi_{n,d}$ 为：对任意系数元组 $\bar a$，若映射 $\bar x\mapsto P(\bar a,\bar x)$ 在 $K^n$ 上单射，则它在 $K^n$ 上满射，即
+ \[
+ \psi_{n,d}:=\forall \bar a\,\Bigl(\forall \bar x\,\forall \bar y\,\bigl(P(\bar a,\bar x)=P(\bar a,\bar y)\to \bar x=\bar y\bigr)\to\forall \bar b\,\exists \bar x\,\bigl(P(\bar a,\bar x)=\bar b\bigr)\Bigr).
+ \]
+ \end{definition}
+ 
+ \begin{lemma}
+ \label{acf_p_satisfies_psi_n_d}
+ 令 $L$ 为环语言，取 $n,d\in\mathbb N^{+}$。
+ 则对任意素数 $p$，有
+ \[
+   \mathrm{ACF}_p\models\psi_{n,d}.
+ \]
+ \end{lemma}
+ 
+ \begin{proof}
+ 设 $p$ 为素数，令 $K:=\overline{\mathbb F}_p$。
+ 由命题~\ref{pro:models-of-acf_p} 知 $K\models\mathrm{ACF}_p$。
+ 我们证明 $K\models\psi_{n,d}$。
+ 
+ 任取系数元组 $\bar a$（即每个 $a_{i,\alpha}\in K$）。
+ 设由 $\bar a$ 给出的多项式映射 $f:K^n\to K^n$ 单射。
+ 任取 $\bar b\in K^n$。
+ 令 $E\subseteq K$ 为由 $\mathbb F_p$ 与所有系数 $a_{i,\alpha}$、以及 $\bar b$ 的坐标生成的子域。
+ 因为 $K/\mathbb F_p$ 为代数扩张，且 $E$ 由有限多个元素生成，所以 $E$ 是有限域，记 $\lvert E\rvert=p^m$。
+ 显然 $f(E^n)\subseteq E^n$。
+ 由于 $f$ 在 $K^n$ 上单射，故其限制 $f\restriction_{E^n}:E^n\to E^n$ 亦单射。
+ 而 $E^n$ 为有限集，故 $f\restriction_{E^n}$ 亦为满射。
+ 因此存在 $\bar x\in E^n$ 使 $f(\bar x)=\bar b$。
+ 
+ 由 $\bar b$ 任意可知 $f$ 满射，从而 $K\models\psi_{n,d}$。
+ 于是 $\mathrm{ACF}_p\models\psi_{n,d}$。
+ \end{proof}
+ 
+ \begin{theorem}[Ax--Grothendieck]
+ \label{ax-grothendieck}
+ 设 $f:\mathbb C^n\to\mathbb C^n$ 为多项式映射。
+ 若 $f$ 单射，则 $f$ 满射。
+ \end{theorem}
+ 
+ \begin{proof}
+ 令 $d:=\deg f$。
+ 由定义~\ref{def:psi-n-d}，语句 $\psi_{n,d}$ 正是在环语言中表达“任意次数 $\le d$ 的 $n$ 维多项式自映射单射则满射”。
+ 由引理~\ref{lem:acf_p_satisfies_psi_n_d}，对无穷多个素数 $p$ 有 $\mathrm{ACF}_p\models\psi_{n,d}$。
+ 由 Lefschetz 原理~\ref{thm:lefschetz-principle} 得 $\mathrm{ACF}_0\models\psi_{n,d}$。
+ 又 $\mathbb C\models\mathrm{ACF}_0$，故 $\mathbb C\models\psi_{n,d}$。
+ 于是对任意次数 $\le d$ 的多项式映射（特别是 $f$），若其在 $\mathbb C^n$ 上单射，则其在 $\mathbb C^n$ 上满射。
+ \end{proof}
+
+\chapter{初等嵌入与量词消去}
+
+\section{初等嵌入与量词消去}
+
+\begin{theorem}
+\label{elementary-embedding-theory-characterization}
+设 $\mathcal M,\mathcal N$ 为 $L$-结构。
+则下列条件等价：
+\begin{enumerate}
+  \item 存在从 $\mathcal M$ 到 $\mathcal N$ 的初等嵌入；
+  \item 存在 $\mathcal N$ 的某个 $L_{\mathcal M}$-扩张 $\mathcal N^*$ 使得 $\mathcal N^*\models\mathrm{Th}(\mathcal M^*)$。
+\end{enumerate}
+\end{theorem}
+
+\begin{proof}
+这正是引理~\ref{lem:elementary-embedding-via-diagram} 的结论。
+\end{proof}
+
+\begin{corollary}
+\label{arbitrarily-large-elementary-extensions}
+设 $\mathcal M$ 为无限 $L$-结构，$\kappa$ 为基数且
+\[
+  \kappa\ge\max\{\lvert M\rvert,\lvert L\rvert,\aleph_0\}.
+\]
+则存在 $L$-结构 $\mathcal N$ 使 $\mathcal M\equiv\mathcal N$ 且 $\lvert N\rvert=\kappa$。
+若进一步要求 $\mathcal N$ 含有 $\mathcal M$ 的一个同构像，则可取 $\theta:M\to N$ 为初等嵌入。
+\end{corollary}
+
+\begin{proof}
+由向上 Löwenheim--Skolem 定理~\ref{thm:upward-loewenheim-skolem}，存在 $L$-结构 $\mathcal N$ 使得 $\mathcal M\equiv\mathcal N$ 且 $\lvert N\rvert=\kappa$。
+若取该定理结论中的初等扩张情形（例如通过把 $\mathcal M$ 视作子结构并使用相应构造），即可得到含同构像的版本，从而存在初等嵌入。
+\end{proof}
+
+\begin{definition}[量词消去]
+\label{quantifier-elimination}
+设 $T$ 为 $L$-理论。
+若对任意 $L$-公式 $\varphi(\bar x)$ 都存在一个无量词 $L$-公式 $\psi(\bar x)$ 使得
+\[
+  T\vdash\forall\bar x\,\bigl(\varphi(\bar x)\leftrightarrow\psi(\bar x)\bigr),
+\]
+则称 $T$ 在语言 $L$ 上\emph{消去量词}。
+\end{definition}
+
+\begin{definition}[$T$-等价]
+\label{t-equivalence}
+设 $T$ 为 $L$-理论，$\varphi,\psi$ 为 $L$-公式。
+若存在变量序列 $x_1,\dots,x_n$ 使得 $\varphi,\psi$ 的自由变元均包含于 $\{x_1,\dots,x_n\}$ 且
+\[
+  T\vdash\forall x_1\cdots\forall x_n\,(\varphi\leftrightarrow\psi),
+\]
+则称 $\varphi$ 与 $\psi$ 在 $T$ 下\emph{等价}，记作 $\varphi\sim_T\psi$。
+\end{definition}
+
+\begin{remark}
+\label{t-equivalence-semantic}
+由可靠性定理，$\varphi\sim_T\psi$ 当且仅当对任意 $\mathcal M\models T$ 与任意赋值 $v$ 都有
+\[
+  (\mathcal M,v)\models\varphi\qquad\Longleftrightarrow\qquad (\mathcal M,v)\models\psi.
+\]
+\end{remark}
+
+\begin{remark}
+\label{t-equivalence-basic}
+关系 $\sim_T$ 是等价关系，并且与逻辑联结词相容：若 $\varphi_1\sim_T\psi_1$ 且 $\varphi_2\sim_T\psi_2$，则
+\[
+  \neg\varphi_1\sim_T\neg\psi_1,\qquad (\varphi_1\to\varphi_2)\sim_T(\psi_1\to\psi_2),\qquad (\exists x\,\varphi_1)\sim_T(\exists x\,\psi_1).
+\]
+\end{remark}
+
+\section{量词消去的判别准则}
+
+\begin{lemma}
+\label{qe-characterization}
+设 $T$ 为 $L$-理论。
+则下列条件等价：
+\begin{enumerate}
+  \item $T$ 在语言 $L$ 上消去量词；
+  \item 对任意无量词 $L$-公式 $\varphi$ 与任意变元 $x$，存在无量词 $L$-公式 $\psi$ 使得
+  \[
+    (\exists x\,\varphi)\sim_T\psi.
+  \]
+\end{enumerate}
+\end{lemma}
+
+\begin{proof}
+(1)$\Rightarrow$(2).
+设 $\varphi$ 无量词。
+由 $T$ 消去量词知存在无量词公式 $\psi$ 使 $T\vdash\forall\bar x\,((\exists x\,\varphi)\leftrightarrow\psi)$，即 $(\exists x\,\varphi)\sim_T\psi$。
+
+(2)$\Rightarrow$(1).
+令
+\[
+  A:=\{\theta:\ \exists\,\rho\ \text{无量词，使得}\ \theta\sim_T\rho\}.
+\]
+显然任意无量词公式都属于 $A$。
+下面验证 $A$ 对 $\neg,\to,\exists$ 闭合。
+
+若 $\theta\in A$，取无量词 $\rho$ 使 $\theta\sim_T\rho$。
+则 $\neg\theta\sim_T\neg\rho$，且 $\neg\rho$ 无量词，故 $\neg\theta\in A$。
+
+若 $\theta_1,\theta_2\in A$，取无量词 $\rho_1,\rho_2$ 使 $\theta_1\sim_T\rho_1$、$\theta_2\sim_T\rho_2$。
+则 $(\theta_1\to\theta_2)\sim_T(\rho_1\to\rho_2)$，且 $(\rho_1\to\rho_2)$ 无量词，故 $(\theta_1\to\theta_2)\in A$。
+
+ 若 $\theta\in A$，取无量词 $\rho$ 使 $\theta\sim_T\rho$。
+ 则 $(\exists x\,\theta)\sim_T(\exists x\,\rho)$。
+ 由 (2) 可取无量词公式 $\psi$ 使 $(\exists x\,\rho)\sim_T\psi$。
+ 因此 $(\exists x\,\theta)\sim_T\psi$，从而 $(\exists x\,\theta)\in A$。
+
+ 综上，$A$ 对 $\neg,\to,\exists$ 闭合。
+ 由结构归纳可得任意 $L$-公式都属于 $A$，即对任意公式 $\varphi(\bar x)$ 都存在无量词 $\psi(\bar x)$ 使 $\varphi\sim_T\psi$。
+ 这正是定义~\ref{def:quantifier-elimination} 中的量词消去。
+ \end{proof}
+
+\begin{theorem}[常同（常法）公式判别法]
+\label{robinson-test-for-formulas}
+设 $T$ 为一致 $L$-理论，$\varphi(x_1,\dots,x_n)$ 为 $L$-公式。
+则下列条件等价：
+\begin{enumerate}
+  \item 存在无量词的常法式 $L$-公式 $\psi(x_1,\dots,x_n)$ 使得 $\varphi\sim_T\psi$；
+  \item 存在无量词 $L$-公式 $\psi(x_1,\dots,x_n)$ 使得 $\varphi\sim_T\psi$；
+  \item 任取 $\mathcal M,\mathcal N\models T$，任取公共子结构 $\mathcal A\subseteq\mathcal M,\mathcal N$，则对任意 $a_1,\dots,a_n\in A$ 都有
+  \[
+    \mathcal M\models\varphi[a_1,\dots,a_n]\ \Longleftrightarrow\ \mathcal N\models\varphi[a_1,\dots,a_n].
+  \]
+\end{enumerate}
+\end{theorem}
+
+\begin{proof}
+(1)$\Rightarrow$(2) 显然。
+(2)$\Rightarrow$(3) 设 $\varphi\sim_T\psi$ 且 $\psi$ 无量词。
+任取 $\mathcal M,\mathcal N\models T$ 与公共子结构 $\mathcal A\subseteq\mathcal M,\mathcal N$，并取 $\bar a\in A^n$。
+由 $\varphi\sim_T\psi$ 得
+\[
+  \mathcal M\models\varphi[\bar a]\ \Longleftrightarrow\ \mathcal M\models\psi[\bar a],
+  \qquad
+  \mathcal N\models\varphi[\bar a]\ \Longleftrightarrow\ \mathcal N\models\psi[\bar a].
+\]
+又因 $\psi$ 无量词且 $\mathcal A$ 为子结构，
+\[
+  \mathcal M\models\psi[\bar a]\ \Longleftrightarrow\ \mathcal A\models\psi[\bar a]\ \Longleftrightarrow\ \mathcal N\models\psi[\bar a].
+\]
+合并即得 (3)。
+
+(3)$\Rightarrow$(2).
+令 $\Gamma(\bar x)$ 为所有无量词公式 $\theta(\bar x)$ 满足 $T\vdash\forall\bar x\,(\theta\to\varphi)$ 的集合。
+若 $T\not\vdash\forall\bar x\,(\varphi\to\bigvee_{\theta\in\Gamma}\theta)$，则由紧致性可取 $\mathcal M\models T$ 与 $\bar a\in M^n$ 使
+$\mathcal M\models\varphi[\bar a]$ 且对一切 $\theta\in\Gamma$ 都有 $\mathcal M\models\neg\theta[\bar a]$。
+令 $p(\bar x)$ 为 $\bar a$ 在 $\mathcal M$ 中的无量词类型。
+由上述假设可推出 $T\cup p(\bar c)\cup\{\neg\varphi(\bar c)\}$ 可满足，从而可取 $\mathcal N\models T$ 与 $\bar b\in N^n$ 使 $\mathcal N\models p[\bar b]$ 且 $\mathcal N\models\neg\varphi[\bar b]$。
+设 $\mathcal A$（分别 $\mathcal B$）为 $\mathcal M$（分别 $\mathcal N$）中由 $\bar a$（分别 $\bar b$）生成的子结构，则 $\bar a\mapsto\bar b$ 给出同构 $\mathcal A\cong\mathcal B$，与 (3) 矛盾。
+故 $T\vdash\forall\bar x\,(\varphi\to\bigvee_{\theta\in\Gamma}\theta)$。
+再由紧致性可取有限个 $\theta_1,\dots,\theta_m\in\Gamma$ 使 $T\vdash\forall\bar x\,(\varphi\to\bigvee_{i=1}^m\theta_i)$。
+令 $\psi:=\bigvee_{i=1}^m\theta_i$，则 $\varphi\sim_T\psi$ 且 $\psi$ 无量词。
+
+(2)$\Rightarrow$(1) 任意无量词公式与某无量词常法式公式逻辑等价，从而也与之在 $T$ 下等价。
+\end{proof}
+
+\begin{theorem}[对称式 Robinson 判别法]
+\label{symmetric-robinson-test}
+设 $T$ 为一致 $L$-理论。
+则 $T$ 在语言 $L$ 上消去量词当且仅当：
+对任意 $\mathcal M,\mathcal N\models T$ 与任意公共子结构 $\mathcal A\subseteq\mathcal M,\mathcal N$，对任意带参数于 $A$ 的 $L$-公式 $\varphi(\bar x)$ 与任意 $\bar a\in A^n$ 都有
+\[
+  \mathcal M\models\varphi[\bar a]\ \Longleftrightarrow\ \mathcal N\models\varphi[\bar a].
+\]
+\end{theorem}
+
+\begin{proof}
+若 $T$ 消去量词，则任意公式与某无量词公式在 $T$ 下等价，于是由无量词公式在子结构上的保真性立即得到上式。
+反之若上式对任意 $\varphi$ 成立，则由定理~\ref{thm:robinson-test-for-formulas}（取该 $\varphi$）得 $\varphi$ 与某无量词公式在 $T$ 下等价。
+由于 $\varphi$ 任意，故 $T$ 消去量词。
+\end{proof}
+
+\begin{proposition}
+\label{qe-implies-elementary-substructure}
+设 $T$ 为 $L$-理论且 $T$ 在 $L$ 上消去量词。
+若 $\mathcal M\subseteq\mathcal N$ 且 $\mathcal M,\mathcal N\models T$，则包含映射 $\iota:M\hookrightarrow N$ 为初等嵌入，即 $\mathcal M\preccurlyeq\mathcal N$。
+\end{proposition}
+
+\begin{proof}
+任取赋值 $v:V\to M$ 与任意 $L$-公式 $\varphi$。
+由定义~\ref{def:quantifier-elimination}，存在无量词公式 $\psi$ 使 $T\vdash\forall\bar x\,(\varphi\leftrightarrow\psi)$。
+由于 $\mathcal M,\mathcal N\models T$，故
+\[
+  (\mathcal M,v)\models\varphi\ \Longleftrightarrow\ (\mathcal M,v)\models\psi,
+  \qquad
+  (\mathcal N,\iota\circ v)\models\varphi\ \Longleftrightarrow\ (\mathcal N,\iota\circ v)\models\psi.
+\]
+而 $\psi$ 无量词，其满足关系仅由项在赋值下的取值决定。
+由于 $\mathcal M\subseteq\mathcal N$ 且 $\iota$ 为包含映射，对任意项 $t$ 都有 $\widehat{\iota\circ v}(t)=\iota(\hat v(t))$。
+从而对无量词公式 $\psi$ 有
+\[
+  (\mathcal M,v)\models\psi\ \Longleftrightarrow\ (\mathcal N,\iota\circ v)\models\psi.
+ \]
+ 合并以上等价式得 $(\mathcal M,v)\models\varphi\Longleftrightarrow(\mathcal N,\iota\circ v)\models\varphi$，故 $\iota$ 为初等嵌入。
+ \end{proof}
+
+\chapter{代数闭域的量词消去}
+
+\section{代数闭域的量词消去}
+
+\begin{theorem}
+\label{acf_p_quantifier_elimination}
+令 $L$ 为环语言，$p=0$ 或 $p$ 为素数。
+则 $\mathrm{ACF}_p$ 在语言 $L$ 上消去量词。
+\end{theorem}
+
+\begin{proof}
+由引理~\ref{lem:qe-characterization}，只需证明：对任意无量词 $L$-公式 $\varphi(\bar x,y)$，存在无量词公式 $\psi(\bar x)$ 使
+\[
+  \mathrm{ACF}_p\vdash\forall\bar x\,\bigl((\exists y\,\varphi(\bar x,y))\leftrightarrow\psi(\bar x)\bigr).
+\]
+
+在环语言中，原子公式均形如 $t_1=t_2$，等价于某个多项式 $f(\bar x,y)$ 的等式 $f(\bar x,y)=0$。
+因此无量词公式在命题逻辑上等价于有限析取的形状
+\[
+  \bigvee_{k=1}^m\Bigl(\bigwedge_{i=1}^{r_k} f_{k,i}(\bar x,y)=0\ \wedge\ \bigwedge_{j=1}^{s_k} g_{k,j}(\bar x,y)\neq 0\Bigr),
+\]
+其中 $f_{k,i},g_{k,j}$ 为整系数多项式。
+于是只需对每个析取项分别消去 $\exists y$，最后再取析取即可。
+
+固定一组多项式 $f_1,\dots,f_r,g_1,\dots,g_s$，考虑公式
+\[
+  \exists y\,\Bigl(\bigwedge_{i=1}^{r} f_i(\bar x,y)=0\ \wedge\ \bigwedge_{j=1}^{s} g_j(\bar x,y)\neq 0\Bigr).
+\]
+对任意代数闭域 $K\models\mathrm{ACF}_p$，该公式在 $K$ 中定义了 $K^{\lvert\bar x\rvert}$ 的一个集合：
+它是 $K^{\lvert\bar x\rvert+1}$ 中由等式 $f_i=0$ 给出的代数集合与由不等式 $g_j\neq 0$ 给出的 Zariski 开集之交的投影。
+这类集合是可构造集。
+由 Chevalley 定理，可构造集在坐标投影下仍为可构造集。
+ 而在代数闭域上，可构造集恰可由无量词公式（有限次使用 $=0$ 与 $\neq 0$ 并做布尔组合）刻画。
+ 因此存在无量词公式 $\psi(\bar x)$ 与上式在 $\mathrm{ACF}_p$ 下等价。
+ 
+ 综上，任意 $\exists y\,\varphi(\bar x,y)$ 均与某无量词公式在 $\mathrm{ACF}_p$ 下等价，故 $\mathrm{ACF}_p$ 消去量词。
+\end{proof}
+
+\begin{lemma}
+\label{acf-exists-transfer}
+令 $L$ 为环语言，$p=0$ 或 $p$ 为素数。
+设 $A\subseteq E,F$ 且 $E,F$ 都是特征 $p$ 的代数闭域（视为 $L$-结构）。
+任取无量词 $L$-公式 $\varphi(x,\bar x)$ 与任意参数 $\bar a\in A^{\lvert\bar x\rvert}$，则
+\[
+  E\models\exists x\,\varphi(x,\bar a)\qquad\Longleftrightarrow\qquad F\models\exists x\,\varphi(x,\bar a).
+\]
+\end{lemma}
+
+\begin{proof}
+由于环语言中原子公式等价于多项式等式，故无量词公式在命题逻辑上等价于有限析取
+\[
+  \bigvee_{k=1}^m\Bigl(\bigwedge_{i=1}^{r_k} f_{k,i}(x,\bar a)=0\ \wedge\ \bigwedge_{j=1}^{s_k} g_{k,j}(x,\bar a)\neq 0\Bigr),
+\]
+其中 $f_{k,i},g_{k,j}\in A[x,\bar x]$。
+因此只需对每个析取项分别证明。
+
+固定 $f_1,\dots,f_r,g_1,\dots,g_s\in A[x,\bar x]$，令
+\[
+  \Phi(x,\bar a):=\Bigl(\bigwedge_{i=1}^{r} f_i(x,\bar a)=0\ \wedge\ \bigwedge_{j=1}^{s} g_j(x,\bar a)\neq 0\Bigr).
+\]
+在任意域中有等价
+\[
+  \exists x\,\Phi(x,\bar a)\ \Longleftrightarrow\ \exists x\,\exists u_1\cdots\exists u_s\,\Bigl(\bigwedge_{i=1}^{r} f_i(x,\bar a)=0\ \wedge\ \bigwedge_{j=1}^{s} u_j\cdot g_j(x,\bar a)=1\Bigr).
+\]
+令 $R:=A[\bar a]$，并在 $R[x,u_1,\dots,u_s]$ 中考虑由 $f_i(x,\bar a)$ 与 $u_jg_j(x,\bar a)-1$ 生成的理想 $I$。
+若 $E\models\exists x\,\Phi(x,\bar a)$，则 $I\cdot E[x,u_1,\dots,u_s]$ 为真理想。
+由于域扩张为忠实平坦，故 $I$ 亦为真理想，从而 $I\cdot F[x,u_1,\dots,u_s]$ 仍为真理想。
+由 Hilbert 零点定理（在代数闭域上理想为真当且仅当对应零点集非空）可得 $F\models\exists x\,\Phi(x,\bar a)$。
+交换 $E,F$ 同理得反向蕴含，从而得所需等价。
+\end{proof}
+
+\begin{corollary}
+\label{acf_p_elementary_extension}
+令 $L$ 为环语言，$p=0$ 或 $p$ 为素数。
+设 $F\subseteq E$ 且 $F,E$ 都是特征 $p$ 的代数闭域（视为 $L$-结构）。
+则包含映射 $F\hookrightarrow E$ 为初等嵌入，即 $F\preccurlyeq E$。
+\end{corollary}
+
+\begin{proof}
+由命题~\ref{pro:models-of-acf_p} 知 $F\models\mathrm{ACF}_p$ 且 $E\models\mathrm{ACF}_p$。
+又由定理~\ref{thm:acf_p_quantifier_elimination}，$\mathrm{ACF}_p$ 消去量词。
+于是由命题~\ref{pro:qe-implies-elementary-substructure} 得 $F\preccurlyeq E$。
+\end{proof}
+
+\section{Hilbert 零点定理}
+
+\begin{theorem}[Hilbert 零点定理（弱形式）]
+\label{hilbert-nullstellensatz-weak}
+设 $K$ 为代数闭域，$n\in\mathbb N^*$，$I\subseteq K[x_1,\dots,x_n]$ 为真理想。
+则存在 $a=(a_1,\dots,a_n)\in K^n$ 使得对任意 $f\in I$ 都有 $f(a)=0$。
+\end{theorem}
+
+\begin{proof}
+取极大理想 $\mathfrak m\subseteq K[x_1,\dots,x_n]$ 使 $I\subseteq\mathfrak m$。
+由 Hilbert 基定理，$\mathfrak m$ 有限生成，设
+\[
+  \mathfrak m=\langle f_1,\dots,f_k\rangle.
+\]
+令 $L:=K[x_1,\dots,x_n]/\mathfrak m$。
+则 $L$ 为域，并且存在自然的嵌入 $K\hookrightarrow L$。
+取代数闭域 $E$ 使得存在域嵌入 $\iota:L\hookrightarrow E$。
+其关系可用交换图表示为
+\[
+\begin{tikzcd}
+  K \arrow[r, hook] \arrow[dr, hook] & L \arrow[d, hook, "\iota"] \\
+  & E
+\end{tikzcd}
+\]
+令 $\alpha_i:=\iota([x_i])\in E$（$i=1,\dots,n$）。
+由于 $f_j\in\mathfrak m$，在 $L$ 中有 $[f_j]=0$，从而在 $E$ 中 $f_j(\alpha_1,\dots,\alpha_n)=0$。
+因此
+\[
+  E\models\exists x_1\cdots\exists x_n\,\bigl(f_1(\bar x)=0\wedge\cdots\wedge f_k(\bar x)=0\bigr).
+\]
+注意到 $K\subseteq E$ 且 $K,E$ 都是代数闭域（同特征）。
+由推论~\ref{cor:acf_p_elementary_extension} 得 $K\preccurlyeq E$，故上式的存在性语句在 $K$ 中亦成立。
+于是存在 $a_1,\dots,a_n\in K$ 使得对每个 $j$ 都有 $f_j(a_1,\dots,a_n)=0$。
+由于 $I\subseteq\mathfrak m=\langle f_1,\dots,f_k\rangle$，从而对任意 $f\in I$ 亦有 $f(a_1,\dots,a_n)=0$。
+\end{proof}
+
+\begin{corollary}
+\label{acf_p_arbitrarily_large_elementary_extensions}
+令 $L$ 为环语言，$F$ 为特征 $p$ 的代数闭域（$p=0$ 或 $p$ 为素数）。
+若 $\kappa$ 为基数且 $\kappa\ge\max\{\lvert F\rvert,\aleph_0\}$，则存在特征 $p$ 的代数闭域 $E$ 与初等嵌入 $\theta:F\to E$ 使得 $\lvert E\rvert=\kappa$。
+将 $F$ 与 $\theta(F)$ 认同后，可视为 $F\subseteq E$ 且 $F\preccurlyeq E$。
+\end{corollary}
+
+ \begin{proof}
+ 由推论~\ref{cor:arbitrarily-large-elementary-extensions}（取 $\mathcal M:=F$）可取 $L$-结构 $\mathcal N$ 与初等嵌入 $\theta:F\to N$ 使得 $\lvert N\rvert=\kappa$。
+ 又因 $F\models\mathrm{ACF}_p$ 且 $F\equiv\mathcal N$，故 $\mathcal N\models\mathrm{ACF}_p$。
+ 令 $E:=\mathcal N$ 即得结论。
+ \end{proof}
+
+\begin{definition}[项诱导的函数]
+\label{term-induced-function}
+设 $L$ 为语言，$\mathcal M$ 为 $L$-结构。
+给定项 $t(x_1,\dots,x_n)$，定义其在 $\mathcal M$ 上诱导的函数 $t^{\mathcal M}:M^n\to M$ 为
+\[
+  t^{\mathcal M}(a_1,\dots,a_n):=\hat v(t),
+\]
+其中 $v:V\to M$ 为满足 $v(x_i)=a_i$（$i=1,\dots,n$）的赋值。
+并记
+\[
+  t[a_1,\dots,a_n]:=t^{\mathcal M}(a_1,\dots,a_n).
+\]
+\end{definition}
+
+\begin{lemma}
+\label{ring-terms-are-integer-polynomials}
+令 $L_{\mathrm{ring}}=(V,\{0,1\},\{+,-,\cdot\},\varnothing)$ 为环语言。
+设 $t(x_1,\dots,x_n)$ 为一个 $L_{\mathrm{ring}}$-项。
+则存在整系数多项式 $f\in\mathbb Z[x_1,\dots,x_n]$，使得对任意 $L_{\mathrm{ring}}$-结构 $R$（特别是任意环/域）与任意 $a_1,\dots,a_n\in R$，都有
+\[
+  t^{R}(a_1,\dots,a_n)=f(a_1,\dots,a_n).
+\]
+\end{lemma}
+
+\begin{proof}
+令 $A$ 为所有满足引理结论的 $L_{\mathrm{ring}}$-项之集合。
+显然 $0,1,x_1,\dots,x_n\in A$。
+下面验证 $A$ 对 $+,-,\cdot$ 闭合。
+
+若 $t,s\in A$，取 $f,g\in\mathbb Z[x_1,\dots,x_n]$ 分别对应 $t,s$。
+则对任意 $R$ 与 $\bar a\in R^n$ 有
+\[
+  (t+s)^R(\bar a)=t^R(\bar a)+s^R(\bar a)=f(\bar a)+g(\bar a)=(f+g)(\bar a),
+\]
+故 $t+s\in A$。
+同理
+\[
+  (t\cdot s)^R(\bar a)=t^R(\bar a)\cdot s^R(\bar a)=f(\bar a)\cdot g(\bar a)=(fg)(\bar a),
+\]
+故 $t\cdot s\in A$。
+并且
+\[
+  (-t)^R(\bar a)=-t^R(\bar a)=-f(\bar a)=(-f)(\bar a),
+\]
+故 $-t\in A$。
+
+因此 $A$ 含有变量与常元并对 $+,-,\cdot$ 闭合。
+由项的归纳定义可得任意 $L_{\mathrm{ring}}$-项 $t(x_1,\dots,x_n)$ 都属于 $A$，从而结论成立。
+\end{proof}
+
+\begin{lemma}[集合的分配律]
+\label{set-distributive-law}
+设 $A_{ij}$（$1\le i\le n$，$1\le j\le m$）为任意集合族。
+则有
+\[
+\bigcap_{i=1}^n\ \bigcup_{j=1}^m A_{ij}=\bigcup_{(j_1,\dots,j_n)\in\{1,\dots,m\}^n}\ \bigcap_{i=1}^n A_{i j_i}.
+\]
+\end{lemma}
+
+\begin{proof}
+任取元素 $x$。
+若 $x\in\bigcap_{i=1}^n\bigcup_{j=1}^m A_{ij}$，则对每个 $i$ 可取 $j_i\in\{1,\dots,m\}$ 使 $x\in A_{i j_i}$。
+于是 $x\in\bigcap_{i=1}^n A_{i j_i}$，从而 $x$ 属于右侧并集。
+反之，若 $x$ 属于右侧，则存在 $(j_1,\dots,j_n)$ 使 $x\in\bigcap_{i=1}^n A_{i j_i}$。
+于是对每个 $i$ 有 $x\in A_{i j_i}\subseteq\bigcup_{j=1}^m A_{ij}$，故 $x\in\bigcap_{i=1}^n\bigcup_{j=1}^m A_{ij}$。
+\end{proof}
+
+\begin{lemma}[公式的分配律]
+\label{formula-distributive-law}
+对任意公式族 $\psi_{ij}$（$1\le i\le n$，$1\le j\le m$），有逻辑等价
+\[
+  \bigwedge_{i=1}^n\ \bigvee_{j=1}^m\psi_{ij}
+  \ \leftrightarrow\ 
+  \bigvee_{(j_1,\dots,j_n)\in\{1,\dots,m\}^n}\ \bigwedge_{i=1}^n\psi_{i j_i}.
+\]
+\end{lemma}
+
+\begin{proof}
+任取结构 $\mathcal M$ 与赋值 $v$。
+对每个 $i,j$ 令 $A_{ij}:=\{v':\ (\mathcal M,v')\models\psi_{ij}\}$。
+则
+\[
+  \{v':\ (\mathcal M,v')\models\bigwedge_{i=1}^n\bigvee_{j=1}^m\psi_{ij}\}
+  =
+  \bigcap_{i=1}^n\bigcup_{j=1}^m A_{ij},
+\]
+而右侧公式的真值集合为
+\[
+  \bigcup_{(j_1,\dots,j_n)\in\{1,\dots,m\}^n}\ \bigcap_{i=1}^n A_{i j_i}.
+\]
+由引理~\ref{lem:set-distributive-law} 两者相等，从而两边公式在任意 $\mathcal M,v$ 下等值，故逻辑等价。
+\end{proof}
+
+\section{无量词公式的标准形}
+
+\begin{lemma}[无量词公式的析取范式]
+\label{quantifier-free-dnf}
+设 $\varphi(x_1,\dots,x_n)$ 为无量词 $L$-公式。
+则存在有限族文字（即原子公式或其否定）$\ell_{ij}(x_1,\dots,x_n)$ 使得
+\[
+  \varphi\ \text{与}\ \bigvee_{i=1}^m\ \bigwedge_{j=1}^{k_i}\ell_{ij}
+\]
+逻辑等价。
+\end{lemma}
+
+\begin{proof}
+记 $\Delta(x_1,\dots,x_n)$ 为所有形如 $\bigvee_{i=1}^m\bigwedge_{j=1}^{k_i}\ell_{ij}$ 的公式集合，其中每个 $\ell_{ij}$ 为文字且自由变元包含于 $\{x_1,\dots,x_n\}$。
+
+对无量词公式定义关系 $\varphi\equiv\psi$：对任意结构 $\mathcal M$ 与赋值 $v$，有
+$(\mathcal M,v)\models\varphi\leftrightarrow\psi$。
+令
+\[
+  A:=\{\varphi:\ \varphi\ \text{无量词且}\ \exists\psi\in\Delta(x_1,\dots,x_n)\ \text{使}\ \varphi\equiv\psi\}.
+\]
+显然任意文字都属于 $A$。
+
+若 $\varphi\in A$ 且 $\varphi\equiv\bigvee_{i=1}^m\bigwedge_{j=1}^{k_i}\ell_{ij}$，则
+\[
+  \neg\varphi\equiv\bigwedge_{i=1}^m\neg\Bigl(\bigwedge_{j=1}^{k_i}\ell_{ij}\Bigr)
+  \equiv\bigwedge_{i=1}^m\bigvee_{j=1}^{k_i}\neg\ell_{ij}.
+\]
+对右侧使用引理~\ref{lem:formula-distributive-law} 可化为 $\Delta(x_1,\dots,x_n)$ 中的公式，故 $\neg\varphi\in A$。
+
+若 $\varphi,\psi\in A$，分别与 $\Delta(x_1,\dots,x_n)$ 中的公式等价，则 $\varphi\vee\psi$ 仍与某个 $\Delta(x_1,\dots,x_n)$ 中的公式等价（直接合并析取项），故 $\varphi\vee\psi\in A$。
+并且
+\[
+  \Bigl(\bigvee_{i=1}^m C_i\Bigr)\wedge\Bigl(\bigvee_{h=1}^{m'} D_h\Bigr)
+  \equiv\bigvee_{i=1}^m\bigvee_{h=1}^{m'}(C_i\wedge D_h),
+\]
+故 $\varphi\wedge\psi\in A$。
+
+由无量词公式的结构归纳（由文字经 $\neg,\vee,\wedge$ 构成）得任意无量词公式都属于 $A$。
+这即表明 $\varphi$ 与某个 $\Delta(x_1,\dots,x_n)$ 中的公式逻辑等价。
+\end{proof}
+
+ \begin{lemma}
+\label{atomic-equality-is-polynomial-equation}
+令 $L_{\mathrm{ring}}=(V,\{0,1\},\{+,-,\cdot\},\varnothing)$ 为环语言。
+设 $\varphi(x_1,\dots,x_n)$ 为一个原子公式，且 $\varphi$ 形如 $t(x_1,\dots,x_n)=s(x_1,\dots,x_n)$。
+则存在整系数多项式 $f\in\mathbb Z[x_1,\dots,x_n]$，使得对任意 $L_{\mathrm{ring}}$-结构 $R$ 与任意 $a_1,\dots,a_n\in R$，都有
+\[
+  R\models\varphi[a_1,\dots,a_n]\qquad\Longleftrightarrow\qquad f(a_1,\dots,a_n)=0.
+\]
+\end{lemma}
+
+\begin{proof}
+由引理~\ref{lem:ring-terms-are-integer-polynomials}，存在 $g,h\in\mathbb Z[x_1,\dots,x_n]$ 使得对任意 $R$ 与 $\bar a\in R^n$ 都有
+$t^R(\bar a)=g(\bar a)$ 且 $s^R(\bar a)=h(\bar a)$。
+令 $f:=g-h$。
+则
+\[
+  R\models(t=s)[\bar a]
+  \ \Longleftrightarrow\ 
+  t^R(\bar a)=s^R(\bar a)
+  \ \Longleftrightarrow\ 
+  g(\bar a)=h(\bar a)
+  \ \Longleftrightarrow\ 
+  f(\bar a)=0.
+\]
+\end{proof}
+
+\begin{theorem}
+\label{qf-ring-formula-polynomial-normal-form}
+令 $L_{\mathrm{ring}}=(V,\{0,1\},\{+,-,\cdot\},\varnothing)$ 为环语言。
+设 $\varphi(x_1,\dots,x_n)$ 为无量词 $L_{\mathrm{ring}}$-公式。
+则存在 $m\in\mathbb N$，以及对每个 $k=1,\dots,m$ 的整系数多项式族
+\[
+  f_{k,1},\dots,f_{k,r_k},\ g_{k,1},\dots,g_{k,s_k}\in\mathbb Z[x_1,\dots,x_n],
+\]
+使得对任意 $L_{\mathrm{ring}}$-结构 $R$ 与任意 $a_1,\dots,a_n\in R$，都有
+\[
+  R\models\varphi[a_1,\dots,a_n]
+  \ \Longleftrightarrow\ 
+  \bigvee_{k=1}^m\Bigl(\bigwedge_{i=1}^{r_k} f_{k,i}(a_1,\dots,a_n)=0\ \wedge\ \bigwedge_{j=1}^{s_k} g_{k,j}(a_1,\dots,a_n)\neq 0\Bigr).
+\]
+\end{theorem}
+
+\begin{proof}
+由引理~\ref{lem:quantifier-free-dnf}，$\varphi$ 逻辑等价于某个文字合取的有限析取
+\[
+  \bigvee_{k=1}^m\ \bigwedge_{\ell\in\Lambda_k}\ell,
+\]
+其中每个 $\ell$ 为原子公式或其否定。
+由于 $L_{\mathrm{ring}}$ 无关系符号，原子公式必为等式 $t=s$。
+对每个原子等式 $t=s$，由引理~\ref{lem:atomic-equality-is-polynomial-equation} 可取整系数多项式 $f$ 使
+$R\models(t=s)[\bar a]\Longleftrightarrow f(\bar a)=0$。
+其否定 $\neg(t=s)$ 在任意结构中等价于 $t\neq s$，从而等价于 $f(\bar a)\neq 0$。
+将每个合取项中出现的等式文字收集为 $f_{k,i}=0$，不等式文字收集为 $g_{k,j}\neq 0$，即可得到所述标准形。
+\end{proof}
+
+ \begin{theorem}[Robinson 判别法证明 $\mathrm{ACF}_p$ 量词消去]
+\label{acf-qe-robinson-proof}
+令 $L$ 为环语言，$p=0$ 或 $p$ 为素数。
+设 $K,L\models\mathrm{ACF}_p$ 且 $A\subseteq K,L$ 为公共 $L$-子结构。
+任取无量词 $L$-公式 $\varphi(x,\bar x)$ 与任意参数 $\bar a\in A^{\lvert\bar x\rvert}$，则
+\[
+  K\models\exists x\,\varphi(x,\bar a)\qquad\Longleftrightarrow\qquad L\models\exists x\,\varphi(x,\bar a).
+\]
+从而 $\mathrm{ACF}_p$ 在语言 $L$ 上消去量词。
+\end{theorem}
+
+\begin{proof}
+设 $F:=\mathrm{Frac}(A)$。
+由于 $K,L$ 为域，$F$ 可自然视为它们的公共子域。
+令 $K_0$（分别 $L_0$）为 $F$ 在 $K$（分别 $L$）中的相对代数闭包。
+则 $K_0,L_0$ 都是代数闭域，且存在 $F$-同构 $f:K_0\to L_0$。
+并且 $f\restriction_A=\mathrm{id}_A$。
+其关系可表示为交换图
+\[
+\begin{tikzcd}
+  A \arrow[r, hook] \arrow[d, equals] & K_0 \arrow[d, hook] \arrow[r, "f", "\cong"'] & L_0 \arrow[d, hook] \\
+  A \arrow[r, hook] & K \arrow[r, hook] & L
+\end{tikzcd}
+\]
+
+只证 $K\models\exists x\,\varphi(x,\bar a)\Rightarrow L\models\exists x\,\varphi(x,\bar a)$，反向同理。
+取 $b\in K$ 使 $K\models\varphi(b,\bar a)$。
+
+\textbf{情形 1：$b\in K_0$。}
+由于 $f$ 为同构且固定 $A$，无量词公式的真值在同构下保持，故
+\[
+  L_0\models\varphi\bigl(f(b),\bar a\bigr).
+\]
+从而 $L\models\exists x\,\varphi(x,\bar a)$。
+
+\textbf{情形 2：$b\notin K_0$。}
+由于 $K_0$ 代数闭，$b$ 必超越于 $K_0$。
+由定理~\ref{thm:qf-ring-formula-polynomial-normal-form}（将参数代入 $\bar a$）可将 $\varphi(x,\bar a)$ 写为有限析取
+\[
+  \bigvee_{k=1}^m\Bigl(\bigwedge_{i=1}^{r_k} f_{k,i}(x,\bar a)=0\ \wedge\ \bigwedge_{j=1}^{s_k} g_{k,j}(x,\bar a)\neq 0\Bigr),
+\]
+其中 $f_{k,i},g_{k,j}\in\mathbb Z[x,\bar x]$。
+取某个 $k$ 使得
+\[
+  K\models\bigwedge_{i=1}^{r_k} f_{k,i}(b,\bar a)=0\ \wedge\ \bigwedge_{j=1}^{s_k} g_{k,j}(b,\bar a)\neq 0.
+\]
+
+对每个 $i$，多项式 $f_{k,i}(x,\bar a)\in K_0[x]$ 在 $x=b$ 处取零。
+由于 $b$ 超越于 $K_0$，这迫使 $f_{k,i}(x,\bar a)$ 为零多项式，从而对任意 $c\in L$ 都有 $f_{k,i}(c,\bar a)=0$。
+而对每个 $j$，$g_{k,j}(x,\bar a)\in K_0[x]$ 为非零多项式。
+由同构 $f$ 可得其系数像对应到 $L_0[x]$ 中的非零多项式，故在代数闭域 $L_0$ 中仅有有限多个根。
+因此可取 $c\in L_0$ 使得对一切 $j$ 都有 $g_{k,j}(c,\bar a)\neq 0$。
+于是
+\[
+  L\models\bigwedge_{i=1}^{r_k} f_{k,i}(c,\bar a)=0\ \wedge\ \bigwedge_{j=1}^{s_k} g_{k,j}(c,\bar a)\neq 0,
+\]
+从而 $L\models\varphi(c,\bar a)$，即 $L\models\exists x\,\varphi(x,\bar a)$。
+
+综上，对任意无量词公式 $\varphi$ 与参数 $\bar a\in A$，存在量词 $\exists x$ 的真值在 $K,L$ 中一致。
+由引理~\ref{lem:qe-characterization} 可得 $\mathrm{ACF}_p$ 消去量词。
+\end{proof}
+
+\begin{remark}
+在 Robinson 判别法的应用中，常将参数先生成一个公共的有限生成子域（或子环再取分式域），再比较其相对代数闭包。
+例如对任意参数集 $A\subseteq K,L$，可记 $\langle A\rangle_K$（分别 $\langle A\rangle_L$）为 $A$ 在 $K$（分别 $L$）中生成的子环，并取分式域
+$F_K:=\mathrm{Frac}(\langle A\rangle_K)$、$F_L:=\mathrm{Frac}(\langle A\rangle_L)$。
+由 $A$ 在两边的同名解释可诱导出同构 $\theta:\langle A\rangle_K\overset{\cong}{\to}\langle A\rangle_L$，并进一步延拓为同构 $\mathrm{Frac}(\theta):F_K\overset{\cong}{\to}F_L$。
+再令 $K_0$（分别 $L_0$）为 $F_K$（分别 $F_L$）在 $K$（分别 $L$）中的相对代数闭包，则可将上述关系组织为交换图
+\[
+\begin{tikzcd}
+  A \arrow[r, hook] \arrow[d, equals] & \langle A\rangle_K \arrow[r, hook] \arrow[d, "\theta"', "\cong"] & F_K \arrow[r, hook] \arrow[d, "\mathrm{Frac}(\theta)"', "\cong"] & K_0 \arrow[r, hook] \arrow[d, "\cong"'] & K \\
+  A \arrow[r, hook] & \langle A\rangle_L \arrow[r, hook] & F_L \arrow[r, hook] & L_0 \arrow[r, hook] & L.
+\end{tikzcd}
+\]
+\end{remark}
+
+\chapter{生成子结构与类型}
+
+\section{生成子结构与类型}
+
+\begin{lemma}[由参数生成的子结构的项刻画]
+\label{generated-substructure-as-term-values}
+设 $L$ 为语言，$\mathcal M$ 为 $L$-结构，且 $a_1,\dots,a_n\in M$。
+记
+\[
+  B:=\bigl\{t[a_1,\dots,a_n]:\ t(x_1,\dots,x_n)\ \text{为 $L$-项}\bigr\}\subseteq M.
+\]
+则 $B$ 恰为 $\mathcal M$ 中由 $\{a_1,\dots,a_n\}$ 生成的子结构的基集，即
+\[
+  B=\langle\{a_1,\dots,a_n\}\rangle.
+\]
+\end{lemma}
+
+\begin{proof}
+先证 $B$ 包含 $a_1,\dots,a_n$。
+对每个 $i=1,\dots,n$，取项 $t(x_1,\dots,x_n):=x_i$，则 $t[a_1,\dots,a_n]=a_i\in B$。
+
+再证 $B$ 对 $\mathcal M$ 中的函数符号解释闭合。
+设 $f\in F$ 的元数为 $k$，并取任意 $b_1,\dots,b_k\in B$。
+则存在项 $t_1,\dots,t_k$ 使 $b_j=t_j[a_1,\dots,a_n]$（$j=1,\dots,k$）。
+令 $t:=f(t_1,\dots,t_k)$，则 $t$ 仍是 $L$-项，并且
+\[
+  f^{\mathcal M}(b_1,\dots,b_k)=f^{\mathcal M}\bigl(t_1[a_1,\dots,a_n],\dots,t_k[a_1,\dots,a_n]\bigr)=t[a_1,\dots,a_n]\in B.
+\]
+因此 $B$ 是 $\mathcal M$ 的一个子结构，并且包含 $\{a_1,\dots,a_n\}$。
+由生成子结构的定义知 $\langle\{a_1,\dots,a_n\}\rangle\subseteq B$。
+
+反向包含：由于 $\langle\{a_1,\dots,a_n\}\rangle$ 是包含 $\{a_1,\dots,a_n\}$ 的子结构，故其对函数符号解释闭合。
+对项 $t(x_1,\dots,x_n)$ 按其构造做归纳可得 $t[a_1,\dots,a_n]\in\langle\{a_1,\dots,a_n\}\rangle$。
+因此 $B\subseteq\langle\{a_1,\dots,a_n\}\rangle$。
+综上得到 $B=\langle\{a_1,\dots,a_n\}\rangle$。
+\end{proof}
+
+\begin{remark}
+令 $v:V\to M$ 为满足 $v(x_i)=a_i$（$i=1,\dots,n$）的赋值，并记 $\bar v:\mathrm{Term}(L)\to M$ 为由 $v$ 诱导的项解释。
+则对任意只含自由变元 $x_1,\dots,x_n$ 的项 $t$，都有 $\bar v(t)=t[a_1,\dots,a_n]$。
+并且若 $t=f(t_1,\dots,t_k)$，则
+\[
+  (f(t_1,\dots,t_k))[a_1,\dots,a_n]=f^{\mathcal M}\bigl(t_1[a_1,\dots,a_n],\dots,t_k[a_1,\dots,a_n]\bigr).
+\]
+对应的延拓关系可由交换图表示：
+\[
+\begin{tikzcd}
+  V\cup C \arrow[r, hook, "\iota"] \arrow[dr, "\hat v"'] & \mathrm{Term}(L) \arrow[d, "\bar v"] \\
+  & M
+\end{tikzcd}
+\]
+\end{remark}
+
+\begin{lemma}
+\label{qf-type-equivalence-generated-substructure-isomorphism}
+设 $\mathcal M,\mathcal N$ 为同一语言 $L$ 的两个 $L$-结构，且 $a_1,\dots,a_n\in M$、$b_1,\dots,b_n\in N$。
+则以下两条等价：
+\begin{enumerate}
+  \item 对任意无量词 $L$-公式 $\varphi(x_1,\dots,x_n)$ 都有
+  \[
+    \mathcal M\models\varphi[a_1,\dots,a_n]\ \Longleftrightarrow\ \mathcal N\models\varphi[b_1,\dots,b_n].
+  \]
+  \item 存在同构 $\theta:\langle\{a_1,\dots,a_n\}\rangle\to\langle\{b_1,\dots,b_n\}\rangle$ 使得 $\theta(a_i)=b_i$（$i=1,\dots,n$）。
+\end{enumerate}
+\end{lemma}
+
+\begin{proof}
+$(2)\Rightarrow(1)$：设 $\theta$ 如 (2)。
+对任意无量词公式 $\varphi(x_1,\dots,x_n)$ 与赋值 $v(x_i)=a_i$，无量词公式的满足关系仅依赖于各项在赋值下的取值与关系符号在这些取值上的真假。
+由于 $\theta$ 是同构且 $\theta(a_i)=b_i$，从而对任意项 $t(x_1,\dots,x_n)$ 有
+\[
+  \theta\bigl(t[a_1,\dots,a_n]\bigr)=t[b_1,\dots,b_n].
+\]
+进而对任意原子公式与其否定都保持真值；由结构归纳得 $\varphi$ 亦保持真值，于是 (1) 成立。
+
+$(1)\Rightarrow(2)$：令
+\[
+  B:=\langle\{a_1,\dots,a_n\}\rangle,\qquad C:=\langle\{b_1,\dots,b_n\}\rangle.
+\]
+由引理~\ref{lem:generated-substructure-as-term-values}，$B$（分别 $C$）恰为所有项在参数 $\bar a=(a_1,\dots,a_n)$（分别 $\bar b=(b_1,\dots,b_n)$）下的取值集合。
+
+定义映射 $\theta:B\to C$：对任意项 $t(x_1,\dots,x_n)$，令
+\[
+  \theta\bigl(t[a_1,\dots,a_n]\bigr):=t[b_1,\dots,b_n].
+\]
+下面验证 $\theta$ 良定义。
+若 $t[a_1,\dots,a_n]=s[a_1,\dots,a_n]$，则
+\[
+  \mathcal M\models(t=s)[a_1,\dots,a_n].
+\]
+由 (1) 得 $\mathcal N\models(t=s)[b_1,\dots,b_n]$，从而 $t[b_1,\dots,b_n]=s[b_1,\dots,b_n]$。
+故 $\theta$ 良定义。
+
+接着证明 $\theta$ 为同态。
+任取函数符号 $f\in F$（元数为 $k$）与任意 $t_1,\dots,t_k$，记 $c_i:=t_i[a_1,\dots,a_n]\in B$。
+则
+\[
+  \theta\bigl(f^{\mathcal M}(c_1,\dots,c_k)\bigr)
+  =\theta\bigl((f(t_1,\dots,t_k))[a_1,\dots,a_n]\bigr)
+  =(f(t_1,\dots,t_k))[b_1,\dots,b_n]
+  =f^{\mathcal N}\bigl(\theta(c_1),\dots,\theta(c_k)\bigr).
+\]
+从而 $\theta$ 保持所有函数符号的解释。
+
+再验证 $\theta$ 保持关系符号。
+任取关系符号 $R\in\mathcal R$（元数为 $k$）与任意 $c_i=t_i[a_1,\dots,a_n]\in B$。
+则
+\[
+  (c_1,\dots,c_k)\in R^{\mathcal M}
+  \ \Longleftrightarrow\ 
+  \mathcal M\models R(t_1,\dots,t_k)[a_1,\dots,a_n]
+  \ \Longleftrightarrow\ 
+  \mathcal N\models R(t_1,\dots,t_k)[b_1,\dots,b_n]
+  \ \Longleftrightarrow\ 
+  (\theta(c_1),\dots,\theta(c_k))\in R^{\mathcal N},
+\]
+其中中间等价由 (1) 得到。
+因此 $\theta$ 为 $L$-同态。
+
+最后证明 $\theta$ 为同构。
+同理由 (1) 也可定义 $\eta:C\to B$ 为 $\eta(t[\bar b])=t[\bar a]$，并验证其良定义且为同态。
+显然 $\eta\circ\theta=\mathrm{id}_B$ 且 $\theta\circ\eta=\mathrm{id}_C$，故 $\theta$ 为同构。
+并且由定义 $\theta(a_i)=\theta(x_i[\bar a])=x_i[\bar b]=b_i$。
+\end{proof}
+
+
+\begin{lemma}
+\label{atomic-literals-imply-generated-embedding}
+设 $\mathcal M,\mathcal N$ 为同一语言 $L$ 的两个 $L$-结构，且 $a_1,\dots,a_n\in M$、$b_1,\dots,b_n\in N$。
+则以下两条等价：
+\begin{enumerate}
+  \item 对任意 $L$-公式 $\varphi(x_1,\dots,x_n)$，若 $\varphi$ 为原子公式或原子公式的否定，则
+  \[
+    \mathcal M\models\varphi[a_1,\dots,a_n]\ \Longrightarrow\ \mathcal N\models\varphi[b_1,\dots,b_n].
+  \]
+  \item 存在 $L$-嵌入
+  \[
+    \theta:\langle\{a_1,\dots,a_n\}\rangle\hookrightarrow\langle\{b_1,\dots,b_n\}\rangle
+  \]
+  使得 $\theta(a_i)=b_i$（$i=1,\dots,n$）。
+\end{enumerate}
+\end{lemma}
+
+\begin{proof}
+$(2)\Rightarrow(1)$：设 $\theta$ 如 (2)。
+若 $\varphi$ 为原子公式，则其真值由项取值与关系符号解释决定，而 $\theta$ 为嵌入保持这些信息，故原子公式的真值在 $\theta$ 下保持。
+若 $\varphi$ 为原子公式之否定，则同理可得其真值亦保持，因此 (1) 成立。
+
+$(1)\Rightarrow(2)$：令 $B:=\langle\{a_1,\dots,a_n\}\rangle$，$C:=\langle\{b_1,\dots,b_n\}\rangle$。
+由引理~\ref{lem:generated-substructure-as-term-values}，$B$ 与 $C$ 分别是所有项在参数 $\bar a=(a_1,\dots,a_n)$ 与 $\bar b=(b_1,\dots,b_n)$ 下的取值集合。
+对任意项 $t(x_1,\dots,x_n)$ 定义
+\[
+  \theta\bigl(t[a_1,\dots,a_n]\bigr):=t[b_1,\dots,b_n].
+\]
+首先验证 $\theta$ 良定义。
+若 $t[a_1,\dots,a_n]=s[a_1,\dots,a_n]$，则 $\mathcal M\models(t=s)[a_1,\dots,a_n]$。
+由 (1) 得 $\mathcal N\models(t=s)[b_1,\dots,b_n]$，从而 $t[b_1,\dots,b_n]=s[b_1,\dots,b_n]$。
+故 $\theta$ 良定义。
+
+接着验证 $\theta$ 为 $L$-同态。
+任取函数符号 $f\in F$（元数为 $k$）与任意 $c_i=t_i[a_1,\dots,a_n]\in B$。
+则
+\[
+  \theta\bigl(f^{\mathcal M}(c_1,\dots,c_k)\bigr)
+  =\theta\bigl((f(t_1,\dots,t_k))[a_1,\dots,a_n]\bigr)
+  =(f(t_1,\dots,t_k))[b_1,\dots,b_n]
+  =f^{\mathcal N}\bigl(\theta(c_1),\dots,\theta(c_k)\bigr).
+\]
+并且对任意关系符号 $R\in\mathcal R$（元数为 $k$）与任意 $c_i=t_i[a_1,\dots,a_n]\in B$，有
+\[
+  (c_1,\dots,c_k)\in R^{\mathcal M}
+  \ \Longleftrightarrow\ 
+  \mathcal M\models R(t_1,\dots,t_k)[a_1,\dots,a_n]
+  \ \Longrightarrow\ 
+  \mathcal N\models R(t_1,\dots,t_k)[b_1,\dots,b_n]
+  \ \Longleftrightarrow\ 
+  (\theta(c_1),\dots,\theta(c_k))\in R^{\mathcal N}.
+\]
+故 $\theta$ 是 $L$-同态，且对关系符号满足“向前保真”。
+
+最后由 (1) 对等式否定的保真可得 $\theta$ 单射。
+确有：若 $t[a_1,\dots,a_n]\neq s[a_1,\dots,a_n]$，则 $\mathcal M\models(t\neq s)[a_1,\dots,a_n]$。
+由 (1) 得 $\mathcal N\models(t\neq s)[b_1,\dots,b_n]$，从而 $\theta(t[\bar a])\neq\theta(s[\bar a])$。
+综上，$\theta$ 给出从 $B$ 到 $C$ 的 $L$-嵌入，并满足 $\theta(a_i)=b_i$。
+\end{proof}
+
+\begin{remark}
+下面给出定理~\ref{thm:robinson-test-for-formulas} 中 $(3)\Rightarrow(2)$ 的另一证明（板书思路）。
+设 (3) 成立。
+令
+\[
+  \mathcal A(\bar x):=\bigl\{\psi(\bar x):\ \psi\ \text{无量词且}\ T\vdash\forall\bar x\,(\varphi\to\psi)\bigr\}.
+\]
+我们先证明
+\[
+  T\cup\mathcal A\vdash\forall\bar x\,\varphi.
+\]
+反证：若不然，则 $T\cup\mathcal A\cup\{\neg\varphi\}$ 可满足。
+取 $\mathcal M\models T$ 与 $\bar a\in M^n$ 使得
+$\mathcal M\models\mathcal A[\bar a]$ 且 $\mathcal M\models\neg\varphi[\bar a]$。
+
+记 $p(\bar x)$ 为 $\bar a$ 在 $\mathcal M$ 中的无量词类型：
+\[
+  p(\bar x):=\{\theta(\bar x):\ \theta\ \text{无量词且}\ \mathcal M\models\theta[\bar a]\}.
+\]
+声称 $T\cup p(\bar c)\cup\{\varphi(\bar c)\}$ 可满足。
+否则由紧致性可取有限个 $\theta_1,\dots,\theta_m\in p$ 使
+$T\vdash\forall\bar x\,\bigl((\theta_1\wedge\cdots\wedge\theta_m)\to\neg\varphi\bigr)$。
+令 $\psi:=\neg(\theta_1\wedge\cdots\wedge\theta_m)$，则 $\psi$ 无量词且
+$T\vdash\forall\bar x\,(\varphi\to\psi)$，故 $\psi\in\mathcal A$。
+但 $\theta_i\in p$ 意味着 $\mathcal M\models\theta_i[\bar a]$（$i=1,\dots,m$），从而 $\mathcal M\models\neg\psi[\bar a]$，与 $\mathcal M\models\mathcal A[\bar a]$ 矛盾。
+因此 $T\cup p(\bar c)\cup\{\varphi(\bar c)\}$ 可满足。
+
+于是可取 $\mathcal N\models T$ 与 $\bar b\in N^n$ 使得 $\mathcal N\models p[\bar b]$ 且 $\mathcal N\models\varphi[\bar b]$。
+由 $\mathcal N\models p[\bar b]$ 与 $p$ 的定义知：对任意无量词公式 $\theta$，都有
+$\mathcal M\models\theta[\bar a]\Longleftrightarrow\mathcal N\models\theta[\bar b]$。
+由引理~\ref{lem:qf-type-equivalence-generated-substructure-isomorphism} 得存在同构
+$\langle\bar a\rangle^{\mathcal M}\cong\langle\bar b\rangle^{\mathcal N}$ 送 $\bar a\mapsto\bar b$。
+并可由交换图表示为
+\[
+\begin{tikzcd}
+  \langle\bar a\rangle^{\mathcal M} \arrow[r, "\cong"] \arrow[d, hook] & \langle\bar b\rangle^{\mathcal N} \arrow[d, hook] \\
+  \mathcal M & \mathcal N
+\end{tikzcd}
+\]
+这与定理~\ref{thm:robinson-test-for-formulas} 的 (3) 矛盾：因为 (3) 要求在公共子结构上 $\varphi$ 的真值一致，
+但此处 $\mathcal M\models\neg\varphi[\bar a]$ 而 $\mathcal N\models\varphi[\bar b]$。
+故 $T\cup\mathcal A\vdash\forall\bar x\,\varphi$。
+
+最后由紧致性可取有限个 $\psi_1,\dots,\psi_k\in\mathcal A$ 使得
+$T\vdash\forall\bar x\,\bigl((\psi_1\wedge\cdots\wedge\psi_k)\to\varphi\bigr)$。
+令 $\psi:=\psi_1\wedge\cdots\wedge\psi_k$，则 $\psi$ 无量词且由 $\psi_i\in\mathcal A$ 得
+$T\vdash\forall\bar x\,(\varphi\to\psi)$。
+因此 $\varphi\sim_T\psi$，得到定理~\ref{thm:robinson-test-for-formulas} 的 (2)。
+\end{remark}
+
+\section{类型与完全型}
+
+\begin{definition}[类型]
+\label{type-over-a-structure}
+设 $L$ 为语言，$\mathcal M$ 为 $L$-结构。
+令 $p(x_1,\dots,x_n)$ 为一族 $L$-公式（其自由变元包含于 $\{x_1,\dots,x_n\}$）。
+若存在 $L$-结构 $\mathcal N\equiv\mathcal M$ 与赋值 $v:V\to N$（记 $v(x_i)=b_i\in N$，$i=1,\dots,n$）使得对任意 $\varphi\in p$ 都有 $(\mathcal N,v)\models\varphi$，
+则称 $p$ 为 $\mathcal M$ 的一个 $n$-类型（$n$-type），或称 $p$ 为一个 $\mathcal M$-型。
+\end{definition}
+
+\begin{remark}
+若 $\bar a\in M^n$，常记
+\[
+  \mathrm{tp}^{\mathcal M}(\bar a):=\{\varphi(x_1,\dots,x_n):\ \varphi\ \text{为 $L$-公式且}\ \mathcal M\models\varphi[\bar a]\},
+\]
+它显然是 $\mathcal M$ 的一个 $n$-类型。
+\end{remark}
+
+\begin{definition}[完全型]
+\label{complete-type}
+设 $p(x_1,\dots,x_n)$ 为 $\mathcal M$ 的一个 $n$-类型。
+若对任意 $L$-公式 $\varphi(x_1,\dots,x_n)$ 都有 $\varphi\in p$ 或 $\neg\varphi\in p$，
+则称 $p$ 为 $\mathcal M$ 的一个\emph{完全 $n$-类型}（complete $n$-type）。
+\end{definition}
+
+\begin{lemma}
+\label{maximal-type-iff-complete}
+设 $p(x_1,\dots,x_n)$ 为 $\mathcal M$ 的一个 $n$-类型。
+则 $p$ 在所有 $\mathcal M$ 的 $n$-类型中关于包含关系极大当且仅当 $p$ 为完全 $n$-类型。
+\end{lemma}
+
+\begin{proof}
+先设 $p$ 极大。
+任取 $L$-公式 $\varphi(x_1,\dots,x_n)$。
+若 $\varphi\in p$ 则结论成立。
+若 $\varphi\notin p$，则由极大性知 $p\cup\{\varphi\}$ 不是 $\mathcal M$-型。
+取 $\mathcal N\equiv\mathcal M$ 与 $\bar b\in N^n$ 使 $\mathcal N\models p[\bar b]$。
+由于 $p\cup\{\varphi\}$ 不能在任何 $\mathcal N\equiv\mathcal M$ 中被实现，故对上述 $\mathcal N,\bar b$ 必有 $\mathcal N\models\neg\varphi[\bar b]$。
+于是 $p\cup\{\neg\varphi\}$ 仍为 $\mathcal M$-型。
+再由极大性推出 $\neg\varphi\in p$。
+因此 $p$ 为完全型。
+
+反之设 $p$ 为完全型。
+若存在 $\mathcal M$-型 $q$ 使 $p\subsetneq q$，则可取 $\varphi\in q\setminus p$。
+由于 $p$ 完全，得 $\neg\varphi\in p\subseteq q$。
+于是 $q$ 同时包含 $\varphi$ 与 $\neg\varphi$，不可能被任何 $\mathcal N\equiv\mathcal M$ 实现，矛盾。
+故 $p$ 极大。
+\end{proof}
+
+\begin{lemma}
+\label{complete-type-disjunction}
+设 $p(x_1,\dots,x_n)$ 为 $\mathcal M$ 的完全 $n$-类型。
+若 $\varphi\vee\psi\in p$，则 $\varphi\in p$ 或 $\psi\in p$。
+\end{lemma}
+
+\begin{proof}
+取 $\mathcal N\equiv\mathcal M$ 与 $\bar b\in N^n$ 使 $\mathcal N\models p[\bar b]$。
+由 $\varphi\vee\psi\in p$ 得 $\mathcal N\models(\varphi\vee\psi)[\bar b]$，从而 $\mathcal N\models\varphi[\bar b]$ 或 $\mathcal N\models\psi[\bar b]$。
+不妨设 $\mathcal N\models\varphi[\bar b]$。
+由于 $p$ 完全，$\varphi\in p$ 或 $\neg\varphi\in p$。
+但 $\neg\varphi\in p$ 将推出 $\mathcal N\models\neg\varphi[\bar b]$，矛盾。
+故 $\varphi\in p$。
+\end{proof}
+
+\section{Stone 空间}
+
+\begin{definition}[类型空间与 Stone 拓扑]
+\label{stone-space-of-types}
+设 $L$ 为语言，$\mathcal M$ 为 $L$-结构。
+记
+\[
+  S_n(\mathcal M):=\{p(x_1,\dots,x_n):\ p\ \text{为 $\mathcal M$ 的完全 $n$-类型}\}.
+\]
+对任意一族 $L$-公式 $\Omega(x_1,\dots,x_n)$，定义
+\[
+  V(\Omega):=\{p\in S_n(\mathcal M):\ \Omega\subseteq p\}.
+\]
+令 $\mathcal B:=\{V(\Omega):\ \Omega\ \text{为有限公式集}\}$。
+称由 $\mathcal B$ 生成的拓扑为 $S_n(\mathcal M)$ 上的 \emph{Stone 拓扑}，并称 $\bigl(S_n(\mathcal M),\mathcal B\bigr)$ 为（$\mathcal M$ 的）Stone 空间。
+\end{definition}
+
+\begin{proposition}
+\label{stone-basic-operations}
+在定义~\ref{def:stone-space-of-types} 的记号下，对任意公式 $\varphi,\psi$ 都有
+\[
+  V(\varphi)\cap V(\psi)=V(\varphi\wedge\psi),\qquad V(\varphi)\cup V(\psi)=V(\varphi\vee\psi),\qquad S_n(\mathcal M)\setminus V(\varphi)=V(\neg\varphi).
+\]
+因此每个 $V(\varphi)$ 都是既开又闭的集合。
+\end{proposition}
+
+\begin{proof}
+由完全型的定义，$p\in V(\varphi)\cap V(\psi)$ 当且仅当 $\varphi\in p$ 且 $\psi\in p$，
+这当且仅当 $\varphi\wedge\psi\in p$，即 $p\in V(\varphi\wedge\psi)$。
+
+若 $p\in V(\varphi)\cup V(\psi)$，则 $\varphi\in p$ 或 $\psi\in p$，从而 $\varphi\vee\psi\in p$，即 $p\in V(\varphi\vee\psi)$。
+反之若 $\varphi\vee\psi\in p$，由引理~\ref{lem:complete-type-disjunction} 得 $\varphi\in p$ 或 $\psi\in p$，故 $p\in V(\varphi)\cup V(\psi)$。
+
+最后由完全型知：$p\notin V(\varphi)$ 当且仅当 $\varphi\notin p$，当且仅当 $\neg\varphi\in p$，即 $p\in V(\neg\varphi)$。
+\end{proof}
+
+\end{document}

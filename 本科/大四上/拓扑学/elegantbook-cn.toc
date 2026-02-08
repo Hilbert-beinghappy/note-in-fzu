@@ -28,8 +28,32 @@
 \contentsline {subsection}{\numberline {9.2.2}拓扑和的连续性与可度量性}{37}{subsection.9.2.2}%
 \contentsline {subsection}{\numberline {9.2.3}Polish 空间的封闭性}{38}{subsection.9.2.3}%
 \contentsline {subsection}{\numberline {9.2.4}可数性引理与可数乘积的第二可数性}{38}{subsection.9.2.4}%
-\contentsline {subsection}{\numberline {9.2.5}连通性与连续像}{39}{subsection.9.2.5}%
-\contentsline {subsection}{\numberline {9.2.6}$\mathbb R$ 的连通性、介值性与道路连通}{41}{subsection.9.2.6}%
-\contentsline {subsection}{\numberline {9.2.7}同伦与基本群}{45}{subsection.9.2.7}%
-\contentsline {subsection}{\numberline {9.2.8}局部紧空间}{48}{subsection.9.2.8}%
-\contentsline {subsection}{\numberline {9.2.9}Baire 空间与纲}{49}{subsection.9.2.9}%
+\contentsline {chapter}{\numberline {10}连通性与同伦}{40}{chapter.10}%
+\contentsline {section}{\numberline {10.1}连通性与连续像}{40}{section.10.1}%
+\contentsline {subsection}{\numberline {10.1.1}$\mathbb R$ 的连通性、介值性与道路连通}{42}{subsection.10.1.1}%
+\contentsline {subsection}{\numberline {10.1.2}局部连通与局部道路连通}{45}{subsection.10.1.2}%
+\contentsline {section}{\numberline {10.2}同伦与基本群}{45}{section.10.2}%
+\contentsline {chapter}{\numberline {11}局部紧空间与 Baire 范畴}{50}{chapter.11}%
+\contentsline {section}{\numberline {11.1}局部紧空间}{50}{section.11.1}%
+\contentsline {section}{\numberline {11.2}Baire 空间与纲}{50}{section.11.2}%
+\contentsline {subsection}{\numberline {11.2.1}Baire 空间与纲的定义}{50}{subsection.11.2.1}%
+\contentsline {subsection}{\numberline {11.2.2}Baire 空间的基本性质}{51}{subsection.11.2.2}%
+\contentsline {section}{\numberline {11.3}齐性空间与群作用}{54}{section.11.3}%
+\contentsline {subsection}{\numberline {11.3.1}拓扑群、商映射与陪集空间}{55}{subsection.11.3.1}%
+\contentsline {subsection}{\numberline {11.3.2}Sorgenfrey 线与 Lindel\"off 齐性空间}{56}{subsection.11.3.2}%
+\contentsline {subsection}{\numberline {11.3.3}可数齐性与 Baire 性}{57}{subsection.11.3.3}%
+\contentsline {section}{\numberline {11.4}乘积与截面}{57}{section.11.4}%
+\contentsline {subsection}{\numberline {11.4.1}闭包与内部}{57}{subsection.11.4.1}%
+\contentsline {subsection}{\numberline {11.4.2}截面与 Kuratowski--Ulam 型结论}{58}{subsection.11.4.2}%
+\contentsline {section}{\numberline {11.5}$G_\delta $ 集与完备度量化}{60}{section.11.5}%
+\contentsline {subsection}{\numberline {11.5.1}Lavrentiev 延拓与完备性等价刻画}{61}{subsection.11.5.1}%
+\contentsline {subsection}{\numberline {11.5.2}$G_\delta $ 集的传递性与 Polish 子空间}{64}{subsection.11.5.2}%
+\contentsline {section}{\numberline {11.6}Polish 空间的基数与 Cantor--Bendixson 分解}{65}{section.11.6}%
+\contentsline {section}{\numberline {11.7}Suslin 空间与 Borel 集}{67}{section.11.7}%
+\contentsline {subsection}{\numberline {11.7.1}Suslin 空间的定义与基本性质}{67}{subsection.11.7.1}%
+\contentsline {subsection}{\numberline {11.7.2}Suslin 空间的封闭性质}{68}{subsection.11.7.2}%
+\contentsline {subsection}{\numberline {11.7.3}$\sigma $-代数与 Borel 集}{68}{subsection.11.7.3}%
+\contentsline {subsection}{\numberline {11.7.4}Baire 空间与 Polish 空间的连续像}{70}{subsection.11.7.4}%
+\contentsline {subsection}{\numberline {11.7.5}Borel 可分离与 Lusin 分离定理}{71}{subsection.11.7.5}%
+\contentsline {subsection}{\numberline {11.7.6}Borel 可测映射}{72}{subsection.11.7.6}%
+\contentsline {subsection}{\numberline {11.7.7}Lusin 空间}{72}{subsection.11.7.7}%
