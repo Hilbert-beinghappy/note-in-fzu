@@ -1,0 +1,244 @@
+\section{Banach 空间与 Hilbert 空间}
+
+\label{sec:3-1}
+
+无穷维优化首先面对的，不是某个具体算法，而是“变量究竟生活在哪个空间里”这一基础问题。有限维情形中，范数等价、闭有界集紧、线性泛函都能写成内积，这些事实使许多几何结构被自动隐藏。到了无穷维，赋范空间、Banach 空间与 Hilbert 空间之间的差别必须被明确区分：前者提供基本的线性与连续性框架，第二层加入完备性，第三层再加入内积几何与正交分解。后文中的邻近映射、投影算法、最小二乘和算子谱分解，都建立在这种层级区分之上。
+
+\subsection{赋范空间与完备性}
+
+\begin{definition}[赋范空间]\label{def:normed-space}
+设 $X$ 为实或复线性空间。若映射 $\|\cdot\|\colon X\to [0,\infty)$ 满足：
+\begin{enumerate}
+  \item $\|x\|=0$ 当且仅当 $x=0$；
+  \item 对任意标量 $\lambda$ 与任意 $x\in X$，有
+  \[
+  \|\lambda x\|=|\lambda|\,\|x\| ;
+  \]
+  \item 对任意 $x,y\in X$，有
+  \[
+  \|x+y\|\le \|x\|+\|y\| ,
+  \]
+\end{enumerate}
+则称 $(X,\|\cdot\|)$ 为一个\emph{赋范空间}。由范数诱导的度量记为
+\[
+d(x,y):=\|x-y\|.
+\]
+\end{definition}
+
+\begin{definition}[Banach 空间]\label{def:banach-space}
+若赋范空间 $(X,\|\cdot\|)$ 在由定义~\ref{def:normed-space} 诱导的度量下完备，则称 $X$ 为一个\emph{Banach 空间}。
+\end{definition}
+
+完备性的作用，不只是保证 Cauchy 列有极限。更重要的是，它使闭图像、开映射、一致有界等基本定理可以成立，而这些结果又反过来控制算子方程、最优性条件与极值存在的稳定性。第 \ref{sec:1-2} 节中的 Baire 范畴方法，正是这种完备性力量的拓扑来源。
+
+\begin{example}[函数空间的几何分层]\label{ex:lp-geometry}
+对 $1\le p\le\infty$，空间 $\ell^p$ 与 $L^p$ 都是 Banach 空间；其中只有 $p=2$ 时，它们由内积
+\[
+\langle x,y\rangle=\sum_{n=1}^{\infty}x_n\overline{y_n},
+\qquad
+\langle f,g\rangle=\int f\overline{g}\,d\mu
+\]
+诱导范数，因此是 Hilbert 空间。把这个例子放在这里，是为了强调“完备”并不自动意味着“可做正交分解”；许多后文只在 Hilbert 空间成立的算法结论，在 $L^1$ 或 $\ell^\infty$ 中就必须改写。
+\end{example}
+
+\subsection{内积、正交与 Hilbert 空间}
+
+\begin{definition}[Hilbert 空间]\label{def:hilbert-space}
+设 $H$ 为实或复线性空间，$\langle\cdot,\cdot\rangle$ 为 $H$ 上的内积，范数由
+\[
+\|x\|:=\langle x,x\rangle^{1/2}
+\]
+给出。若 $(H,\|\cdot\|)$ 完备，则称 $H$ 为一个\emph{Hilbert 空间}。
+\end{definition}
+
+在 Hilbert 空间中，内积不仅给出范数，还把“方向”“垂直”“投影”“最短距离”这些欧氏概念全部带回了无穷维环境。设 $M\subset H$ 为非空子集，定义其正交补为
+\[
+M^\perp:=\{x\in H:\langle x,y\rangle=0,\ \forall y\in M\}.
+\]
+当 $M$ 是线性子空间时，$M^\perp$ 也是闭线性子空间，并且几何上对应于“所有与 $M$ 垂直的方向”。
+
+\begin{proposition}[正交补的基本性质]
+设 $H$ 为 Hilbert 空间，$M\subset H$ 为任意非空子集，则 $M^\perp$ 是 $H$ 的闭线性子空间。若 $M$ 本身是线性子空间，则
+\[
+\overline{M}\cap M^\perp=\{0\}.
+\]
+\end{proposition}
+
+\begin{proof}
+对任意 $y\in M$，映射 $x\mapsto \langle x,y\rangle$ 是连续线性泛函，因此集合
+\[
+\{x\in H:\langle x,y\rangle=0\}
+\]
+是闭线性子空间。于是
+\[
+M^\perp=\bigcap_{y\in M}\{x\in H:\langle x,y\rangle=0\}
+\]
+仍为闭线性子空间。若 $x\in \overline{M}\cap M^\perp$，取 $M$ 中列 $x_n\to x$，由内积连续性得
+\[
+\langle x,x\rangle=\lim_{n\to\infty}\langle x,x_n\rangle=0,
+\]
+故 $x=0$。
+\end{proof}
+
+\begin{theorem}[Hilbert 空间中的投影定理]\label{thm:orthogonal-projection}
+设 $H$ 为 Hilbert 空间，$M\subset H$ 为非空闭线性子空间。则对任意 $x\in H$，存在唯一元素 $P_Mx\in M$ 使
+\[
+\|x-P_Mx\|=\inf_{y\in M}\|x-y\|.
+\]
+并且该极小元满足正交条件
+\[
+x-P_Mx\in M^\perp.
+\]
+因此每个 $x\in H$ 都可以唯一写成
+\[
+x=P_Mx+(x-P_Mx),\qquad P_Mx\in M,\ x-P_Mx\in M^\perp.
+\]
+\end{theorem}
+
+\begin{proof}
+记
+\[
+d:=\inf_{y\in M}\|x-y\|.
+\]
+取极小化列 $(y_n)\subset M$ 使 $\|x-y_n\|\to d$。由平行四边形恒等式，
+\[
+\left\|x-\frac{y_n+y_m}{2}\right\|^2+\left\|\frac{y_n-y_m}{2}\right\|^2
+=\frac12\|x-y_n\|^2+\frac12\|x-y_m\|^2 .
+\]
+因为 $M$ 线性且闭，所以 $(y_n+y_m)/2\in M$，从而第一项不小于 $d^2$。于是
+\[
+\left\|\frac{y_n-y_m}{2}\right\|^2
+\le
+\frac12\|x-y_n\|^2+\frac12\|x-y_m\|^2-d^2\to 0.
+\]
+故 $(y_n)$ 是 Cauchy 列。由 $M$ 完备，存在 $y_\ast\in M$ 使 $y_n\to y_\ast$。连续性给出
+\[
+\|x-y_\ast\|=d,
+\]
+这证明了存在性。记 $P_Mx:=y_\ast$。
+
+下证正交条件。任取 $z\in M$，对任意实数 $t$，因为 $P_Mx+tz\in M$，
+\[
+\|x-P_Mx\|^2\le \|x-P_Mx-tz\|^2
+=\|x-P_Mx\|^2-2t\operatorname{Re}\langle x-P_Mx,z\rangle+t^2\|z\|^2.
+\]
+这对所有实数 $t$ 成立，只能说明
+\[
+\operatorname{Re}\langle x-P_Mx,z\rangle=0.
+\]
+在复 Hilbert 空间中再将 $z$ 替换为 $iz$，便得虚部也为零，因此
+\[
+\langle x-P_Mx,z\rangle=0,\qquad \forall z\in M.
+\]
+故 $x-P_Mx\in M^\perp$。
+
+唯一性由 $\overline{M}\cap M^\perp=\{0\}$ 推出。若
+\[
+x=y_1+z_1=y_2+z_2,\qquad y_i\in M,\ z_i\in M^\perp,
+\]
+则 $y_1-y_2=z_2-z_1\in M\cap M^\perp$，从而 $y_1=y_2$、$z_1=z_2$。
+\end{proof}
+
+\paragraph{为何投影定理对算法重要}
+
+\begin{remark}
+定理~\ref{thm:orthogonal-projection} 是 Hilbert 空间算法几何的起点。后文的邻近算子、投影梯度法和算子分裂方法，本质上都依赖“最近点存在且可由正交条件刻画”这一结构。若只处在一般 Banach 空间，这种几何就不再自动存在，算法设计也会明显更微妙。
+\end{remark}
+
+\begin{example}[欧氏空间中的正交投影]\label{ex:euclidean-projection}
+设 $H=\mathbb R^n$，$M$ 为某个线性子空间，取一组正交规范基组成矩阵 $Q$，则
+\[
+P_Mx=QQ^\top x.
+\]
+把这个例子放在这里，是为了把定理~\ref{thm:orthogonal-projection} 退回 Boyd 书中最熟悉的矩阵公式：无穷维投影定理并不是新对象，而是欧氏正交投影的真正上位版本。
+\end{example}
+
+\subsection{Hilbert 空间的 Riesz 表示定理}
+
+\begin{theorem}[Hilbert 空间的 Riesz 表示定理]\label{thm:riesz-representation-hilbert}
+设 $H$ 为 Hilbert 空间。则对每个连续线性泛函 $\varphi\in H^\ast$，存在唯一的元素 $y\in H$，使得
+\[
+\varphi(x)=\langle x,y\rangle,\qquad \forall x\in H.
+\]
+并且
+\[
+\|\varphi\|=\|y\|.
+\]
+因此映射
+\[
+J\colon H\to H^\ast,\qquad y\mapsto \langle\cdot,y\rangle
+\]
+是一个等距同构；在复 Hilbert 空间中，它是共轭线性的。
+\end{theorem}
+
+\begin{proof}
+若 $\varphi=0$，取 $y=0$ 即可。现设 $\varphi\neq 0$。则 $\ker\varphi$ 是闭真子空间。由定理~\ref{thm:orthogonal-projection} 应用于 $M=\ker\varphi$，可得存在非零向量 $u\in (\ker\varphi)^\perp$。任取 $x\in H$，将其分解为
+\[
+x=z+\lambda u,\qquad z\in \ker\varphi,\ \lambda\in \mathbb F.
+\]
+因为 $z\in \ker\varphi$，有
+\[
+\varphi(x)=\lambda \varphi(u).
+\]
+另一方面，由 $u\perp z$ 得
+\[
+\lambda=\frac{\langle x,u\rangle}{\|u\|^2}.
+\]
+故
+\[
+\varphi(x)=\frac{\varphi(u)}{\|u\|^2}\langle x,u\rangle.
+\]
+若取
+\[
+y=
+\begin{cases}
+\dfrac{\overline{\varphi(u)}}{\|u\|^2}u, & \text{复 Hilbert 空间},\\[1ex]
+\dfrac{\varphi(u)}{\|u\|^2}u, & \text{实 Hilbert 空间},
+\end{cases}
+\]
+便有 $\varphi(x)=\langle x,y\rangle$ 对所有 $x$ 成立。
+
+唯一性是显然的：若 $\langle x,y_1\rangle=\langle x,y_2\rangle$ 对所有 $x$ 成立，则
+\[
+\langle x,y_1-y_2\rangle=0,\qquad \forall x\in H.
+\]
+令 $x=y_1-y_2$ 即得 $y_1=y_2$。
+
+最后证明范数恒等式。由 Cauchy--Schwarz 不等式，
+\[
+|\varphi(x)|=|\langle x,y\rangle|\le \|x\|\,\|y\|,
+\]
+故 $\|\varphi\|\le \|y\|$。反过来，若 $y\neq 0$，取 $x=y/\|y\|$，则
+\[
+\|\varphi\|\ge |\varphi(x)|=\left|\left\langle \frac{y}{\|y\|},y\right\rangle\right|=\|y\|.
+\]
+若 $y=0$ 则结论平凡。故 $\|\varphi\|=\|y\|$。
+\end{proof}
+
+\paragraph{Riesz 表示与后文伴随算子}
+
+\begin{remark}
+定理~\ref{thm:riesz-representation-hilbert} 的真正作用，是把 Hilbert 空间的对偶重新识别为原空间本身。第 \ref{sec:3-3} 节中的 Hilbert 伴随算子，正是通过这一识别把 Banach 空间中的对偶伴随 $T^\ast\colon Y^\ast\to X^\ast$ 拉回成 $T^\ast\colon H_2\to H_1$。
+\end{remark}
+
+\begin{example}[最小二乘与邻近映射触点]\label{ex:least-squares-hilbert}
+在 Hilbert 空间 $H$ 中，给定闭线性子空间 $M$，最小二乘问题
+\[
+\min_{y\in M}\|x-y\|^2
+\]
+的解就是 $P_Mx$。更一般地，对闭凸集 $C$，最近点映射是后文邻近算子的几何原型。把这个例子放在这里，是为了说明第 9 章与第 10 章算法里的“prox”并不是凭空出现，而是投影定理在更一般凸泛函上的延伸。
+\end{example}
+
+\subsection*{有限维对照}
+
+当 $H=\mathbb R^n$ 时，定义~\ref{def:hilbert-space} 与通常欧氏空间完全一致，定理~\ref{thm:orthogonal-projection} 退化为正交投影矩阵，定理~\ref{thm:riesz-representation-hilbert} 则退化为“每个线性泛函都可写成向量内积”。有限维凸优化中的最小二乘、法方程和正交分解，都只是本节结论在欧氏空间中的特例。
+
+\subsection*{习题（待补）}
+
+\begin{exercise}[投影定理的矩阵版占位]\label{exr:projection-matrix-placeholder}
+补一题：把定理~\ref{thm:orthogonal-projection} 落回 $\mathbb R^n$，证明当 $M=\operatorname{range}(Q)$ 且 $Q$ 的列向量正交规范时，投影算子满足 $P_M=QQ^\top$。
+\end{exercise}
+
+\begin{exercise}[Banach 与 Hilbert 的桥接题占位]\label{exr:banach-hilbert-bridge-placeholder}
+补一题：比较 $\ell^1$、$\ell^2$ 与 $\ell^\infty$ 中最近点问题的行为，说明为什么 Hilbert 空间中的正交几何不能无条件推广到一般 Banach 空间。
+\end{exercise}

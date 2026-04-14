@@ -1,0 +1,177 @@
+\section{算子求根问题}
+
+\label{sec:9-4}
+
+如果说前几节完成的是“把局部最优性语言改写成算子语言”，那么本节要做的就是最后一步：把不同类型的问题统一写成零点问题。之所以这一步重要，是因为一旦把目标表述为
+\[
+0\in Au,
+\]
+最优化、变分不等式、可行性和 KKT 系统都能共享同一套迭代母语。第 \ref{chap:10} 章的前向--后向分裂、Douglas--Rachford 和 ADMM，本质上都只是围绕这种零点表达所设计的不同求解策略。
+
+\subsection{单调包含与最优化}
+
+\begin{definition}[单调包含问题]\label{def:monotone-inclusion-problem}
+设 $H$ 为 Hilbert 空间，$A\colon H\rightrightarrows H$ 为极大单调算子。称问题
+\[
+0\in Au
+\]
+为与 $A$ 相关的\emph{单调包含问题}，其解集记为
+\[
+\operatorname{zer} A:=\{u\in H:0\in Au\}.
+\]
+\end{definition}
+
+\begin{proposition}[最优化问题是单调包含的特例]\label{prop:optimization-as-monotone-inclusion}
+设 $f\colon H\to \mathbb R\cup\{+\infty\}$ 为 proper、凸且下半连续的泛函。则对任意 $\bar x\in H$，
+\[
+\bar x\in \operatorname*{argmin} f
+\quad\Longleftrightarrow\quad
+0\in \partial f(\bar x).
+\]
+因此，凸最小化问题可以统一改写为单调包含
+\[
+0\in \partial f(x).
+\]
+\end{proposition}
+
+\begin{proof}
+这正是第 \ref{sec:5-3} 节命题~\ref{prop:subgradient-optimality} 的内容。若 $\bar x$ 极小化 $f$，则
+\[
+0\in \partial f(\bar x).
+\]
+反过来，若
+\[
+0\in \partial f(\bar x),
+\]
+则次梯度不等式给出
+\[
+f(y)\ge f(\bar x)+\langle 0,y-\bar x\rangle=f(\bar x),\qquad \forall y\in H,
+\]
+故 $\bar x$ 为极小点。
+\end{proof}
+
+\subsection{零点与不动点}
+
+\begin{proposition}[resolvent 不动点与零点等价]\label{prop:resolvent-fixed-point-equivalence}
+设 $A\colon H\rightrightarrows H$ 为极大单调算子，$\lambda>0$。则对任意 $u\in H$，
+\[
+u\in \operatorname{zer} A
+\quad\Longleftrightarrow\quad
+u=J_{\lambda A}(u).
+\]
+\end{proposition}
+
+\begin{proof}
+由定义~\ref{def:resolvent-monotone-operator}，
+\[
+u=J_{\lambda A}(u)
+\quad\Longleftrightarrow\quad
+u-u\in \lambda A u
+\quad\Longleftrightarrow\quad
+0\in A u.
+\]
+这正是 $u\in \operatorname{zer} A$。
+\end{proof}
+
+\begin{proposition}[变分不等式也是单调包含]\label{prop:variational-inequality-as-inclusion}
+设 $C\subset H$ 为非空闭凸集，$B\colon H\to H$ 为单值算子。则下列两条等价：
+\begin{enumerate}
+  \item $\bar x\in C$ 且
+  \[
+  \langle B\bar x,y-\bar x\rangle\ge 0,\qquad \forall y\in C;
+  \]
+  \item
+  \[
+  0\in B\bar x+N_C(\bar x).
+  \]
+\end{enumerate}
+\end{proposition}
+
+\begin{proof}
+由第 \ref{sec:5-4} 节推论~\ref{cor:normal-cone-indicator}，
+\[
+\xi\in N_C(\bar x)
+\quad\Longleftrightarrow\quad
+\langle \xi,y-\bar x\rangle\le 0,\qquad \forall y\in C.
+\]
+因此
+\[
+0\in B\bar x+N_C(\bar x)
+\]
+等价于存在 $\xi\in N_C(\bar x)$ 使 $\xi=-B\bar x$。代回上式，便得到
+\[
+\langle -B\bar x,y-\bar x\rangle\le 0,\qquad \forall y\in C,
+\]
+即
+\[
+\langle B\bar x,y-\bar x\rangle\ge 0,\qquad \forall y\in C.
+\]
+反向推理同理成立。
+\end{proof}
+
+\begin{remark}
+命题~\ref{prop:optimization-as-monotone-inclusion} 与命题~\ref{prop:variational-inequality-as-inclusion} 说明，优化与变分不等式在第 \ref{sec:9-1} 节极大单调语言里并不是两类平行对象。前者对应 $\partial f$，后者对应 $B+N_C$。第 \ref{chap:07} 章的 KKT 系统和第 \ref{sec:7-2} 节抽象标准型，到了本节都可以被看成更大的单调包含系统。
+\end{remark}
+
+\subsection{proximal point 作为统一模板}
+
+\begin{corollary}[proximal point 模板]\label{cor:proximal-point-template}
+设 $A\colon H\rightrightarrows H$ 为极大单调算子，$\lambda_k>0$。则求解单调包含
+\[
+0\in Au
+\]
+的一个基本迭代模板是
+\[
+u_{k+1}=J_{\lambda_k A}(u_k).
+\]
+若特别地 $A=\partial f$，则由命题~\ref{prop:prox-resolvent-subdifferential}，
+\[
+u_{k+1}=\operatorname{prox}_{\lambda_k f}(u_k).
+\]
+\end{corollary}
+
+\begin{proof}
+由命题~\ref{prop:resolvent-fixed-point-equivalence}，单调包含的解恰好是 resolvent 的不动点。因此最自然的迭代，就是不断应用 $J_{\lambda_k A}$ 逼近其不动点。若 $A=\partial f$，则第一个式子立刻退化为 prox 迭代。
+\end{proof}
+
+\subsection{典型例子}
+
+\begin{example}[极小化问题的零点表达]
+对任意 proper、凸且下半连续的泛函 $f$，
+\[
+\min_x f(x)
+\qquad\Longleftrightarrow\qquad
+0\in \partial f(x).
+\]
+把这个例子放在这里，是为了把“求极小值”彻底改写成“求零点”，从而让第 \ref{sec:10-1} 节的前向--后向分裂不再依赖特定目标函数形式。
+\end{example}
+
+\begin{example}[线性方程组的固定点坍缩]
+若 $M\colon H\to H$ 为可逆线性算子，则解方程
+\[
+Mx=b
+\]
+等价于求零点
+\[
+0\in (Mx-b).
+\]
+再把该算子写成 $A x:=Mx-b$，便可把线性代数中的固定点迭代理解为单调包含框架的有限维坍缩。把这个例子放在这里，是为了说明“算子求根”并不是新奇对象，而是把熟悉的方程论纳入统一语法。
+\end{example}
+
+\begin{example}[约束平衡与 KKT 系统]
+对第 \ref{sec:7-4} 节定义~\ref{def:kkt-cone-system} 的广义 KKT 条件，可将原变量与乘子并在一起，构造一个块算子，使整个原--对偶系统写成单调包含。把这个例子放在这里，是为了把第 \ref{sec:7-4} 节推论~\ref{cor:kkt-via-fenchel-subdifferential} 与第 \ref{chap:10} 章的原--对偶算法直接接起来：后文分裂的对象不是“某个优化问题”，而是一个更大的零点系统。
+\end{example}
+
+\subsection*{有限维对照}
+
+Boyd 在算法章节里常把固定点、prox 更新和原--对偶步骤分开介绍；从本节角度看，它们都只是“求某个单调算子零点”的不同表面形式。有限维里，单调包含往往被压缩成矩阵等式、投影步骤或互补松弛方程，因此看起来像几套彼此独立的方法。本节的作用，是把这些方法重新挂回同一个接口上，好让第 \ref{sec:10-1} 节和第 \ref{chap:10} 章的所有分裂算法都能被视作同一问题族的不同求解器。
+
+\subsection*{习题（待补）}
+
+\begin{exercise}[优化到零点占位]
+补一题：把一个具体凸最小化问题改写为 $0\in \partial f(x)$，并验证命题~\ref{prop:resolvent-fixed-point-equivalence} 在该例中的不动点解释。
+\end{exercise}
+
+\begin{exercise}[变分不等式桥接题占位]
+补一题：对一个闭凸集上的变分不等式，证明它等价于命题~\ref{prop:variational-inequality-as-inclusion} 给出的单调包含，并说明该表达如何通向第 \ref{sec:10-1} 节的算法接口。
+\end{exercise}

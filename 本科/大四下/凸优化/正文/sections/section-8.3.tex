@@ -1,0 +1,161 @@
+\section{SOCP 与 SDP}
+
+\label{sec:8-3}
+
+如果说上一节把一般锥规划退回到了 LP/QP，那么本节要展示的则是最具代表性的两个有限维锥：二阶锥和半正定锥。它们的重要性不只在于应用面广，更在于它们恰好把第 \ref{sec:7-1} 节的广义不等式语言和第 \ref{sec:3-4} 节的谱论语言接到了一起。SOCP 强调“锥”的几何自对偶性，SDP 则强调“正性”与“谱分解”的矩阵化。
+
+\subsection{二阶锥与半正定锥}
+
+\begin{definition}[二阶锥]\label{def:second-order-cone}
+在 $\mathbb R\times \mathbb R^{m-1}$ 中，定义
+\[
+\mathcal Q_m:=\{(t,z):t\ge \|z\|_2\}.
+\]
+该集合称为 $m$ 维\emph{二阶锥}，也称 Lorentz 锥。
+\end{definition}
+
+\begin{definition}[半正定锥]\label{def:positive-semidefinite-cone}
+记 $\mathbb S^n$ 为 $n\times n$ 实对称矩阵空间。定义
+\[
+\mathbb S_+^n:=\{X\in \mathbb S^n:x^\top Xx\ge 0,\ \forall x\in \mathbb R^n\}.
+\]
+称其为\emph{半正定锥}。
+\end{definition}
+
+\begin{proposition}[二阶锥的自对偶性]\label{prop:soc-self-dual}
+在标准 Euclidean 内积下，二阶锥满足
+\[
+\mathcal Q_m^\ast=\mathcal Q_m.
+\]
+\end{proposition}
+
+\begin{proof}
+设 $(s,y)\in \mathcal Q_m$。对任意 $(t,z)\in \mathcal Q_m$，由 Cauchy--Schwarz 不等式，
+\[
+s t+y^\top z\ge st-\|y\|_2\|z\|_2\ge st-\|y\|_2 t=t(s-\|y\|_2)\ge 0,
+\]
+故 $\mathcal Q_m\subset \mathcal Q_m^\ast$。
+
+反之，若 $(s,y)\in \mathcal Q_m^\ast$，则对所有 $(t,z)\in \mathcal Q_m$ 有
+\[
+st+y^\top z\ge 0.
+\]
+特别取 $t=\|z\|_2$ 且令 $z=-\|z\|_2\,y/\|y\|_2$（当 $y\neq 0$ 时），便得
+\[
+\|z\|_2(s-\|y\|_2)\ge 0.
+\]
+由 $\|z\|_2>0$ 任意，可知 $s\ge \|y\|_2$，故 $(s,y)\in \mathcal Q_m$。于是 $\mathcal Q_m^\ast=\mathcal Q_m$。
+\end{proof}
+
+\begin{proposition}[迹内积与半正定锥的对偶配对]\label{prop:trace-inner-product-duality}
+在 $\mathbb S^n$ 上定义迹内积
+\[
+\langle X,Y\rangle:=\operatorname{tr}(XY).
+\]
+则对任意 $X,Y\in \mathbb S_+^n$，
+\[
+\langle X,Y\rangle\ge 0,
+\]
+并且
+\[
+(\mathbb S_+^n)^\ast=\mathbb S_+^n
+\]
+其中对偶是相对于迹内积而言。
+\end{proposition}
+
+\begin{proof}
+若 $X,Y\succeq 0$，则存在对称平方根 $Y^{1/2}$，从而
+\[
+\operatorname{tr}(XY)=\operatorname{tr}(Y^{1/2}XY^{1/2})\ge 0
+\]
+因为矩阵 $Y^{1/2}XY^{1/2}$ 仍半正定，其特征值非负，迹自然非负。
+
+反之，若某个对称矩阵 $Z$ 满足
+\[
+\operatorname{tr}(ZY)\ge 0,\qquad \forall Y\succeq 0,
+\]
+则特别对秩一矩阵 $Y=uu^\top\succeq 0$ 有
+\[
+u^\top Zu=\operatorname{tr}(Zuu^\top)\ge 0,\qquad \forall u\in \mathbb R^n.
+\]
+故 $Z\succeq 0$。这就证明了半正定锥对迹内积是自对偶的，而迹内积正是第 \ref{sec:7-1} 节定义~\ref{def:dual-cone} 在矩阵空间中的具体写法。
+\end{proof}
+
+\subsection{谱语言在矩阵上的坍缩}
+
+\begin{theorem}[对称矩阵的谱分解坍缩]\label{thm:spectral-collapse-symmetric-matrix}
+设 $X\in \mathbb S^n$。则存在正交矩阵 $Q$ 与实对角矩阵
+\[
+\Lambda=\operatorname{diag}(\lambda_1,\dots,\lambda_n)
+\]
+使
+\[
+X=Q\Lambda Q^\top.
+\]
+特别地，
+\[
+X\succeq 0
+\quad\Longleftrightarrow\quad
+\lambda_i\ge 0,\ i=1,\dots,n.
+\]
+\end{theorem}
+
+\begin{proof}
+这正是第 \ref{sec:3-4} 节定理~\ref{thm:compact-selfadjoint-spectral} 在有限维 Hilbert 空间 $\mathbb R^n$ 上的坍缩。有限维下所有线性算子都是紧算子，因此任意自伴算子都可正交对角化。对 $X\in \mathbb S^n$ 应用该谱定理，即得
+\[
+X=Q\Lambda Q^\top.
+\]
+再注意到对任意 $u\in \mathbb R^n$，令 $v=Q^\top u$，则
+\[
+u^\top Xu=v^\top \Lambda v=\sum_{i=1}^n \lambda_i v_i^2.
+\]
+因此 $u^\top Xu\ge 0$ 对所有 $u$ 成立，当且仅当每个 $\lambda_i\ge 0$。
+\end{proof}
+
+\begin{remark}
+定理~\ref{thm:spectral-collapse-symmetric-matrix} 解释了 SDP 为什么同时属于锥优化和谱论两条主线：矩阵正性既可以理解为“落在半正定锥中”，也可以理解为“所有特征值非负”。这两种说法在有限维中完全等价，而在无穷维里则必须借助第 \ref{sec:3-4} 节的紧自伴谱定理才能恢复。
+\end{remark}
+
+\subsection{典型例子}
+
+\begin{example}[二阶锥几何]
+二阶锥约束
+\[
+\|Fx+g\|_2\le a^\top x+b
+\]
+可直接写成
+\[
+(a^\top x+b,\,Fx+g)\in \mathcal Q_m.
+\]
+把这个例子放在这里，是为了说明 SOCP 并不是“带范数的不等式技巧”，而是第 \ref{sec:7-1} 节广义不等式语言在一个自对偶锥上的直接落地。
+\end{example}
+
+\begin{example}[对称矩阵特征值分解]
+对任意 $X\in \mathbb S^n$，定理~\ref{thm:spectral-collapse-symmetric-matrix} 给出的
+\[
+X=Q\Lambda Q^\top
+\]
+就是有限维最熟悉的特征值分解。把这个例子放在这里，是为了把 Boyd 关于 SDP 的几何图像、矩阵迹内积和半正定约束统一到一个谱分解视角中。
+\end{example}
+
+\begin{example}[LMI 与协方差估计]
+鲁棒控制和协方差估计中常见约束是
+\[
+A_0+\sum_{i=1}^n x_i A_i\succeq 0,
+\]
+这是一类线性矩阵不等式。把这个例子放在这里，是为了给工程读者一个直接触点：LMI 只是半正定锥约束的 affine 切片，因此它们天然属于第 \ref{sec:7-1} 节的锥规划框架。
+\end{example}
+
+\subsection*{有限维对照}
+
+Boyd 书中 SOCP 和 SDP 往往被当成“高级有限维模型”单独介绍，但从本书视角看，它们不过是两件事情的交叉：第 \ref{sec:7-1} 节的锥语言，以及第 \ref{sec:3-4} 节的谱论语言。有限维之所以让这些模型显得格外整洁，是因为对偶锥、自伴正性和特征值分解都能同时写成矩阵公式。
+
+\subsection*{习题（待补）}
+
+\begin{exercise}[SOCP 自对偶占位]
+补一题：直接验证命题~\ref{prop:soc-self-dual}，并把二阶锥约束改写为一个广义不等式。
+\end{exercise}
+
+\begin{exercise}[SDP 谱分解桥接题占位]
+补一题：利用定理~\ref{thm:spectral-collapse-symmetric-matrix} 证明矩阵半正定等价于所有特征值非负，并说明这与命题~\ref{prop:trace-inner-product-duality} 的关系。
+\end{exercise}

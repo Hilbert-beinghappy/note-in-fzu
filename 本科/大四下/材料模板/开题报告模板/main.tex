@@ -1,0 +1,155 @@
+% 福州大学本科生毕业设计（论文）开题报告
+% 填写入口：
+% 1. 先修改“基本信息”中的姓名、学号、专业、题目。
+% 2. 再按 1 到 7 项替换正文提示文本，写入你的开题报告内容。
+% 3. “指导教师评语”和下方签字日期通常由教师填写。
+% 编译方式：latexmk -xelatex -shell-escape -interaction=nonstopmode -halt-on-error main.tex
+
+\documentclass[12pt,a4paper]{ctexart}
+\usepackage{geometry}
+\usepackage{longtable}
+\input{fzu_form_common.tex}
+
+\geometry{top=2.1cm,bottom=2.05cm,left=2.35cm,right=2.35cm}
+
+% ===== 基本信息 =====
+\newcommand{\姓名}{}
+\newcommand{\学号}{}
+\newcommand{\专业}{}
+\newcommand{\题目}{}
+\newcommand{\指导教师评语}{此处由指导教师填写对开题报告的评语。}
+\newcommand{\签字年}{}
+\newcommand{\签字月}{}
+\newcommand{\签字日}{}
+% ====================
+
+\newlength{\ProposalWidth}
+\newlength{\ProposalInnerWidth}
+\setlength{\ProposalWidth}{14.00cm}
+\setlength{\ProposalInnerWidth}{13.54cm}
+\setlength{\LTleft}{0pt}
+\setlength{\LTright}{0pt}
+\setlength{\LTpre}{0pt}
+\setlength{\LTpost}{0pt}
+
+\newcommand{\ProposalTitleRow}[1]{%
+  \hspace*{0.23cm}%
+  \begin{minipage}[t]{\ProposalInnerWidth}%
+    \setlength{\parindent}{0pt}%
+    \raggedright
+    \vspace{0.12cm}%
+    {\zihao{5}\bfseries #1}%
+    \vspace{0.05cm}%
+  \end{minipage}\tabularnewline
+}
+
+\newcommand{\ProposalTextRow}[1]{%
+  \hspace*{0.23cm}%
+  \begin{minipage}[t]{\ProposalInnerWidth}%
+    \setlength{\parindent}{2em}%
+    \raggedright
+    \vspace{0.06cm}%
+    {\zihao{5}#1}%
+    \vspace{0.08cm}%
+  \end{minipage}\tabularnewline
+}
+
+\newcommand{\ProposalNoteRow}[1]{%
+  \hspace*{0.23cm}%
+  \begin{minipage}[t]{\ProposalInnerWidth}%
+    \setlength{\parindent}{0pt}%
+    \raggedright
+    \vspace{0.10cm}%
+    {\zihao{5}\bfseries #1}%
+    \vspace{0.12cm}%
+  \end{minipage}\tabularnewline
+}
+
+\newcommand{\ProposalIntroRow}{%
+  \hspace*{0.18cm}%
+  \begin{minipage}[t]{13.64cm}%
+    \setlength{\parindent}{0pt}%
+    \raggedright
+    \vspace{0.12cm}%
+    {\zihao{5}开题报告应包括下列主要内容：}\par
+    \vspace{0.08cm}
+    {\zihao{5}\hspace*{1.8em}1．课题来源及研究的目的和意义；2．国内外在该方向的研究现状及分析；3．主要研究内容；4．研究方案及进度安排，预期达到的目标；5．为完成课题已具备和所需的条件；6．预计研究过程中可能遇到的困难和问题，以及解决的措施；7．主要参考文献。}\par
+    \vspace{0.14cm}%
+  \end{minipage}\tabularnewline
+}
+
+\begin{document}
+
+\begin{center}
+  \vspace*{0.05cm}
+  {\zihao{3}\bfseries 福州大学本科生毕业设计（论文）开题报告}
+\end{center}
+
+\vspace{0.18cm}
+\noindent
+\begin{longtable}{|p{\ProposalWidth}|}
+\hline
+\begin{tabular}{>{\centering\arraybackslash}p{1.08cm}|p{1.45cm}|>{\centering\arraybackslash}p{1.08cm}|p{1.88cm}|>{\centering\arraybackslash}p{1.18cm}|p{7.33cm}}
+\hline
+\rule{0pt}{0.92cm}{\zihao{5}\bfseries 姓名} & \zihao{5}\姓名 &
+\zihao{5}\bfseries 学号 & \zihao{5}\学号 &
+\zihao{5}\bfseries 专业 & \zihao{5}\专业 \\
+\hline
+\multicolumn{2}{>{\centering\arraybackslash}p{2.53cm}|}{\rule{0pt}{0.92cm}\zihao{5}\bfseries 毕业设计（论文）题目} &
+\multicolumn{4}{p{11.47cm}}{\zihao{5}\hspace{0.3em}\题目} \\
+\hline
+\end{tabular}%
+\tabularnewline
+\ProposalIntroRow
+\hline
+\endfirsthead
+\hline
+\endhead
+\hline
+\endfoot
+\hline
+\endlastfoot
+\ProposalTitleRow{1．课题来源及研究的目的和意义}
+\ProposalTextRow{此处填写课题来源、研究背景、现实意义与学术价值，说明为什么要做这个题目，以及它要解决什么问题。}
+\ProposalTitleRow{2．国内外在该方向的研究现状及分析}
+\ProposalTextRow{此处梳理国内外相关研究进展，可概括代表性方法、已有成果、当前不足，以及本文准备切入的研究位置。}
+\ProposalTitleRow{3．主要研究内容}
+\ProposalTextRow{此处概括论文将完成的主要工作，建议分点说明数据准备、方法设计、系统实现、实验验证或其他核心任务。}
+\ProposalTitleRow{4．研究方案及进度安排，预期达到的目标}
+\ProposalTextRow{此处填写研究方案、技术路线、阶段进度安排和预期目标。建议写清时间节点、阶段成果和最终交付物。}
+\ProposalTitleRow{5．为完成课题已具备和所需的条件}
+\ProposalTextRow{此处说明目前已经具备的条件，例如文献基础、数据条件、实验环境、开发基础、指导支持，以及后续仍需补充的资源。}
+\ProposalTitleRow{6．预计研究过程中可能遇到的困难和问题，以及解决的措施}
+\ProposalTextRow{此处填写可能遇到的技术难点、数据问题、进度风险或实验风险，并对应给出拟采取的解决措施。}
+\ProposalTitleRow{7．主要参考文献}
+\ProposalTextRow{此处填写开题报告参考文献。建议列出与课题直接相关的基础文献、代表性方法文献和应用文献，并按学校要求统一格式。}
+\ProposalNoteRow{（不够写可另加页）}
+\end{longtable}
+
+\vspace{0.18cm}
+\noindent
+\begin{tabular}{|p{\ProposalWidth}|}
+\hline
+\hspace*{0.23cm}\begin{minipage}[t][5.15cm][t]{\ProposalInnerWidth}
+\setlength{\parindent}{0pt}%
+\raggedright
+\vspace{0.12cm}%
+{\zihao{5}指导教师评语：}\par
+\vspace{0.14cm}
+{\zihao{5}\指导教师评语}\par
+\vfill
+\end{minipage}\tabularnewline
+\hline
+\end{tabular}
+
+\vspace{0.26cm}
+\noindent
+\begin{tabular}{>{\centering\arraybackslash}p{2.35cm}p{3.25cm}>{\centering\arraybackslash}p{1.95cm}p{4.75cm}}
+\zihao{5}\bfseries 指导教师签字 & & \zihao{5}\bfseries 签字时间 &
+\zihao{5}\签字年\hspace{0.8em}年\hspace{0.8em}\签字月\hspace{0.8em}月\hspace{0.8em}\签字日\hspace{0.8em}日
+\end{tabular}
+
+\vspace{0.16cm}
+{\zihao{5}注：开题报告用A4纸打印装订在毕业设计（论文）任务书后，学生可根据开题报告的长度加页。}
+
+\end{document}

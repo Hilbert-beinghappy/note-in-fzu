@@ -1,0 +1,112 @@
+\section{Baire 空间与 Lusin 空间}
+
+\label{sec:1-4}
+
+Polish 空间已经足以覆盖很多优化与概率问题，但第 \ref{chap:00} 章中的最后一个问题还没有完全回答：为什么后文有时还需要比 Polish 更宽的可测空间语言？原因在于，真实建模里出现的状态空间并不总是直接以“可分完备度量空间”出现。它们更常见的面貌，是某个良好空间经过连续映射、参数化或编码之后得到的像。
+
+因此，本节并不想把描述集合论再铺成一整门课程，而是只建立一条对后文真正有用的层级：
+\[
+\text{Polish} \Longrightarrow \text{Lusin} \Longrightarrow \text{Suslin}.
+\]
+这条层级的作用，是在尽量保留 Polish 空间可测正则性的同时，允许状态空间经过更现实的连续像变形。后文讨论随机控制、可测选择和参数化策略空间时，真正需要的往往正是这种“比 Polish 更宽，但还没有宽到失控”的环境。
+
+\subsection{标准 Baire 空间的角色}
+
+\begin{definition}[标准 Baire 空间]\label{def:standard-baire-space}
+记
+\[
+\mathcal N:=\mathbb N^{\mathbb N}
+\]
+并赋予其乘积拓扑，则称 $\mathcal N$ 为\emph{标准 Baire 空间}。由例~\ref{ex:baire-space}，它是一个 Polish 空间。
+\end{definition}
+
+标准 Baire 空间的重要性在于：它提供了一个统一的可数编码平台。后文若要把控制策略、可测选择或参数族写成“由一串整数决定的对象”，实质上就是把问题转移到 $\mathcal N$ 上。
+
+\begin{proposition}[标准 Baire 空间的满射性]\label{prop:baire-space-surjection}
+每个非空 Polish 空间都是标准 Baire 空间的连续像。
+\end{proposition}
+
+\begin{proof}
+证明可由“逐层缩小的可数开覆盖”完成：先对给定 Polish 空间 $X$ 取一族直径趋于零的可数开覆盖，再沿有限自然数列递归地选取嵌套开集 $U_s$，使得
+\[
+U_s=\bigcup_{n\ge1}U_{s^\frown n},\qquad \operatorname{diam}(U_s)\to 0 \text{ 当 }|s|\to\infty.
+\]
+对每个 $\alpha=(\alpha_1,\alpha_2,\dots)\in\mathbb N^{\mathbb N}$，完备性保证
+\[
+\bigcap_{k\ge1}\overline{U_{\alpha|k}}
+\]
+恰含一点，据此定义映射 $\pi(\alpha)$。直径控制给出唯一性与连续性，覆盖性则保证满射。这里不展开全部技术细节，因为后文只需要这一结论作为参数化工具，而不需要其完整构造。
+\end{proof}
+
+\subsection{Suslin 空间作为过渡层}
+
+\begin{definition}[Suslin 空间]\label{def:suslin-space}
+拓扑空间 $X$ 称为\emph{Suslin 空间}，若存在 Polish 空间 $P$ 及连续满射 $f\colon P\to X$。
+\end{definition}
+
+Suslin 空间的关键词是“连续像”。这一定义非常宽松，却保留了大量对测度论有用的正则性；尤其是连续像这一操作，在建模时远比“是某个 Banach 空间的闭子集”更常见。
+
+\begin{definition}[Lusin 空间]\label{def:lusin-space}
+Hausdorff 空间 $X$ 称为\emph{Lusin 空间}，若存在 Polish 空间 $P$ 及连续双射 $f\colon P\to X$。
+\end{definition}
+
+Lusin 空间介于 Polish 与 Suslin 之间。与 Suslin 空间相比，它保留了“来自 Polish 空间的点级编码几乎没有丢失”的特征；与 Polish 空间相比，它允许拓扑结构经过较温和的变形。
+
+\begin{proposition}[层级关系：Polish、Lusin 与 Suslin]\label{prop:polish-lusin-suslin}
+任意 Polish 空间都是 Lusin 空间，任意 Lusin 空间都是 Suslin 空间。
+\end{proposition}
+
+\begin{proof}
+若 $X$ 是 Polish 空间，则取恒等映射 $\mathrm{id}_X\colon X\to X$，可见 $X$ 满足定义~\ref{def:lusin-space}，故为 Lusin 空间。若 $X$ 是 Lusin 空间，则按定义存在 Polish 空间 $P$ 与连续双射 $f\colon P\to X$。双射当然是满射，因此 $X$ 也满足定义~\ref{def:suslin-space}，故为 Suslin 空间。
+\end{proof}
+
+\begin{proposition}[Suslin 与 Lusin 空间的基本保持性]\label{prop:suslin-lusin-stability}
+\begin{enumerate}
+  \item Suslin 空间的连续像仍为 Suslin 空间。
+  \item 若 $X$ 是 Lusin 空间，则 $X$ 的任意开子空间、闭子空间及 $G_\delta$ 子空间仍是 Lusin 空间。
+\end{enumerate}
+\end{proposition}
+
+\begin{proof}
+对 (1)，设 $X$ 是 Suslin 空间，$f\colon P\to X$ 为 Polish 空间 $P$ 上的连续满射，且 $g\colon X\to Y$ 连续。则 $g\circ f\colon P\to Y$ 连续且满射到 $g(X)$，故 $g(X)$ 为 Suslin 空间。
+
+对 (2)，设 $X$ 是 Lusin 空间，取 Polish 空间 $P$ 与连续双射 $f\colon P\to X$。若 $A\subseteq X$ 为开集，则 $f^{-1}(A)$ 在 $P$ 中是开集，因此由推论~\ref{cor:open-polish} 是 Polish 空间；若 $A$ 为闭集，则 $f^{-1}(A)$ 在度量空间 $P$ 中闭，而闭集总是 $G_\delta$ 集，因此由定理~\ref{thm:gdelta-polish} 仍是 Polish 空间；若 $A$ 本身就是 $G_\delta$ 集，则 $f^{-1}(A)$ 同样是 $G_\delta$ 集，仍由定理~\ref{thm:gdelta-polish} 得到 Polish 性。将 $f$ 限制到 $f^{-1}(A)$，得到连续双射
+\[
+f|_{f^{-1}(A)}\colon f^{-1}(A)\to A.
+\]
+故 $A$ 为 Lusin 空间。
+\end{proof}
+
+\paragraph{关于 Suslin 定理与 Lusin 分离定理}
+
+\begin{remark}
+完整的描述集合论会进一步研究解析集、共解析集以及 Borel 结构的判别，例如著名的 Suslin 定理和 Lusin 分离定理。对本书而言，真正需要的是前述层级关系与保持性：它们已经足以支撑第 2 章的拓扑测度论、第 6 章以后的可测对偶构造，以及第 11 章中的策略空间建模。
+\end{remark}
+
+于是，第 \ref{chap:01} 章到这里也就闭环了。第 \ref{sec:1-1} 节告诉我们极限不能只靠序列，第 \ref{sec:1-2} 节告诉我们存在性需要完备性与 Baire 方法，第 \ref{sec:1-3} 节给出 Polish 这一默认舞台，而本节则说明为什么还要允许 Polish 的连续像。下一章进入测度论与随机空间时，这些工具就不再像抽象预备，而会直接变成优化对象的合法宿主。
+
+\begin{example}[最小抽象例子：连续像出现的状态空间]\label{ex:continuous-image-space}
+设 $P$ 为 Polish 空间，$f\colon P\to X$ 为连续满射。即便 $X$ 不能自然嵌入某个线性空间，只要它仍是这样一个连续像，我们就可以把可测结构和逼近论证先放在 $P$ 上做，再通过 $f$ 推到 $X$ 上。把这个例子放在这里，是为了说明为什么定义~\ref{def:suslin-space} 对随机控制和可测选择如此关键。
+\end{example}
+
+\begin{example}[有限维坍缩：紧致度量空间与欧氏紧集]\label{ex:compact-metric-lusin}
+每个紧致度量空间都是 Polish 空间，因此由命题~\ref{prop:polish-lusin-suslin} 自动也是 Lusin 与 Suslin 空间。特别地，$\mathbb R^n$ 的任意紧子集都处在这一层级中。把这个例子放在这里，是为了说明有限维优化里出现的紧可行域，完全不会触发新的描述集合论困难。
+\end{example}
+
+\begin{example}[应用触点：策略与观测的可数编码]\label{ex:policy-parameterization}
+在离散时间随机控制中，策略往往由一串历史观测映射决定。若把所有可行观测轨道组织成 Polish 空间，再把策略参数写成标准 Baire 空间上的编码，就可借助命题~\ref{prop:baire-space-surjection} 和命题~\ref{prop:suslin-lusin-stability}，把策略集视为 Suslin 或 Lusin 空间。把这个例子放在这里，是为了给后文第 11 章中的可测参数化问题准备舞台。
+\end{example}
+
+\subsection*{有限维对照}
+
+在 Boyd 的有限维语境中，状态空间通常就是 $\mathbb R^n$、其开子集或闭子集，因此完全没有必要再区分定义~\ref{def:polish-space}、定义~\ref{def:lusin-space} 和定义~\ref{def:suslin-space}。但一旦模型涉及连续像、商空间、策略集或路径空间，这三层结构就会开始分家，而命题~\ref{prop:polish-lusin-suslin} 提供了后文回链时最常用的导航。
+
+\subsection*{习题（待补）}
+
+\begin{exercise}[标准 Baire 空间占位]\label{exr:baire-space-placeholder}
+补一题：要求将某个具体 Polish 空间写成标准 Baire 空间的连续像，并说明这一表示在可测参数化中的意义。
+\end{exercise}
+
+\begin{exercise}[Lusin 子空间占位]\label{exr:lusin-placeholder}
+补一题：设 $X$ 为 Lusin 空间，证明其某个给定的 $G_\delta$ 子集仍为 Lusin 空间，并明确指出定理~\ref{thm:gdelta-polish} 在证明中的使用位置。
+\end{exercise}

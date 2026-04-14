@@ -1,0 +1,145 @@
+\documentclass[11pt,a4paper,UTF8,openany]{ctexbook}
+\usepackage[textwidth=17cm,top=2.3cm,bottom=2cm]{geometry}
+\usepackage{amsmath}
+\usepackage{amsthm}
+\usepackage{amsfonts}
+\usepackage{amssymb}
+\usepackage{mathrsfs}
+\usepackage{tikz}
+\usepackage{xcolor}
+\usepackage[most]{tcolorbox}
+\usepackage{graphicx}
+\usepackage{fontspec}
+\usepackage{enumitem}
+\usepackage{multicol}
+\usepackage{tocloft}
+\usepackage[explicit]{titlesec}
+\usepackage{atbegshi}
+\usepackage{changepage}
+\usepackage{background}
+\usepackage{setspace}
+\usepackage{adjustbox}
+\usepackage{calc}
+\usepackage{array}
+\usepackage{booktabs}
+\usepackage{newunicodechar}
+\usepackage{subcaption}
+\usepackage{tabularx}
+\usepackage{hyperref}
+\usetikzlibrary{calc}
+\tcbuselibrary{skins, theorems}
+%加载宏包===============================================
+
+
+
+%颜色定义==============================================
+\definecolor{lv}{RGB}{131, 187, 170}   %绿色
+\definecolor{huang}{RGB}{227, 164, 60} %黄色
+\definecolor{hong}{RGB}{149, 44, 38}   %红色
+
+\definecolor{qiancheng}{RGB}{227, 101, 53} %橙色
+\definecolor{heise}{RGB}{0,0,0}		   %黑色
+\definecolor{mibai}{RGB}{244, 237, 218}    %米白色
+\definecolor{qianbai}{RGB}{248, 243, 231}  %浅白色
+
+\definecolor{definition}{RGB}{245,164,0}
+\definecolor{theorem}{RGB}{222,4,20}
+\definecolor{proposition}{RGB}{177,0,129}
+\definecolor{corollary}{RGB}{133,194,72}
+\definecolor{lemma}{RGB}{233,93,157}
+\definecolor{example}{RGB}{0,153,216}
+
+
+
+%字体自定义=========================================================
+\newcommand{\AvantGarde}{%
+	\fontspec[
+	Path = ./素材库/, 
+	Extension = .otf, 
+	UprightFont = *   
+	]{ITC Avant Garde Gothic Bold}%
+}
+
+\newcommand{\SiYuan}{%
+	\fontspec[
+	Path = ./素材库/,
+	Extension = .otf,  
+	UprightFont = *    
+	]{SiYuan}%
+}
+
+
+
+% 标题格式=======================================================================
+\titleformat{\part}[display]{
+	\centering
+	\fontsize{28pt}{34pt}\selectfont\SiYuan\XeTeXinterchartokenstate=0
+	\color{qiancheng}
+}{\fontsize{16pt}{18pt}\selectfont\AvantGarde PART \thepart}{0.8em}{#1}
+
+\titleformat{\chapter}[display]{
+	\centering
+	\fontsize{24pt}{30pt}\selectfont\SiYuan\XeTeXinterchartokenstate=0
+	\color{qiancheng}
+}{\fontsize{14pt}{18pt}\selectfont\AvantGarde CHAPTER \thechapter}{0.8em}{#1}
+
+\titleformat{\section}{
+	\centering
+	\fontsize{22pt}{26pt}\selectfont\SiYuan\XeTeXinterchartokenstate=0
+	\color{qiancheng}
+}{}{0pt}{#1}
+
+\titleformat{\subsection}{
+	\fontsize{18pt}{22pt}\selectfont\SiYuan\XeTeXinterchartokenstate=0
+	\color{qiancheng}
+}{}{0pt}{#1}
+
+\titlespacing*{\part}{0em}{1.2em}{1.5em}
+\titlespacing*{\chapter}{0em}{1.2em}{1.2em}
+\titlespacing*{\section}{0em}{1.5em plus 1em minus .2em}{1em}
+\titlespacing*{\subsection}{0em}{1em plus 1em minus .2em}{0.5em}
+
+\renewcommand{\chaptermark}[1]{\markboth{}{}}
+\renewcommand{\sectionmark}[1]{\markright{}}
+\newunicodechar{σ}{\ensuremath{\sigma}}
+
+% 4. 页眉页脚设置
+\AtBeginShipout{%
+	\AtBeginShipoutAddToBox{%
+		\begin{tikzpicture}[remember picture, overlay]
+			\node[    %左页眉设置
+			anchor=north west,
+			font=\fontsize{20pt}{12pt}\bfseries\SiYuan,
+			text=mibai,
+			inner sep=10pt
+			] at ($(current page.north west) + (30pt, 0pt)$) {
+				{\XeTeXinterchartokenstate=0 \leftmark} 
+			};
+			\node[	   %右页眉设置
+			anchor=north east,
+			font=\fontsize{20pt}{12pt}\bfseries\SiYuan,
+			text=mibai,
+			inner sep=10pt
+			] at ($(current page.north east)+(-5pt,0pt)$) {
+				{\XeTeXinterchartokenstate=0 \rightmark} 
+			};
+			\node[	    %页码设置
+			anchor=south west,
+			font=\fontsize{12pt}{12pt}\bfseries\AvantGarde,
+			text=mibai,
+			align=center,
+			minimum width=60pt,
+			minimum height=20pt
+			] at ($(current page.south west) + (268.5pt, 20pt)$) {
+				\thepage
+			};
+		\end{tikzpicture}%
+	}%
+}
+
+
+
+%正文区格式设置=============================================================================
+\setstretch{1.5}
+\parindent=2em   
+\parskip=0pt

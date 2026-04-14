@@ -1,0 +1,44 @@
+% !TeX program = xelatex
+% !BIB program = biber
+% 填写入口：
+% 1. 封面信息在 sections/frontcover.tex
+% 2. 中英文摘要与关键词在 sections/00_abstract.tex
+% 3. 正文章节在 sections/01_intro.tex 到 sections/06_conclusion.tex
+% 4. 致谢在 sections/acknowledgements.tex，参考文献在 bib/note.bib
+\documentclass[oneside]{style/fzuthesis} % 双面模式请将 oneside 改为 twoside
+\usepackage{style/fzuthesis}
+\usepackage{graphicx}
+\usetikzlibrary{positioning}
+
+\begin{document}
+
+\input{sections/frontcover.tex}
+\cleardoublepage
+
+\pagestyle{firststyle}
+\input{sections/00_abstract.tex}
+
+\clearpage
+\tableofcontents
+\cleardoublepage
+
+\pagestyle{mainstyle}
+\input{sections/01_intro}
+\clearpage
+\input{sections/02_math}
+\clearpage
+\input{sections/03_reference}
+\clearpage
+\input{sections/04_float}
+\clearpage
+\input{sections/05_system}
+\clearpage
+\input{sections/06_conclusion}
+\clearpage
+
+\printbibliography[heading=fzubib,title=参考文献]
+
+\clearpage
+\input{sections/acknowledgements}
+
+\end{document}

@@ -1,0 +1,216 @@
+\section{多塔模型与无限维特征匹配}
+
+\label{sec:12-3}
+
+推荐与检索系统中的双塔、 多塔模型通常以工程术语出现：用户塔、物品塔、内积打分、负样本、对比学习。若直接沿着这条叙事线展开，很容易把关键数学结构埋进网络细节里。本节的做法是先把匹配问题写成 Hilbert 空间中的配对风险，再说明当我们采用核化特征、固定编码器或 lifted convex surrogate 时，这些工程对象如何进入第 \ref{chap:06} 章的对偶和第 \ref{chap:07} 章的 KKT 语言。
+
+\subsection{双塔表示与配对风险}
+
+\begin{definition}[双塔嵌入模型]\label{def:two-tower-embedding-model}
+设 $\mathcal X,\mathcal Y$ 为两类对象的样本空间，$\mathcal H_X,\mathcal H_Y$ 为对应的 RKHS，核分别为 $K_X,K_Y$。记张量积 Hilbert 空间
+\[
+\mathcal H:=\mathcal H_X\otimes \mathcal H_Y.
+\]
+对任意 $M\in \mathcal H$，定义匹配得分
+\[
+s_M(x,y)
+:=
+\left\langle
+M,\,
+K_X(x,\cdot)\otimes K_Y(y,\cdot)
+\right\rangle_{\mathcal H}.
+\]
+若
+\[
+M=\sum_{r=1}^R u_r\otimes v_r,
+\]
+则
+\[
+s_M(x,y)=\sum_{r=1}^R u_r(x)v_r(y),
+\]
+这给出一个 $R$ 维双塔或多塔型表示。
+\end{definition}
+
+\begin{definition}[配对损失泛函]\label{def:pairwise-loss-functional}
+给定训练样本
+\[
+\{(x_i,y_i,\varepsilon_i)\}_{i=1}^m\subset \mathcal X\times \mathcal Y\times \{-1,1\},
+\]
+以及凸损失函数 $\ell_i\colon \mathbb R\to \mathbb R\cup\{+\infty\}$，定义配对损失
+\[
+\mathcal L(M)
+:=
+\sum_{i=1}^m \ell_i\bigl(\varepsilon_i s_M(x_i,y_i)\bigr).
+\]
+其中 $\varepsilon_i=1$ 表示正匹配，$\varepsilon_i=-1$ 表示负匹配。
+\end{definition}
+
+\begin{definition}[对比风险泛函]\label{def:contrastive-risk-functional}
+在定义~\ref{def:pairwise-loss-functional} 的背景下，给定正则参数 $\lambda>0$，称
+\[
+\mathcal R_\lambda(M)
+:=
+\mathcal L(M)+\frac{\lambda}{2}\|M\|_{\mathcal H}^2
+\]
+为\emph{对比风险泛函}。它把配对损失与 Tikhonov 正则统一到同一个 Hilbert 空间优化模板中。
+\end{definition}
+
+\subsection{表示定理与对偶解释}
+
+\begin{proposition}[双塔模型的表示定理]\label{prop:two-tower-representer}
+设 $\mathcal R_\lambda$ 如定义~\ref{def:contrastive-risk-functional}，并设其在 $\mathcal H$ 上有极小元 $M_\star$。则存在系数 $\alpha_1,\dots,\alpha_m\in \mathbb R$ 使
+\[
+M_\star
+=
+\sum_{i=1}^m \alpha_i
+\bigl(K_X(x_i,\cdot)\otimes K_Y(y_i,\cdot)\bigr).
+\]
+也就是说，最优匹配算子总落在训练样本所张成的有限维张量子空间中。
+\end{proposition}
+
+\begin{proof}
+张量积空间 $\mathcal H$ 仍是 Hilbert 空间。令
+\[
+\psi_i:=K_X(x_i,\cdot)\otimes K_Y(y_i,\cdot),
+\qquad
+M_0:=\operatorname{span}\{\psi_1,\dots,\psi_m\}.
+\]
+由定义~\ref{def:two-tower-embedding-model}，
+\[
+s_M(x_i,y_i)=\langle M,\psi_i\rangle_{\mathcal H}.
+\]
+因此对任意分解
+\[
+M=M_0^\parallel+M_0^\perp,
+\qquad
+M_0^\perp\in M_0^\perp,
+\]
+都有
+\[
+s_M(x_i,y_i)=s_{M_0^\parallel}(x_i,y_i),\qquad i=1,\dots,m.
+\]
+于是配对损失只依赖 $M_0^\parallel$。另一方面，
+\[
+\|M\|_{\mathcal H}^2
+=
+\|M_0^\parallel\|_{\mathcal H}^2+\|M_0^\perp\|_{\mathcal H}^2
+\ge
+\|M_0^\parallel\|_{\mathcal H}^2.
+\]
+故把 $M$ 替换为 $M_0^\parallel$ 不会增大定义~\ref{def:contrastive-risk-functional} 的值。于是极小元可以取在 $M_0$ 中。这个结论也可被视为定理~\ref{thm:representer-theorem} 在张量积 RKHS 上的直接应用。
+\end{proof}
+
+\begin{theorem}[正则化匹配模型的对偶表示]\label{thm:embedding-duality-regularized}
+设 $C\colon \mathcal H\to \mathbb R^m$ 为采样算子
+\[
+CM:=\bigl(\varepsilon_1 s_M(x_1,y_1),\dots,\varepsilon_m s_M(x_m,y_m)\bigr),
+\]
+并设 $\Phi\colon \mathbb R^m\to \mathbb R\cup\{+\infty\}$ 为 proper、凸且下半连续泛函。考虑原问题
+\[
+\inf_{M\in \mathcal H}
+\left\{
+\Phi(CM)+\frac{\lambda}{2}\|M\|_{\mathcal H}^2
+\right\}.
+\]
+则其对偶问题为
+\[
+\sup_{\alpha\in \mathbb R^m}
+\left\{
+-\Phi^\ast(\alpha)-\frac{1}{2\lambda}\|C^\ast \alpha\|_{\mathcal H}^2
+\right\}.
+\]
+若资格条件满足，则原--对偶最优解 $(M_\star,\alpha_\star)$ 满足
+\[
+M_\star=-\frac{1}{\lambda}C^\ast\alpha_\star,
+\qquad
+\alpha_\star\in \partial \Phi(CM_\star).
+\]
+\end{theorem}
+
+\begin{proof}
+设
+\[
+f(M):=\frac{\lambda}{2}\|M\|_{\mathcal H}^2,
+\qquad
+g(z):=\Phi(z),
+\qquad
+A:=C.
+\]
+则原问题正是
+\[
+\inf_{M\in \mathcal H}\{f(M)+g(AM)\}.
+\]
+由于 $\mathcal H$ 是 Hilbert 空间，$f$ 的共轭为
+\[
+f^\ast(\Xi)=\frac{1}{2\lambda}\|\Xi\|_{\mathcal H}^2.
+\]
+于是由第 \ref{sec:6-4} 节定理~\ref{thm:fenchel-rockafellar-duality}，
+\[
+\inf_{M}\{f(M)+g(AM)\}
+=
+\sup_{\alpha\in\mathbb R^m}
+\{-f^\ast(-A^\ast \alpha)-g^\ast(\alpha)\}.
+\]
+代入 $f^\ast$ 与 $g^\ast=\Phi^\ast$，得到
+\[
+\sup_{\alpha\in \mathbb R^m}
+\left\{
+-\Phi^\ast(\alpha)-\frac{1}{2\lambda}\|C^\ast\alpha\|_{\mathcal H}^2
+\right\}.
+\]
+再由推论~\ref{cor:kkt-via-fenchel-subdifferential}，原--对偶最优性等价于
+\[
+-C^\ast\alpha_\star\in \partial f(M_\star),
+\qquad
+\alpha_\star\in \partial \Phi(CM_\star).
+\]
+而
+\[
+\partial f(M)=\{\lambda M\},
+\]
+故
+\[
+M_\star=-\frac{1}{\lambda}C^\ast\alpha_\star.
+\]
+结论成立。
+\end{proof}
+
+\begin{remark}
+定理~\ref{thm:embedding-duality-regularized} 说明，对比学习中的负样本权重、困难样本放大和约束影子价格，都可以通过对偶变量 $\alpha$ 统一理解。这里的关键不是把所有深度 encoder 证明成凸的，而是识别出当特征固定、核化近似或 lifted surrogate 成立时，匹配问题的确能进入 Fenchel 与 KKT 框架。
+\end{remark}
+
+\subsection{典型例子}
+
+\begin{example}[矩阵分解与双线性匹配的有限维坍缩]
+若
+\[
+\mathcal H_X=\mathbb R^p,\qquad \mathcal H_Y=\mathbb R^q,
+\]
+则 $\mathcal H_X\otimes \mathcal H_Y$ 可识别为 $p\times q$ 矩阵空间，$M$ 退化为双线性打分矩阵，
+\[
+s_M(x,y)=x^\top My.
+\]
+工业界常见的双塔参数化 $M=UV^\top$ 是它的低秩非凸特化；而本节讨论的是对完整矩阵或其凸 surrogate 的优化。
+\end{example}
+
+\begin{example}[双塔检索的核化解释]
+在用户检索和召回场景中，常把查询与文档分别映射到公共向量空间，再用内积评分。若我们固定编码特征，只优化最终匹配算子 $M$，则定义~\ref{def:contrastive-risk-functional} 就给出了该模型的凸风险版本。
+\end{example}
+
+\begin{example}[政策--企业匹配]
+把政策文本与企业画像分别看成 $\mathcal X$ 与 $\mathcal Y$ 中的对象，匹配目标是学得一个高分表示“政策适配”的双塔得分函数。把这个例子放在这里，是为了强调第 \ref{sec:12-1} 节的 RKHS 入口并不是抽象装饰，而可以直接进入政企推荐和政策匹配等实际建模。
+\end{example}
+
+\subsection*{有限维对照}
+
+Boyd 并不直接讲双塔检索，但他关于正则化经验风险、线性算子复合和对偶变量的有限维语言，在本节仍然完全适用。差别只在于：现代推荐系统把“参数向量”换成了表示函数、张量特征与配对算子。理解这一点以后，双塔、多塔、对比学习就不再只是模型工程术语，而是可以被看成 RKHS 表示定理加上 Fenchel 对偶后的有限维坍缩。
+
+\subsection*{习题（待补）}
+
+\begin{exercise}[张量表示定理占位]
+补一题：证明命题~\ref{prop:two-tower-representer}，并写出最优算子所在的有限维张量子空间。
+\end{exercise}
+
+\begin{exercise}[匹配对偶占位]
+补一题：对平方损失或 logistic 型对比学习 surrogate，写出定理~\ref{thm:embedding-duality-regularized} 的对偶问题，并解释对偶变量的负样本权重含义。
+\end{exercise}

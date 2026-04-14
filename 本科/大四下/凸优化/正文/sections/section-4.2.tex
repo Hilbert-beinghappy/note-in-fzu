@@ -1,0 +1,194 @@
+\section{代数内部与相对内部}
+
+\label{sec:4-2}
+
+上一节定义~\ref{def:convex-set} 已经说明，凸性本身不依赖维数，但“内部”却高度依赖所选拓扑。在有限维优化里，很多资格条件都以“存在严格可行点”为表述核心，而这里的“严格”往往就是“落在内部”。进入无穷维以后，这个说法很快会失效：一个集合即使在几何上明显具有厚度，也可能因为嵌在真闭子空间中、或者因为可行方向过于受限，而在整体拓扑下没有任何内点。因此，本节要把通常内点替换为两种更稳定的对象：代数内部描述沿所有方向的小范围可行性，相对内部则描述沿仿射包的拓扑厚度。后面的 Slater 条件、严格分离与强对偶，都将依赖这一步修正。
+
+\subsection{两种内部概念}
+
+\begin{definition}[代数内部]\label{def:algebraic-interior}
+设 $X$ 为实向量空间，$C\subset X$。称点 $x\in C$ 属于 $C$ 的\emph{代数内部}，若对任意方向 $y\in X$，都存在 $\varepsilon>0$ 使得
+\[
+x+ty\in C,\qquad \forall |t|<\varepsilon.
+\]
+所有此类点构成的集合记为 $\operatorname{core}(C)$。
+\end{definition}
+
+\begin{definition}[相对内部]\label{def:relative-interior}
+设 $X$ 为拓扑向量空间，$C\subset X$。将仿射包 $\operatorname{aff}(C)$ 赋予由 $X$ 诱导的子空间拓扑，则 $C$ 在该拓扑下的内部称为 $C$ 的\emph{相对内部}，记为
+\[
+\operatorname{ri}(C).
+\]
+\end{definition}
+
+若 $\operatorname{aff}(C)=X$，则 $\operatorname{ri}(C)=\operatorname{int}(C)$。但在一般情形下，$\operatorname{ri}(C)$ 往往比整体内部更合适，因为优化问题的自然可行域常常落在某个仿射切片中，而不是充满整个空间。
+
+\begin{proposition}[相对内部的基本性质]\label{prop:ri-convex-properties}
+设 $X$ 为拓扑向量空间，$C\subset X$ 为非空凸集，则：
+\begin{enumerate}
+  \item $\operatorname{ri}(C)$ 仍为凸集；
+  \item 若 $x\in \operatorname{ri}(C)$，$y\in C$，且 $\lambda\in[0,1)$，则
+  \[
+  (1-\lambda)x+\lambda y\in \operatorname{ri}(C).
+  \]
+\end{enumerate}
+在有限维空间中，若 $C$ 为凸集，则 $\operatorname{core}(C)=\operatorname{ri}(C)$。
+\end{proposition}
+
+\begin{proof}
+只需在仿射空间 $\operatorname{aff}(C)$ 中证明。对第一条，任取 $x_1,x_2\in \operatorname{ri}(C)$ 与 $\theta\in(0,1)$。存在 $\operatorname{aff}(C)$ 中的邻域 $U_1,U_2$，使
+\[
+x_1+U_1\subset C,\qquad x_2+U_2\subset C.
+\]
+于是
+\[
+\theta x_1+(1-\theta)x_2+\theta U_1+(1-\theta)U_2\subset C.
+\]
+而 $\theta U_1+(1-\theta)U_2$ 仍是 $\operatorname{aff}(C)$ 中 $0$ 的邻域，故 $\theta x_1+(1-\theta)x_2\in \operatorname{ri}(C)$。
+
+对第二条，取 $x\in\operatorname{ri}(C)$，则存在 $\operatorname{aff}(C)$ 中 $0$ 的邻域 $U$ 使 $x+U\subset C$。令
+\[
+z=(1-\lambda)x+\lambda y.
+\]
+则
+\[
+z+(1-\lambda)U=(1-\lambda)(x+U)+\lambda y\subset C,
+\]
+故 $z\in\operatorname{ri}(C)$。
+
+最后说明有限维情形下 $\operatorname{core}(C)=\operatorname{ri}(C)$。在有限维空间中，$\operatorname{aff}(C)$ 自身是有限维拓扑向量空间，因此任何代数意义上的吸收邻域都等价于某个拓扑邻域。于是点在所有方向上可作小扰动，等价于它在仿射包中拥有一个真正的开邻域。故二者相等。
+\end{proof}
+
+\paragraph{为何通常内点不够}
+
+\begin{remark}
+若 $M$ 是 Hilbert 空间 $H$ 的真闭子空间，则闭单位球
+\[
+B_M:=\{x\in M:\|x\|_H\le 1\}
+\]
+作为 $H$ 的子集是闭凸集，但其内部为空；然而作为 $M$ 内的集合，它的相对内部却是
+\[
+\{x\in M:\|x\|_H<1\}.
+\]
+这说明一旦可行域天然落在某个仿射切片内，仅用整体拓扑中的 $\operatorname{int}(C)$ 描述“严格可行”就会把所有有意义的点误删掉。
+\end{remark}
+
+\subsection{core 与分离之间的桥梁}
+
+代数内部的真正价值不在于它本身比相对内部“更一般”，而在于它能把几何厚度转写成一个可供 Hahn--Banach 定理使用的次线性泛函。这个泛函正是 Minkowski 泛函的抽象版本。
+
+\begin{proposition}[core 与分离的桥梁]\label{prop:core-separation-bridge}
+设 $X$ 为实向量空间，$C\subset X$ 为凸集，且 $0\in \operatorname{core}(C)$。定义
+\[
+p_C(x):=\inf\{t>0:x\in tC\},\qquad x\in \operatorname{span}(C).
+\]
+则：
+\begin{enumerate}
+  \item $C$ 在 $\operatorname{span}(C)$ 中是吸收的，因此 $p_C(x)<\infty$ 对每个 $x\in \operatorname{span}(C)$ 成立；
+  \item $p_C$ 在 $\operatorname{span}(C)$ 上是次线性泛函；
+  \item 若 $p_C(x)<1$，则 $x\in C$。
+\end{enumerate}
+\end{proposition}
+
+\begin{proof}
+由 $0\in\operatorname{core}(C)$，对任意 $x\in\operatorname{span}(C)$，存在 $\varepsilon>0$ 使
+\[
+tx\in C,\qquad \forall |t|<\varepsilon.
+\]
+于是
+\[
+x=\varepsilon^{-1}(\varepsilon x)\in \varepsilon^{-1}C,
+\]
+故 $C$ 吸收 $\operatorname{span}(C)$ 中每个向量，从而 $p_C(x)<\infty$。
+
+其次证明齐次性。若 $\alpha>0$，则
+\[
+p_C(\alpha x)
+=
+\inf\{t>0:\alpha x\in tC\}
+=
+\alpha \inf\{s>0:x\in sC\}
+=
+\alpha p_C(x).
+\]
+而 $p_C(0)=0$ 显然成立。再证明次可加性。任取 $\varepsilon>0$，取 $s,t>0$ 满足
+\[
+x\in sC,\quad y\in tC,\quad s<p_C(x)+\varepsilon,\quad t<p_C(y)+\varepsilon.
+\]
+于是存在 $u,v\in C$ 使 $x=su$、$y=tv$。由于 $C$ 凸，
+\[
+\frac{s}{s+t}u+\frac{t}{s+t}v\in C,
+\]
+从而
+\[
+x+y=(s+t)\left(\frac{s}{s+t}u+\frac{t}{s+t}v\right)\in (s+t)C.
+\]
+故
+\[
+p_C(x+y)\le s+t<p_C(x)+p_C(y)+2\varepsilon.
+\]
+令 $\varepsilon\downarrow 0$ 即得
+\[
+p_C(x+y)\le p_C(x)+p_C(y).
+\]
+因此 $p_C$ 是次线性的。
+
+最后若 $p_C(x)<1$，取 $t<1$ 使 $x\in tC$，则存在 $u\in C$ 满足 $x=tu$。由于 $0\in C$ 且 $C$ 凸，
+\[
+x=tu+(1-t)0\in C.
+\]
+\end{proof}
+
+\begin{remark}
+命题~\ref{prop:core-separation-bridge} 解释了为什么第 \ref{sec:4-3} 节中的解析型 Hahn--Banach 定理会自然介入分离理论。只要一个凸集在某个点具有代数内部，就可以从该点出发构造 Minkowski 泛函，并把“集合分离”转写为“在线性子空间上给定一个受次线性泛函支配的线性泛函，再向外延拓”。这正是无穷维版本 Slater 条件的底层机制。
+\end{remark}
+
+\begin{example}[最小抽象例子：真子空间中的单位球]\label{ex:relative-interior-subspace}
+设 $M$ 是 Hilbert 空间 $H$ 的真闭子空间，考虑
+\[
+C=\{x\in M:\|x\|_H\le 1\}.
+\]
+则 $C$ 作为 $H$ 的子集内部为空，但
+\[
+\operatorname{ri}(C)=\{x\in M:\|x\|_H<1\}.
+\]
+把这个例子放在这里，是为了说明“厚度”必须沿着自然的仿射包来测量；若仍坚持在整个 $H$ 里看内点，就会把本来良好的凸集错判成完全退化。
+\end{example}
+
+\begin{example}[有限维坍缩例子：单纯形的相对内部]\label{ex:simplex-relative-interior}
+在 $\mathbb R^n$ 中考虑概率单纯形
+\[
+\Delta_n=\left\{x\in\mathbb R^n:x_i\ge 0,\ \sum_{i=1}^{n}x_i=1\right\}.
+\]
+它的仿射包是超平面 $\sum_i x_i=1$，并且
+\[
+\operatorname{ri}(\Delta_n)=\left\{x\in\Delta_n:x_i>0,\ 1\le i\le n\right\}.
+\]
+把这个例子放在这里，是为了回收 Boyd 中最常见的相对内部语言：在有限维里，$\operatorname{ri}$ 正是处理等式约束与不等式严格可行性的标准工具。
+\end{example}
+
+\begin{example}[应用触点例子：半无限约束中的严格可行性]\label{ex:semi-infinite-slater}
+设 $T$ 为紧空间，考虑半无限规划可行域
+\[
+\mathcal F=\{x\in\mathbb R^n:a(t)^\top x\le b(t),\ \forall t\in T\},
+\]
+其中 $a(\cdot)$ 与 $b(\cdot)$ 连续。若存在 $\bar x$ 使
+\[
+a(t)^\top \bar x<b(t),\qquad \forall t\in T,
+\]
+且不等式余量在 $T$ 上一致正，则 $\bar x$ 落在 $\mathcal F$ 的相对内部，甚至在适当线性包内落在其 core 中。把这个例子放在这里，是为了提前说明第 7 章广义 Slater 条件的几何来源：严格可行并不是一句口号，而是某种内部结构非空。
+\end{example}
+
+\subsection*{有限维对照}
+
+Boyd 在处理相对内部、严格可行性与约束资格时，默认工作在有限维 Euclidean 空间中，因此 $\operatorname{ri}(C)$ 已足够强大，很多时候甚至可以不再区分它与更一般的代数内部。本节的修正是：一旦进入无穷维，仅靠 $\operatorname{ri}$ 仍可能不足，因为仿射包本身未必提供合适的可行方向结构。此时 $\operatorname{core}(C)$ 与命题~\ref{prop:core-separation-bridge} 中的 Minkowski 泛函，才是把严格分离与强对偶推进下去的真正桥梁。
+
+\subsection*{习题（待补）}
+
+\begin{exercise}[有限维中 core 与 ri 一致占位]\label{exr:core-ri-placeholder}
+补一题：在有限维空间中证明命题~\ref{prop:ri-convex-properties} 的最后一句，即对任意凸集 $C$ 有 $\operatorname{core}(C)=\operatorname{ri}(C)$。
+\end{exercise}
+
+\begin{exercise}[Minkowski 泛函桥接题占位]\label{exr:minkowski-gauge-placeholder}
+补一题：在命题~\ref{prop:core-separation-bridge} 的条件下，证明若 $C$ 还是平衡集，则 $p_C$ 成为 $\operatorname{span}(C)$ 上的半范数，并说明它与第 \ref{sec:4-3} 节 Hahn--Banach 延拓的关系。
+\end{exercise}

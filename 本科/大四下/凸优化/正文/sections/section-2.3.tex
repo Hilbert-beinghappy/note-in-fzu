@@ -1,0 +1,171 @@
+\section{拓扑空间上的测度}
+
+\label{sec:2-3}
+
+前两节给出的测度与积分理论，还停留在纯集合论层面；但在优化、概率和对偶理论中，我们常常需要让测度与拓扑同时出现。一个典型场景是：在某个状态空间上先有连续函数，再考虑“对所有连续测试函数积分”所定义的线性泛函。若要把这种泛函解释成真正的测度，就必须把拓扑结构纳入讨论。对本书而言，最重要的环境是局部紧 Hausdorff 空间，以及第 \ref{sec:1-3} 节已经建立的 Polish 空间框架；前者适合陈述经典 Riesz 表示定理，后者则保证了许多在随机分析里需要的可分性与正则性。
+
+\subsection{Borel 测度与 Radon 测度}
+
+设 $X$ 为拓扑空间，记其 Borel $\sigma$-代数为 $\mathcal B(X)$。定义在 $\mathcal B(X)$ 上的测度称为 $X$ 上的 \emph{Borel 测度}。仅有 Borel 性通常还不够，因为它并不能保证测度与拓扑上的紧集、开集良好配合；真正适合分析与优化的，是正则性更强的 Radon 测度。
+
+\begin{definition}[Radon 测度]\label{def:radon-measure}
+设 $X$ 为局部紧 Hausdorff 空间。定义在 $\mathcal B(X)$ 上的 Borel 测度 $\mu$ 称为一个\emph{Radon 测度}，若满足：
+\begin{enumerate}
+  \item 对每个紧集 $K\subseteq X$，都有 $\mu(K)<\infty$；
+  \item 对每个开集 $U\subseteq X$，有
+  \[
+  \mu(U)=\sup\{\mu(K):\ K\subseteq U,\ K\text{ 为紧集}\};
+  \]
+  \item 对每个 Borel 集 $A\subseteq X$，有
+  \[
+  \mu(A)=\inf\{\mu(U):\ A\subseteq U,\ U\text{ 为开集}\}.
+  \]
+\end{enumerate}
+\end{definition}
+
+\paragraph{为何强调第 \ref{sec:1-3} 节的 Polish 环境}
+
+\begin{remark}
+若 $X$ 是定义~\ref{def:polish-space} 中的 Polish 空间，则其 Borel 结构具有很强的稳定性；在许多自然情形下，有限 Borel 测度自动具有良好的正则性。换言之，第 \ref{sec:1-3} 节并不是与测度论平行的一条支线，而是在为本节“测度与拓扑相容”提供常用环境。
+\end{remark}
+
+\begin{proposition}[Radon 测度的正则性]\label{prop:radon-regularity}
+设 $X$ 为局部紧 Hausdorff 空间，$\mu$ 为 $X$ 上的 Radon 测度。则对每个 Borel 集 $A\subseteq X$ 都有
+\[
+\mu(A)=\sup\{\mu(K):\ K\subseteq A,\ K\text{ 为紧集}\}
+=\inf\{\mu(U):\ A\subseteq U,\ U\text{ 为开集}\}.
+\]
+特别地，对任意 $\varepsilon>0$，存在紧集 $K$ 和开集 $U$ 使
+\[
+K\subseteq A\subseteq U,\qquad \mu(U\setminus K)<\varepsilon.
+\]
+\end{proposition}
+
+\begin{proof}
+外正则性已包含在定义~\ref{def:radon-measure} 中。下面说明内正则性可由开集内正则性推出。设
+\[
+\mathscr M:=\bigl\{A\in \mathcal B(X):\ \mu(A)=\sup\{\mu(K):\ K\subseteq A,\ K\text{ 为紧集}\}\bigr\}.
+\]
+由定义可知所有开集都属于 $\mathscr M$。再利用测度对递增并与递减交的连续性，可以验证 $\mathscr M$ 对差集的适当操作和单调极限稳定，因此形成一个包含开集的单调类。由于开集生成 $\mathcal B(X)$，由单调类定理可知 $\mathscr M=\mathcal B(X)$，于是任意 Borel 集都内正则。
+
+最后，给定 $\varepsilon>0$，先由外正则性取开集 $U\supseteq A$ 使
+\[
+\mu(U)\le \mu(A)+\frac{\varepsilon}{2}.
+\]
+再由开集的内正则性取紧集 $K\subseteq A$ 使
+\[
+\mu(K)\ge \mu(A)-\frac{\varepsilon}{2}.
+\]
+于是
+\[
+\mu(U\setminus K)=\mu(U)-\mu(K)\le \varepsilon,
+\]
+结论成立。
+\end{proof}
+
+\subsection{连续函数上的正线性泛函}
+
+设 $X$ 为局部紧 Hausdorff 空间，记 $C_c(X)$ 为所有紧支撑连续实函数组成的线性空间，记 $C_0(X)$ 为在无穷远处消失的连续函数空间。对优化与对偶理论而言，正线性泛函最值得关注：它们在函数空间对偶中扮演“非负乘子”的角色。
+
+\begin{definition}[正线性泛函]
+设 $L$ 是定义在 $C_c(X)$ 或 $C_0(X)$ 上的线性泛函。若对任意满足 $f\ge 0$ 的函数 $f$ 都有
+\[
+L(f)\ge 0,
+\]
+则称 $L$ 为\emph{正线性泛函}。
+\end{definition}
+
+\begin{lemma}[由正泛函诱导的集合函数]\label{lem:positive-functional-contents}
+设 $L$ 为 $C_c(X)$ 上的正线性泛函。对开集 $U\subseteq X$ 定义
+\[
+\nu(U):=\sup\{L(f):\ f\in C_c(X),\ 0\le f\le 1,\ \operatorname{supp}(f)\subseteq U\}.
+\]
+则 $\nu$ 在开集族上单调，且对递增开集列满足
+\[
+\nu\Bigl(\bigcup_{n=1}^{\infty}U_n\Bigr)=\lim_{n\to\infty}\nu(U_n).
+\]
+\end{lemma}
+
+\begin{proof}
+单调性由定义直接得出。若 $U_n\uparrow U$，则显然 $\nu(U_n)\le \nu(U)$，故
+\[
+\limsup_{n\to\infty}\nu(U_n)\le \nu(U).
+\]
+反过来，任取 $f\in C_c(X)$，满足 $0\le f\le1$ 且 $\operatorname{supp}(f)\subseteq U$。由于 $\operatorname{supp}(f)$ 为紧集，而 $\{U_n\}$ 递增覆盖 $U$，存在某个 $N$ 使 $\operatorname{supp}(f)\subseteq U_N$。故
+\[
+L(f)\le \nu(U_N)\le \sup_n \nu(U_n).
+\]
+对所有这类 $f$ 取上确界，得到
+\[
+\nu(U)\le \sup_n \nu(U_n)=\lim_{n\to\infty}\nu(U_n).
+\]
+二者合并即得结论。
+\end{proof}
+
+\subsection{Riesz 表示定理}
+
+\begin{theorem}[Riesz 表示定理]\label{thm:riesz-representation}
+设 $X$ 为局部紧 Hausdorff 空间，$L$ 为 $C_c(X)$ 上的正线性泛函。则存在唯一的 Radon 测度 $\mu$，使得对任意 $f\in C_c(X)$ 都有
+\[
+L(f)=\int_X f\,d\mu.
+\]
+若进一步把 $L$ 看作 $C_0(X)$ 上的有界正线性泛函，则同一结论成立，且
+\[
+\|L\|=\mu(X)
+\]
+在 $\mu(X)<\infty$ 时有效。
+\end{theorem}
+
+\begin{proof}
+证明分三步进行。
+
+第一步，由引理~\ref{lem:positive-functional-contents} 在开集上构造集合函数 $\nu$。再对任意集合 $A\subseteq X$ 定义
+\[
+\mu^\ast(A):=\inf\{\nu(U):\ A\subseteq U,\ U\text{ 为开集}\}.
+\]
+由定义可知 $\mu^\ast(\varnothing)=0$ 且单调。利用开集的可数覆盖与引理~\ref{lem:positive-functional-contents} 的递增连续性，可以验证 $\mu^\ast$ 是一个外测度。
+
+第二步，对 $\mu^\ast$ 应用定理~\ref{thm:caratheodory-measurable-sets}。由于开集在构造中扮演基础角色，而连续函数可用局部紧 Hausdorff 空间上的 Urysohn 型截断函数逼近，能够验证所有开集都是 Carathéodory 可测的，从而 $\mathcal B(X)\subseteq \mathscr M(\mu^\ast)$。于是 $\mu:=\mu^\ast|_{\mathcal B(X)}$ 成为一个 Borel 测度。再由定义可知 $\mu$ 对开集外正则；而由 $\nu$ 的定义与紧支撑函数逼近，可以推出对开集的内正则和对紧集的有限性，因此 $\mu$ 是 Radon 测度。
+
+第三步，证明积分表示。对满足 $0\le f\le1$ 的紧支撑连续函数，先用层析逼近和简单函数近似比较 $L(f)$ 与 $\int f\,d\mu$，得到二者相等；再由线性性推广到一般实值 $f\in C_c(X)$。唯一性来自这样的事实：若两个 Radon 测度对所有 $f\in C_c(X)$ 的积分都相等，则它们对开集的取值相同，从而由命题~\ref{prop:radon-regularity} 对所有 Borel 集都相同。
+\end{proof}
+
+\paragraph{“泛函 = 测度”的第一座桥}
+
+\begin{remark}
+定理~\ref{thm:riesz-representation} 说明，连续函数空间上的正泛函并不是神秘的抽象对偶元素，而可以唯一解释为某个 Radon 测度的积分算子。这一步会在后文至少以三种形式回归：其一是在对偶理论里把正约束乘子解释成测度；其二是在最优控制里把轨道分布、占据测度与线性泛函联系起来；其三是在概率论中把期望写成对概率测度的积分。
+\end{remark}
+
+\begin{example}[抽象例子：Dirac 测度与点值泛函]\label{ex:dirac-functional}
+对任意固定 $x_0\in X$，定义
+\[
+L_{x_0}(f):=f(x_0),\qquad f\in C_c(X).
+\]
+这是一个正线性泛函。由定理~\ref{thm:riesz-representation}，它对应的 Radon 测度正是 Dirac 测度 $\delta_{x_0}$。把这个例子放在这里，是为了说明最简单的“泛函 = 测度”并不是平均，而是点值本身；这也是后文极点、分布和采样算子的基本原型。
+\end{example}
+
+\begin{example}[有限维坍缩：欧氏空间中的积分泛函]\label{ex:euclidean-radon}
+取 $X=\mathbb R^n$。若 $g\in L^1_{\mathrm{loc}}(\mathbb R^n)$ 且 $g\ge0$，则
+\[
+L(f):=\int_{\mathbb R^n} f(x)g(x)\,dx,\qquad f\in C_c(\mathbb R^n),
+\]
+定义了一个正线性泛函。这里对应的 Radon 测度就是 $\mu(dx)=g(x)\,dx$。把这个例子放在这里，是为了说明有限维教材中最熟悉的“加权积分”其实已经是 Riesz 表示定理的特殊情形。
+\end{example}
+
+\begin{example}[应用触点：测度型乘子与占据测度]\label{ex:occupation-measure}
+在连续时间控制与分布鲁棒优化中，约束往往不是有限个标量不等式，而是对一族测试函数同时成立的积分关系。此时拉格朗日乘子自然不再是向量，而是某种 Radon 测度。把这个例子放在这里，是为了说明定理~\ref{thm:riesz-representation} 并非只服务于纯分析，它直接决定了后文 KKT 条件里乘子的对象类型。
+\end{example}
+
+\subsection*{有限维对照}
+
+在有限维空间里，人们常把线性泛函写成向量内积，把概率或权重写成密度函数，于是“泛函等于积分”这件事显得理所当然。本节把这种直觉放回一般拓扑空间中，并用定义~\ref{def:radon-measure}、命题~\ref{prop:radon-regularity} 和定理~\ref{thm:riesz-representation} 说明：只有当测度具有足够的正则性时，这种解释才真正稳固。
+
+\subsection*{习题（待补）}
+
+\begin{exercise}[Dirac 测度占位]\label{exr:dirac-riesz-placeholder}
+补一题：证明例~\ref{ex:dirac-functional} 中的点值泛函对应的确是 Dirac 测度，并据此验证定理~\ref{thm:riesz-representation} 的唯一性在该情形下如何显现。
+\end{exercise}
+
+\begin{exercise}[有限维桥接题占位]\label{exr:euclidean-riesz-placeholder}
+补一题：在 $X=\mathbb R^n$ 上，从例~\ref{ex:euclidean-radon} 出发验证命题~\ref{prop:radon-regularity}，说明 Lebesgue 测度为何是一个 Radon 测度。
+\end{exercise}

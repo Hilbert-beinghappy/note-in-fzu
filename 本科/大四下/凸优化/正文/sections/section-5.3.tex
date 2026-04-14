@@ -1,0 +1,241 @@
+\section{对偶空间中的次微分}
+
+\label{sec:5-3}
+
+上一节的可微理论告诉我们：在凸可微点，导数给出局部支撑超平面。然而凸优化里真正有趣的模型往往恰恰出现在不可微处，例如范数、指示函数、绝对值型正则化以及各种约束罚项。此时“唯一导数”不再存在，但支撑超平面仍然可能存在，并且往往不止一个。次微分的作用，就是把这些可能的局部线性支撑统一收集到对偶空间里，从而把不可微问题重新纳入一阶最优性与对偶几何的框架。
+
+\subsection{次微分的定义}
+
+\begin{definition}[次微分]\label{def:subdifferential}
+设 $X$ 为 Banach 空间，$f\colon X\to \mathbb R\cup\{+\infty\}$ 为 proper 凸泛函，$x\in \operatorname{dom}f$。定义
+\[
+\partial f(x)
+:=\left\{x^\ast\in X^\ast:
+f(y)\ge f(x)+\langle x^\ast,y-x\rangle,\ \forall y\in X\right\}.
+\]
+集合 $\partial f(x)$ 称为 $f$ 在 $x$ 处的\emph{次微分}；其中元素称为\emph{次梯度}。若 $x\notin \operatorname{dom}f$，则约定 $\partial f(x)=\varnothing$。
+\end{definition}
+
+\begin{remark}
+定义~\ref{def:subdifferential} 正是第 \ref{sec:4-3} 节定理~\ref{thm:hahn-banach-geometric} 与命题~\ref{prop:supporting-hyperplane} 的局部化版本。区别只在于：这里支撑对象不再是单个凸集，而是凸泛函的上图像
+\[
+\operatorname{epi}f=\{(x,r)\in X\times\mathbb R:r\ge f(x)\}.
+\]
+因此次微分可以理解为“在函数图像下方放置的所有支撑超平面之斜率”。
+\end{remark}
+
+\begin{proposition}[次梯度最优性条件]\label{prop:subgradient-optimality}
+设 $f\colon X\to \mathbb R\cup\{+\infty\}$ 为 proper 凸泛函，$x\in \operatorname{dom}f$。则
+\[
+0\in \partial f(x)
+\]
+当且仅当 $x$ 是 $f$ 的全局极小点。
+\end{proposition}
+
+\begin{proof}
+若 $0\in \partial f(x)$，由定义~\ref{def:subdifferential}，
+\[
+f(y)\ge f(x),\qquad \forall y\in X,
+\]
+故 $x$ 为全局极小点。反之，若 $x$ 为全局极小点，则同样有
+\[
+f(y)\ge f(x)=f(x)+\langle 0,y-x\rangle,\qquad \forall y\in X,
+\]
+因而 $0\in\partial f(x)$。
+\end{proof}
+
+\begin{proposition}[可微点的单值次微分]\label{prop:frechet-subdifferential-singleton}
+设 $X$ 为 Banach 空间，$U\subset X$ 为凸开集，$f\colon U\to \mathbb R$ 为凸函数。若 $f$ 在 $x\in U$ 处 Fréchet 可微，则
+\[
+\partial f(x)=\{Df(x)\}.
+\]
+在 Hilbert 空间中，这等价于
+\[
+\partial f(x)=\{\nabla f(x)\},
+\]
+其中梯度由定义~\ref{def:hilbert-gradient} 给出。
+\end{proposition}
+
+\begin{proof}
+由上一节的凸可微支撑不等式，$Df(x)$ 满足
+\[
+f(y)\ge f(x)+Df(x)(y-x),\qquad \forall y\in U.
+\]
+凸性又保证该不等式可延拓为对所有 $y\in X$ 的次梯度不等式，因此 $Df(x)\in\partial f(x)$。
+
+现取任意 $x^\ast\in \partial f(x)$。由定义~\ref{def:subdifferential}，对任意 $h\in X$ 与充分小的 $t>0$，
+\[
+f(x+th)\ge f(x)+t\langle x^\ast,h\rangle.
+\]
+同理，把 $h$ 换成 $-h$ 得
+\[
+f(x-th)\ge f(x)-t\langle x^\ast,h\rangle.
+\]
+两式分别除以 $t$ 并令 $t\downarrow 0$，利用 Fréchet 可微得到
+\[
+Df(x)h\ge \langle x^\ast,h\rangle,\qquad
+Df(x)h\le \langle x^\ast,h\rangle.
+\]
+故对任意 $h\in X$，
+\[
+Df(x)h=\langle x^\ast,h\rangle.
+\]
+于是 $x^\ast=Df(x)$。故次微分是单点集。
+\end{proof}
+
+\subsection{次微分的非空性}
+
+\begin{theorem}[内点处次微分非空]\label{thm:subdifferential-nonempty-interior}
+设 $X$ 为 Banach 空间，$f\colon X\to \mathbb R\cup\{+\infty\}$ 为 proper、凸且下半连续的泛函。若
+\[
+x\in \operatorname{int}(\operatorname{dom}f),
+\]
+则
+\[
+\partial f(x)\neq \varnothing.
+\]
+\end{theorem}
+
+\begin{proof}
+考虑乘积空间 $X\times \mathbb R$，赋予范数
+\[
+\|(u,r)\|:=\|u\|+|r|.
+\]
+因为 $f$ 下半连续且凸，其上图像
+\[
+\operatorname{epi}f:=\{(u,r):r\ge f(u)\}
+\]
+是闭凸集。点 $(x,f(x))$ 位于其边界上；另一方面，由 $x\in \operatorname{int}(\operatorname{dom}f)$ 可知存在半径 $\rho>0$ 使 $B(x,\rho)\subset \operatorname{dom}f$，因此对任意足够小的 $h$ 与任意 $\eta>0$，点
+\[
+(x+h,f(x)+1+\eta)
+\]
+属于 $\operatorname{epi}f$ 的内部，所以该上图像具有非空内部。
+
+于是可对闭凸集 $\operatorname{epi}f$ 在边界点 $(x,f(x))$ 处应用第 \ref{sec:4-3} 节命题~\ref{prop:supporting-hyperplane}。存在非零连续线性泛函 $(x^\ast,s)\in X^\ast\times \mathbb R$ 使
+\[
+\langle x^\ast,u\rangle + sr
+\le
+\langle x^\ast,x\rangle + s f(x),
+\qquad \forall (u,r)\in \operatorname{epi}f.
+\]
+对任意 $u\in \operatorname{dom}f$，取 $r=f(u)$，得
+\[
+\langle x^\ast,u-x\rangle + s(f(u)-f(x))\le 0.
+\]
+下面说明 $s<0$。若 $s>0$，则对固定的 $u$ 令 $r\to +\infty$，上式不可能始终成立。若 $s=0$，则
+\[
+\langle x^\ast,u-x\rangle\le 0,\qquad \forall u\in \operatorname{dom}f.
+\]
+但 $x$ 是定义域内点，可在 $x$ 的任意小邻域中取到 $u=x\pm th$，从而推出 $\langle x^\ast,h\rangle=0$ 对所有 $h\in X$ 成立，即 $x^\ast=0$，与 $(x^\ast,s)\neq 0$ 矛盾。故 $s<0$。
+
+令
+\[
+\xi^\ast:=-\frac{x^\ast}{s}\in X^\ast.
+\]
+则上式改写为
+\[
+f(u)\ge f(x)+\langle \xi^\ast,u-x\rangle,\qquad \forall u\in X.
+\]
+因此 $\xi^\ast\in \partial f(x)$，从而 $\partial f(x)\neq\varnothing$。
+\end{proof}
+
+\subsection{闭图性质}
+
+\begin{proposition}[次微分的闭图性质]\label{prop:subdifferential-closed-graph}
+设 $X$ 为 Banach 空间，$f\colon X\to \mathbb R\cup\{+\infty\}$ 为 proper、凸且下半连续的泛函。若网 $x_\alpha\to x$ 在范数拓扑下收敛，网 $x_\alpha^\ast\rightharpoonup^\ast x^\ast$ 在弱$^\ast$拓扑下收敛，且
+\[
+x_\alpha^\ast\in \partial f(x_\alpha),\qquad \forall \alpha,
+\]
+则
+\[
+x^\ast\in \partial f(x).
+\]
+\end{proposition}
+
+\begin{proof}
+由 $x_\alpha^\ast\in \partial f(x_\alpha)$，对任意固定 $y\in X$ 都有
+\[
+f(y)\ge f(x_\alpha)+\langle x_\alpha^\ast,y-x_\alpha\rangle.
+\]
+由下半连续性的网刻画，
+\[
+f(x)\le \liminf_\alpha f(x_\alpha).
+\]
+另一方面，由 $x_\alpha\to x$ 强收敛以及 $x_\alpha^\ast\rightharpoonup^\ast x^\ast$，对固定的 $y$ 有
+\[
+\langle x_\alpha^\ast,y-x_\alpha\rangle
+\to
+\langle x^\ast,y-x\rangle.
+\]
+因此对上式取上极限得到
+\[
+f(y)\ge f(x)+\langle x^\ast,y-x\rangle,\qquad \forall y\in X.
+\]
+由定义~\ref{def:subdifferential}，即 $x^\ast\in \partial f(x)$。
+\end{proof}
+
+\subsection{典型例子}
+
+\begin{example}[范数函数的次微分]\label{ex:norm-subdifferential}
+设 $X$ 为 Banach 空间，$f(x)=\|x\|$。当 $x\neq 0$ 时，
+\[
+\partial \|x\|
+=
+\left\{x^\ast\in X^\ast:\|x^\ast\|=1,\ \langle x^\ast,x\rangle=\|x\|\right\};
+\]
+而在原点处，
+\[
+\partial \|0\|=\{x^\ast\in X^\ast:\|x^\ast\|\le 1\}.
+\]
+把这个例子放在这里，是为了说明不可微并不意味着“一阶信息消失”；相反，它意味着可能存在整片支撑超平面。这里的次梯度集合正是所有“支撑单位球”的对偶向量。
+\end{example}
+
+\begin{example}[$\ell_1$ 范数的次梯度]\label{ex:l1-subgradient}
+在 $\mathbb R^n$ 上，
+\[
+f(x)=\|x\|_1=\sum_{i=1}^n |x_i|
+\]
+满足
+\[
+\partial \|x\|_1
+=
+\left\{g\in\mathbb R^n:
+g_i=
+\begin{cases}
+\operatorname{sign}(x_i), & x_i\neq 0,\\
+\xi_i\in[-1,1], & x_i=0
+\end{cases}
+\right\}.
+\]
+把这个例子放在这里，是为了与 Boyd 书中最常见的非光滑例子对齐，也说明稀疏性结构为什么会对应一个多值的一阶条件。
+\end{example}
+
+\begin{example}[指示函数与法锥原型]\label{ex:indicator-normal-cone-preview}
+设 $C\subset X$ 为闭凸集，其指示函数定义为
+\[
+\iota_C(x)=
+\begin{cases}
+0, & x\in C,\\
++\infty, & x\notin C.
+\end{cases}
+\]
+则 $\partial \iota_C(x)$ 由所有满足
+\[
+\langle x^\ast,y-x\rangle\le 0,\qquad \forall y\in C
+\]
+的对偶向量组成。把这个例子放在这里，是为了说明约束并不会在次微分框架外另起炉灶；它们只是通过指示函数把“可行性”编码成了法锥条件。第 \ref{sec:5-4} 节会把这一观察写成正式的演算公式。
+\end{example}
+
+\subsection*{有限维对照}
+
+Boyd 第 3 章和第 5 章里把次梯度解释为图像上所有可能的支撑超平面斜率。在 $\mathbb R^n$ 中，这个图像直觉几乎已经足够；但在无穷维里，真正稳固的对象是定义~\ref{def:subdifferential} 中的对偶空间集合，以及定理~\ref{thm:hahn-banach-geometric}、命题~\ref{prop:supporting-hyperplane} 所保证的分离与支撑结构。本节的目的，就是把这些欧氏图像提升为可在 Banach 与 Hilbert 空间中直接调用的一阶语言。
+
+\subsection*{习题（待补）}
+
+\begin{exercise}[次梯度最优性占位]\label{exr:subgradient-optimality-placeholder}
+补一题：对一个具体不可微凸函数验证命题~\ref{prop:subgradient-optimality}，并把条件 $0\in\partial f(x)$ 翻译成有限维中的 KKT 风格一阶最优性条件。
+\end{exercise}
+
+\begin{exercise}[法锥桥接题占位]\label{exr:normal-cone-placeholder}
+补一题：从例~\ref{ex:indicator-normal-cone-preview} 出发，把闭凸集的约束最优性写成指示函数的次微分条件，并解释它与支撑超平面的关系。
+\end{exercise}

@@ -1,0 +1,161 @@
+% 福州大学本科生毕业设计（论文）中期检查表
+% 填写入口：
+% 1. 先修改“基本信息”中的届次、姓名、学号、专业、学院、题目。
+% 2. 再填写“进展情况内容”“主要存在的问题”“工作建议”。
+% 3. 勾选框默认全部为空白，可将对应宏改为 \FZUCheckboxChecked 来显示对勾。
+% 4. 学生签字和指导教师签字、日期可在提交前填写。
+% 编译方式：latexmk -xelatex -shell-escape -interaction=nonstopmode -halt-on-error main.tex
+
+\documentclass[12pt,a4paper]{ctexart}
+\usepackage{geometry}
+\input{fzu_form_common.tex}
+
+\geometry{top=2.05cm,bottom=2.0cm,left=2.25cm,right=2.25cm}
+
+% ===== 基本信息 =====
+\newcommand{\届次}{}
+\newcommand{\姓名}{}
+\newcommand{\学号}{}
+\newcommand{\专业}{}
+\newcommand{\学院}{}
+\newcommand{\题目}{}
+\newcommand{\进展情况内容}{此处填写毕业设计（论文）当前进展、已完成的主要工作、阶段成果、下一步安排等内容。}
+\newcommand{\主要存在的问题}{此处填写目前存在的主要问题、困难、风险或仍需改进之处。}
+\newcommand{\工作建议}{此处填写对后续毕业设计（论文）工作的建议。若本栏由指导教师填写，可在正式提交前替换为教师意见。}
+\newcommand{\学生签字}{}
+\newcommand{\学生签字年}{}
+\newcommand{\学生签字月}{}
+\newcommand{\学生签字日}{}
+\newcommand{\指导教师签字}{}
+\newcommand{\指导教师签字年}{}
+\newcommand{\指导教师签字月}{}
+\newcommand{\指导教师签字日}{}
+
+\newcommand{\文献综述已完成框}{\FZUCheckboxEmpty}
+\newcommand{\文献综述基本完成框}{\FZUCheckboxEmpty}
+\newcommand{\文献综述未完成框}{\FZUCheckboxEmpty}
+\newcommand{\开题报告已完成框}{\FZUCheckboxEmpty}
+\newcommand{\开题报告基本完成框}{\FZUCheckboxEmpty}
+\newcommand{\开题报告未完成框}{\FZUCheckboxEmpty}
+\newcommand{\按时提交是框}{\FZUCheckboxEmpty}
+\newcommand{\按时提交否框}{\FZUCheckboxEmpty}
+\newcommand{\方案合理是框}{\FZUCheckboxEmpty}
+\newcommand{\方案合理否框}{\FZUCheckboxEmpty}
+\newcommand{\准备充分是框}{\FZUCheckboxEmpty}
+\newcommand{\准备充分否框}{\FZUCheckboxEmpty}
+\newcommand{\时间充足是框}{\FZUCheckboxEmpty}
+\newcommand{\时间充足否框}{\FZUCheckboxEmpty}
+\newcommand{\状态良好是框}{\FZUCheckboxEmpty}
+\newcommand{\状态良好否框}{\FZUCheckboxEmpty}
+% ====================
+
+\newcommand{\MidtermWidth}{16.00cm}
+\newcommand{\中期进展空白高度}{2.35cm}
+\newcommand{\中期问题空白高度}{1.08cm}
+\newcommand{\中期建议空白高度}{1.08cm}
+
+\begin{document}
+\thispagestyle{empty}
+
+\begin{center}
+  \vspace*{0.1cm}
+  {\zihao{-2}\bfseries 福州大学\届次\ 届本科生毕业设计（论文）中期检查表}
+\end{center}
+
+\vspace{0.22cm}
+\noindent
+\begin{tabular}{|p{15.98cm}|}
+\begin{tabular}{>{\centering\arraybackslash}p{1.22cm}|p{2.22cm}|>{\centering\arraybackslash}p{1.22cm}|p{2.22cm}|>{\centering\arraybackslash}p{1.22cm}|p{2.25cm}|>{\centering\arraybackslash}p{1.22cm}|p{2.43cm}}
+\hline
+\rule{0pt}{0.82cm}{\zihao{5}\bfseries 姓\ 名} & \zihao{5}\姓名 &
+\zihao{5}\bfseries 学\ 号 & \zihao{5}\学号 &
+\zihao{5}\bfseries 专\ 业 & \zihao{5}\专业 &
+\zihao{5}\bfseries 学院 & \zihao{5}\学院 \\
+\hline
+\multicolumn{2}{>{\centering\arraybackslash}p{3.44cm}|}{\rule{0pt}{0.82cm}\zihao{5}\bfseries 毕业设计（论文）题目} &
+\multicolumn{6}{p{12.54cm}}{\zihao{5}\hspace{0.3em}\题目} \\
+\hline
+\end{tabular}\tabularnewline
+{\zihao{5}毕业设计（论文）进展情况、主要工作内容：}\par
+\vspace{0.10cm}
+\ifstrempty{\进展情况内容}{\vspace{\中期进展空白高度}}{\zihao{5}\进展情况内容\par}%
+\vspace{0.28cm}
+\noindent\hfill\begin{minipage}[b]{5.9cm}
+  \hspace*{0.55cm}\zihao{5}\raggedright 学生（签字）：\学生签字\par
+  \vspace*{0.08cm}
+  \hspace*{3.10cm}\学生签字年\hspace{0.6em}年\hspace{0.6em}\学生签字月\hspace{0.6em}月\hspace{0.6em}\学生签字日\hspace{0.6em}日
+\end{minipage}\par
+\vspace{0.10cm} \\
+\hline
+\end{tabular}
+
+\vspace{-\arrayrulewidth}
+\noindent
+\begin{tabular}{|>{\centering\arraybackslash}p{15.98cm}|}
+\rule{0pt}{0.62cm}{\zihao{5}\bfseries 以下为指导教师填写} \\
+\hline
+\end{tabular}
+
+\vspace{-\arrayrulewidth}
+\noindent
+\begin{tabular}{|@{}p{15.98cm}@{}|}
+\begin{tabular}{>{\centering\arraybackslash}p{3.48cm}|>{\centering\arraybackslash}p{3.40cm}|>{\centering\arraybackslash}p{2.20cm}|>{\centering\arraybackslash}p{2.20cm}|>{\centering\arraybackslash}p{2.20cm}|>{\centering\arraybackslash}p{2.50cm}}
+\multirow{8}{=}{\centering\zihao{-5}开题情况\\与\\进展情况} &
+\multirow{3}{=}{\centering\zihao{-5}文献综述、\\开题报告\\完成情况} &
+\rule{0pt}{0.74cm}{\zihao{-5}项目} &
+\zihao{-5}已经完成 &
+\zihao{-5}基本完成 &
+\zihao{-5}没有完成 \\
+\cline{3-6}
+ &  & \rule{0pt}{0.68cm}{\zihao{-5}文献综述} & \文献综述已完成框 & \文献综述基本完成框 & \文献综述未完成框 \\
+\cline{3-6}
+ &  & \rule{0pt}{0.68cm}{\zihao{-5}开题报告} & \开题报告已完成框 & \开题报告基本完成框 & \开题报告未完成框 \\
+\cline{2-6}
+ & \multicolumn{4}{p{10.00cm}|}{\rule{0pt}{0.80cm}\zihao{-5}学生是否按时提交毕业设计（论文）开题报告} &
+\centering\arraybackslash\zihao{-5}是\按时提交是框\quad 否\按时提交否框 \\
+\cline{2-6}
+ & \multicolumn{4}{p{10.00cm}|}{\rule{0pt}{0.88cm}\zihao{-5}学生毕业设计（论文）开题报告中拟定的初步方案是否合理、可行} &
+\centering\arraybackslash\zihao{-5}是\方案合理是框\quad 否\方案合理否框 \\
+\cline{2-6}
+ & \multicolumn{4}{p{10.00cm}|}{\rule{0pt}{0.88cm}\zihao{-5}学生开题准备是否充分，开题报告内容填写详细、完整} &
+\centering\arraybackslash\zihao{-5}是\准备充分是框\quad 否\准备充分否框 \\
+\cline{2-6}
+ & \multicolumn{4}{p{10.00cm}|}{\rule{0pt}{0.90cm}\zihao{-5}学生从事设计(论文)时间充足，能每周向指导教师汇报工作进展情况} &
+\centering\arraybackslash\zihao{-5}是\时间充足是框\quad 否\时间充足否框 \\
+\cline{2-6}
+ & \multicolumn{4}{p{10.00cm}|}{\rule{0pt}{0.78cm}\zihao{-5}学生按规定完成设计进度，工作状态良好} &
+\centering\arraybackslash\zihao{-5}是\状态良好是框\quad 否\状态良好否框
+\end{tabular} \\
+\hline
+\end{tabular}
+
+\vspace{-\arrayrulewidth}
+\noindent
+\begin{tabular}{|p{15.98cm}|}
+{\zihao{5}主要存在的问题：}\par
+\vspace{0.12cm}
+\ifstrempty{\主要存在的问题}{\vspace{\中期问题空白高度}}{\zihao{5}\主要存在的问题\par} \\
+\hline
+\end{tabular}
+
+\vspace{-\arrayrulewidth}
+\noindent
+\begin{tabular}{|p{15.98cm}|}
+{\zihao{5}对毕业设计（论文）工作的建议：}\par
+\vspace{0.12cm}
+\ifstrempty{\工作建议}{\vspace{\中期建议空白高度}}{\zihao{5}\工作建议\par} \\
+\hline
+\end{tabular}
+
+\vspace{-\arrayrulewidth}
+\noindent
+\begin{tabular}{|@{}p{15.98cm}@{}|}
+\begin{tabular}{>{\centering\arraybackslash}p{3.48cm}|p{6.74cm}|>{\centering\arraybackslash}p{2.06cm}|>{\centering\arraybackslash}p{3.70cm}}
+\rule{0pt}{0.84cm}{\zihao{-5}指导教师（签字）} & \zihao{-5}\指导教师签字 &
+\zihao{-5}时\ 间 &
+\zihao{-5}\指导教师签字年\hspace{0.5em}年\hspace{0.5em}\指导教师签字月\hspace{0.5em}月\hspace{0.5em}\指导教师签字日\hspace{0.5em}日
+\end{tabular} \\
+\hline
+\end{tabular}
+
+\end{document}

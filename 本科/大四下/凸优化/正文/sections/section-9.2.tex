@@ -1,0 +1,219 @@
+\section{邻近算子}
+
+\label{sec:9-2}
+
+上一节已经把极大单调算子确立为统一母语；本节要做的，是把这门语言翻译成 Hilbert 几何。翻译的关键是：在 Hilbert 空间里，resolvent 不只是一个抽象逆映射，它还等价于“在原目标上加一个二次正则项后求极小值”的操作。邻近算子因此既是解析对象，也是算法模块。第 \ref{chap:10} 章的几乎所有分裂算法，都可以看成在不同位置调用本节定义的 prox。
+
+\subsection{prox 的定义与 resolvent 解释}
+
+\begin{definition}[邻近算子]\label{def:proximal-mapping}
+设 $H$ 为 Hilbert 空间，$f\colon H\to \mathbb R\cup\{+\infty\}$ 为 proper、凸且下半连续的泛函，$\lambda>0$。定义
+\[
+\operatorname{prox}_{\lambda f}(x)
+:=
+\arg\min_{u\in H}
+\left\{
+f(u)+\frac{1}{2\lambda}\|u-x\|^2
+\right\},
+\qquad x\in H.
+\]
+该映射称为 $f$ 的\emph{邻近算子}。
+\end{definition}
+
+\begin{proposition}[prox 是次微分 resolvent]\label{prop:prox-resolvent-subdifferential}
+在定义~\ref{def:proximal-mapping} 的条件下，
+\[
+\operatorname{prox}_{\lambda f}=(I+\lambda \partial f)^{-1}=J_{\lambda\partial f}.
+\]
+特别地，邻近算子是第 \ref{sec:9-1} 节定义~\ref{def:resolvent-monotone-operator} 的 resolvent 在次微分算子上的具体化。
+\end{proposition}
+
+\begin{proof}
+固定 $x\in H$，考虑泛函
+\[
+\Phi_x(u):=f(u)+\frac{1}{2\lambda}\|u-x\|^2.
+\]
+二次项连续且严格凸，故由定义~\ref{def:proximal-mapping} 可知 $\Phi_x$ 的极小点唯一。设其为 $u$。由命题~\ref{prop:subgradient-optimality}，
+\[
+0\in \partial \Phi_x(u).
+\]
+再由第 \ref{sec:5-4} 节定理~\ref{thm:moreau-rockafellar-sum}，
+\[
+\partial \Phi_x(u)=\partial f(u)+\frac{1}{\lambda}(u-x).
+\]
+因此
+\[
+0\in \partial f(u)+\frac{1}{\lambda}(u-x)
+\quad\Longleftrightarrow\quad
+x-u\in \lambda \partial f(u).
+\]
+这正等价于
+\[
+u\in (I+\lambda\partial f)^{-1}(x).
+\]
+由唯一性，$u=\operatorname{prox}_{\lambda f}(x)$，故结论成立。
+\end{proof}
+
+\begin{proposition}[prox 的最优性条件]\label{prop:prox-optimality-condition}
+设 $u=\operatorname{prox}_{\lambda f}(x)$。则下列两条等价：
+\[
+u=\operatorname{prox}_{\lambda f}(x);
+\]
+\[
+0\in \partial f(u)+\frac{1}{\lambda}(u-x).
+\]
+等价地，
+\[
+\frac{x-u}{\lambda}\in \partial f(u).
+\]
+\end{proposition}
+
+\begin{proof}
+这只是命题~\ref{prop:prox-resolvent-subdifferential} 证明中的最优性条件重写。由于
+\[
+u=\operatorname{prox}_{\lambda f}(x)
+\quad\Longleftrightarrow\quad
+x-u\in \lambda \partial f(u),
+\]
+将后式两边同时除以 $\lambda$ 即得所述等价关系。
+\end{proof}
+
+\subsection{非扩张性与 Moreau 分解}
+
+\begin{proposition}[prox 的 firm nonexpansive 性]\label{prop:prox-firm-nonexpansive}
+设 $f\colon H\to \mathbb R\cup\{+\infty\}$ 为 proper、凸且下半连续泛函，$\lambda>0$。则对任意 $x,y\in H$，
+\[
+\|\operatorname{prox}_{\lambda f}(x)-\operatorname{prox}_{\lambda f}(y)\|^2
+\le
+\left\langle
+\operatorname{prox}_{\lambda f}(x)-\operatorname{prox}_{\lambda f}(y),\,
+x-y
+\right\rangle.
+\]
+因此 $\operatorname{prox}_{\lambda f}$ 尤其是 $1$-Lipschitz 的。
+\end{proposition}
+
+\begin{proof}
+记
+\[
+u=\operatorname{prox}_{\lambda f}(x),
+\qquad
+v=\operatorname{prox}_{\lambda f}(y).
+\]
+由命题~\ref{prop:prox-optimality-condition}，
+\[
+\frac{x-u}{\lambda}\in \partial f(u),
+\qquad
+\frac{y-v}{\lambda}\in \partial f(v).
+\]
+再由第 \ref{sec:9-1} 节定理~\ref{thm:subdifferential-maximal-monotone} 所给出的单调性，
+\[
+\left\langle
+\frac{x-u}{\lambda}-\frac{y-v}{\lambda},
+u-v
+\right\rangle\ge 0.
+\]
+乘以 $\lambda$ 得
+\[
+\langle x-y,u-v\rangle-\|u-v\|^2\ge 0,
+\]
+即
+\[
+\|u-v\|^2\le \langle u-v,x-y\rangle.
+\]
+再由 Cauchy--Schwarz 不等式，
+\[
+\|u-v\|^2\le \|u-v\|\,\|x-y\|,
+\]
+从而 $\|u-v\|\le \|x-y\|$。
+\end{proof}
+
+\begin{proposition}[Moreau 分解]\label{prop:moreau-decomposition-prox}
+设 $f\colon H\to \mathbb R\cup\{+\infty\}$ 为 proper、凸且下半连续泛函，$\lambda>0$。则对任意 $x\in H$，
+\[
+x
+=
+\operatorname{prox}_{\lambda f}(x)
++\lambda\operatorname{prox}_{\lambda^{-1}f^\ast}(x/\lambda).
+\]
+\end{proposition}
+
+\begin{proof}
+记
+\[
+u:=\operatorname{prox}_{\lambda f}(x).
+\]
+由命题~\ref{prop:prox-optimality-condition}，
+\[
+\frac{x-u}{\lambda}\in \partial f(u).
+\]
+由第 \ref{sec:6-1} 节命题~\ref{prop:fenchel-young-equality-subgradient}，这等价于
+\[
+u\in \partial f^\ast\!\left(\frac{x-u}{\lambda}\right).
+\]
+将其改写为
+\[
+0\in \partial f^\ast\!\left(\frac{x-u}{\lambda}\right)+\lambda\left(\frac{x-u}{\lambda}-\frac{x}{\lambda}\right).
+\]
+这正是命题~\ref{prop:prox-optimality-condition} 对泛函 $\lambda^{-1}f^\ast$ 和点 $x/\lambda$ 的应用，因此
+\[
+\frac{x-u}{\lambda}
+=
+\operatorname{prox}_{\lambda^{-1}f^\ast}(x/\lambda).
+\]
+整理即可得到 Moreau 分解。
+\end{proof}
+
+\begin{remark}
+命题~\ref{prop:moreau-decomposition-prox} 是第 \ref{sec:6-1} 节 Fenchel 共轭与第 \ref{sec:9-1} 节 resolvent 语言在 Hilbert 空间中的一次精确握手。它说明 prox 从来不只是“解一个带二次项的小问题”，而是原空间与对偶空间之间的一种显式分解。
+\end{remark}
+
+\subsection{典型例子}
+
+\begin{example}[闭凸集投影]
+取 $f=\iota_C$，其中 $C\subset H$ 为非空闭凸集。则
+\[
+\operatorname{prox}_{\lambda \iota_C}(x)
+=
+\arg\min_{u\in C}\frac{1}{2\lambda}\|u-x\|^2
+=
+P_Cx.
+\]
+把这个例子放在这里，是为了直接把第 \ref{sec:3-1} 节定理~\ref{thm:orthogonal-projection} 回收到算法主线：投影就是最基本的 prox。
+\end{example}
+
+\begin{example}[$\ell^1$ 软阈值]
+在 $\mathbb R^n$ 上取
+\[
+f(x)=\|x\|_1.
+\]
+则 $\operatorname{prox}_{\lambda f}$ 逐坐标写成软阈值
+\[
+(\operatorname{prox}_{\lambda\|\cdot\|_1}(x))_i
+=
+\operatorname{sign}(x_i)\max\{|x_i|-\lambda,0\}.
+\]
+把这个例子放在这里，是为了把 Boyd 书中最熟悉的非光滑更新直接识别为 resolvent 的 Euclidean 坍缩。
+\end{example}
+
+\begin{example}[核范数与奇异值阈值]
+在矩阵空间上取
+\[
+f(X)=\|X\|_\ast.
+\]
+则 $\operatorname{prox}_{\lambda f}$ 对应于对奇异值做软阈值。把这个例子放在这里，是为了说明 prox 并不只适用于向量稀疏化；在矩阵补全、低秩恢复和 TV 型模型中，它同样是核心更新模块。
+\end{example}
+
+\subsection*{有限维对照}
+
+Boyd 常把 prox 解释成“加一个二次项后求极小值”，并配以投影和软阈值图形。本节说明，这种解释完全正确，但它在有限维里之所以显得自然，是因为第 \ref{sec:3-1} 节定理~\ref{thm:riesz-representation-hilbert} 允许我们把对偶元素直接看成向量，于是第 \ref{sec:9-1} 节的 resolvent 便被压缩成一个 Euclidean 映射。真正的结构核心不是坐标公式，而是命题~\ref{prop:prox-resolvent-subdifferential}、命题~\ref{prop:prox-firm-nonexpansive} 与命题~\ref{prop:moreau-decomposition-prox}。
+
+\subsection*{习题（待补）}
+
+\begin{exercise}[投影即 prox 占位]
+补一题：对非空闭凸集 $C$，证明 $\operatorname{prox}_{\lambda\iota_C}=P_C$，并说明命题~\ref{prop:prox-firm-nonexpansive} 如何退化为投影的非扩张性。
+\end{exercise}
+
+\begin{exercise}[软阈值桥接题占位]
+补一题：直接计算 $\operatorname{prox}_{\lambda\|\cdot\|_1}$，并利用命题~\ref{prop:moreau-decomposition-prox} 写出相应的对偶分解。
+\end{exercise}

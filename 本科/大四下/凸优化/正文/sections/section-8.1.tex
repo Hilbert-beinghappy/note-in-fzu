@@ -1,0 +1,111 @@
+\section{欧氏空间的退化}
+
+\label{sec:8-1}
+
+这一节是全章的释压阀。前面几章里那些关于弱拓扑、弱紧性、相对内部、Slater 条件和 KKT 乘子的谨慎区分，在 $\mathbb R^n$ 中会出现大规模坍缩：不同范数彼此等价，弱拓扑与通常拓扑一致，闭有界集变成紧集，很多资格条件也随之变得更容易验证。有限维凸优化之所以显得“天然顺手”，并不是因为它遵循另一套理论，而是因为抽象理论中的许多门槛在这里自动消失了。
+
+\subsection{有限维范数与拓扑的一致性}
+
+\begin{proposition}[有限维中的范数等价]\label{prop:finite-dimensional-norm-equivalence}
+设 $X$ 为有限维实向量空间，$\|\cdot\|_a$ 与 $\|\cdot\|_b$ 是 $X$ 上两个范数。则存在常数 $c,C>0$，使得对任意 $x\in X$，
+\[
+c\|x\|_a\le \|x\|_b\le C\|x\|_a.
+\]
+\end{proposition}
+
+\begin{proof}
+在单位球
+\[
+S_a:=\{x\in X:\|x\|_a=1\}
+\]
+上考虑连续函数 $x\mapsto \|x\|_b$。由于 $S_a$ 在有限维空间中是紧集，故该函数取到正的最小值 $m$ 和有限的最大值 $M$。于是对任意非零 $x$，令 $u=x/\|x\|_a$，便有
+\[
+m\le \|u\|_b\le M.
+\]
+两边乘以 $\|x\|_a$ 即得
+\[
+m\|x\|_a\le \|x\|_b\le M\|x\|_a.
+\]
+令 $c=m$、$C=M$ 即可。
+\end{proof}
+
+\begin{proposition}[有限维中弱拓扑与强拓扑一致]\label{prop:finite-dimensional-weak-strong-equivalence}
+设 $X$ 为有限维赋范空间，则第 \ref{sec:3-2} 节定义~\ref{def:weak-topology} 所给出的弱拓扑与范数拓扑一致。
+\end{proposition}
+
+\begin{proof}
+取 $X$ 的一组基 $\{e_1,\dots,e_n\}$，并记其对偶基为 $\{e_1^\ast,\dots,e_n^\ast\}$。若网 $x_\alpha$ 在弱拓扑下收敛到 $x$，则对每个 $i$，
+\[
+e_i^\ast(x_\alpha)\to e_i^\ast(x).
+\]
+因此坐标逐项收敛。有限维中任意范数都与 Euclidean 范数等价，由命题~\ref{prop:finite-dimensional-norm-equivalence} 可知坐标逐项收敛推出范数收敛，所以弱收敛蕴含强收敛。反向蕴含则对任意空间都成立，因为每个连续线性泛函在范数拓扑下本就连续。故两种拓扑一致。
+\end{proof}
+
+\begin{corollary}[有限维中的闭有界紧性]\label{cor:finite-dimensional-compactness}
+设 $X$ 为有限维赋范空间，则子集 $C\subset X$ 在下列三条中彼此等价：
+\begin{enumerate}
+  \item $C$ 闭且有界；
+  \item $C$ 在范数拓扑下紧；
+  \item $C$ 在弱拓扑下紧。
+\end{enumerate}
+\end{corollary}
+
+\begin{proof}
+由 Heine--Borel 定理，闭且有界等价于范数紧。再由命题~\ref{prop:finite-dimensional-weak-strong-equivalence}，弱拓扑与强拓扑一致，故范数紧与弱紧等价。
+\end{proof}
+
+\subsection{存在性与内部概念的有限维简化}
+
+\begin{theorem}[有限维塌缩原则]\label{thm:finite-dimensional-collapse-principle}
+设 $X=\mathbb R^n$。则前七章中与存在性、对偶性和 KKT 相关的许多技术门槛都可以统一简化为有限维表述：
+\begin{enumerate}
+  \item 弱收敛、强收敛与坐标收敛一致；
+  \item 闭有界可行集自动紧，因此第 \ref{sec:5-1} 节直接法中的弱紧性条件可压缩成闭有界性；
+  \item 对非空凸集，拓扑内部、相对内部与第 \ref{sec:4-2} 节中的几何余量更容易协调；
+  \item 第 \ref{sec:7-4} 节定义~\ref{def:kkt-cone-system} 的 KKT 系统在矩阵坐标下变成有限条代数方程与不等式。
+\end{enumerate}
+\end{theorem}
+
+\begin{proof}
+第一条由命题~\ref{prop:finite-dimensional-weak-strong-equivalence} 直接给出。第二条由推论~\ref{cor:finite-dimensional-compactness} 得到，而这正是第 \ref{sec:3-2} 节推论~\ref{cor:hilbert-weak-compactness} 在有限维里的强化版本。第三条的原因在于，有限维凸集的仿射包本身还是有限维欧氏空间，因此相对内部可直接用 Euclidean 邻域刻画，并与常用图形直觉保持一致。第四条则来自于：有限维对偶空间仍是有限维向量空间，连续线性算子都可由矩阵表示，故抽象伴随、乘子与互补松弛都能写成坐标化代数系统。
+\end{proof}
+
+\begin{remark}
+定理~\ref{thm:finite-dimensional-collapse-principle} 的真正价值，是解释 Boyd 书中那些看起来“不言自明”的步骤到底省略了什么。譬如“取极小化列并抽收敛子列”“默认 KKT 乘子是向量”“相对内部和内部差别不大”等叙述，并不是普遍真理，而是有限维塌缩后的副产品。
+\end{remark}
+
+\subsection{典型例子}
+
+\begin{example}[弱紧性与强紧性在有限维中一致]
+在 $X=\mathbb R^n$ 中，任意闭球
+\[
+\{x\in \mathbb R^n:\|x\|_2\le r\}
+\]
+既是范数紧集，也是弱紧集。把这个例子放在这里，是为了把第 \ref{sec:3-2} 节中弱拓扑和强拓扑的技术分工一次性压缩回有限维直觉。
+\end{example}
+
+\begin{example}[相对内部与图形直觉]
+对多面体
+\[
+C=\{x\in \mathbb R^n:Ax\le b\},
+\]
+相对内部可以直接理解为“在其仿射包里留有 Euclidean 余量的点”。把这个例子放在这里，是为了说明 Boyd 中大量关于相对内部和严格可行性的图形叙述，在有限维里是可靠的，但这种可靠性本身来自有限维塌缩。
+\end{example}
+
+\begin{example}[参数向量优化]
+在机器学习和信号处理的标准模型里，参数往往直接属于 $\mathbb R^n$。把这个例子放在这里，是为了提醒读者：很多工程问题之所以能直接调用 Boyd 的有限维工具，不是因为它们先天地排斥无穷维理论，而是因为它们恰好处在定理~\ref{thm:finite-dimensional-collapse-principle} 覆盖的环境中。
+\end{example}
+
+\subsection*{有限维对照}
+
+Boyd 的写法之所以可以把注意力几乎全部放在图像、矩阵和拉格朗日函数上，是因为弱拓扑、弱紧性和对偶空间的技术难点已经被有限维结构吸收了。本节的作用，就是把这种吸收过程显式讲清楚：抽象工具没有消失，它们只是退化成了 Euclidean 背景的默认设置。
+
+\subsection*{习题（待补）}
+
+\begin{exercise}[有限维塌缩占位]
+补一题：用命题~\ref{prop:finite-dimensional-weak-strong-equivalence} 和推论~\ref{cor:finite-dimensional-compactness} 说明为什么有限维闭有界凸优化问题的极小值存在证明可以不用显式引入弱拓扑。
+\end{exercise}
+
+\begin{exercise}[相对内部桥接题占位]
+补一题：对一个具体多面体写出其内部和相对内部，并指出在其仿射包降维后两者如何对应。
+\end{exercise}

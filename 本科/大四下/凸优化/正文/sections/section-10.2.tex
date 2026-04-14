@@ -1,0 +1,235 @@
+\section{Douglas--Rachford 分裂}
+
+\label{sec:10-2}
+
+前向-后向分裂适合处理“一个显式、一个隐式”的和；若两部分都是极大单调算子，直接做前向步往往并不现实。这时更合适的对象不是梯度步，而是反射算子与其平均。Douglas-Rachford 方法正是在这一点上取代了显式梯度：它不去近似 $A+B$，而是把两个 resolvent 组织成一个固定点映射，然后再从固定点中恢复零点。
+
+\subsection{反射算子与迭代定义}
+
+\begin{definition}[反射算子]\label{def:reflection-operator}
+设 $H$ 为 Hilbert 空间，$A\colon H\rightrightarrows H$ 为极大单调算子，$\gamma>0$。定义
+\[
+R_{\gamma A}:=2J_{\gamma A}-I.
+\]
+该映射称为算子 $A$ 的 \emph{反射算子}。
+\end{definition}
+
+\begin{definition}[Douglas--Rachford 迭代]\label{def:douglas-rachford-iteration}
+设 $A,B\colon H\rightrightarrows H$ 为极大单调算子，$\gamma>0$。定义
+\[
+T_{\mathrm{DR}}
+:=
+\frac12\bigl(I+R_{\gamma A}R_{\gamma B}\bigr).
+\]
+给定初值 $z^0\in H$，迭代
+\[
+z^{k+1}=T_{\mathrm{DR}}z^k
+\]
+称为求解
+\[
+0\in Ax+Bx
+\]
+的 \emph{Douglas--Rachford 分裂}。
+\end{definition}
+
+\begin{remark}
+由第 \ref{sec:9-1} 节定理~\ref{thm:minty-surjectivity}，$J_{\gamma A}$ 与 $J_{\gamma B}$ 处处有定义，因此定义~\ref{def:reflection-operator} 和定义~\ref{def:douglas-rachford-iteration} 都是良定的。与第 \ref{sec:10-1} 节不同，这里不要求某一部分是显式可微项；两个块都只通过 resolvent 进入算法。
+\end{remark}
+
+\subsection{固定点与零点恢复}
+
+\begin{proposition}[Douglas--Rachford 固定点与零点]\label{prop:dr-fixed-point-zer-sum}
+设 $A,B$ 为极大单调算子，$\gamma>0$。则有：
+\begin{enumerate}
+  \item 若 $z\in \operatorname{Fix}T_{\mathrm{DR}}$，并令
+  \[
+  x:=J_{\gamma B}z,
+  \]
+  则 $x\in \operatorname{zer}(A+B)$；
+  \item 反过来，若 $x\in \operatorname{zer}(A+B)$，则存在 $z\in \operatorname{Fix}T_{\mathrm{DR}}$ 使 $x=J_{\gamma B}z$。
+\end{enumerate}
+\end{proposition}
+
+\begin{proof}
+先证第一条。设 $z=T_{\mathrm{DR}}z$，即
+\[
+z=\frac12(z+R_{\gamma A}R_{\gamma B}z),
+\]
+从而
+\[
+z=R_{\gamma A}R_{\gamma B}z.
+\]
+记
+\[
+x:=J_{\gamma B}z,
+\qquad
+R_{\gamma B}z=2x-z.
+\]
+由上式和反射的定义，
+\[
+z
+=
+2J_{\gamma A}(R_{\gamma B}z)-R_{\gamma B}z,
+\]
+因此
+\[
+J_{\gamma A}(R_{\gamma B}z)
+=
+\frac12(z+R_{\gamma B}z)
+=
+x.
+\]
+由 resolvent 的定义，
+\[
+z-x\in \gamma Bx,
+\qquad
+R_{\gamma B}z-x=x-z\in \gamma A x.
+\]
+两式相加得到
+\[
+0\in \gamma A x+\gamma Bx,
+\]
+即
+\[
+0\in Ax+Bx.
+\]
+
+再证第二条。若 $x\in \operatorname{zer}(A+B)$，则可取
+\[
+a\in Ax,\qquad b\in Bx,\qquad a+b=0.
+\]
+令
+\[
+z:=x+\gamma b.
+\]
+则
+\[
+z-x\in \gamma Bx,
+\]
+故 $x=J_{\gamma B}z$。同时
+\[
+R_{\gamma B}z=2x-z=x-\gamma b=x+\gamma a,
+\]
+于是
+\[
+R_{\gamma B}z-x\in \gamma A x,
+\]
+故 $x=J_{\gamma A}(R_{\gamma B}z)$。代回反射定义可得
+\[
+R_{\gamma A}R_{\gamma B}z
+=
+2J_{\gamma A}(R_{\gamma B}z)-R_{\gamma B}z
+=
+2x-(x-\gamma b)
+=
+x+\gamma b
+=
+z.
+\]
+于是 $z\in \operatorname{Fix}T_{\mathrm{DR}}$。
+\end{proof}
+
+\subsection{平均映射性质}
+
+\begin{theorem}[Douglas--Rachford 映射是 averaged]\label{thm:douglas-rachford-averaged}
+设 $A,B\colon H\rightrightarrows H$ 为极大单调算子，$\gamma>0$，并假设
+\[
+\operatorname{zer}(A+B)\neq \varnothing.
+\]
+则 $T_{\mathrm{DR}}$ 是 firmly nonexpansive，从而尤其是 averaged 映射。由定义~\ref{def:douglas-rachford-iteration} 生成的序列 $\{z^k\}$ 弱收敛到某个 $\bar z\in \operatorname{Fix}T_{\mathrm{DR}}$，且影子序列
+\[
+x^k:=J_{\gamma B}z^k
+\]
+弱收敛到某个 $\bar x\in \operatorname{zer}(A+B)$。
+\end{theorem}
+
+\begin{proof}
+由 resolvent 的 firm nonexpansive 性，$J_{\gamma A}$ 与 $J_{\gamma B}$ 都是 firmly nonexpansive。于是对任意 $u,v\in H$，
+\[
+\|R_{\gamma A}u-R_{\gamma A}v\|
+=
+\|2J_{\gamma A}u-u-(2J_{\gamma A}v-v)\|
+\le \|u-v\|.
+\]
+故 $R_{\gamma A}$ 非扩张；同理 $R_{\gamma B}$ 也非扩张，于是复合 $R_{\gamma A}R_{\gamma B}$ 仍非扩张。由定义~\ref{def:douglas-rachford-iteration}，
+\[
+T_{\mathrm{DR}}=\frac12 I+\frac12 R_{\gamma A}R_{\gamma B}
+\]
+是 $1/2$-averaged，即 firmly nonexpansive。
+
+再由命题~\ref{prop:dr-fixed-point-zer-sum}，$\operatorname{zer}(A+B)\neq\varnothing$ 蕴含 $\operatorname{Fix}T_{\mathrm{DR}}\neq\varnothing$。于是可像定理~\ref{thm:forward-backward-convergence} 那样，对 averaged 映射使用 Fej\'er 单调与 Opial 引理，得到 $z^k\rightharpoonup \bar z\in \operatorname{Fix}T_{\mathrm{DR}}$。
+
+由于 resolvent 非扩张，$\{x^k\}$ 有界。若 $x^{k_j}\rightharpoonup \bar x$，则由
+\[
+x^{k_j}=J_{\gamma B}z^{k_j},
+\qquad
+z^{k_j}\rightharpoonup \bar z
+\]
+以及 resolvent 图像的闭性可知 $\bar x=J_{\gamma B}\bar z$。再由命题~\ref{prop:dr-fixed-point-zer-sum}，$\bar x\in \operatorname{zer}(A+B)$。因此整个影子序列也弱收敛到某个解。
+\end{proof}
+
+\begin{corollary}[可行性交是 Douglas--Rachford 的特例]\label{cor:dr-feasibility-special-case}
+设 $C,D\subset H$ 为非空闭凸集，并考虑可行性交问题
+\[
+\text{求 }x\in C\cap D.
+\]
+令
+\[
+A=N_C,\qquad B=N_D.
+\]
+则定义~\ref{def:douglas-rachford-iteration} 退化为
+\[
+T_{\mathrm{DR}}
+=
+\frac12\bigl(I+(2P_C-I)(2P_D-I)\bigr),
+\]
+而任意固定点 $\bar z$ 的影子点
+\[
+\bar x=P_D\bar z
+\]
+属于 $C\cap D$。
+\end{corollary}
+
+\begin{proof}
+由第 \ref{sec:5-4} 节推论~\ref{cor:normal-cone-indicator} 与第 \ref{sec:9-2} 节投影例子，
+\[
+J_{\gamma N_C}=P_C,\qquad J_{\gamma N_D}=P_D.
+\]
+于是反射算子写成
+\[
+R_{\gamma N_C}=2P_C-I,\qquad R_{\gamma N_D}=2P_D-I.
+\]
+其余结论由定理~\ref{thm:douglas-rachford-averaged} 和命题~\ref{prop:dr-fixed-point-zer-sum} 直接得到。
+\end{proof}
+
+\begin{remark}
+第 \ref{sec:10-2} 节的意义不只在于可行性交。第 \ref{sec:10-3} 节会看到，ADMM 并不是一套与 Douglas-Rachford 平行的经验算法；恰恰相反，ADMM 可以被看成 Douglas--Rachford 在对偶侧的变量消去形式。也正因为如此，理解反射算子与固定点结构，是理解 ADMM 的最快途径。
+\end{remark}
+
+\subsection{典型例子}
+
+\begin{example}[两个闭凸集的可行性交]
+在例子最基本的情形中，$C$ 与 $D$ 分别代表两个独立约束模块，例如一个数据一致性集合和一个结构先验集合。Douglas-Rachford 的每一步都只需做两次投影与两次反射，却能把可行性交改写成单个固定点问题。这种“把复杂交集拆成简单块”的思想，是大规模模型中最关键的算法动机之一。
+\end{example}
+
+\begin{example}[欧氏空间中的双反射]
+在 $\mathbb R^n$ 中，当 $C$ 与 $D$ 是仿射子空间时，$2P_C-I$ 与 $2P_D-I$ 就是熟悉的镜面对称。把这个例子放在这里，是为了说明 Douglas-Rachford 的几何直觉确实可以在有限维里画出来；但真正支撑它的不是图形，而是定理~\ref{thm:douglas-rachford-averaged} 的平均映射结构。
+\end{example}
+
+\begin{example}[图像恢复中的一致性约束]
+在图像恢复或逆问题中，常把“符合观测”的约束与“满足先验”的约束分开建模，再对两者的交施加 Douglas-Rachford 分裂。把这个例子放在这里，是为了说明可行性交并不只是几何练习，而是后续 ADMM、投影算法和一致性恢复模型的共同母语。
+\end{example}
+
+\subsection*{有限维对照}
+
+Boyd 书里常把 Douglas-Rachford 与交替投影、反射法并列介绍，读起来像几种彼此不同的几何技巧。本节的结论是：它们共享同一个固定点框架。有限维里，反射算子可以直接画成镜像，因而算法看起来很直观；无穷维里，这种图像直觉不再可靠，但定理~\ref{thm:douglas-rachford-averaged} 和命题~\ref{prop:dr-fixed-point-zer-sum} 依然成立，因此 Boyd 中的几何配方其实只是更一般单调算子结构的坍缩版本。
+
+\subsection*{习题（待补）}
+
+\begin{exercise}[反射算子占位]
+补一题：证明对非空闭凸集 $C$，反射算子 $2P_C-I$ 非扩张，并据此解释定义~\ref{def:reflection-operator} 在法锥情形中的几何意义。
+\end{exercise}
+
+\begin{exercise}[可行性交桥接题占位]
+补一题：把一个具体的可行性交模型改写为 $0\in N_Cx+N_Dx$，并写出对应的 Douglas-Rachford 迭代。
+\end{exercise}

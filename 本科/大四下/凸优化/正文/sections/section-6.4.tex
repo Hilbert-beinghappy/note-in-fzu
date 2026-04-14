@@ -1,0 +1,244 @@
+\section{Fenchel-Rockafellar 对偶框架}
+
+\label{sec:6-4}
+
+前面三节把共轭、双共轭与下确界卷积准备齐全之后，对偶理论终于可以被写成一个真正可复用的模板：给定原问题，如何构造其对偶问题？为何对偶目标总是原问题的下界？何时下界可以提升为精确的最优值表达？这些问题在有限维教材中常以拉格朗日函数与 KKT 条件的形式出现，而在无穷维里，它们的统一上位版本就是 Fenchel--Rockafellar 对偶。第 \ref{sec:5-3} 节定义~\ref{def:subdifferential} 给出的局部最优性语言，以及第 \ref{sec:5-4} 节定理~\ref{thm:moreau-rockafellar-sum} 中已经出现的资格条件机制，都会在这里被收束为一个原--对偶总模板。第 \ref{sec:7-1} 节开始的广义不等式与第 \ref{sec:7-4} 节的无穷维 KKT，都会直接建立在这一节的框架之上。
+
+\subsection{原问题、对偶问题与弱对偶}
+
+\begin{definition}[Fenchel 型原--对偶对]\label{def:fenchel-primal-dual-pair}
+设 $X,Y$ 为 Banach 空间，$A\colon X\to Y$ 为有界线性算子，$f\colon X\to \mathbb R\cup\{+\infty\}$ 与 $g\colon Y\to \mathbb R\cup\{+\infty\}$ 为 proper 凸泛函。定义\emph{原问题}
+\[
+p^\star:=\inf_{x\in X}\{f(x)+g(Ax)\},
+\]
+以及对应的\emph{对偶问题}
+\[
+d^\star:=\sup_{y^\ast\in Y^\ast}\{-f^\ast(-A^\ast y^\ast)-g^\ast(y^\ast)\}.
+\]
+数量
+\[
+p^\star-d^\star
+\]
+称为\emph{对偶间隙}。
+\end{definition}
+
+\begin{proposition}[弱对偶]\label{prop:fenchel-weak-duality}
+对任意 $x\in X$ 与任意 $y^\ast\in Y^\ast$，都有
+\[
+-f^\ast(-A^\ast y^\ast)-g^\ast(y^\ast)\le f(x)+g(Ax).
+\]
+因此
+\[
+d^\star\le p^\star.
+\]
+\end{proposition}
+
+\begin{proof}
+对 $f$ 应用命题~\ref{prop:fenchel-young-inequality}，并令对偶变量取为 $-A^\ast y^\ast$，得
+\[
+f(x)+f^\ast(-A^\ast y^\ast)\ge \langle -A^\ast y^\ast,x\rangle=-\langle y^\ast,Ax\rangle.
+\]
+对 $g$ 应用同一不等式，得
+\[
+g(Ax)+g^\ast(y^\ast)\ge \langle y^\ast,Ax\rangle.
+\]
+两式相加即得
+\[
+f(x)+g(Ax)+f^\ast(-A^\ast y^\ast)+g^\ast(y^\ast)\ge 0,
+\]
+移项得到
+\[
+-f^\ast(-A^\ast y^\ast)-g^\ast(y^\ast)\le f(x)+g(Ax).
+\]
+再对左边取上确界、对右边取下确界，便得到
+\[
+d^\star\le p^\star.
+\]
+\end{proof}
+
+\begin{remark}
+命题~\ref{prop:fenchel-weak-duality} 的意义在于：对偶问题从来不会给出“过高的承诺”。它所产生的任何值，都是原问题最优值的合法下界。真正困难的是判断这个下界是否精确，也即对偶间隙是否为零；这正是资格条件要解决的问题。
+\end{remark}
+
+\subsection{资格条件}
+
+\begin{definition}[Fenchel 对偶的资格条件]\label{def:constraint-qualification-fenchel}
+设 $(f,g,A)$ 如定义~\ref{def:fenchel-primal-dual-pair}。若存在某个 $x_0\in \operatorname{dom}f$ 使得 $Ax_0\in \operatorname{dom}g$ 且 $g$ 在 $Ax_0$ 处连续，则称该三元组满足\emph{Fenchel 型资格条件}。
+\end{definition}
+
+\begin{remark}
+定义~\ref{def:constraint-qualification-fenchel} 是本章采用的 Banach/Hilbert 常用版本。更一般的局部凸空间理论常把资格条件写成
+\[
+0\in \operatorname{core}(\operatorname{dom}g-A(\operatorname{dom}f)),
+\]
+这里的 core 正是第 \ref{sec:4-2} 节引入的代数内部。为了保持正文主线紧凑，本节把证明建立在连续性资格条件上，而把更一般版本留作前瞻备注。
+\end{remark}
+
+\subsection{Fenchel--Rockafellar 对偶定理}
+
+\begin{theorem}[Fenchel--Rockafellar 对偶定理]\label{thm:fenchel-rockafellar-duality}
+设 $X,Y$ 为 Banach 空间，$A\colon X\to Y$ 为有界线性算子，$f\colon X\to \mathbb R\cup\{+\infty\}$ 与 $g\colon Y\to \mathbb R\cup\{+\infty\}$ 为 proper、凸且下半连续的泛函。若定义~\ref{def:constraint-qualification-fenchel} 的资格条件成立，则
+\[
+\inf_{x\in X}\{f(x)+g(Ax)\}
+=
+\sup_{y^\ast\in Y^\ast}\{-f^\ast(-A^\ast y^\ast)-g^\ast(y^\ast)\}.
+\]
+换言之，在该资格条件下对偶间隙为零，即发生强对偶。
+\end{theorem}
+
+\begin{proof}
+定义扰动函数
+\[
+F(x,y):=f(x)+g(Ax+y),\qquad (x,y)\in X\times Y,
+\]
+以及值函数
+\[
+\varphi(y):=\inf_{x\in X}F(x,y)=\inf_{x\in X}\{f(x)+g(Ax+y)\}.
+\]
+显然
+\[
+\varphi(0)=\inf_{x\in X}\{f(x)+g(Ax)\}=p^\star.
+\]
+
+首先说明 $\varphi$ 是 proper、凸且下半连续的，并且在 $0$ 处连续。proper 性来自资格条件中的点 $x_0$：由于 $f(x_0)<+\infty$ 且 $g$ 在 $Ax_0$ 处连续，故存在 $0$ 的邻域 $U\subset Y$ 使得对所有 $y\in U$，
+\[
+g(Ax_0+y)<+\infty.
+\]
+于是对所有 $y\in U$，
+\[
+\varphi(y)\le f(x_0)+g(Ax_0+y)<+\infty.
+\]
+又因 $g$ 在 $Ax_0$ 处连续，右侧随 $y\to 0$ 有界，从而 $\varphi$ 在 $0$ 的邻域上有上界。另一方面，作为一族仿射变换下凸函数的下确界，$\varphi$ 自身仍为凸。凸函数在内点附近若局部有上界，则连续，故 $\varphi$ 在 $0$ 处连续。由连续性可知 $\varphi$ 在 $0$ 处当然下半连续。
+
+接着计算 $\varphi^\ast$。对任意 $y^\ast\in Y^\ast$，
+\[
+\varphi^\ast(y^\ast)
+=
+\sup_{y\in Y}\{\langle y^\ast,y\rangle-\varphi(y)\}
+=
+\sup_{x\in X,\ y\in Y}\{\langle y^\ast,y\rangle-f(x)-g(Ax+y)\}.
+\]
+令
+\[
+z:=Ax+y,
+\]
+则 $y=z-Ax$，于是
+\[
+\varphi^\ast(y^\ast)
+=
+\sup_{x\in X,\ z\in Y}\{\langle y^\ast,z-Ax\rangle-f(x)-g(z)\}.
+\]
+整理得
+\[
+\varphi^\ast(y^\ast)
+=
+\sup_{x\in X}\{-\langle A^\ast y^\ast,x\rangle-f(x)\}
+\;+\;
+\sup_{z\in Y}\{\langle y^\ast,z\rangle-g(z)\}.
+\]
+因此
+\[
+\varphi^\ast(y^\ast)=f^\ast(-A^\ast y^\ast)+g^\ast(y^\ast).
+\]
+
+由于 $\varphi$ 是 proper、凸且在 $0$ 处连续，故由第 \ref{sec:6-2} 节定理~\ref{thm:fenchel-moreau}，
+\[
+\varphi(0)=\varphi^{\ast\ast}(0)
+=
+\sup_{y^\ast\in Y^\ast}\{-\varphi^\ast(y^\ast)\}.
+\]
+代入上一步的表达式，得到
+\[
+p^\star
+=
+\sup_{y^\ast\in Y^\ast}\{-f^\ast(-A^\ast y^\ast)-g^\ast(y^\ast)\}
+=
+d^\star.
+\]
+故强对偶成立。
+\end{proof}
+
+\begin{remark}
+定理~\ref{thm:fenchel-rockafellar-duality} 的证明清楚地表明：资格条件的作用，是保证扰动值函数 $\varphi$ 在原点附近足够正则，从而能够通过定理~\ref{thm:fenchel-moreau} 被双共轭完全重建。也就是说，强对偶并不是神奇的值相等，而是“扰动问题在原点没有病态缺口”这一事实的结果。
+\end{remark}
+
+\subsection{最优性条件与 KKT 接口}
+
+\begin{corollary}[Fenchel 对偶的次微分最优性条件]\label{cor:fenchel-kkt-subdifferential}
+在定理~\ref{thm:fenchel-rockafellar-duality} 的假设下，设 $\bar x\in X$ 与 $\bar y^\ast\in Y^\ast$ 分别是原问题与对偶问题的最优解。则下列条件等价于原--对偶最优性：
+\[
+-A^\ast \bar y^\ast\in \partial f(\bar x),
+\qquad
+\bar y^\ast\in \partial g(A\bar x).
+\]
+等价地，
+\[
+0\in \partial f(\bar x)+A^\ast \partial g(A\bar x).
+\]
+\end{corollary}
+
+\begin{proof}
+由最优性与强对偶，
+\[
+f(\bar x)+g(A\bar x)
+=
+-f^\ast(-A^\ast \bar y^\ast)-g^\ast(\bar y^\ast).
+\]
+整理为
+\[
+f(\bar x)+f^\ast(-A^\ast \bar y^\ast)
+=
+-\langle \bar y^\ast,A\bar x\rangle,
+\qquad
+g(A\bar x)+g^\ast(\bar y^\ast)
+=
+\langle \bar y^\ast,A\bar x\rangle.
+\]
+于是对 $f$ 与 $g$ 分别都在 Fenchel--Young 不等式中取等。由命题~\ref{prop:fenchel-young-equality-subgradient}，便得到
+\[
+-A^\ast \bar y^\ast\in \partial f(\bar x),
+\qquad
+\bar y^\ast\in \partial g(A\bar x).
+\]
+反过来，若这两条次微分条件成立，则再次应用命题~\ref{prop:fenchel-young-equality-subgradient} 可知两边分别在 Fenchel--Young 不等式中取等，故原目标值与对偶目标值相等。结合命题~\ref{prop:fenchel-weak-duality}，便知两者均为最优。
+\end{proof}
+
+\begin{remark}
+推论~\ref{cor:fenchel-kkt-subdifferential} 是第 \ref{sec:7-1} 节广义不等式和第 \ref{sec:7-4} 节无穷维 KKT 系统的直接前导接口。有限维中常见的拉格朗日乘子、驻点条件与互补松弛，在本书后文都会被重新写回这里的次微分与伴随算子语言。
+\end{remark}
+
+\subsection{典型例子}
+
+\begin{example}[线性算子复合的原--对偶模板]
+设 $A\colon X\to Y$ 为有界线性算子，原问题
+\[
+\inf_{x\in X}\{f(x)+g(Ax)\}
+\]
+的对偶正是
+\[
+\sup_{y^\ast\in Y^\ast}\{-f^\ast(-A^\ast y^\ast)-g^\ast(y^\ast)\}.
+\]
+把这个例子放在这里，是为了强调第 \ref{sec:7-2} 节抽象标准型、第 \ref{sec:10-3} 节 ADMM 以及大量逆问题模型，其实都只是这一统一模板的具体化。
+\end{example}
+
+\begin{example}[有限维拉格朗日对偶]
+当 $X=\mathbb R^n$、$Y=\mathbb R^m$ 且 $A$ 是矩阵时，定义~\ref{def:fenchel-primal-dual-pair} 退化为 Boyd 书中最熟悉的有限维对偶模板。把这个例子放在这里，是为了说明 Boyd 第 5 章的拉格朗日对偶并不是另一套平行理论，而是 Fenchel--Rockafellar 对偶在有限维 Hilbert 空间中的坍缩。
+\end{example}
+
+\begin{example}[资源约束的价差解释]
+在管理科学模型里，$g(Ax)$ 常用来编码资源或风险约束。对偶变量 $y^\ast$ 则可解释为资源影子价格或边际罚率。把这个例子放在这里，是为了强调对偶变量不只是证明中的中介量；在许多应用场景中，它本身就携带了可解释的经济或工程信息。
+\end{example}
+
+\subsection*{有限维对照}
+
+Boyd 书中关于强对偶、对偶间隙与 KKT 的叙述，往往借助 Slater 条件和拉格朗日函数在 $\mathbb R^n$ 中展开。本节说明，这些有限维公式真正依赖的核心结构是：定义~\ref{def:fenchel-primal-dual-pair} 给出的原--对偶模板、命题~\ref{prop:fenchel-weak-duality} 给出的下界机制，以及定理~\ref{thm:fenchel-rockafellar-duality} 所控制的资格条件。有限维之所以显得简单，是因为很多正则性在那里自动满足，而不是因为对偶理论只属于矩阵世界。
+
+\subsection*{习题（待补）}
+
+\begin{exercise}[弱对偶占位]\label{exr:weak-duality-placeholder}
+补一题：对一个具体的原--对偶对，逐步验证命题~\ref{prop:fenchel-weak-duality}，并写出它给出的显式对偶下界。
+\end{exercise}
+
+\begin{exercise}[Fenchel--Rockafellar 桥接题占位]\label{exr:fenchel-rockafellar-placeholder}
+补一题：在有限维矩阵模型中应用定理~\ref{thm:fenchel-rockafellar-duality}，并把推论~\ref{cor:fenchel-kkt-subdifferential} 翻译成 Boyd 风格的 KKT 条件。
+\end{exercise}

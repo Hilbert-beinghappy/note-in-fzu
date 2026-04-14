@@ -1,0 +1,199 @@
+\section{下确界卷积}
+
+\label{sec:6-3}
+
+前两节说明，共轭把“求和难题”部分转化成了对偶空间里的代数运算。但在建模和算法中，我们经常还想做另一件事：把两个泛函组合成一个更平滑或更易分裂的对象。下确界卷积正是这个目的的标准工具。它一方面把两个代价通过“变量拆分后再求最优拼接”的方式组合起来，另一方面又在共轭侧转化为简单的求和，因此既是 Moreau 包络与平滑化的核心来源，也是第 9 至 10 章算法中变量分裂思想的代数前身。
+
+\subsection{下确界卷积的定义}
+
+\begin{definition}[下确界卷积]\label{def:infimal-convolution}
+设 $X$ 为 Banach 空间，$f,g\colon X\to \mathbb R\cup\{+\infty\}$ 为 proper 泛函。定义它们的\emph{下确界卷积}为
+\[
+(f\square g)(x):=\inf_{y\in X}\{f(y)+g(x-y)\},\qquad x\in X.
+\]
+这一运算也常记作 infimal convolution。
+\end{definition}
+
+\begin{proposition}[下确界卷积保持凸性]\label{prop:infimal-convolution-convexity}
+若 $f,g$ 为 proper 凸泛函，则 $f\square g$ 仍是凸泛函。若再假设其中一个函数连续并且另一个下半连续，则 $f\square g$ 在相应点上也是下半连续的。
+\end{proposition}
+
+\begin{proof}
+任取 $x_1,x_2\in X$ 与 $\lambda\in[0,1]$。对任意 $\varepsilon>0$，可选 $y_1,y_2\in X$ 使
+\[
+f(y_i)+g(x_i-y_i)\le (f\square g)(x_i)+\varepsilon,\qquad i=1,2.
+\]
+由凸性，
+\[
+f(\lambda y_1+(1-\lambda)y_2)\le \lambda f(y_1)+(1-\lambda)f(y_2),
+\]
+且
+\[
+g(\lambda(x_1-y_1)+(1-\lambda)(x_2-y_2))
+\le
+\lambda g(x_1-y_1)+(1-\lambda)g(x_2-y_2).
+\]
+注意
+\[
+\lambda(x_1-y_1)+(1-\lambda)(x_2-y_2)
+=
+(\lambda x_1+(1-\lambda)x_2)-(\lambda y_1+(1-\lambda)y_2).
+\]
+故
+\[
+(f\square g)(\lambda x_1+(1-\lambda)x_2)
+\le
+\lambda(f\square g)(x_1)+(1-\lambda)(f\square g)(x_2)+\varepsilon.
+\]
+令 $\varepsilon\downarrow 0$ 得凸性。下半连续性部分来自定义中的下确界与第 \ref{sec:5-4} 节定理~\ref{thm:moreau-rockafellar-sum} 相同的资格条件机制，这里不再展开一般证明。
+\end{proof}
+
+\subsection{共轭与下确界卷积交换}
+
+\begin{theorem}[下确界卷积的共轭交换公式]\label{thm:conjugate-infimal-convolution}
+设 $f,g\colon X\to \mathbb R\cup\{+\infty\}$ 为 proper 泛函，则对任意 $x^\ast\in X^\ast$，
+\[
+(f\square g)^\ast(x^\ast)=f^\ast(x^\ast)+g^\ast(x^\ast).
+\]
+\end{theorem}
+
+\begin{proof}
+由定义~\ref{def:infimal-convolution}，
+\[
+(f\square g)^\ast(x^\ast)
+=
+\sup_{x\in X}\left\{\langle x^\ast,x\rangle-\inf_{y\in X}[f(y)+g(x-y)]\right\}.
+\]
+交换上确界与下确界后，可写为
+\[
+(f\square g)^\ast(x^\ast)
+=
+\sup_{x,y\in X}\{\langle x^\ast,x\rangle-f(y)-g(x-y)\}.
+\]
+令 $z=x-y$，则 $x=y+z$，因此
+\[
+\langle x^\ast,x\rangle-f(y)-g(x-y)
+=
+\langle x^\ast,y\rangle-f(y)+\langle x^\ast,z\rangle-g(z).
+\]
+于是
+\[
+(f\square g)^\ast(x^\ast)
+=
+\sup_{y\in X}\{\langle x^\ast,y\rangle-f(y)\}
+\;+\;
+\sup_{z\in X}\{\langle x^\ast,z\rangle-g(z)\}.
+\]
+右边正是
+\[
+f^\ast(x^\ast)+g^\ast(x^\ast).
+\]
+\end{proof}
+
+\begin{remark}
+定理~\ref{thm:conjugate-infimal-convolution} 是本节的代数核心。它说明：原空间里的“先拆变量、再取下确界”在对偶空间里恰好变成简单的求和。第 \ref{sec:5-4} 节命题~\ref{prop:subdifferential-linear-pullback} 与定理~\ref{thm:moreau-rockafellar-sum} 告诉我们，次微分演算同样依赖这种“在原空间难、在对偶空间易”的交换机制。
+\end{remark}
+
+\subsection{Moreau 包络}
+
+\begin{definition}[Moreau 包络]\label{def:moreau-envelope}
+设 $H$ 为 Hilbert 空间，$f\colon H\to \mathbb R\cup\{+\infty\}$ 为 proper 泛函，$\lambda>0$。定义
+\[
+e_\lambda f(x):=\inf_{y\in H}\left\{f(y)+\frac{1}{2\lambda}\|x-y\|^2\right\}.
+\]
+该函数称为 $f$ 的\emph{Moreau 包络}。它正是 $f$ 与二次惩罚项
+\[
+q_\lambda(x):=\frac{1}{2\lambda}\|x\|^2
+\]
+的下确界卷积。
+\end{definition}
+
+\begin{proposition}[Moreau 包络的共轭]\label{prop:moreau-envelope-conjugate}
+设 $H$ 为 Hilbert 空间，$f\colon H\to \mathbb R\cup\{+\infty\}$ 为 proper 泛函。则
+\[
+(e_\lambda f)^\ast(v)=f^\ast(v)+\frac{\lambda}{2}\|v\|^2,\qquad v\in H.
+\]
+\end{proposition}
+
+\begin{proof}
+由定义~\ref{def:moreau-envelope}，
+\[
+e_\lambda f=f\square q_\lambda.
+\]
+再由定理~\ref{thm:conjugate-infimal-convolution}，
+\[
+(e_\lambda f)^\ast=f^\ast+q_\lambda^\ast.
+\]
+因此只需计算 $q_\lambda^\ast$。对任意 $v\in H$，
+\[
+q_\lambda^\ast(v)
+=
+\sup_{x\in H}\left\{\langle v,x\rangle-\frac{1}{2\lambda}\|x\|^2\right\}.
+\]
+把右边配方可得
+\[
+\langle v,x\rangle-\frac{1}{2\lambda}\|x\|^2
+=
+-\frac{1}{2\lambda}\|x-\lambda v\|^2+\frac{\lambda}{2}\|v\|^2.
+\]
+故上确界在 $x=\lambda v$ 处取到，且
+\[
+q_\lambda^\ast(v)=\frac{\lambda}{2}\|v\|^2.
+\]
+代回即得
+\[
+(e_\lambda f)^\ast(v)=f^\ast(v)+\frac{\lambda}{2}\|v\|^2.
+\]
+\end{proof}
+
+\subsection{典型例子}
+
+\begin{example}[两个指标函数与 Minkowski 和]
+设 $A,B\subset X$ 为非空集合。则
+\[
+(\iota_A\square \iota_B)(x)=
+\begin{cases}
+0, & x\in A+B,\\
++\infty, & x\notin A+B,
+\end{cases}
+\]
+其中
+\[
+A+B:=\{a+b:a\in A,\ b\in B\}
+\]
+是 Minkowski 和。把这个例子放在这里，是为了说明下确界卷积是集合运算的函数化版本：在指标函数层面，它正对应于集合的加法。
+\end{example}
+
+\begin{example}[Huber 平滑与 Moreau 包络]
+在 $\mathbb R$ 上取 $f(t)=|t|$，则其 Moreau 包络给出著名的 Huber 型平滑：
+\[
+e_\lambda f(x)=
+\begin{cases}
+\dfrac{x^2}{2\lambda}, & |x|\le \lambda,\\[4pt]
+|x|-\dfrac{\lambda}{2}, & |x|>\lambda.
+\end{cases}
+\]
+把这个例子放在这里，是为了给 Boyd 读者一个最熟悉的有限维坍缩对象：不可微绝对值经过下确界卷积后变成了分段光滑的 Huber 损失。
+\end{example}
+
+\begin{example}[正则化分裂模型]
+对
+\[
+F(x)=\varphi(Ax)+\psi(x),
+\]
+第 \ref{sec:5-4} 节中的次微分演算告诉我们如何写最优性条件，而本节则说明若把某一项替换为 Moreau 包络，就能得到更平滑的近似模型。把这个例子放在这里，是为了直接接通第 9 章 Moreau--Yosida 正则化与第 10 章变量分裂算法。
+\end{example}
+
+\subsection*{有限维对照}
+
+Boyd 书里对 Huber 损失、平滑近似与变量分裂的讨论，经常以具体矩阵模型和一维图像展开。本节说明，这些对象背后的统一代数恰恰是定义~\ref{def:infimal-convolution} 与定理~\ref{thm:conjugate-infimal-convolution}。有限维里看上去是“技巧”的平滑与分裂，在无穷维里其实是一种由共轭理论控制的结构性变换。
+
+\subsection*{习题（待补）}
+
+\begin{exercise}[下确界卷积占位]\label{exr:infimal-convolution-placeholder}
+补一题：对两个具体的凸函数计算其下确界卷积，并验证定理~\ref{thm:conjugate-infimal-convolution} 在该例中的公式。
+\end{exercise}
+
+\begin{exercise}[Moreau 包络桥接题占位]\label{exr:moreau-envelope-placeholder}
+补一题：从例中的绝对值函数出发计算 Moreau 包络，并解释它为何会自然导向 Huber 平滑和近端算法。
+\end{exercise}

@@ -1,0 +1,121 @@
+\section{完备性与 Polish 空间}
+
+\label{sec:1-3}
+
+到这里，读者已经看到：仅有“正确的极限语言”和“完备性带来的 Baire 性质”还不足以支撑后文全部内容。第 \ref{chap:00} 章真正要追问的是：为什么优化与随机过程的默认舞台常常不是任意 Banach 空间，而是 Polish 空间？原因很直接。后文既要讨论极小值存在，又要讨论 Borel 结构、概率测度和可测选择；这就要求状态空间同时具备完备性、可分性和稳定的可测结构。
+
+Polish 空间正是这些要求的交汇点。它既保留了上一节的完备性力量，又给出了随机过程、路径空间和测度论真正可操作的状态空间类别。对本书来说，Polish 空间不是描述集合论中的漂亮名词，而是“把优化对象、概率对象和拓扑对象放在同一个舞台上”的最常用答案。
+
+\subsection{可完备度量化与 Polish 空间}
+
+\begin{definition}[可完备度量化]\label{def:completely-metrizable}
+拓扑空间 $X$ 称为\emph{可完备度量化}的，若存在一个与其拓扑相容的完备度量 $d$。换言之，$X$ 的拓扑可以由某个完备度量诱导出来。
+\end{definition}
+
+\begin{definition}[Polish 空间]\label{def:polish-space}
+若拓扑空间 $X$ 既可分又可完备度量化，则称 $X$ 为\emph{Polish 空间}。
+\end{definition}
+
+由定理~\ref{thm:baire-complete} 可知，每个可完备度量化空间都是 Baire 空间；因此每个 Polish 空间自动满足命题~\ref{prop:baire-equivalent} 的全部等价条件。换言之，Polish 空间不仅“测度上好用”，也“范畴上不坏”。
+
+\subsection{开子空间与 $G_\delta$ 子集}
+
+\begin{theorem}[开子空间的可完备度量化]\label{thm:open-subspace-completely-metrizable}
+设 $X$ 为可完备度量化空间，$U\subseteq X$ 为开集。则 $U$ 也是可完备度量化空间。
+\end{theorem}
+
+\begin{proof}
+取与 $X$ 的拓扑相容的完备度量 $d$。若 $U=X$ 结论显然，下面设 $U\neq X$，并记 $F:=X\setminus U$。对 $x\in U$ 定义
+\[
+\Phi(x)=\left(x,\frac{1}{d(x,F)}\right)\in X\times \mathbb R.
+\]
+由于 $F$ 闭，函数 $x\mapsto d(x,F)$ 在 $U$ 上连续且严格为正，因此 $\Phi$ 连续。显然它是单射，而投影到第一坐标给出其像上的连续逆映射，所以 $\Phi$ 是 $U$ 到 $\Phi(U)$ 的同胚。
+
+下证 $\Phi(U)$ 在 $X\times\mathbb R$ 中闭。设 $\Phi(x_n)\to (x,t)$。则 $x_n\to x$ 且 $1/d(x_n,F)\to t$。由于距离到闭集的函数连续，得到
+\[
+d(x_n,F)\to d(x,F).
+\]
+若 $x\in F$，则 $d(x,F)=0$，从而 $d(x_n,F)\to 0$，这将迫使 $1/d(x_n,F)\to +\infty$，与其在 $\mathbb R$ 中收敛到 $t$ 矛盾。因此 $d(x,F)>0$，即 $x\in U$。再由连续性可得
+\[
+t=\lim_{n\to\infty}\frac{1}{d(x_n,F)}=\frac{1}{d(x,F)}.
+\]
+所以 $(x,t)=\Phi(x)\in \Phi(U)$，闭性得证。
+
+因为 $X\times\mathbb R$ 在乘积拓扑下仍可由完备度量诱导，而闭子空间保持完备性，故 $\Phi(U)$ 可完备度量化。再由 $U\cong \Phi(U)$，得到 $U$ 可完备度量化。
+\end{proof}
+
+\begin{corollary}[开子空间的 Polish 性]\label{cor:open-polish}
+Polish 空间的任意开子空间仍是 Polish 空间。
+\end{corollary}
+
+\begin{proof}
+开子空间继承可分性；再由定理~\ref{thm:open-subspace-completely-metrizable} 继承可完备度量化。
+\end{proof}
+
+\begin{proposition}[可数乘积保持 Polish 性]\label{prop:countable-product-polish}
+设 $\{X_n\}_{n\ge1}$ 为一列 Polish 空间，则乘积空间 $\prod_{n\ge1}X_n$ 仍是 Polish 空间。
+\end{proposition}
+
+\begin{proof}
+对每个 $n$ 取有界完备度量 $d_n\le 1$ 诱导 $X_n$ 的拓扑。定义
+\[
+D(x,y)=\sum_{n=1}^{\infty}2^{-n}d_n(x_n,y_n),\qquad x=(x_n),\ y=(y_n).
+\]
+则 $D$ 诱导乘积拓扑。若 $(x^{(m)})_{m\ge1}$ 是 $D$-Cauchy 列，则对每个固定 $n$，坐标列 $x_n^{(m)}$ 在 $(X_n,d_n)$ 中为 Cauchy，从而收敛到某个 $x_n\in X_n$。由逐坐标收敛和定义可知 $x^{(m)}\to (x_n)$，故 $D$ 完备。可分性来自每个 $X_n$ 的可数稠密子集取有限支近似的标准构造。
+\end{proof}
+
+\begin{theorem}[$G_\delta$ 子集的 Polish 性]\label{thm:gdelta-polish}
+设 $X$ 为 Polish 空间，$G\subseteq X$ 为 $G_\delta$ 子集。则 $G$ 仍为 Polish 空间。
+\end{theorem}
+
+\begin{proof}
+取开集列 $\{U_n\}_{n\ge1}$ 使
+\[
+G=\bigcap_{n=1}^{\infty}U_n.
+\]
+由推论~\ref{cor:open-polish}，每个 $U_n$ 都是 Polish 空间。考虑对角嵌入
+\[
+\Delta\colon G\to \prod_{n=1}^{\infty}U_n,\qquad \Delta(x)=(x,x,\dots).
+\]
+这是一个同胚到其像的映射。其像恰是满足各坐标相等的对角集；由于乘积空间是 Hausdorff 的，对角集为闭集。由命题~\ref{prop:countable-product-polish}，$\prod_n U_n$ 是 Polish 空间，闭子空间仍是 Polish 空间，因此 $G$ 是 Polish 空间。
+\end{proof}
+
+\paragraph{关于 $G_\delta$ 判别}
+
+\begin{remark}
+定理~\ref{thm:gdelta-polish} 给出了本书最常用的一个判别原则：当一个空间已经嵌在某个 Polish 空间里时，只要能证明它是一个 $G_\delta$ 子集，往往就已经足够恢复完整的 Polish 结构。后文讨论可行集、路径空间和策略空间时，这条原则会反复使用。
+\end{remark}
+
+\subsection{典型模型}
+
+\begin{example}[欧氏空间与可分 Banach 空间]\label{ex:rn-separable-banach}
+$\mathbb R^n$ 在通常欧氏度量下是完备且可分的，因此是 Polish 空间。更一般地，任何可分 Banach 空间在其范数度量下也是 Polish 空间。把这些例子放在这里，是为了说明 Boyd 书的整个有限维世界，以及后文大部分 Hilbert 空间算法模型，天然都生活在定义~\ref{def:polish-space} 的框架之中。
+\end{example}
+
+\begin{example}[标准 Baire 空间 $\mathbb N^{\mathbb N}$]\label{ex:baire-space}
+将 $\mathbb N$ 赋予离散拓扑，并在乘积空间 $\mathbb N^{\mathbb N}$ 上考虑度量
+\[
+d(\alpha,\beta)=\sum_{n=1}^{\infty}2^{-n}\mathbf 1_{\{\alpha_n\neq \beta_n\}}.
+\]
+则这是一个完备可分度量空间，因此是 Polish 空间。把它放在这里，是为了给下一节做准备：标准 Baire 空间在描述集合论中扮演“可数编码空间”的角色，很多 Suslin 与 Lusin 结构都可以从它出发进行参数化。
+\end{example}
+
+\begin{example}[应用触点：路径空间与随机优化]\label{ex:path-space-polish}
+设 $C([0,T])$ 配以一致范数，则它是可分 Banach 空间，故由例~\ref{ex:rn-separable-banach} 为 Polish 空间。把这个例子放在这里，是为了说明后文最优控制与随机过程的状态轨道空间，往往并不是抽象的“任意函数集”，而是一个具有稳定 Borel 结构的 Polish 空间。
+\end{example}
+
+本节因此回答了第 \ref{chap:00} 章中的第三个问题：为什么后文在谈随机过程、控制轨道和可测优化时，会反复把 Polish 空间当作默认舞台。下一节还要继续向外推广一步，因为实际建模里出现的状态空间，未必总是以 Polish 形式直接给出，它们常常更像某个 Polish 空间的连续像。
+
+\subsection*{有限维对照}
+
+在有限维中，“开集仍然好”“可数交仍然可控”这些性质几乎从不被单独强调，因为 $\mathbb R^n$ 的闭子集、开子集和很多自然出现的约束集都自动继承良好结构。本节把这种直觉抽象成三个真正可复用的结论：定理~\ref{thm:open-subspace-completely-metrizable}、命题~\ref{prop:countable-product-polish} 与定理~\ref{thm:gdelta-polish}。
+
+\subsection*{习题（待补）}
+
+\begin{exercise}[开子空间完备化占位]\label{exr:open-subspace-placeholder}
+补一题：要求用定理~\ref{thm:open-subspace-completely-metrizable} 构造 $(0,1)$ 上一个与通常拓扑相容但完备的度量。
+\end{exercise}
+
+\begin{exercise}[$G_\delta$ 判别占位]\label{exr:gdelta-placeholder}
+补一题：证明某个具体函数约束集是 Banach 空间中的 $G_\delta$ 子集，并据此应用定理~\ref{thm:gdelta-polish} 得到其 Polish 性。
+\end{exercise}

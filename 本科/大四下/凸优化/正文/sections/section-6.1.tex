@@ -1,0 +1,176 @@
+\section{Fenchel 共轭与 Fenchel-Young 不等式}
+
+\label{sec:6-1}
+
+共轭理论的出发点是一个简单但极其深刻的观察：若一个凸泛函由其所有支撑超平面决定，那么与其直接研究函数值本身，不如把这些支撑超平面收集起来，看成活在对偶空间中的新对象。这样得到的对象就是 Fenchel 共轭。它既是第 \ref{sec:4-3} 节分离理论的函数化版本，又是第 \ref{sec:5-3} 节次微分理论的对偶表达，因此本节实际上承担着把“支撑超平面语言”升级为“对偶泛函语言”的任务。
+
+\subsection{Fenchel 共轭的定义}
+
+\begin{definition}[Fenchel 共轭]\label{def:fenchel-conjugate}
+设 $X$ 为 Banach 空间，$f\colon X\to \mathbb R\cup\{+\infty\}$ 为 proper 泛函。其\emph{Fenchel 共轭}定义为函数
+\[
+f^\ast\colon X^\ast\to \mathbb R\cup\{+\infty\},
+\qquad
+f^\ast(x^\ast):=\sup_{x\in X}\{\langle x^\ast,x\rangle-f(x)\}.
+\]
+这里的上确界允许取值 $+\infty$。若 $f$ 为凸泛函，则 $f^\ast$ 也是凸且下半连续的。
+\end{definition}
+
+\begin{remark}
+定义~\ref{def:fenchel-conjugate} 说明，共轭并不是把原函数“再写一遍”，而是把所有可能的仿射下界
+\[
+x\mapsto \langle x^\ast,x\rangle-c
+\]
+压缩成对偶变量 $x^\ast$ 的函数。换言之，$f^\ast(x^\ast)$ 衡量的是斜率为 $x^\ast$ 的仿射函数要支撑 $f$，其截距至少需要抬高多少。
+\end{remark}
+
+\subsection{Fenchel-Young 不等式与取等条件}
+
+\begin{proposition}[Fenchel--Young 不等式]\label{prop:fenchel-young-inequality}
+设 $f\colon X\to \mathbb R\cup\{+\infty\}$ 为 proper 泛函。则对任意 $x\in X$ 与任意 $x^\ast\in X^\ast$，都有
+\[
+f(x)+f^\ast(x^\ast)\ge \langle x^\ast,x\rangle.
+\]
+\end{proposition}
+
+\begin{proof}
+由定义~\ref{def:fenchel-conjugate}，
+\[
+f^\ast(x^\ast)=\sup_{y\in X}\{\langle x^\ast,y\rangle-f(y)\}.
+\]
+特别地，把 $y$ 取为当前的 $x$，便得到
+\[
+f^\ast(x^\ast)\ge \langle x^\ast,x\rangle-f(x).
+\]
+移项即得
+\[
+f(x)+f^\ast(x^\ast)\ge \langle x^\ast,x\rangle.
+\]
+\end{proof}
+
+\begin{proposition}[Fenchel--Young 取等与次微分]\label{prop:fenchel-young-equality-subgradient}
+设 $f\colon X\to \mathbb R\cup\{+\infty\}$ 为 proper 凸泛函，$x\in \operatorname{dom}f$，$x^\ast\in X^\ast$。则下列命题等价：
+\begin{enumerate}
+  \item $x^\ast\in \partial f(x)$；
+  \item
+  \[
+  f(x)+f^\ast(x^\ast)=\langle x^\ast,x\rangle;
+  \]
+  \item $x\in \partial f^\ast(x^\ast)$。
+\end{enumerate}
+\end{proposition}
+
+\begin{proof}
+由定义~\ref{def:subdifferential}，$x^\ast\in \partial f(x)$ 当且仅当对任意 $y\in X$，
+\[
+f(y)\ge f(x)+\langle x^\ast,y-x\rangle.
+\]
+移项后得
+\[
+\langle x^\ast,y\rangle-f(y)\le \langle x^\ast,x\rangle-f(x),\qquad \forall y\in X.
+\]
+对左边取上确界，得到
+\[
+f^\ast(x^\ast)\le \langle x^\ast,x\rangle-f(x).
+\]
+再结合命题~\ref{prop:fenchel-young-inequality}，即得
+\[
+f^\ast(x^\ast)=\langle x^\ast,x\rangle-f(x),
+\]
+即 (1)$\Rightarrow$(2)。
+
+反过来，若 (2) 成立，则对任意 $y\in X$，
+\[
+\langle x^\ast,y\rangle-f(y)\le f^\ast(x^\ast)=\langle x^\ast,x\rangle-f(x),
+\]
+从而
+\[
+f(y)\ge f(x)+\langle x^\ast,y-x\rangle.
+\]
+故 $x^\ast\in \partial f(x)$。这给出 (2)$\Rightarrow$(1)。
+
+把上一段论证应用于对偶空间上的凸泛函 $f^\ast$，并注意共轭再取一次所得到的变量互换，便得到 (2) 与 (3) 的等价性。
+\end{proof}
+
+\begin{remark}
+命题~\ref{prop:fenchel-young-equality-subgradient} 是本章最重要的“翻译器”之一：它把原空间里的次微分条件 $x^\ast\in\partial f(x)$ 翻译成共轭表达式的取等条件。后文第 \ref{sec:6-4} 节的对偶定理和第 \ref{sec:7-4} 节的 KKT 条件，本质上都在重复使用这一翻译。
+\end{remark}
+
+\subsection{典型例子}
+
+\begin{example}[指示函数与支撑函数]\label{ex:indicator-support-conjugate}
+设 $C\subset X$ 为非空集合，指示函数定义为
+\[
+\iota_C(x)=
+\begin{cases}
+0, & x\in C,\\
++\infty, & x\notin C.
+\end{cases}
+\]
+则其共轭为
+\[
+\iota_C^\ast(x^\ast)=\sup_{x\in C}\langle x^\ast,x\rangle=: \sigma_C(x^\ast),
+\]
+这里 $\sigma_C$ 称为 $C$ 的支撑函数。把这个例子放在这里，是为了把第 \ref{sec:4-3} 节的支撑超平面几何直接转写为函数等式：集合的约束信息，在对偶空间中正是由支撑函数承载。
+\end{example}
+
+\begin{example}[范数与对偶范数的共轭]\label{ex:norm-dual-norm-conjugate}
+设 $\|\cdot\|$ 是 $X$ 上的范数，$\|\cdot\|_\ast$ 是对偶范数。对任意 $\lambda>0$，令
+\[
+f(x)=\lambda \|x\|.
+\]
+则
+\[
+f^\ast(x^\ast)=
+\begin{cases}
+0, & \|x^\ast\|_\ast\le \lambda,\\
++\infty, & \|x^\ast\|_\ast>\lambda.
+\end{cases}
+\]
+把这个例子放在这里，是为了说明范数正则化在对偶空间中对应的是一个对偶球约束；这正是 Boyd 中“范数球与对偶球”图像的无穷维上位版本。
+\end{example}
+
+\begin{proof}
+对任意 $x^\ast\in X^\ast$，
+\[
+f^\ast(x^\ast)=\sup_{x\in X}\{\langle x^\ast,x\rangle-\lambda\|x\|\}.
+\]
+若 $\|x^\ast\|_\ast\le \lambda$，则由对偶范数定义
+\[
+\langle x^\ast,x\rangle-\lambda\|x\|
+\le (\|x^\ast\|_\ast-\lambda)\|x\|\le 0,
+\]
+且在 $x=0$ 处取到 $0$，故 $f^\ast(x^\ast)=0$。反之若 $\|x^\ast\|_\ast>\lambda$，则由 Hahn--Banach 支撑论证可取单位向量方向 $u$ 使 $\langle x^\ast,u\rangle>\lambda$，于是
+\[
+\langle x^\ast,tu\rangle-\lambda\|tu\|
+=t(\langle x^\ast,u\rangle-\lambda)\to +\infty
+\qquad (t\to+\infty).
+\]
+故 $f^\ast(x^\ast)=+\infty$。
+\end{proof}
+
+\begin{example}[正则化项的对偶表示]
+在 Hilbert 空间 $H$ 上考虑
+\[
+f(u)=\frac{1}{2}\|u\|^2.
+\]
+由第 \ref{sec:3-1} 节定理~\ref{thm:riesz-representation-hilbert} 可把 $H^\ast$ 与 $H$ 识别，于是
+\[
+f^\ast(v)=\frac{1}{2}\|v\|^2.
+\]
+把这个例子放在这里，是为了给后文 Moreau 包络、prox 映射和二次正则化提供最核心的对偶基线。
+\end{example}
+
+\subsection*{有限维对照}
+
+Boyd 书中关于共轭函数的几何图像，主要依赖于二维或三维里“用斜率看支撑线”的直觉。本节说明，这个直觉在无穷维里依然成立，但真正稳固的形式是定义~\ref{def:fenchel-conjugate} 与命题~\ref{prop:fenchel-young-equality-subgradient}。特别是例~\ref{ex:indicator-support-conjugate} 和例~\ref{ex:norm-dual-norm-conjugate} 表明，Boyd 里熟悉的支撑函数、对偶球和范数正则化，都只是同一套对偶编码机制在有限维 Hilbert 空间中的坍缩。
+
+\subsection*{习题（待补）}
+
+\begin{exercise}[Fenchel--Young 取等占位]\label{exr:fenchel-young-placeholder}
+补一题：对一个具体的凸泛函验证命题~\ref{prop:fenchel-young-equality-subgradient}，并把取等条件写成第 \ref{sec:5-3} 节次微分语言中的最优性判断。
+\end{exercise}
+
+\begin{exercise}[支撑函数桥接题占位]\label{exr:support-function-placeholder}
+补一题：从例~\ref{ex:indicator-support-conjugate} 出发，计算一个有限维凸体的支撑函数，并说明该结果如何与 Boyd 书中的超平面支撑图像对应。
+\end{exercise}

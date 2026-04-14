@@ -1,0 +1,183 @@
+\section{图神经网络的泛函算子解释}
+
+\label{sec:12-2}
+
+图神经网络最常见的工程描述是“聚合邻居再更新表示”，但若只停留在这个层面，很多关键结构都会被遮蔽：为什么图卷积总要与拉普拉斯或归一化邻接联系在一起，为什么平滑、扩散和低通滤波会反复出现，以及哪些图学习步骤真的能够被第 \ref{chap:09} 章和第 \ref{chap:10} 章的算子语言准确接口化。本节选择从图拉普拉斯与 Dirichlet 能量出发，抓住那些可被谱论、prox 和分裂方法稳定描述的部分。
+
+\subsection{图信号、拉普拉斯与能量}
+
+\begin{definition}[图拉普拉斯算子]\label{def:graph-laplacian-operator}
+设 $\mathscr G=(V,E,w)$ 为有限加权无向图，其中 $V=\{1,\dots,n\}$，边权满足 $w_{ij}=w_{ji}\ge 0$。记图信号空间
+\[
+H_V:=\mathbb R^n
+\]
+并赋予标准内积。定义图拉普拉斯算子 $L_{\mathscr G}\colon H_V\to H_V$ 为
+\[
+(L_{\mathscr G}u)_i:=\sum_{j=1}^n w_{ij}(u_i-u_j),
+\qquad i=1,\dots,n.
+\]
+\end{definition}
+
+\begin{definition}[图 Dirichlet 能量]\label{def:graph-dirichlet-energy}
+在定义~\ref{def:graph-laplacian-operator} 的条件下，称泛函
+\[
+\mathcal E_{\mathscr G}(u)
+:=
+\frac12\sum_{i,j=1}^n w_{ij}(u_i-u_j)^2
+\]
+为图 $\mathscr G$ 上信号 $u$ 的\emph{Dirichlet 能量}。
+\end{definition}
+
+\begin{proposition}[图拉普拉斯的正性]\label{prop:graph-laplacian-positive}
+算子 $L_{\mathscr G}$ 是 $H_V$ 上的自伴正半定算子，并满足
+\[
+\langle L_{\mathscr G}u,u\rangle=\mathcal E_{\mathscr G}(u),
+\qquad \forall u\in H_V.
+\]
+\end{proposition}
+
+\begin{proof}
+由权重对称性，
+\[
+\langle L_{\mathscr G}u,v\rangle
+=
+\sum_{i=1}^n \sum_{j=1}^n w_{ij}(u_i-u_j)v_i
+=
+\frac12\sum_{i,j=1}^n w_{ij}(u_i-u_j)(v_i-v_j),
+\]
+交换 $u,v$ 可知它自伴。令 $v=u$，得到
+\[
+\langle L_{\mathscr G}u,u\rangle
+=
+\frac12\sum_{i,j=1}^n w_{ij}(u_i-u_j)^2
+=
+\mathcal E_{\mathscr G}(u)\ge 0.
+\]
+故 $L_{\mathscr G}$ 正半定。
+\end{proof}
+
+\begin{remark}
+由于 $H_V$ 是有限维 Hilbert 空间，$L_{\mathscr G}$ 同时还是紧自伴算子。于是第 \ref{sec:3-4} 节定理~\ref{thm:compact-selfadjoint-spectral} 可直接应用于它：图傅里叶基、特征值平滑强度和谱滤波，本质上都是紧自伴谱理论在图上的有限维坍缩。
+\end{remark}
+
+\subsection{消息传递与图滤波}
+
+\begin{proposition}[消息传递是图滤波的一种线性原型]\label{prop:message-passing-graph-filter}
+设 $p$ 为一元多项式，则算子
+\[
+T_p:=p(L_{\mathscr G})
+\]
+与 $L_{\mathscr G}$ 共享同一组特征向量，因此是一个图谱滤波器。特别地，线性消息传递层
+\[
+u^{+}=(I-\tau L_{\mathscr G})u,
+\qquad 0<\tau<\|L_{\mathscr G}\|^{-1},
+\]
+对应于一阶低通图滤波；若再附加逐点非线性与通道权矩阵，就得到常见 GNN 层的线性骨架。
+\end{proposition}
+
+\begin{proof}
+由定理~\ref{thm:compact-selfadjoint-spectral}，存在正交基 $\{e_k\}_{k=1}^n$ 与实特征值 $\lambda_k\ge 0$，使
+\[
+L_{\mathscr G}e_k=\lambda_k e_k.
+\]
+于是
+\[
+T_p e_k=p(\lambda_k)e_k,
+\]
+故 $T_p$ 与 $L_{\mathscr G}$ 同时对角化。特别地，当 $p(\lambda)=1-\tau\lambda$ 时，
+\[
+T_p=I-\tau L_{\mathscr G},
+\]
+它衰减高频特征模态，正是一阶低通滤波。
+\end{proof}
+
+\begin{theorem}[图扩散与学习接口]\label{thm:graph-diffusion-learning-interface}
+设 $\tau>0$，$y\in H_V$。则问题
+\[
+\min_{u\in H_V}
+\left\{
+\frac12\|u-y\|^2+\tau \mathcal E_{\mathscr G}(u)
+\right\}
+\]
+有唯一极小元 $u_\tau$，并满足
+\[
+u_\tau=(I+\tau L_{\mathscr G})^{-1}y=\operatorname{prox}_{\tau\mathcal E_{\mathscr G}}(y).
+\]
+此外，映射
+\[
+y\longmapsto (I-\tau L_{\mathscr G})y
+\]
+是上述 resolvent 的一阶显式近似，因此线性图扩散、图平滑和一类 GNN 消息传递层都可被看成第 \ref{sec:10-1} 节定义~\ref{def:forward-backward-iteration} 在图信号空间上的具体接口。
+\end{theorem}
+
+\begin{proof}
+由命题~\ref{prop:graph-laplacian-positive}，
+\[
+\mathcal E_{\mathscr G}(u)=\langle L_{\mathscr G}u,u\rangle
+\]
+是凸二次型。故目标是严格凸连续函数，唯一极小元存在。对极小元 $u_\tau$ 写一阶最优性条件，
+\[
+0=u_\tau-y+\tau L_{\mathscr G}u_\tau.
+\]
+于是
+\[
+(I+\tau L_{\mathscr G})u_\tau=y,
+\qquad
+u_\tau=(I+\tau L_{\mathscr G})^{-1}y.
+\]
+另一方面，由定义~\ref{def:proximal-mapping}，$\operatorname{prox}_{\tau\mathcal E_{\mathscr G}}(y)$ 正是上式的唯一极小元，故
+\[
+u_\tau=\operatorname{prox}_{\tau\mathcal E_{\mathscr G}}(y).
+\]
+最后，由 resolvent 展开
+\[
+(I+\tau L_{\mathscr G})^{-1}y
+=
+y-\tau L_{\mathscr G}y+O(\tau^2),
+\]
+可见显式一步 $y\mapsto y-\tau L_{\mathscr G}y$ 是对应的前向近似。
+\end{proof}
+
+\begin{remark}
+定理~\ref{thm:graph-diffusion-learning-interface} 只 formalize 那些可嵌入凸能量或算子分裂语言的图学习部分。一般深层 GNN 训练包含参数共享、非线性组合与非凸优化；本节并不把这些内容伪装成凸问题，而是只抽取其中最稳定的图滤波、平滑与扩散骨架。
+\end{remark}
+
+\subsection{典型例子}
+
+\begin{example}[图平滑最小化]
+若 $y$ 是带噪观测信号，则定理~\ref{thm:graph-diffusion-learning-interface} 给出的极小元平衡了数据保真和图平滑。这正是半监督学习、标签传播与图正则回归中的基础模型。
+\end{example}
+
+\begin{example}[邻接矩阵与归一化拉普拉斯的有限维坍缩]
+在有限图上，常见 GCN 层写作
+\[
+H^{+}=\sigma(\widetilde D^{-1/2}\widetilde A\widetilde D^{-1/2}HW).
+\]
+把
+\[
+\widetilde L:=I-\widetilde D^{-1/2}\widetilde A\widetilde D^{-1/2}
+\]
+代入，就得到
+\[
+\widetilde D^{-1/2}\widetilde A\widetilde D^{-1/2}=I-\widetilde L,
+\]
+因此消息传递矩阵本质上就是一阶图滤波器。
+\end{example}
+
+\begin{example}[知识图谱与 item-item 推荐中的关系传播]
+在知识图谱推荐或 item-item 推荐中，边权编码相似度、共现或关系强度。若只保留图传播的线性骨架，则每一步更新都可解释为对邻域一致性和局部平滑的近似求解。把这个例子放在这里，是为了把 GNN 直接接到推荐系统的图结构接口上。
+\end{example}
+
+\subsection*{有限维对照}
+
+Boyd 不会直接讲 GNN，但他关于二次型、谱分解和分布式平滑的有限维母语，在这里仍然有效。区别只在于：工程上常把“邻接矩阵乘一次”当成一个架构模块，而本节说明它其实是图拉普拉斯谱滤波、Dirichlet 能量最小化以及 prox/前向步的一种坍缩实现。理解这一点以后，第 \ref{sec:12-4} 节的分布式图推荐模型就不再只是经验配方，而能重新接回 ADMM 与原--对偶分裂。
+
+\subsection*{习题（待补）}
+
+\begin{exercise}[图拉普拉斯正性占位]
+补一题：证明命题~\ref{prop:graph-laplacian-positive}，并说明常数信号为什么总落在零特征值对应空间中。
+\end{exercise}
+
+\begin{exercise}[图扩散与 prox 占位]
+补一题：从定理~\ref{thm:graph-diffusion-learning-interface} 出发，说明图扩散为何可以被写成定义~\ref{def:proximal-mapping} 的邻近算子。
+\end{exercise}

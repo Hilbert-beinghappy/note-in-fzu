@@ -1,0 +1,160 @@
+\section{极点与 Krein-Milman 定理}
+
+\label{sec:4-4}
+
+前面三节说明了如何用线性泛函描述凸集的边界，但“边界”本身仍然太大。对优化而言，真正决定结构的往往不是整个边界，而是其中不能再被非平凡凸组合分解的那一部分。这便引出极点。在线性规划里，极点退化为顶点；在稀疏优化里，极点对应原子；在概率测度空间里，极点对应 Dirac 质量。Krein-Milman 定理的意义在于：它把这些“极端元”提升为一般紧凸集的生成机制，说明一个紧凸集可以由其极点通过闭凸包完全恢复。这样一来，第 \ref{sec:4-3} 节的分离理论不再只告诉我们“边界可被支撑”，还告诉我们“结构最终集中在边界最尖锐的部分”。
+
+\subsection{极点与面}
+
+\begin{definition}[极点]\label{def:extreme-point}
+设 $C$ 为实向量空间中的凸集。若 $x\in C$ 满足：只要
+\[
+x=\lambda y+(1-\lambda)z,\qquad y,z\in C,\ \lambda\in(0,1),
+\]
+就必有 $y=z=x$，则称 $x$ 为 $C$ 的一个\emph{极点}。所有极点组成的集合记为
+\[
+\operatorname{ext}(C).
+\]
+\end{definition}
+
+为了组织极点，常引入\emph{面}的概念：若 $F\subset C$ 为非空凸子集，并且只要
+\[
+\lambda y+(1-\lambda)z\in F,\qquad y,z\in C,\ \lambda\in(0,1),
+\]
+就推出 $y,z\in F$，则称 $F$ 为 $C$ 的一个面。单点面恰好对应极点；换言之，$x$ 是极点，当且仅当 $\{x\}$ 是一个面。
+
+\begin{lemma}[暴露面]\label{lem:exposed-face}
+设 $X$ 为 Hausdorff 局部凸空间，$K\subset X$ 为非空紧凸集，$f\in X^\ast$ 为连续线性泛函。令
+\[
+M:=\max_{x\in K} f(x),\qquad F:=\{x\in K:f(x)=M\}.
+\]
+则 $F$ 是 $K$ 的一个非空紧面。
+\end{lemma}
+
+\begin{proof}
+由于 $K$ 紧且 $f$ 连续，$f$ 在 $K$ 上取到最大值，所以 $F$ 非空。又因为 $F$ 是闭集与紧集 $K$ 的交，所以 $F$ 紧。对任意 $x_1,x_2\in F$ 与 $\lambda\in[0,1]$，
+\[
+f(\lambda x_1+(1-\lambda)x_2)=\lambda M+(1-\lambda)M=M,
+\]
+故 $F$ 凸。
+
+若 $\lambda y+(1-\lambda)z\in F$，其中 $y,z\in K$ 且 $\lambda\in(0,1)$，则
+\[
+M=f(\lambda y+(1-\lambda)z)=\lambda f(y)+(1-\lambda)f(z)\le \lambda M+(1-\lambda)M=M.
+\]
+因此必须有 $f(y)=f(z)=M$，即 $y,z\in F$。故 $F$ 为面。
+\end{proof}
+
+\begin{theorem}[Krein--Milman 定理]\label{thm:krein-milman}
+设 $X$ 为 Hausdorff 局部凸空间，$K\subset X$ 为非空紧凸集。则
+\[
+K=\overline{\operatorname{conv}(\operatorname{ext}(K))}.
+\]
+\end{theorem}
+
+\begin{proof}
+证明分两步进行。
+
+\paragraph{第一步：$K$ 至少有一个极点}
+
+考虑 $K$ 的所有非空紧面所成集合，并以反向包含关系排序。任一全序链的交仍是非空紧面：非空性来自紧集族有限交性质，面性质则由定义直接继承。由 Zorn 引理，存在一个极小非空紧面 $F$。
+
+若 $F$ 不是单点集，则取互异点 $x_1,x_2\in F$。由于 $X$ 局部凸且 Hausdorff，连续线性泛函足够分离点，因此存在 $f\in X^\ast$ 使
+\[
+f(x_1)\neq f(x_2).
+\]
+由引理~\ref{lem:exposed-face}，集合
+\[
+F_1:=\left\{x\in F:f(x)=\max_{y\in F} f(y)\right\}
+\]
+是 $F$ 的非空紧面。由于 $f$ 在 $F$ 上非常数，$F_1$ 是 $F$ 的真子集，这与 $F$ 的极小性矛盾。故 $F$ 必为单点集 $\{x\}$。此时 $\{x\}$ 为 $K$ 的面，所以 $x$ 是 $K$ 的极点。
+
+\paragraph{第二步：极点的闭凸包已经生成整个 $K$}
+
+记
+\[
+C:=\overline{\operatorname{conv}(\operatorname{ext}(K))}.
+\]
+显然 $C\subset K$，且 $C$ 为闭凸集。若 $C\neq K$，取 $x_0\in K\setminus C$。由于 $K$ 所在空间局部凸，可对点与闭凸集应用 Hahn--Banach 型分离；这正是定理~\ref{thm:hahn-banach-geometric} 的局部凸推广。于是存在连续线性泛函 $f\in X^\ast$ 与常数 $\alpha<\beta$，使
+\[
+f(x)\le \alpha<\beta\le f(x_0),\qquad \forall x\in C.
+\]
+
+令
+\[
+F:=\left\{x\in K:f(x)=\max_{y\in K} f(y)\right\}.
+\]
+由引理~\ref{lem:exposed-face}，$F$ 是 $K$ 的非空紧面。由第一步，$F$ 至少包含一个极点 $u$。而面上的极点仍是整个集合的极点：若
+\[
+u=\lambda y+(1-\lambda)z,\qquad y,z\in K,\ \lambda\in(0,1),
+\]
+则因 $u\in F$ 且 $F$ 为面，必有 $y,z\in F$；再由 $u$ 在 $F$ 中是极点，得 $y=z=u$。于是
+\[
+u\in \operatorname{ext}(K)\subset C.
+\]
+但另一方面，$u\in F$ 且 $x_0\in K$，所以
+\[
+f(u)=\max_{y\in K}f(y)\ge f(x_0)\ge \beta>\alpha.
+\]
+这与 $u\in C$ 时的 $f(u)\le \alpha$ 矛盾。故 $C=K$，定理得证。
+\end{proof}
+
+\begin{corollary}[有限维多面体的极点描述]\label{cor:finite-dimensional-polytope-extreme}
+设 $P\subset\mathbb R^n$ 为紧多面体，则
+\[
+P=\operatorname{conv}(\operatorname{ext}(P)).
+\]
+特别地，在有限维情形中，多面体的顶点恰好就是它的极点。
+\end{corollary}
+
+\begin{proof}
+紧多面体是有限维空间中的紧凸集，因此可直接应用定理~\ref{thm:krein-milman}。由于有限维中闭包运算对有限凸包不再引入额外复杂性，得到
+\[
+P=\operatorname{conv}(\operatorname{ext}(P)).
+\]
+而顶点正是不能写成其它可行点非平凡凸组合的点，所以与定义~\ref{def:extreme-point} 完全一致。
+\end{proof}
+
+\paragraph{结构意义}
+
+\begin{remark}
+定理~\ref{thm:krein-milman} 把第 \ref{sec:4-3} 节的分离原理推进了一步。分离只告诉我们：若一点不在某个闭凸集中，则存在连续线性泛函把它隔开；而 Krein-Milman 进一步指出：只要集合还具有紧性，这些支撑泛函最终会把结构压缩到极点上。后文无论是讨论原子范数、测度型最优策略还是线性规划顶点，都是这一思想在不同空间中的再现。
+\end{remark}
+
+\begin{example}[最小抽象例子：概率测度的 Dirac 极点]\label{ex:dirac-extreme-point}
+设 $K$ 为紧 Hausdorff 空间，$\mathcal P(K)$ 表示其上所有 Borel 概率测度的集合。借助第 \ref{sec:2-3} 节定理~\ref{thm:riesz-representation}，可把 $\mathcal P(K)$ 看成 $C(K)^\ast$ 中的一个弱$^\ast$紧凸集。对任意 $x\in K$，Dirac 测度 $\delta_x$ 都是 $\mathcal P(K)$ 的极点：若
+\[
+\delta_x=\lambda\mu_1+(1-\lambda)\mu_2,\qquad \lambda\in(0,1),
+\]
+则对任意不含 $x$ 的闭集 $F$ 有 $\delta_x(F)=0$，从而 $\mu_1(F)=\mu_2(F)=0$；再利用总质量为 $1$ 可知 $\mu_1=\mu_2=\delta_x$。把这个例子放在这里，是为了说明无穷维随机优化中“极端策略”往往对应于原子测度。
+\end{example}
+
+\begin{example}[有限维坍缩例子：线性规划顶点]\label{ex:lp-vertex-extreme-point}
+在线性规划可行域
+\[
+P=\{x\in\mathbb R^n:Ax\le b\}
+\]
+中，顶点恰好就是极点。把这个例子放在这里，是为了与 Boyd 的 LP 几何直接对齐：有限维教材里“最优解常在顶点处取得”的说法，正是推论~\ref{cor:finite-dimensional-polytope-extreme} 的线性规划版本。
+\end{example}
+
+\begin{example}[应用触点例子：$\ell^1$ 球的原子结构]\label{ex:l1-ball-extreme-points}
+在 $\mathbb R^n$ 中，
+\[
+B_1=\{x\in\mathbb R^n:\|x\|_1\le 1\}
+\]
+的极点正是 $\{\pm e_1,\dots,\pm e_n\}$。把这个例子放在这里，是为了连接稀疏优化中的原子范数直觉：一个点若位于 $\ell^1$ 球的极点上，就只激活单个坐标；而一般点则是这些原子的凸组合。无穷维原子表示的语言，本质上就是把这种有限维现象推广到更大的函数或测度空间。
+\end{example}
+
+\subsection*{有限维对照}
+
+Boyd 书中关于顶点、极点、稀疏结构和 LP 几何的大部分直觉，都可以看作定理~\ref{thm:krein-milman} 在有限维空间中的压缩版。有限维里，多面体顶点可直接画出来，$\ell^1$ 球的尖点也能肉眼识别；无穷维里则必须借助极点与闭凸包的语言来组织这些结构。换句话说，Boyd 所讨论的顶点现象并不是偶然的多面体事实，而是一般紧凸集边界理论在有限维中的最易见表现。
+
+\subsection*{习题（待补）}
+
+\begin{exercise}[极点与面占位]\label{exr:extreme-point-face-placeholder}
+补一题：证明“$\{x\}$ 是凸集 $C$ 的面”与“$x$ 是 $C$ 的极点”等价，并说明这一命题在定理~\ref{thm:krein-milman} 的证明中起到什么作用。
+\end{exercise}
+
+\begin{exercise}[Dirac 测度桥接题占位]\label{exr:dirac-measure-placeholder}
+补一题：在紧空间 $K$ 上验证例~\ref{ex:dirac-extreme-point} 中 Dirac 测度的极点性质，并进一步讨论哪些条件下 $\mathcal P(K)$ 的全部极点都由 Dirac 测度给出。
+\end{exercise}

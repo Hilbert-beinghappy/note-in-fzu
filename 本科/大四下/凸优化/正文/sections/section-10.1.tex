@@ -1,0 +1,216 @@
+\section{前向--后向分裂算法}
+
+\label{sec:10-1}
+
+第 \ref{sec:9-4} 节把极小化与 KKT 系统改写成单调包含之后，最先出现的问题是：若算子 $A$ 还可以拆成“容易前向评估的一部分”和“容易做 resolvent 的一部分”，能否不必在每一步都求解完整隐式方程？前向--后向分裂正是对这个问题的回答。它在实践里常被直接叫作前向-后向算法；当“前向部分”来自光滑凸函数梯度，而“后向部分”来自非光滑正则项次微分时，它就退化为最熟悉的 prox-gradient 迭代。
+
+\subsection{问题模板与基本定义}
+
+\begin{definition}[cocoercive 算子]\label{def:cocoercive-operator}
+设 $H$ 为 Hilbert 空间，$B\colon H\to H$ 为单值算子，$\beta>0$。若对任意 $x,y\in H$ 都有
+\[
+\langle Bx-By,x-y\rangle \ge \beta \|Bx-By\|^2,
+\]
+则称 $B$ 是 $\beta$-\emph{cocoercive} 的。
+\end{definition}
+
+\begin{definition}[前向--后向迭代]\label{def:forward-backward-iteration}
+设 $H$ 为 Hilbert 空间，$B\colon H\to H$ 为单值算子，$C\colon H\rightrightarrows H$ 为极大单调算子，$\gamma>0$。定义
+\[
+T_\gamma:=J_{\gamma C}(I-\gamma B).
+\]
+给定初值 $x^0\in H$，迭代
+\[
+x^{k+1}=T_\gamma x^k=J_{\gamma C}(x^k-\gamma Bx^k),\qquad k=0,1,2,\dots
+\]
+称为求解
+\[
+0\in Bx+Cx
+\]
+的\emph{前向--后向迭代}。
+\end{definition}
+
+\begin{remark}
+定义~\ref{def:forward-backward-iteration} 之所以自然，是因为它严格沿着第 \ref{sec:9-4} 节推论~\ref{cor:proximal-point-template} 的接口来设计：$C$ 仍然通过 resolvent 处理，但 $B$ 不再被整体塞进隐式步，而是只做一次显式前向评估。若 $C=\partial g$，则由命题~\ref{prop:prox-resolvent-subdifferential}，后向步就是 prox；若 $B=\nabla h$，则前向步就是普通梯度下降。因此它同时连接了第 \ref{chap:05} 章的微分语言与第 \ref{chap:09} 章的单调算子语言。
+\end{remark}
+
+\subsection{固定点与零点的对应}
+
+\begin{proposition}[前向--后向固定点表述]\label{prop:forward-backward-fixed-point}
+设 $B$ 与 $C$ 如定义~\ref{def:forward-backward-iteration}，$\gamma>0$。则
+\[
+\operatorname{Fix}T_\gamma=\operatorname{zer}(B+C).
+\]
+换言之，对任意 $x\in H$，
+\[
+x=T_\gamma x
+\quad\Longleftrightarrow\quad
+0\in Bx+Cx.
+\]
+\end{proposition}
+
+\begin{proof}
+由 resolvent 的定义，
+\[
+x=T_\gamma x
+\quad\Longleftrightarrow\quad
+x=J_{\gamma C}(x-\gamma Bx)
+\quad\Longleftrightarrow\quad
+x-\gamma Bx\in x+\gamma Cx.
+\]
+最后一个关系等价于
+\[
+-Bx\in Cx,
+\]
+亦即
+\[
+0\in Bx+Cx.
+\]
+反向推理同理成立。
+\end{proof}
+
+\subsection{平均映射结构与收敛}
+
+\begin{theorem}[前向--后向分裂的收敛定理]\label{thm:forward-backward-convergence}
+设 $H$ 为 Hilbert 空间，$C\colon H\rightrightarrows H$ 为极大单调算子，$B\colon H\to H$ 为 $\beta$-cocoercive 单值算子，并假设
+\[
+\operatorname{zer}(B+C)\neq \varnothing.
+\]
+若步长满足
+\[
+0<\gamma<2\beta,
+\]
+则由定义~\ref{def:forward-backward-iteration} 生成的序列 $\{x^k\}$ 弱收敛到某个解 $\bar x\in \operatorname{zer}(B+C)$。
+\end{theorem}
+
+\begin{proof}
+先说明 $T_\gamma$ 是平均映射。令
+\[
+\alpha:=\frac{\gamma}{2\beta}\in(0,1).
+\]
+由定义~\ref{def:cocoercive-operator}，
+\[
+\|(I-2\beta B)x-(I-2\beta B)y\|^2
+=
+\|x-y\|^2-4\beta\langle Bx-By,x-y\rangle+4\beta^2\|Bx-By\|^2
+\le \|x-y\|^2.
+\]
+故 $N:=I-2\beta B$ 非扩张，而
+\[
+I-\gamma B=(1-\alpha)I+\alpha N
+\]
+是 $\alpha$-averaged 映射。另一方面，由第 \ref{sec:9-1} 节定理~\ref{thm:minty-surjectivity}，$J_{\gamma C}$ 处处有定义；再由第 \ref{sec:9-2} 节命题~\ref{prop:prox-firm-nonexpansive} 在 resolvent 语言下的对应形式，$J_{\gamma C}$ 是 firmly nonexpansive，也就是 $1/2$-averaged。平均映射的复合仍是平均映射，因此存在某个 $\theta\in(0,1)$ 使
+\[
+T_\gamma=(1-\theta)I+\theta N_\gamma
+\]
+其中 $N_\gamma$ 非扩张。
+
+再由命题~\ref{prop:forward-backward-fixed-point}，
+\[
+\operatorname{Fix}T_\gamma=\operatorname{zer}(B+C)\neq\varnothing.
+\]
+任取 $z\in \operatorname{Fix}T_\gamma$。平均映射的标准不等式给出
+\[
+\|T_\gamma x-z\|^2
+\le
+\|x-z\|^2-\frac{1-\theta}{\theta}\|(I-T_\gamma)x\|^2.
+\]
+将 $x=x^k$ 代入并使用 $x^{k+1}=T_\gamma x^k$，得到
+\[
+\|x^{k+1}-z\|^2
+\le
+\|x^k-z\|^2-\frac{1-\theta}{\theta}\|x^k-x^{k+1}\|^2.
+\]
+因此 $\{x^k\}$ 对解集是 Fej\'er 单调的，特别地有界，并且
+\[
+\sum_{k=0}^\infty \|x^{k+1}-x^k\|^2<\infty.
+\]
+于是 $\|x^{k+1}-x^k\|\to 0$，即序列渐近正则。
+
+设 $\bar x$ 为 $\{x^k\}$ 的任意弱聚点，则存在子列 $x^{k_j}\rightharpoonup \bar x$。由于 $x^{k_j}-T_\gamma x^{k_j}\to 0$，而平均映射满足 demiclosedness 原理，故
+\[
+\bar x\in \operatorname{Fix}T_\gamma.
+\]
+再由 Hilbert 空间中的 Opial 引理，整个序列弱收敛到某个 $\bar x\in \operatorname{Fix}T_\gamma=\operatorname{zer}(B+C)$。
+\end{proof}
+
+\begin{corollary}[prox-gradient 是前向--后向分裂的特例]\label{cor:prox-gradient-specialization}
+设 $h\colon H\to \mathbb R$ 为凸且 Fr\'echet 可微函数，且 $\nabla h$ 为 $\beta$-cocoercive；设 $g\colon H\to \mathbb R\cup\{+\infty\}$ 为 proper、凸且下半连续的泛函。则对问题
+\[
+\min_{x\in H}\{h(x)+g(x)\},
+\]
+前向--后向迭代退化为
+\[
+x^{k+1}
+=
+\operatorname{prox}_{\gamma g}(x^k-\gamma \nabla h(x^k)),
+\qquad 0<\gamma<2\beta.
+\]
+这正是 Hilbert 空间中的 prox-gradient 算法。
+\end{corollary}
+
+\begin{proof}
+把最优性条件写成
+\[
+0\in \nabla h(x)+\partial g(x).
+\]
+在定义~\ref{def:forward-backward-iteration} 中取 $B=\nabla h$、$C=\partial g$。由命题~\ref{prop:prox-resolvent-subdifferential}，
+\[
+J_{\gamma\partial g}=\operatorname{prox}_{\gamma g}.
+\]
+因此前向--后向迭代恰好写成所述的 prox-gradient 形式。收敛性则由定理~\ref{thm:forward-backward-convergence} 直接得到。
+\end{proof}
+
+\begin{remark}
+在具体建模时，常把 $h$ 写成数据拟合项、把 $g$ 写成正则项。若拟合项先经过线性算子复合，则第 \ref{sec:5-4} 节命题~\ref{prop:subdifferential-linear-pullback} 说明其最优性系统依旧能嵌入定义~\ref{def:forward-backward-iteration}。这就是为什么前向--后向分裂能自然覆盖经验风险最小化、逆问题与变分正则化模型。
+\end{remark}
+
+\subsection{典型例子}
+
+\begin{example}[$f+g$ 型凸最小化]
+对
+\[
+\min_x \{h(x)+g(x)\},
+\]
+若 $h$ 平滑且 $\nabla h$ cocoercive，$g$ 允许非光滑，则推论~\ref{cor:prox-gradient-specialization} 给出标准 prox-gradient 更新。把这个例子放在这里，是为了强调：前向--后向分裂不是另起炉灶的新算法，而是第 \ref{sec:9-2} 节 prox 与普通梯度步的自然拼接。
+\end{example}
+
+\begin{example}[Lasso 的 ISTA]
+在 $\mathbb R^n$ 上考虑
+\[
+\min_x \frac{1}{2}\|Ax-b\|^2+\lambda \|x\|_1.
+\]
+此时 $h(x)=\frac12\|Ax-b\|^2$，$g(x)=\lambda\|x\|_1$。若 $\|A\|^2\le L$，则 $\nabla h$ 是 $1/L$-cocoercive，于是前向-后向迭代成为
+\[
+x^{k+1}
+=
+\operatorname{prox}_{\gamma\lambda\|\cdot\|_1}
+\bigl(x^k-\gamma A^\ast(Ax^k-b)\bigr),
+\qquad 0<\gamma<\frac{2}{L}.
+\]
+这就是 Boyd 书中最常见的 ISTA 形式。
+\end{example}
+
+\begin{example}[带正则项的经验风险最小化]
+在 Hilbert 空间中，若
+\[
+h(x)=\frac{1}{m}\sum_{i=1}^m \ell_i(\langle a_i,x\rangle),
+\qquad
+g(x)=\tau \|x\|_1 \ \text{或}\ \tau\|x\|_\ast,
+\]
+则前向步只需评估梯度，后向步只需调用稀疏或低秩 prox。把这个例子放在这里，是为了说明“大规模”并不要求每一步求精确解，而是要求每一步只做局部可扩展的运算。
+\end{example}
+
+\subsection*{有限维对照}
+
+Boyd 往往把 prox-gradient 画成“先梯度下降，再做阈值化”的两步法。本节说明，这种 Euclidean 图像只是推论~\ref{cor:prox-gradient-specialization} 的有限维外观。真正起作用的结构是：$\nabla h$ 的 cocoercive 性保证前向步可控，resolvent 的 firm nonexpansive 性保证后向步稳定，而定理~\ref{thm:forward-backward-convergence} 则把两者合成为一个平均映射的收敛论证。有限维不过是这一 Hilbert 结构的最直观坍缩。
+
+\subsection*{习题（待补）}
+
+\begin{exercise}[平均映射验证占位]
+补一题：在定理~\ref{thm:forward-backward-convergence} 的假设下，直接验证 $I-\gamma B$ 为 averaged 映射，并据此推出 $T_\gamma$ 的 averaged 性。
+\end{exercise}
+
+\begin{exercise}[ISTA 桥接题占位]
+补一题：对 Lasso 模型写出前向-后向迭代，并利用例中的软阈值公式把它化为显式坐标更新。
+\end{exercise}

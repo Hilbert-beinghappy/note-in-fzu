@@ -1,0 +1,179 @@
+\section{σ-代数与测度延拓}
+
+\label{sec:2-1}
+
+随机优化模型看上去往往以“概率分布”开始，但在严格写法里，概率分布并不是对所有子集都赋值，而是定义在某个可测结构上。更常见的情况是，我们最初只知道某些基本事件的大小，例如区间、柱集、矩形或场景树节点的权重；真正的测度则需要由这些初始数据延拓得到。本节就是要说明，从有限可观察事件到完整概率模型的这一步，如何在集合论上被严密完成。
+
+\subsection{可测结构与生成的 $\sigma$-代数}
+
+\begin{definition}[$\sigma$-代数]\label{def:sigma-algebra}
+设 $\Omega$ 为非空集合。子集族 $\mathscr F\subseteq 2^\Omega$ 称为 $\Omega$ 上的一个\emph{$\sigma$-代数}，若满足：
+\begin{enumerate}
+  \item $\Omega\in \mathscr F$；
+  \item 若 $A\in \mathscr F$，则 $A^c\in \mathscr F$；
+  \item 若 $\{A_n\}_{n\ge 1}\subseteq \mathscr F$，则 $\bigcup_{n\ge1}A_n\in \mathscr F$。
+\end{enumerate}
+此时称 $(\Omega,\mathscr F)$ 为一个\emph{可测空间}，$\mathscr F$ 中的集合称为\emph{可测集}。
+\end{definition}
+
+\begin{proposition}[由集合族生成的 $\sigma$-代数]\label{prop:generated-sigma-algebra}
+设 $\mathscr C\subseteq 2^\Omega$ 为任意集合族，则存在包含 $\mathscr C$ 的最小 $\sigma$-代数，记为 $\sigma(\mathscr C)$。
+\end{proposition}
+
+\begin{proof}
+考虑所有包含 $\mathscr C$ 的 $\sigma$-代数之全体 $\{\mathscr G_i\}_{i\in I}$。由于幂集 $2^\Omega$ 本身是一个 $\sigma$-代数，因此这类对象非空。令
+\[
+\mathscr F_0:=\bigcap_{i\in I}\mathscr G_i.
+\]
+由 $\sigma$-代数定义逐条验证即可知，任意族 $\sigma$-代数的交仍是 $\sigma$-代数，因此 $\mathscr F_0$ 是包含 $\mathscr C$ 的 $\sigma$-代数。由构造可知，它被包含在任何其他包含 $\mathscr C$ 的 $\sigma$-代数之中，故为最小者。
+\end{proof}
+
+\begin{definition}[测度与预备测度]\label{def:measure-premeasure}
+设 $(\Omega,\mathscr F)$ 为可测空间。映射 $\mu\colon \mathscr F\to [0,+\infty]$ 称为\emph{测度}，若满足
+\[
+\mu(\varnothing)=0
+\]
+且对任意两两不交的集合列 $\{A_n\}_{n\ge1}\subseteq \mathscr F$ 都有
+\[
+\mu\Bigl(\bigcup_{n=1}^{\infty}A_n\Bigr)=\sum_{n=1}^{\infty}\mu(A_n).
+\]
+若 $\mathscr A$ 只是一个代数，而 $\mu_0$ 在 $\mathscr A$ 上满足上述可列可加条件，只要并集仍留在 $\mathscr A$ 中，就称 $\mu_0$ 为 $\mathscr A$ 上的\emph{预备测度}。
+\end{definition}
+
+\begin{example}[欧氏空间中的 Borel 结构]\label{ex:borel-sigma-rn}
+在 $\mathbb R^n$ 中，由所有开集生成的 $\sigma$-代数称为 Borel $\sigma$-代数，记为 $\mathcal B(\mathbb R^n)$。把这个例子放在这里，是为了说明 Boyd 书里默认出现的“约束集可测”“随机变量有分布”，实际上都隐含着定义~\ref{def:sigma-algebra} 和命题~\ref{prop:generated-sigma-algebra} 这一步已经完成。
+\end{example}
+
+\paragraph{为什么要从生成说起}
+
+\begin{remark}
+在无穷维和路径空间建模中，真正容易书写的通常不是全部可测集，而是某一类基本事件。例如在函数空间上，人们常先指定有限维投影对应的柱集；在场景树模型中，则先指定每个节点的条件概率。命题~\ref{prop:generated-sigma-algebra} 告诉我们：只要先固定好这些“原始可观察事件”，后面的测度延拓问题就有了明确的落脚点。
+\end{remark}
+
+\subsection{外测度与 Carathéodory 可测性}
+
+\begin{definition}[外测度]\label{def:outer-measure}
+设 $\Omega$ 为非空集合。映射 $\mu^\ast\colon 2^\Omega\to [0,+\infty]$ 称为 $\Omega$ 上的一个\emph{外测度}，若满足：
+\begin{enumerate}
+  \item $\mu^\ast(\varnothing)=0$；
+  \item 若 $A\subseteq B$，则 $\mu^\ast(A)\le \mu^\ast(B)$；
+  \item 对任意集合列 $\{A_n\}_{n\ge1}\subseteq 2^\Omega$，有
+  \[
+  \mu^\ast\Bigl(\bigcup_{n=1}^{\infty}A_n\Bigr)\le \sum_{n=1}^{\infty}\mu^\ast(A_n).
+  \]
+\end{enumerate}
+\end{definition}
+
+\begin{definition}[Carathéodory 可测集]\label{def:caratheodory-measurable}
+设 $\mu^\ast$ 为 $\Omega$ 上的外测度。若集合 $E\subseteq \Omega$ 满足：对任意 $A\subseteq \Omega$ 都有
+\[
+\mu^\ast(A)=\mu^\ast(A\cap E)+\mu^\ast(A\cap E^c),
+\]
+则称 $E$ 为关于 $\mu^\ast$ 的\emph{Carathéodory 可测集}。
+\end{definition}
+
+\begin{theorem}[Carathéodory 可测集定理]\label{thm:caratheodory-measurable-sets}
+设 $\mu^\ast$ 为 $\Omega$ 上的外测度，记
+\[
+\mathscr M(\mu^\ast):=\{E\subseteq \Omega:\ E\text{ 关于 }\mu^\ast\text{ 是 Carathéodory 可测的}\}.
+\]
+则 $\mathscr M(\mu^\ast)$ 是一个 $\sigma$-代数，并且 $\mu^\ast$ 在 $\mathscr M(\mu^\ast)$ 上的限制是一个完备测度。
+\end{theorem}
+
+\begin{proof}
+先证 $\mathscr M(\mu^\ast)$ 对补运算封闭。若 $E$ 满足定义~\ref{def:caratheodory-measurable}，则对任意 $A\subseteq \Omega$，
+\[
+\mu^\ast(A)=\mu^\ast(A\cap E)+\mu^\ast(A\cap E^c),
+\]
+交换 $E$ 与 $E^c$ 的位置即可得 $E^c\in \mathscr M(\mu^\ast)$。
+
+再证对有限交封闭。设 $E,F\in \mathscr M(\mu^\ast)$。对任意 $A\subseteq \Omega$，先按 $E$ 分割，再对与 $E$ 的交部分按 $F$ 分割，得到
+\[
+\mu^\ast(A)=\mu^\ast(A\cap E\cap F)+\mu^\ast(A\cap E\cap F^c)+\mu^\ast(A\cap E^c).
+\]
+将后两项重新组合，便可写成
+\[
+\mu^\ast(A)=\mu^\ast(A\cap (E\cap F))+\mu^\ast(A\cap (E\cap F)^c),
+\]
+故 $E\cap F\in \mathscr M(\mu^\ast)$。由补封闭也得有限并封闭。
+
+对可数并，只需先处理两两不交的情形，再通过递增极限推广。设 $E_n\in \mathscr M(\mu^\ast)$ 两两不交，令 $E=\bigcup_{n\ge1}E_n$。由外测度的次可加性总有
+\[
+\mu^\ast(A)\le \mu^\ast(A\cap E)+\mu^\ast(A\cap E^c).
+\]
+反向不等式则由每个 $E_n$ 的可测性分步切割并取极限得到。因此 $E\in \mathscr M(\mu^\ast)$，从而 $\mathscr M(\mu^\ast)$ 为 $\sigma$-代数。
+
+最后，若 $\{E_n\}$ 两两不交且都在 $\mathscr M(\mu^\ast)$ 中，则对 $E=\bigcup_n E_n$，利用可测性等式逐步相加可得
+\[
+\mu^\ast(E)=\sum_{n=1}^{\infty}\mu^\ast(E_n).
+\]
+故限制到 $\mathscr M(\mu^\ast)$ 后是测度。若 $\mu^\ast(N)=0$，则对任意 $A\subseteq\Omega$ 有
+\[
+\mu^\ast(A)\le \mu^\ast(A\cap N)+\mu^\ast(A\cap N^c)\le 0+\mu^\ast(A),
+\]
+所以 $N$ 的任意子集也可测，从而该测度完备。
+\end{proof}
+
+\subsection{预备测度的延拓}
+
+\begin{theorem}[Carathéodory 测度延拓定理]\label{thm:caratheodory-extension}
+设 $\mathscr A$ 为 $\Omega$ 上的代数，$\mu_0$ 为 $\mathscr A$ 上的预备测度。定义
+\[
+\mu^\ast(E):=\inf\Bigl\{\sum_{n=1}^{\infty}\mu_0(A_n):\ E\subseteq \bigcup_{n=1}^{\infty}A_n,\ A_n\in \mathscr A\Bigr\},\qquad E\subseteq \Omega.
+\]
+则：
+\begin{enumerate}
+  \item $\mu^\ast$ 是 $\Omega$ 上的外测度；
+  \item $\mathscr A\subseteq \mathscr M(\mu^\ast)$；
+  \item $\mu:=\mu^\ast|_{\sigma(\mathscr A)}$ 是 $\sigma(\mathscr A)$ 上的测度，且 $\mu|_{\mathscr A}=\mu_0$；
+  \item 若 $\mu_0$ 是 $\sigma$-有限的，则该延拓在 $\sigma(\mathscr A)$ 上唯一。
+\end{enumerate}
+\end{theorem}
+
+\begin{proof}
+由定义可直接验证 $\mu^\ast(\varnothing)=0$ 与单调性。次可加性来自于对每个 $E_n$ 选取近似最优覆盖后，把这些覆盖拼接起来。
+
+下证 $\mathscr A\subseteq \mathscr M(\mu^\ast)$。任取 $E\in \mathscr A$ 和任意 $B\subseteq \Omega$。对覆盖 $B\subseteq \bigcup_n A_n$，由代数对交、补封闭可知 $A_n\cap E$ 与 $A_n\cap E^c$ 仍在 $\mathscr A$ 中，于是
+\[
+\mu_0(A_n)=\mu_0(A_n\cap E)+\mu_0(A_n\cap E^c).
+\]
+对所有覆盖取下确界即可得到
+\[
+\mu^\ast(B)\ge \mu^\ast(B\cap E)+\mu^\ast(B\cap E^c).
+\]
+反向不等式由外测度的次可加性总是成立，因此 $E$ 可测。
+
+由定理~\ref{thm:caratheodory-measurable-sets}，$\mu^\ast$ 在 $\mathscr M(\mu^\ast)$ 上是测度；既然 $\sigma(\mathscr A)\subseteq \mathscr M(\mu^\ast)$，便得到了所需延拓。对于 $E\in \mathscr A$，以自身作为覆盖可得 $\mu^\ast(E)\le \mu_0(E)$；反向不等式由上一步切割及预备测度的可加性可得，所以 $\mu^\ast(E)=\mu_0(E)$。
+
+若 $\mu_0$ 是 $\sigma$-有限的，则可取 $\Omega=\bigcup_n E_n$，其中 $E_n\in \mathscr A$ 且 $\mu_0(E_n)<\infty$。若 $\nu$ 是另一延拓，则 $\mu$ 与 $\nu$ 在生成代数 $\mathscr A$ 上一致，并在每个有限测度块 $E_n$ 上都有限。由单调类论证可知二者在 $\sigma(\mathscr A)$ 上一致，从而唯一。
+\end{proof}
+
+\begin{example}[由分布函数生成测度]\label{ex:distribution-function-measure}
+设 $F\colon \mathbb R\to \mathbb R$ 为右连续、单调不减函数。若在半开区间代数上规定
+\[
+\mu_0((a,b])=F(b)-F(a),
+\]
+则 $\mu_0$ 是一个预备测度。由定理~\ref{thm:caratheodory-extension}，它唯一延拓为 $\mathcal B(\mathbb R)$ 上的 Borel 测度。把这个例子放在这里，是为了说明随机变量的分布函数并不是“额外数据”，而正是一个通过延拓定理生成测度的起点。
+\end{example}
+
+\begin{example}[抽象例子：路径空间上的柱集]\label{ex:cylinder-extension}
+在路径空间 $\mathbb R^{[0,T]}$ 或 $C([0,T])$ 上，最容易指定概率的对象往往是有限维柱集，即只依赖有限个时刻取值的事件。先在柱集代数上指定一致的有限维分布，再通过延拓定理得到完整路径测度，是构造 Brownian motion 和更一般随机过程的标准路线。把这个例子放在这里，是为了给第 \ref{sec:2-4} 节的随机过程语言留出严格基础。
+\end{example}
+
+\begin{example}[工程触点：场景树到概率空间]\label{ex:scenario-tree-measure}
+在供应链或随机规划中，人们常先给出有限层场景树，每个节点带有转移概率。若要在极限模型中讨论期望目标、风险约束或动态一致性，就需要把这些离散层级数据嵌入一个真正的概率空间。把这个例子放在这里，是为了说明测度延拓并非纯粹抽象技巧，而是从有限场景模型走向路径级随机优化的第一步。
+\end{example}
+
+\subsection*{有限维对照}
+
+有限维优化里，随机输入通常直接写成“随机向量 $X\in \mathbb R^n$ 有某个分布”，因此底层的可测结构和测度延拓常被隐藏起来。本节的作用，是把这些被默认完成的步骤显式写出：从定义~\ref{def:sigma-algebra} 到定义~\ref{def:outer-measure}，再到定理~\ref{thm:caratheodory-extension}。
+
+\subsection*{习题（待补）}
+
+\begin{exercise}[分布函数延拓占位]\label{exr:distribution-extension-placeholder}
+补一题：从例~\ref{ex:distribution-function-measure} 出发，证明给定右连续分布函数 $F$ 后，区间赋值 $(a,b]\mapsto F(b)-F(a)$ 的确构成一个预备测度。
+\end{exercise}
+
+\begin{exercise}[柱集桥接题占位]\label{exr:cylinder-extension-placeholder}
+补一题：在有限维情形把柱集代数退化为矩形代数，说明为什么定理~\ref{thm:caratheodory-extension} 正是“联合分布存在”的集合论版本。
+\end{exercise}

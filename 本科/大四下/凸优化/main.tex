@@ -1,0 +1,34 @@
+\documentclass[lang=cn,a4paper,newtx,section]{elegantbook}
+
+\title{凸优化}
+\logo{figure/logo-blue.jpg}
+\cover{figure/cover.jpg}
+
+\setcounter{tocdepth}{2}
+\setcounter{secnumdepth}{2}
+
+\usepackage{array}
+\usepackage{tabularx}
+\usepackage{tikz-cd}
+\usepackage{mathtools}
+
+\RenewDocumentCommand{\paragraph}{s m}{%
+  \par\medskip
+  \noindent{\color{structurecolor}\bfseries #2}\quad
+  \ignorespaces
+}
+
+\begin{document}
+
+\maketitle
+
+\frontmatter
+\tableofcontents
+\input{正文/frontmatter-overview.tex}
+\input{正文/frontmatter-roadmap.tex}
+
+\mainmatter
+
+\input{正文/book.tex}
+
+\end{document}

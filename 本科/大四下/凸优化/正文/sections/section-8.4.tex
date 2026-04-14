@@ -1,0 +1,139 @@
+\section{几何规划的对偶透视}
+
+\label{sec:8-4}
+
+几何规划表面上似乎离前几章很远，因为它天然带有乘法结构、幂函数和 posynomial 目标，而不是线性算子与加法对偶。但这正是它适合放在本章末尾的原因：GP 是一个最典型的“特例坍缩”。一旦做对数变换，乘法会变成加法，monomial 会变成仿射函数，posynomial 会变成 log-sum-exp，从而整个问题重新回到凸分析和 Fenchel--Rockafellar 对偶的轨道上。
+
+\subsection{几何规划的基本形式}
+
+\begin{definition}[几何规划]\label{def:geometric-program}
+一个标准\emph{几何规划}通常写成
+\[
+\min_{x\in \mathbb R_{++}^n}\ f_0(x)
+\]
+subject to
+\[
+f_i(x)\le 1,\qquad i=1,\dots,m,
+\]
+\[
+g_j(x)=1,\qquad j=1,\dots,p,
+\]
+其中每个 $f_i$ 是 posynomial，每个 $g_j$ 是 monomial。这里
+\[
+g(x)=c x_1^{a_1}\cdots x_n^{a_n},\qquad c>0,
+\]
+称为 monomial；若
+\[
+f(x)=\sum_{k=1}^N c_k x_1^{a_{1k}}\cdots x_n^{a_{nk}},\qquad c_k>0,
+\]
+则称为 posynomial。
+\end{definition}
+
+\begin{proposition}[对数变换后的凸性]\label{prop:gp-log-transform-convexity}
+令
+\[
+y_i=\log x_i,\qquad x_i=e^{y_i}.
+\]
+则 monomial 的对数变成仿射函数，posynomial 的对数变成 convex 的 log-sum-exp 形式。特别地，几何规划在对数坐标下可转化为凸优化问题。
+\end{proposition}
+
+\begin{proof}
+对 monomial，
+\[
+\log g(e^y)=\log c+\sum_{i=1}^n a_i y_i,
+\]
+这是仿射函数。
+
+对 posynomial，
+\[
+f(e^y)=\sum_{k=1}^N c_k \exp(a_k^\top y),
+\]
+故
+\[
+\log f(e^y)=\log \left(\sum_{k=1}^N \exp(a_k^\top y+\log c_k)\right).
+\]
+右端正是经典的 log-sum-exp 形式。由于指数函数凸且求和保持凸性，而对数作用在正和式上得到的 log-sum-exp 仍是凸函数，因此在变量 $y$ 上得到的是凸约束与凸目标。
+\end{proof}
+
+\begin{definition}[GP 中的 log-sum-exp 目标]\label{def:log-sum-exp-gp}
+若 $f$ 是 posynomial，则在对数坐标 $y=\log x$ 下定义
+\[
+F(y):=\log f(e^y)
+=
+\log \left(\sum_{k=1}^N \exp(a_k^\top y+\beta_k)\right),
+\qquad \beta_k:=\log c_k.
+\]
+函数 $F$ 称为 GP 变换后的\emph{log-sum-exp} 目标或约束函数。
+\end{definition}
+
+\subsection{GP 的对偶透视}
+
+\begin{theorem}[GP 的 Fenchel 对偶表示]\label{thm:gp-duality-fenchel}
+在对数变量 $y$ 下，几何规划可写成一个由仿射项与 log-sum-exp 项组成的有限维凸优化问题。因而在满足有限维资格条件时，其对偶问题可由第 \ref{sec:6-4} 节定理~\ref{thm:fenchel-rockafellar-duality} 给出；换言之，GP 的经典对偶本质上是 log-sum-exp 共轭与仿射约束共同作用的 Fenchel 对偶。
+\end{theorem}
+
+\begin{proof}
+由命题~\ref{prop:gp-log-transform-convexity}，原 GP 在对数变量下化为
+\[
+\min_y\ F_0(y)
+\]
+subject to
+\[
+F_i(y)\le 0,\qquad i=1,\dots,m,
+\]
+\[
+\alpha_j^\top y+\gamma_j=0,\qquad j=1,\dots,p,
+\]
+其中每个 $F_i$ 都是定义~\ref{def:log-sum-exp-gp} 给出的 log-sum-exp 函数。于是这已经是一个标准有限维凸优化问题。
+
+再把不等式约束写成指示函数，把等式约束写成仿射子空间的指示函数，便可将整个问题整理为
+\[
+\inf_y \{\Phi(y)+\Psi(By)\},
+\]
+其中 $\Phi$ 由 log-sum-exp 项组成，$\Psi$ 由约束指示函数组成。此时第 \ref{sec:6-1} 节定义~\ref{def:fenchel-conjugate} 的 Fenchel 共轭和第 \ref{sec:6-4} 节定理~\ref{thm:fenchel-rockafellar-duality} 直接适用，于是得到 GP 的对偶表示。也就是说，GP 并不是对偶理论之外的特例，而是对数坐标下的有限维对偶坍缩。
+\end{proof}
+
+\begin{remark}
+从本书视角看，GP 最值得强调的不是“它可以变凸”这一口号，而是“它变凸之后，所依赖的仍然是同一套共轭与对偶框架”。这就是为什么本节要显式回链第 \ref{sec:6-4} 节，而不是把 GP 当作一组孤立技巧。
+\end{remark}
+
+\subsection{典型例子}
+
+\begin{example}[功率控制的几何规划]\label{ex:power-control-gp}
+无线功率控制中的信噪比约束常可整理为
+\[
+\frac{\sigma_i+\sum_{j\neq i} a_{ij}p_j}{p_i}\le \frac{1}{\gamma_i},
+\qquad p_i>0.
+\]
+在正变量 $p_i$ 上这看起来是分式与乘法混合结构；经对数变换后，它会变成 log-sum-exp 约束。把这个例子放在这里，是为了回收 Boyd 中最经典的 GP 工程模型，并说明它本质上属于有限维对偶坍缩。
+\end{example}
+
+\begin{example}[电路与面积功率折中]
+集成电路设计里经常出现 monomial 与 posynomial 形式的面积、延迟和功耗模型。把这个例子放在这里，是为了说明 GP 不是数学上的边角料，而是对数凸建模在工程中的代表性落点。
+\end{example}
+
+\begin{example}[乘法效用资源分配]
+若效用函数带有乘法结构，如
+\[
+\prod_{i=1}^n x_i^{\alpha_i},
+\]
+则取对数后会转化为加法目标
+\[
+\sum_{i=1}^n \alpha_i \log x_i.
+\]
+把这个例子放在这里，是为了给管理科学读者一个直观触点：乘法效用模型之所以适合凸优化，不是因为乘法本身“神奇”，而是因为对数坐标把它送回了加法与对偶的世界。
+\end{example}
+
+\subsection*{有限维对照}
+
+Boyd 书中几何规划往往以对数变换和工程例子同时出现，因此读者容易把它记成一套技巧性很强的特例。本节强调的恰恰是相反的事实：GP 在有限维里之所以漂亮，是因为 log-sum-exp、Fenchel 共轭和 Fenchel--Rockafellar 对偶都能被完整显式写出。也就是说，GP 不是对凸对偶的例外，而是它最精致的坍缩之一。
+
+\subsection*{习题（待补）}
+
+\begin{exercise}[GP 对数变换占位]
+补一题：把一个具体的 posynomial 目标和约束问题改写到对数变量下，并验证 log-sum-exp 函数的出现。
+\end{exercise}
+
+\begin{exercise}[GP 对偶桥接题占位]
+补一题：对一个简单的几何规划写出其对数凸化问题，并说明第 \ref{sec:6-4} 节 Fenchel--Rockafellar 对偶如何给出对应对偶表达。
+\end{exercise}

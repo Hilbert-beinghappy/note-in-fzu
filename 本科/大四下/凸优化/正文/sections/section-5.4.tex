@@ -1,0 +1,217 @@
+\section{次微分演算}
+
+\label{sec:5-4}
+
+单个点上的次微分只提供局部信息；真正让它成为建模与算法工具的，是一套可稳定复用的演算规则。和泛函如何分解次梯度？线性观测算子如何把对偶变量从像空间拉回原空间？约束指示函数与法锥如何统一？这些问题在有限维里常被视为“计算技巧”，但在无穷维里它们直接决定第 \ref{chap:06} 章共轭公式、第 \ref{chap:07} 章 KKT 条件以及第 9 至 10 章分裂算法能否写成统一模板。本节的核心接口就是 Moreau-Rockafellar 和公式及其线性拉回版本。
+
+\subsection{和规则与法锥}
+
+\begin{proposition}[次微分和规则的基本包含式]\label{prop:subdifferential-sum-inclusion}
+设 $X$ 为 Banach 空间，$f,g\colon X\to \mathbb R\cup\{+\infty\}$ 为 proper 凸泛函。则对任意 $x\in X$，
+\[
+\partial f(x)+\partial g(x)\subset \partial (f+g)(x).
+\]
+\end{proposition}
+
+\begin{proof}
+任取
+\[
+x_1^\ast\in \partial f(x),\qquad x_2^\ast\in \partial g(x).
+\]
+由定义~\ref{def:subdifferential}，对任意 $y\in X$，
+\[
+f(y)\ge f(x)+\langle x_1^\ast,y-x\rangle,
+\qquad
+g(y)\ge g(x)+\langle x_2^\ast,y-x\rangle.
+\]
+两式相加得
+\[
+(f+g)(y)\ge (f+g)(x)+\langle x_1^\ast+x_2^\ast,y-x\rangle.
+\]
+因此
+\[
+x_1^\ast+x_2^\ast\in \partial (f+g)(x),
+\]
+结论成立。
+\end{proof}
+
+\begin{corollary}[指示函数与法锥]\label{cor:normal-cone-indicator}
+设 $C\subset X$ 为非空闭凸集，并定义指示函数
+\[
+\iota_C(x)=
+\begin{cases}
+0, & x\in C,\\
++\infty, & x\notin C.
+\end{cases}
+\]
+对 $x\in C$，定义法锥
+\[
+N_C(x):=\{x^\ast\in X^\ast:\langle x^\ast,y-x\rangle\le 0,\ \forall y\in C\}.
+\]
+则
+\[
+\partial \iota_C(x)=N_C(x),\qquad x\in C.
+\]
+\end{corollary}
+
+\begin{proof}
+由定义~\ref{def:subdifferential}，
+\[
+x^\ast\in \partial \iota_C(x)
+\]
+当且仅当对任意 $y\in X$，
+\[
+\iota_C(y)\ge \iota_C(x)+\langle x^\ast,y-x\rangle.
+\]
+当 $y\notin C$ 时左侧为 $+\infty$，不等式自动成立；当 $y\in C$ 时，$\iota_C(y)=\iota_C(x)=0$，故不等式恰化为
+\[
+\langle x^\ast,y-x\rangle\le 0,\qquad \forall y\in C.
+\]
+这正是 $x^\ast\in N_C(x)$。
+\end{proof}
+
+\subsection{Moreau--Rockafellar 和公式}
+
+\begin{theorem}[Moreau--Rockafellar 和公式]\label{thm:moreau-rockafellar-sum}
+设 $X$ 为 Banach 空间，$f,g\colon X\to \mathbb R\cup\{+\infty\}$ 为 proper、凸且下半连续的泛函，$x\in \operatorname{dom}f\cap \operatorname{dom}g$。若 $f$ 或 $g$ 中至少有一个在 $x$ 处连续，则
+\[
+\partial (f+g)(x)=\partial f(x)+\partial g(x).
+\]
+\end{theorem}
+
+\begin{proof}
+由命题~\ref{prop:subdifferential-sum-inclusion}，只需证明反向包含。设
+\[
+x^\ast\in \partial (f+g)(x).
+\]
+若 $f$ 在 $x$ 处连续，则交换 $f,g$ 的角色即可，故不妨设 $g$ 在 $x$ 处连续。定义
+\[
+F(u):=f(x+u)-f(x)-\langle x^\ast,u\rangle,
+\qquad
+G(u):=g(x)-g(x+u).
+\]
+由 $x^\ast\in\partial(f+g)(x)$，对任意 $u\in X$ 都有
+\[
+F(u)\ge G(u).
+\]
+
+考虑集合
+\[
+C_1:=\{(u,r)\in X\times\mathbb R:F(u)\le r\},
+\qquad
+C_2:=\{(u,r)\in X\times\mathbb R:G(u)>r\}.
+\]
+$C_1$ 是闭凸集，而由于 $g$ 在 $x$ 处连续，$G$ 在原点处上半连续，从而 $C_2$ 是开凸集。两者由上式可知不相交。于是由第 \ref{sec:4-3} 节定理~\ref{thm:strict-separation} 的分离思想，存在非零连续线性泛函 $(u^\ast,s)\in X^\ast\times\mathbb R$ 使
+\[
+\langle u^\ast,u\rangle + sr_1 \ge \langle u^\ast,v\rangle + sr_2,
+\qquad
+\forall (u,r_1)\in C_1,\ \forall (v,r_2)\in C_2.
+\]
+取 $u=v=0$，并利用 $(0,r_1)\in C_1$ 对所有 $r_1\ge 0$ 成立、$(0,r_2)\in C_2$ 对所有 $r_2<0$ 成立，可知 $s>0$。再让 $(u,r_1)=(u,F(u))\in C_1$，并令 $r_2\uparrow G(u)$，得到
+\[
+\langle u^\ast,u\rangle + sF(u)\ge 0,\qquad
+\langle u^\ast,u\rangle + sG(u)\le 0.
+\]
+于是对任意 $u\in X$，
+\[
+f(x+u)\ge f(x)+\left\langle x^\ast-\frac{u^\ast}{s},u\right\rangle,
+\qquad
+g(x+u)\ge g(x)+\left\langle \frac{u^\ast}{s},u\right\rangle.
+\]
+因此
+\[
+x^\ast-\frac{u^\ast}{s}\in \partial f(x),
+\qquad
+\frac{u^\ast}{s}\in \partial g(x),
+\]
+从而
+\[
+x^\ast\in \partial f(x)+\partial g(x).
+\]
+反向包含得证。
+\end{proof}
+
+\begin{remark}
+定理~\ref{thm:moreau-rockafellar-sum} 中的连续性假设是一种典型资格条件。它的作用不是为了“让证明顺手”，而是为了排除病态分离失败。后文在第 \ref{sec:6-4} 节 Fenchel--Rockafellar 对偶和第 \ref{sec:7-3} 节 Slater 条件中，会看到完全相同的逻辑再次出现。
+\end{remark}
+
+\subsection{线性映射下的拉回}
+
+\begin{proposition}[线性映射下的拉回与链式法则]\label{prop:subdifferential-linear-pullback}
+设 $X,Y$ 为 Banach 空间，$A\colon X\to Y$ 为有界线性算子，$g\colon Y\to \mathbb R\cup\{+\infty\}$ 为 proper 凸泛函。则对任意 $x\in X$，
+\[
+A^\ast \partial g(Ax)\subset \partial (g\circ A)(x),
+\]
+其中伴随算子 $A^\ast$ 由第 \ref{sec:3-3} 节定义~\ref{def:adjoint-operator} 给出。
+\end{proposition}
+
+\begin{proof}
+任取 $y^\ast\in \partial g(Ax)$。则对任意 $z\in X$，
+\[
+g(Az)\ge g(Ax)+\langle y^\ast,Az-Ax\rangle.
+\]
+利用伴随算子定义，
+\[
+\langle y^\ast,Az-Ax\rangle=\langle A^\ast y^\ast,z-x\rangle.
+\]
+故
+\[
+(g\circ A)(z)\ge (g\circ A)(x)+\langle A^\ast y^\ast,z-x\rangle,\qquad \forall z\in X.
+\]
+由定义~\ref{def:subdifferential}，这说明
+\[
+A^\ast y^\ast\in \partial(g\circ A)(x).
+\]
+\end{proof}
+
+\begin{remark}
+命题~\ref{prop:subdifferential-linear-pullback} 是本章最常用的链式法则版本。它说明观测空间中的次梯度会先在像空间里计算，再通过伴随算子拉回原空间。第 \ref{sec:7-2} 节的算子约束、第 \ref{sec:10-1} 节的前向--后向分裂，以及许多正则化问题中的“梯度项加观测项”都依赖这一步。
+\end{remark}
+
+\subsection{典型例子}
+
+\begin{example}[和泛函 $f+g$ 的次微分分解]\label{ex:sum-rule-splitting}
+设 $H$ 为 Hilbert 空间，$f$ 为光滑凸泛函，$g$ 为 proper 下半连续凸泛函。若 $g$ 在某点连续，则由定理~\ref{thm:moreau-rockafellar-sum}，
+\[
+\partial(f+g)(x)=\{\nabla f(x)\}+\partial g(x).
+\]
+把这个例子放在这里，是为了直接通向第 \ref{sec:10-1} 节的前向--后向分裂：一个部分用梯度处理，另一个部分用邻近映射处理。
+\end{example}
+
+\begin{example}[线性观测下的正则化]\label{ex:linear-observation-regularization}
+设 $A\colon X\to Y$ 为有界线性算子，$\varphi\colon Y\to \mathbb R\cup\{+\infty\}$ 为 proper 凸泛函，$\psi\colon X\to \mathbb R\cup\{+\infty\}$ 为正则化项。考虑
+\[
+F(x)=\varphi(Ax)+\psi(x).
+\]
+则由命题~\ref{prop:subdifferential-linear-pullback} 与定理~\ref{thm:moreau-rockafellar-sum}，
+\[
+\partial F(x)\supset A^\ast \partial \varphi(Ax)+\partial \psi(x),
+\]
+在标准资格条件下可取等号。把这个例子放在这里，是为了统一逆问题、机器学习和约束优化里的“数据项 + 正则项”结构。
+\end{example}
+
+\begin{example}[有限维复合凸函数]\label{ex:finite-dimensional-composite}
+当 $X=\mathbb R^n$、$Y=\mathbb R^m$ 且 $A$ 是矩阵时，命题~\ref{prop:subdifferential-linear-pullback} 退化为
+\[
+\partial (\varphi\circ A)(x)\supset A^\top \partial \varphi(Ax).
+\]
+若 $\varphi$ 可微，则进一步得到
+\[
+\nabla (\varphi\circ A)(x)=A^\top \nabla \varphi(Ax).
+\]
+把这个例子放在这里，是为了把 Boyd 中关于复合目标和线性约束的矩阵链式规则放回无穷维的统一框架。
+\end{example}
+
+\subsection*{有限维对照}
+
+Boyd 第 3 章和第 6 章里关于复合目标、约束消元和拉格朗日处理的许多规则，在欧氏空间里通常写成“把几个梯度和次梯度加起来，再乘一个转置矩阵”。本节说明，这些公式并不是矩阵世界的偶然巧合，而是命题~\ref{prop:subdifferential-sum-inclusion}、定理~\ref{thm:moreau-rockafellar-sum} 和命题~\ref{prop:subdifferential-linear-pullback} 在有限维 Hilbert 空间中的坍缩。
+
+\subsection*{习题（待补）}
+
+\begin{exercise}[Moreau--Rockafellar 公式占位]\label{exr:moreau-rockafellar-placeholder}
+补一题：针对一个具体的“光滑项 + 非光滑项”模型，使用定理~\ref{thm:moreau-rockafellar-sum} 写出其最优性条件，并说明资格条件在哪一步被使用。
+\end{exercise}
+
+\begin{exercise}[线性拉回桥接题占位]\label{exr:linear-pullback-placeholder}
+补一题：对例~\ref{ex:linear-observation-regularization} 验证命题~\ref{prop:subdifferential-linear-pullback}，并把所得结论退回到矩阵情形，与 Boyd 书中的转置矩阵公式逐项对照。
+\end{exercise}

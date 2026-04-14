@@ -1,0 +1,266 @@
+\section{Moreau 包络}
+
+\label{sec:9-3}
+
+第 \ref{sec:6-3} 节已经从共轭与下确界卷积的角度引入了 Moreau 包络，但在那里，重点还是代数结构和对偶交换。本节要把同一个对象重新放回算法语境：一方面，Moreau-Yosida 正则化提供了“把不可微目标平滑化而不改写极小值集合”的手段；另一方面，它又通过 Yosida 近似把极大单调算子变成单值 Lipschitz 映射，为第 \ref{chap:10} 章的连续和离散迭代提供统一接口。
+
+\subsection{Yosida 近似}
+
+\begin{definition}[Yosida 近似]\label{def:yosida-approximation}
+设 $H$ 为 Hilbert 空间，$A\colon H\rightrightarrows H$ 为极大单调算子，$\lambda>0$。定义
+\[
+A_\lambda:=\frac{1}{\lambda}(I-J_{\lambda A}),
+\]
+称其为 $A$ 的\emph{Yosida 近似}。当 $A=\partial f$ 时，$A_\lambda$ 也称为 $f$ 的 Moreau--Yosida 正则化梯度。
+\end{definition}
+
+\begin{proposition}[Moreau 包络的梯度公式]\label{prop:moreau-envelope-gradient}
+设 $f\colon H\to \mathbb R\cup\{+\infty\}$ 为 proper、凸且下半连续泛函，$\lambda>0$。则第 \ref{sec:6-3} 节定义~\ref{def:moreau-envelope} 中的 Moreau 包络
+\[
+e_\lambda f(x)
+=
+\inf_{u\in H}
+\left\{
+f(u)+\frac{1}{2\lambda}\|u-x\|^2
+\right\}
+\]
+在 $H$ 上 Fr\'echet 可微，且
+\[
+\nabla e_\lambda f(x)
+=
+\frac{1}{\lambda}\bigl(x-\operatorname{prox}_{\lambda f}(x)\bigr)
+=(\partial f)_\lambda(x).
+\]
+\end{proposition}
+
+\begin{proof}
+设
+\[
+p(x):=\operatorname{prox}_{\lambda f}(x).
+\]
+由命题~\ref{prop:prox-optimality-condition}，
+\[
+\frac{x-p(x)}{\lambda}\in \partial f(p(x)).
+\]
+因此，依据第 \ref{sec:6-1} 节 Fenchel--Young 取等条件，
+\[
+f(p(x))+f^\ast\!\left(\frac{x-p(x)}{\lambda}\right)
+=
+\left\langle \frac{x-p(x)}{\lambda},p(x)\right\rangle.
+\]
+另一方面，对任意 $h\in H$，由 $p(x)$ 对 $e_\lambda f(x)$ 的最优性，
+\[
+e_\lambda f(x+h)
+\le
+f(p(x))+\frac{1}{2\lambda}\|p(x)-x-h\|^2.
+\]
+减去
+\[
+e_\lambda f(x)=f(p(x))+\frac{1}{2\lambda}\|p(x)-x\|^2
+\]
+得
+\[
+e_\lambda f(x+h)-e_\lambda f(x)
+\le
+\left\langle \frac{x-p(x)}{\lambda},h\right\rangle+\frac{1}{2\lambda}\|h\|^2.
+\]
+同理，以 $p(x+h)$ 作为 $e_\lambda f(x)$ 的竞争点，可得反向估计
+\[
+e_\lambda f(x+h)-e_\lambda f(x)
+\ge
+\left\langle \frac{x-p(x+h)}{\lambda},h\right\rangle-\frac{1}{2\lambda}\|h\|^2.
+\]
+由命题~\ref{prop:prox-firm-nonexpansive}，$p$ 连续，从而
+\[
+\frac{x-p(x+h)}{\lambda}\to \frac{x-p(x)}{\lambda}\qquad (h\to 0).
+\]
+夹逼后得到
+\[
+e_\lambda f(x+h)-e_\lambda f(x)-\left\langle \frac{x-p(x)}{\lambda},h\right\rangle=o(\|h\|),
+\]
+故 $e_\lambda f$ Fr\'echet 可微，且梯度正是所述表达式。根据定义~\ref{def:yosida-approximation}，该梯度也就是 $(\partial f)_\lambda$。
+\end{proof}
+
+\begin{proposition}[Yosida 近似的 Lipschitz 性]\label{prop:yosida-lipschitz}
+设 $A\colon H\rightrightarrows H$ 为极大单调算子，$\lambda>0$。则 $A_\lambda$ 是单值映射，并满足
+\[
+\|A_\lambda x-A_\lambda y\|
+\le
+\frac{1}{\lambda}\|x-y\|,
+\qquad \forall x,y\in H.
+\]
+\end{proposition}
+
+\begin{proof}
+由定理~\ref{thm:minty-surjectivity}，$J_{\lambda A}$ 在整个 $H$ 上单值，因此定义~\ref{def:yosida-approximation} 立即说明 $A_\lambda$ 单值。再由定义，
+\[
+A_\lambda x-A_\lambda y
+=
+\frac{1}{\lambda}\bigl((x-y)-(J_{\lambda A}x-J_{\lambda A}y)\bigr).
+\]
+对极大单调算子，其 resolvent 是 firm nonexpansive；这可由定理~\ref{thm:minty-surjectivity} 与命题~\ref{prop:prox-firm-nonexpansive} 在一般 $A$ 上的同样证明得到。于是
+\[
+\|J_{\lambda A}x-J_{\lambda A}y\|^2
+\le
+\langle J_{\lambda A}x-J_{\lambda A}y,x-y\rangle.
+\]
+因此
+\[
+\begin{aligned}
+\|A_\lambda x-A_\lambda y\|^2
+&=
+\frac{1}{\lambda^2}
+\|(x-y)-(J_{\lambda A}x-J_{\lambda A}y)\|^2 \\
+&=
+\frac{1}{\lambda^2}
+\left(
+\|x-y\|^2+\|J_{\lambda A}x-J_{\lambda A}y\|^2
+-2\langle x-y,J_{\lambda A}x-J_{\lambda A}y\rangle
+\right) \\
+&\le
+\frac{1}{\lambda^2}
+\left(
+\|x-y\|^2-\|J_{\lambda A}x-J_{\lambda A}y\|^2
+\right)
+\le
+\frac{1}{\lambda^2}\|x-y\|^2.
+\end{aligned}
+\]
+取平方根即得结论。
+\end{proof}
+
+\subsection{Moreau--Yosida 正则化}
+
+\begin{theorem}[Moreau--Yosida 正则化]\label{thm:moreau-yosida-regularization}
+设 $f\colon H\to \mathbb R\cup\{+\infty\}$ 为 proper、凸且下半连续泛函，$\lambda>0$。则 $e_\lambda f$ 具有以下性质：
+\begin{enumerate}
+  \item $e_\lambda f$ 为凸且处处有限的连续函数；
+  \item $e_\lambda f$ Fr\'echet 可微，且其梯度由命题~\ref{prop:moreau-envelope-gradient} 给出；
+  \item 对任意 $x\in H$，
+  \[
+  e_\lambda f(x)\le f(x);
+  \]
+  \item 若 $0<\lambda_1<\lambda_2$，则
+  \[
+  e_{\lambda_1}f(x)\ge e_{\lambda_2}f(x),\qquad \forall x\in H,
+  \]
+  因而当 $\lambda\downarrow 0$ 时，$e_\lambda f$ 由下逼近 $f$。
+\end{enumerate}
+\end{theorem}
+
+\begin{proof}
+第一条中的凸性来自第 \ref{sec:6-3} 节命题~\ref{prop:infimal-convolution-convexity}，因为 $e_\lambda f=f\square q_\lambda$，而二次函数 $q_\lambda(x)=\|x\|^2/(2\lambda)$ 连续且强凸。处处有限与连续性来自竞争点 $u=x$ 给出的上界以及命题~\ref{prop:moreau-envelope-gradient} 的可微性。
+
+第二条正是命题~\ref{prop:moreau-envelope-gradient}。
+
+第三条由取竞争点 $u=x$ 立得：
+\[
+e_\lambda f(x)
+\le
+f(x)+\frac{1}{2\lambda}\|x-x\|^2
+=
+f(x).
+\]
+
+第四条只需比较惩罚项。若 $0<\lambda_1<\lambda_2$，则对任意 $u\in H$，
+\[
+f(u)+\frac{1}{2\lambda_1}\|u-x\|^2
+\ge
+f(u)+\frac{1}{2\lambda_2}\|u-x\|^2.
+\]
+两边对 $u$ 取下确界即可得到
+\[
+e_{\lambda_1}f(x)\ge e_{\lambda_2}f(x).
+\]
+因此随 $\lambda\downarrow 0$，$e_\lambda f(x)$ 单调增加且始终不超过 $f(x)$，这正是 Moreau--Yosida 正则化的逼近方向。
+\end{proof}
+
+\begin{corollary}[Moreau 包络保持极小值集合]\label{cor:moreau-envelope-minimizers}
+在定理~\ref{thm:moreau-yosida-regularization} 的假设下，对任意 $\lambda>0$，
+\[
+\operatorname*{argmin} f
+=
+\operatorname*{argmin} e_\lambda f.
+\]
+特别地，
+\[
+x^\star\in \operatorname*{argmin} f
+\quad\Longleftrightarrow\quad
+\nabla e_\lambda f(x^\star)=0.
+\]
+\end{corollary}
+
+\begin{proof}
+若 $x^\star$ 极小化 $f$，则对任意 $u$ 有 $f(u)\ge f(x^\star)$，故
+\[
+f(u)+\frac{1}{2\lambda}\|u-x^\star\|^2\ge f(x^\star).
+\]
+对 $u$ 取下确界得
+\[
+e_\lambda f(x^\star)\ge f(x^\star).
+\]
+再结合定理~\ref{thm:moreau-yosida-regularization} 第三条，
+\[
+e_\lambda f(x^\star)=f(x^\star).
+\]
+因此 $x^\star$ 极小化 $e_\lambda f$。反之，若 $x^\star$ 极小化 $e_\lambda f$，则对任意 $x$，
+\[
+e_\lambda f(x^\star)\le e_\lambda f(x)\le f(x).
+\]
+另一方面，
+\[
+e_\lambda f(x^\star)\le f(x^\star),
+\]
+故
+\[
+f(x^\star)\le f(x),\qquad \forall x\in H.
+\]
+于是 $x^\star$ 也是 $f$ 的极小点。最后，由命题~\ref{prop:subgradient-optimality} 与可微凸函数的一阶判别，
+\[
+x^\star\in \operatorname*{argmin} e_\lambda f
+\quad\Longleftrightarrow\quad
+\nabla e_\lambda f(x^\star)=0.
+\]
+\end{proof}
+
+\subsection{典型例子}
+
+\begin{example}[指标函数的包络与距离平方]
+设 $C\subset H$ 为非空闭凸集，$f=\iota_C$。则
+\[
+e_\lambda \iota_C(x)
+=
+\frac{1}{2\lambda}\operatorname{dist}(x,C)^2.
+\]
+把这个例子放在这里，是为了把投影、可行性误差与平滑代理统一起来：当目标只是“离集合还有多远”时，Moreau 包络直接变成距离平方。
+\end{example}
+
+\begin{example}[绝对值与 Huber 平滑]
+在 $\mathbb R$ 上取 $f(t)=|t|$，则第 \ref{sec:6-3} 节例子已经说明
+\[
+e_\lambda f(x)=
+\begin{cases}
+\dfrac{x^2}{2\lambda}, & |x|\le \lambda,\\[4pt]
+|x|-\dfrac{\lambda}{2}, & |x|>\lambda.
+\end{cases}
+\]
+把这个例子放在这里，是为了让读者看到 Boyd 中非常熟悉的 Huber 平滑，其实正是 Moreau--Yosida 正则化的最简单坍缩。
+\end{example}
+
+\begin{example}[稳健回归与图像去噪]
+在稳健回归或变分图像去噪中，原始正则项往往不可微。把它替换成 Moreau 包络后，目标函数虽然被平滑化，但推论~\ref{cor:moreau-envelope-minimizers} 表明极小值结构没有被粗暴破坏。把这个例子放在这里，是为了说明 Moreau 包络不是“方便计算的临时近似”，而是带有几何控制的结构性代理。
+\end{example}
+
+\subsection*{有限维对照}
+
+Boyd 书中关于平滑化、Huber 损失与近端算法的讨论，通常以有限维图像和矩阵模型呈现。本节说明，这些现象背后的统一对象其实是定义~\ref{def:yosida-approximation}、命题~\ref{prop:moreau-envelope-gradient} 与定理~\ref{thm:moreau-yosida-regularization}。有限维里，Yosida 正则化看上去像“把尖角磨平”；无穷维里，它同时也是把多值极大单调算子替换为单值 Lipschitz 映射的解析机制。
+
+\subsection*{习题（待补）}
+
+\begin{exercise}[距离平方占位]
+补一题：证明当 $f=\iota_C$ 时，Moreau 包络等于 $\operatorname{dist}(\cdot,C)^2/(2\lambda)$，并解释其梯度与投影之间的关系。
+\end{exercise}
+
+\begin{exercise}[Huber 平滑桥接题占位]
+补一题：对 $f(t)=|t|$ 直接计算 $e_\lambda f$ 与 $\nabla e_\lambda f$，并说明它如何连接软阈值与平滑优化。
+\end{exercise}

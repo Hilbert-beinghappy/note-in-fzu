@@ -1,0 +1,200 @@
+\section{随机控制与 Bellman 动态规划}
+
+\label{sec:11-3}
+
+上一节已经把交易执行与风险控制写成了适应过程上的凸优化问题，但这还没有回答一个更动态的问题：当决策要在每个时刻随状态和信息更新时，如何把整个问题拆成逐时递推的结构？Bellman 动态规划给出的答案是价值函数。它把“从当前状态出发的最优剩余成本”重新编码成一个函数，于是控制问题不再只是单个极小化，而是一个由 Bellman 算子驱动的递推系统。本节因此既是随机控制的结构入口，也是从 It\^o 分析走向 HJB 方程的过渡层。
+
+\subsection{价值函数与 Bellman 算子}
+
+\begin{definition}[随机控制的价值函数]\label{def:value-function-stochastic-control}
+考虑离散时间随机控制系统
+\[
+X_{k+1}=F_k(X_k,u_k,\xi_{k+1}),
+\qquad k=0,1,\dots,N-1,
+\]
+其中 $\{\xi_k\}$ 为噪声序列，控制 $u_k$ 对给定滤过适应。若阶段成本为 $\ell_k(x,u)$，终端成本为 $g(x)$，则从时刻 $k$ 和状态 $x$ 出发的\emph{价值函数}定义为
+\[
+V_k(x)
+:=
+\inf_{u_k,\dots,u_{N-1}}
+\mathbb E\!\left[
+\sum_{j=k}^{N-1}\ell_j(X_j,u_j)+g(X_N)
+\;\middle|\;
+X_k=x
+\right].
+\]
+\end{definition}
+
+\begin{definition}[Bellman 算子]\label{def:bellman-operator}
+对任意函数 $\varphi$，定义时刻 $k$ 的 \emph{Bellman 算子}为
+\[
+(\mathcal T_k\varphi)(x)
+:=
+\inf_{u\in \mathcal U(x)}
+\mathbb E\!\left[
+\ell_k(x,u)+\varphi(F_k(x,u,\xi_{k+1}))
+\right],
+\]
+其中 $\mathcal U(x)$ 是状态 $x$ 下允许的控制集合。
+\end{definition}
+
+\begin{remark}
+定义~\ref{def:value-function-stochastic-control} 的关键不在于“递归求值”，而在于它把原本住在策略空间中的优化问题压缩成了状态空间上的函数问题。这样一来，第 \ref{sec:11-2} 节的自融资策略可以被视作 Bellman 递推中的控制输入，而策略空间的复杂性则被转移到价值函数和 Bellman 算子的性质分析中。
+\end{remark}
+
+\subsection{动态规划原理}
+
+\begin{theorem}[动态规划原理]\label{thm:dynamic-programming-principle}
+在定义~\ref{def:value-function-stochastic-control} 的离散时间框架下，对每个 $k=0,1,\dots,N-1$ 都有
+\[
+V_k=\mathcal T_k V_{k+1},
+\qquad
+V_N=g.
+\]
+换言之，
+\[
+V_k(x)
+=
+\inf_{u\in \mathcal U(x)}
+\mathbb E\!\left[
+\ell_k(x,u)+V_{k+1}(F_k(x,u,\xi_{k+1}))
+\right].
+\]
+\end{theorem}
+
+\begin{proof}
+固定时刻 $k$ 与状态 $x$。对任意 admissible 策略序列 $(u_k,\dots,u_{N-1})$，先把总成本拆成第一步成本与剩余成本：
+\[
+\sum_{j=k}^{N-1}\ell_j(X_j,u_j)+g(X_N)
+=
+\ell_k(x,u_k)+\sum_{j=k+1}^{N-1}\ell_j(X_j,u_j)+g(X_N).
+\]
+对条件期望应用定义~\ref{def:conditional-expectation} 的塔性质，得到
+\[
+\mathbb E\!\left[
+\sum_{j=k}^{N-1}\ell_j(X_j,u_j)+g(X_N)\mid X_k=x
+\right]
+\]
+\[
+=
+\mathbb E\!\left[
+\ell_k(x,u_k)+
+\mathbb E\!\left[
+\sum_{j=k+1}^{N-1}\ell_j(X_j,u_j)+g(X_N)\mid X_{k+1}
+\right]
+\middle|\; X_k=x
+\right].
+\]
+内层条件期望按定义恰好不小于 $V_{k+1}(X_{k+1})$，于是对任意第一步控制 $u$ 都有
+\[
+V_k(x)\ge
+\inf_{u\in \mathcal U(x)}
+\mathbb E\!\left[
+\ell_k(x,u)+V_{k+1}(F_k(x,u,\xi_{k+1}))
+\right].
+\]
+反过来，对任意 $\varepsilon>0$，可为下一阶段选取 $\varepsilon$-最优策略，使剩余成本不超过 $V_{k+1}$ 加上 $\varepsilon$。再把第一步控制与该近似最优尾部策略拼接，就得到反向不等式。令 $\varepsilon\downarrow 0$ 即得
+\[
+V_k=\mathcal T_kV_{k+1}.
+\]
+\end{proof}
+
+\subsection{Bellman 迭代下的凸性保持}
+
+\begin{proposition}[Bellman 算子的凸性保持]\label{prop:bellman-convexity-preservation}
+假设状态动力学对 $(x,u)$ 仿射，控制集 $\mathcal U(x)$ 在相应意义下凸，阶段成本 $\ell_k(x,u)$ 关于 $(x,u)$ 凸且下半连续，且 $\varphi$ 为凸下半连续函数。则 Bellman 算子 $\mathcal T_k$ 仍将 $\varphi$ 送到一个凸下半连续函数：
+\[
+\varphi\ \text{凸下半连续}
+\quad\Longrightarrow\quad
+\mathcal T_k\varphi\ \text{凸下半连续}.
+\]
+\end{proposition}
+
+\begin{proof}
+固定任意两个状态 $x_1,x_2$ 与 $\lambda\in[0,1]$，记
+\[
+x_\lambda:=\lambda x_1+(1-\lambda)x_2.
+\]
+任取 $u_i\in \mathcal U(x_i)$，并令
+\[
+u_\lambda:=\lambda u_1+(1-\lambda)u_2\in \mathcal U(x_\lambda).
+\]
+由动力学的仿射性，
+\[
+F_k(x_\lambda,u_\lambda,\xi)
+=
+\lambda F_k(x_1,u_1,\xi)+(1-\lambda)F_k(x_2,u_2,\xi).
+\]
+再由 $\ell_k$ 与 $\varphi$ 的凸性，
+\[
+\ell_k(x_\lambda,u_\lambda)+\varphi(F_k(x_\lambda,u_\lambda,\xi))
+\]
+\[
+\le
+\lambda\bigl[\ell_k(x_1,u_1)+\varphi(F_k(x_1,u_1,\xi))\bigr]
++
+(1-\lambda)\bigl[\ell_k(x_2,u_2)+\varphi(F_k(x_2,u_2,\xi))\bigr].
+\]
+对噪声取期望，并在两边分别对控制取下确界，即得
+\[
+(\mathcal T_k\varphi)(x_\lambda)
+\le
+\lambda (\mathcal T_k\varphi)(x_1)+(1-\lambda)(\mathcal T_k\varphi)(x_2).
+\]
+因此 $\mathcal T_k\varphi$ 凸。下半连续性由期望的线性、积分型下半连续性以及对控制取下确界的稳定性得到。
+\end{proof}
+
+\begin{remark}[HJB 极限接口]\label{remark:hjb-limit-control}
+若把离散时间步长缩小到 $\Delta t$，并将状态递推写成
+\[
+X_{k+1}=X_k+b(X_k,u_k)\Delta t+\sigma(X_k,u_k)\Delta W_k,
+\]
+则动态规划原理配合定理~\ref{thm:ito-formula} 的 It\^o 展开，在形式上导出连续时间 HJB 方程
+\[
+-\partial_t V(t,x)
+=
+\inf_u
+\left\{
+\ell(x,u)+\langle b(x,u),\nabla_x V(t,x)\rangle
++
+\frac12\operatorname{Tr}\bigl(\sigma\sigma^\top(x,u)\nabla_x^2V(t,x)\bigr)
+\right\}.
+\]
+这一极限接口是随机控制和 PDE 之间最重要的桥，但本书不在此展开完整的 viscosity solution 理论；本节只强调它与 Bellman 递推的结构联系。
+\end{remark}
+
+\subsection{典型例子}
+
+\begin{example}[最优执行的离散 Bellman 递推]
+设状态为当前库存 $q_k$ 和价格因子 $Y_k$，控制为交易速度 $u_k$，并满足
+\[
+q_{k+1}=q_k-u_k.
+\]
+若阶段成本由冲击项、库存风险项和成交偏差组成，则价值函数满足一个显式的 Bellman 递推。把这个例子放在这里，是为了说明第 \ref{sec:11-2} 节的交易执行模型一旦按时间展开，就自然进入定义~\ref{def:bellman-operator} 的框架。
+\end{example}
+
+\begin{example}[连续时间二次执行模型的 HJB 影子]
+在 Almgren--Chriss 型连续时间执行模型中，价值函数通常满足一个二次结构的 HJB 方程。把这个例子放在这里，是为了说明 remark~\ref{remark:hjb-limit-control} 不是形式游戏，而是交易执行与随机控制之间的真实接口。
+\end{example}
+
+\begin{example}[受风险约束的随机控制]
+若在 Bellman 递推中额外引入
+\[
+\operatorname{CVaR}_\alpha
+\]
+或其他凸风险度量，就会得到一个扩展状态变量或拉格朗日乘子的动态规划系统。把这个例子放在这里，是为了把第 \ref{sec:11-2} 节的风险约束与本节的价值函数方法真正闭环。
+\end{example}
+
+\subsection*{有限维对照}
+
+Boyd 更常从有限维动态规划、LQR 递推或最短路式 Bellman 方程讲起，因此状态和控制都默认是向量。本节说明，这些写法依旧是正确的，但它们只是定义~\ref{def:value-function-stochastic-control} 和定理~\ref{thm:dynamic-programming-principle} 在有限维 Markov 控制中的坍缩版本。真正重要的是：Bellman 方法把策略空间极小化重新编码成状态空间上的函数递推，而这一点在无穷维控制、过程控制和量化交易中同样成立。与第 \ref{sec:10-1} 节前向--后向分裂一样，它的核心不是公式多漂亮，而是结构能否稳定传递。
+
+\subsection*{习题（待补）}
+
+\begin{exercise}[Bellman 递推占位]
+补一题：对一个有限时域最优清算模型写出价值函数和 Bellman 算子，并从定理~\ref{thm:dynamic-programming-principle} 推导递推公式。
+\end{exercise}
+
+\begin{exercise}[HJB 接口桥接题占位]
+补一题：从离散时间执行模型出发，解释 remark~\ref{remark:hjb-limit-control} 中 HJB 方程的 formal limit 是如何出现的，并指出其中用到了哪一步 It\^o 语法。
+\end{exercise}

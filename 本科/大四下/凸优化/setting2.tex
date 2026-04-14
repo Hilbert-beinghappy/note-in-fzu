@@ -1,0 +1,541 @@
+%通用盒子定义===============================================================================
+\newlength{\textwd} %自动计算文本长度
+
+% 通用三栏标题盒命令1（左右图片 + 中间自适应文字）
+\newcommand{\TitleBoxI}[5]{%
+	\setlength{\textwd}{0pt}%
+	\sbox0{\fontsize{20}{22}\selectfont\SiYuan\XeTeXinterchartokenstate=0 #2}%
+	\setlength{\textwd}{\widthof{\usebox0}}%
+	\begin{tabular}[c]{@{}c@{}c@{}c@{}}
+		\raisebox{-\height + 12pt}{%
+			\resizebox{!}{24pt}{\includegraphics{#1}}%
+		} &
+		\raisebox{-\height + 12pt}{%
+			\colorbox{#4}{%
+				\parbox[c][18pt][c]{\textwd}{%
+					\centering
+					\fontsize{18}{22}\selectfont\SiYuan\XeTeXinterchartokenstate=0\color{#5} #2%
+				}%
+			}%
+		} &
+		\raisebox{-\height + 12pt}{%
+			\resizebox{!}{24pt}{\includegraphics{#3}}%
+		}
+	\end{tabular}%
+}
+
+% 通用三栏标题盒命令2（左右图片 + 中间自适应文字）
+\newcommand{\TitleBoxII}[5]{%
+	\setlength{\textwd}{0pt}%
+	\sbox0{\fontsize{16}{22}\selectfont\SiYuan\XeTeXinterchartokenstate=0 #2}%
+	\setlength{\textwd}{\widthof{\usebox0}}%
+	\begin{tabular}[c]{@{}c@{}c@{}c@{}}
+		\raisebox{-\height + 12pt}{%
+			\resizebox{!}{24pt}{\includegraphics{#1}}%
+		} &
+		\raisebox{-\height + 12pt}{%
+			\colorbox{#4}{%
+				\parbox[c][18pt][c]{\textwd}{%
+					\centering
+					\fontsize{14}{22}\selectfont\SiYuan\XeTeXinterchartokenstate=0\color{#5} #2%
+					\vspace{-4pt}
+				}%
+			}%
+		} &
+		\raisebox{-\height + 12pt}{%
+			\resizebox{!}{24pt}{\includegraphics{#3}}%
+		}
+	\end{tabular}%
+}
+
+% 通用三栏标题盒命令3（左右图片 + 中间自适应文字）
+\newcommand{\TitleBoxIII}[5]{%
+	\setlength{\textwd}{0pt}%
+	\sbox0{\fontsize{22}{22}\selectfont\SiYuan\XeTeXinterchartokenstate=0 #2}%
+	\setlength{\textwd}{\widthof{\usebox0}}%
+	\begin{tabular}[c]{@{}c@{}c@{}c@{}}
+		\raisebox{-\height + 12pt}{%
+			\resizebox{!}{24pt}{\includegraphics{#1}}%
+		} &
+		\raisebox{-\height + 12pt}{%
+			\colorbox{#4}{%
+				\parbox[c][18pt][c]{\textwd}{%
+					\centering
+					\fontsize{14}{22}\selectfont\SiYuan\XeTeXinterchartokenstate=0\color{#5} #2%
+					\vspace{0pt}
+				}%
+			}%
+		} &
+		\raisebox{-\height + 12pt}{%
+			\resizebox{!}{24pt}{\includegraphics{#3}}%
+		}
+	\end{tabular}%
+}
+
+% 通用三栏标题盒命令4（左右图片 + 中间自适应文字）
+\newcommand{\TitleBoxIV}[5]{%
+	\setlength{\textwd}{0pt}%
+	\sbox0{\fontsize{16}{22}\selectfont\SiYuan\XeTeXinterchartokenstate=0 #2}%
+	\setlength{\textwd}{\widthof{\usebox0}}%
+	\begin{tabular}[c]{@{}c@{}c@{}c@{}}
+		\raisebox{-\height + 12pt}{%
+			\resizebox{!}{24pt}{\includegraphics{#1}}%
+		} &
+		\raisebox{-\height + 12pt}{%
+			\colorbox{#4}{%
+				\parbox[c][18pt][c]{\textwd}{%
+					\centering
+					\fontsize{14}{22}\selectfont\SiYuan\XeTeXinterchartokenstate=0\color{#5} #2%
+					\vspace{0pt}
+				}%
+			}%
+		} &
+		\raisebox{-\height + 12pt}{%
+			\resizebox{!}{24pt}{\includegraphics{#3}}%
+		}
+	\end{tabular}%
+}
+
+%相关盒子定义============================================================
+% 1. 一级标题和二级标题盒子设置
+\titleformat{\subsection}
+{\raggedright}{}{0pt}{
+	\TitleBoxI{素材库/正文/box1_1}{#1}{素材库/正文/box1_2}{mibai}{qiancheng}
+	\vspace{8pt}
+}
+
+\RenewDocumentCommand{\paragraph}{s m}{%
+	\par\medskip
+	\noindent
+	{\color{qiancheng}\bfseries\XeTeXinterchartokenstate=0 #2}\quad
+	\ignorespaces
+}
+
+% 2. 相关数学内容盒子设置
+\newcounter{definition}[section]
+\renewcommand{\thedefinition}{\thesection.\arabic{definition}}
+\newcounter{theorem}[section]
+\renewcommand{\thetheorem}{\thesection.\arabic{theorem}}
+\newcounter{proposition}[section]
+\renewcommand{\theproposition}{\thesection.\arabic{proposition}}
+\newcounter{corollary}[section]
+\renewcommand{\thecorollary}{\thesection.\arabic{corollary}}
+\newcounter{lemma}[section]
+\renewcommand{\thelemma}{\thesection.\arabic{lemma}}
+\newcounter{example}[section]
+\renewcommand{\theexample}{\thesection.\arabic{example}}
+\newcounter{exercise}[section]
+\renewcommand{\theexercise}{\thesection.\arabic{exercise}}
+\newcounter{remark}[section]
+\renewcommand{\theremark}{\thesection.\arabic{remark}}
+
+\NewDocumentEnvironment{definition}{m +b}{
+	\refstepcounter{definition}
+	\begin{tcolorbox}[
+		enhanced,
+		sharp corners,
+		colback=qianbai,
+		colframe=definition,
+		boxrule=2.5pt,
+		fontupper={\kaishu},
+		halign=justify,
+		breakable,
+		title={\TitleBoxII{素材库/正文/definition_1}{定义~\thedefinition\quad #1}{素材库/正文/definition_2}{heise}{mibai}},
+		attach boxed title to top left={yshift=-2.5pt, xshift=0mm},
+		boxed title style={
+			boxrule=0pt,
+			boxsep=0pt,
+			top=-2.1pt,
+			bottom=0pt,
+			left=0pt,
+			right=0pt,
+			colback=qianbai,
+			baseline=\ht\strutbox
+		},
+		after upper={\hfill\includegraphics[height=8pt]{素材库/正文/definition_3}},
+	]
+	#2
+	\end{tcolorbox}
+}{}
+
+\NewDocumentEnvironment{theorem}{m +b}{
+	\refstepcounter{theorem}
+	\begin{tcolorbox}[
+		enhanced,
+		sharp corners,
+		colback=qianbai,
+		colframe=theorem,
+		boxrule=2.5pt,
+		fontupper={\kaishu},
+		halign=justify,
+		breakable,
+		title={\TitleBoxII{素材库/正文/theorem_1}{定理~\thetheorem\quad #1}{素材库/正文/theorem_2}{heise}{mibai}},
+		attach boxed title to top left={yshift=-2.5pt, xshift=0mm},
+		boxed title style={
+			boxrule=0pt,
+			boxsep=0pt,
+			top=-2.1pt,
+			bottom=0pt,
+			left=0pt,
+			right=0pt,
+			colback=qianbai,
+			baseline=\ht\strutbox
+		},
+		after upper={\hfill\includegraphics[height=8pt]{素材库/正文/theorem_3}},
+	]
+	#2
+	\end{tcolorbox}
+}{}
+
+\NewDocumentEnvironment{proposition}{m +b}{
+	\refstepcounter{proposition}
+	\begin{tcolorbox}[
+		enhanced,
+		sharp corners,
+		colback=qianbai,
+		colframe=proposition,
+		boxrule=2.5pt,
+		fontupper={\kaishu},
+		halign=justify,
+		breakable,
+		title={\TitleBoxII{素材库/正文/proposition_1}{命题~\theproposition\quad #1}{素材库/正文/proposition_2}{heise}{mibai}},
+		attach boxed title to top left={yshift=-2.5pt, xshift=0mm},
+		boxed title style={
+			boxrule=0pt,
+			boxsep=0pt,
+			top=-2.1pt,
+			bottom=0pt,
+			left=0pt,
+			right=0pt,
+			colback=qianbai,
+			baseline=\ht\strutbox
+		},
+		after upper={\hfill\includegraphics[height=8pt]{素材库/正文/proposition_3}},
+	]
+	#2
+	\end{tcolorbox}
+}{}
+
+\NewDocumentEnvironment{corollary}{m +b}{
+	\refstepcounter{corollary}
+	\begin{tcolorbox}[
+		enhanced,
+		sharp corners,
+		colback=qianbai,
+		colframe=corollary,
+		boxrule=2.5pt,
+		fontupper={\kaishu},
+		halign=justify,
+		breakable,
+		title={\TitleBoxII{素材库/正文/corollary_1}{推论~\thecorollary\quad #1}{素材库/正文/corollary_2}{heise}{mibai}},
+		attach boxed title to top left={yshift=-2.5pt, xshift=0mm},
+		boxed title style={
+			boxrule=0pt,
+			boxsep=0pt,
+			top=-2.1pt,
+			bottom=0pt,
+			left=0pt,
+			right=0pt,
+			colback=qianbai,
+			baseline=\ht\strutbox
+		},
+		after upper={\hfill\includegraphics[height=8pt]{素材库/正文/corollary_3}},
+	]
+	#2
+	\end{tcolorbox}
+}{}
+
+\NewDocumentEnvironment{lemma}{m +b}{
+	\refstepcounter{lemma}
+	\begin{tcolorbox}[
+		enhanced,
+		sharp corners,
+		colback=qianbai,
+		colframe=lemma,
+		boxrule=2.5pt,
+		fontupper={\kaishu},
+		halign=justify,
+		breakable,
+		title={\TitleBoxII{素材库/正文/lemma_1}{引理~\thelemma\quad #1}{素材库/正文/lemma_2}{heise}{mibai}},
+		attach boxed title to top left={yshift=-2.5pt, xshift=0mm},
+		boxed title style={
+			boxrule=0pt,
+			boxsep=0pt,
+			top=-2.1pt,
+			bottom=0pt,
+			left=0pt,
+			right=0pt,
+			colback=qianbai,
+			baseline=\ht\strutbox
+		},
+		after upper={\hfill\includegraphics[height=8pt]{素材库/正文/lemma_3}},
+	]
+	#2
+	\end{tcolorbox}
+}{}
+
+\NewDocumentEnvironment{example}{m +b}{
+	\refstepcounter{example}
+	\begin{tcolorbox}[
+		enhanced,
+		sharp corners,
+		colback=qianbai,
+		colframe=example,
+		boxrule=2.5pt,
+		fontupper={\kaishu},
+		halign=justify,
+		breakable,
+		title={\TitleBoxII{素材库/正文/example_1}{例~\theexample\quad #1}{素材库/正文/example_2}{heise}{mibai}},
+		attach boxed title to top left={yshift=-2.5pt, xshift=0mm},
+		boxed title style={
+			boxrule=0pt,
+			boxsep=0pt,
+			top=-2.1pt,
+			bottom=0pt,
+			left=0pt,
+			right=0pt,
+			colback=qianbai,
+			baseline=\ht\strutbox
+		},
+		after upper={\hfill\includegraphics[height=8pt]{素材库/正文/example_3}},
+	]
+	#2
+	\end{tcolorbox}
+}{}
+
+\NewDocumentEnvironment{exercise}{m +b}{
+	\refstepcounter{exercise}
+	\begin{tcolorbox}[
+		enhanced,
+		sharp corners,
+		colback=qianbai,
+		colframe=qiancheng,
+		boxrule=2.5pt,
+		fontupper={\kaishu},
+		halign=justify,
+		breakable,
+		title={\TitleBoxII{素材库/正文/exercise_1}{习题~\theexercise\quad #1}{素材库/正文/exercise_2}{mibai}{qiancheng}},
+		attach boxed title to top left={yshift=0pt, xshift=0mm},
+		boxed title style={
+			boxrule=0pt,
+			boxsep=0pt,
+			top=-2.1pt,
+			bottom=0pt,
+			left=0pt,
+			right=0pt,
+			colback=qianbai,
+			baseline=\ht\strutbox
+		},
+	]
+	#2
+	\end{tcolorbox}
+}{}
+
+\newtcolorbox{question}[1]{
+	enhanced,
+	sharp corners,
+	colback=qianbai,
+	colframe=qiancheng,
+	boxrule=2.5pt,
+	fontupper={\kaishu},
+	halign=justify,
+	breakable,
+	title={\TitleBoxII{素材库/正文/question_1}{#1}{素材库/正文/question_2}{mibai}{qiancheng}},
+	attach boxed title to top left={yshift=0pt, xshift=0mm},
+	boxed title style={
+		boxrule=0pt,
+		boxsep=0pt,
+		top=-2.1pt,
+		bottom=0pt,
+		left=0pt,
+		right=0pt,
+		colback=qianbai,
+		baseline=\ht\strutbox
+	},
+}
+
+\newtcolorbox{prove}[1][]{
+	enhanced,
+	sharp corners,
+	colback=qianbai,  
+	colframe=qiancheng,  
+	fontupper={\kaishu}, 
+	halign=justify,
+	leftrule=5pt, 
+	rightrule=0pt,      
+	toprule=0pt,        
+	bottomrule=0pt,     
+	breakable,
+	before upper={
+		\setstretch{1.5}\noindent
+		\textcolor{qiancheng}{\XeTeXinterchartokenstate=0\SiYuan\textbf{证明：}} 
+	},
+	after upper={\hfill\textcolor{qiancheng}{$\blacksquare$}},
+	#1 
+}
+
+\NewDocumentEnvironment{remark}{O{} +b}{
+	\refstepcounter{remark}
+	\begin{tcolorbox}[
+		enhanced,
+		sharp corners,
+		colback=qianbai,
+		colframe=qiancheng,
+		fontupper={\kaishu},
+		halign=justify,
+		leftrule=5pt,
+		rightrule=0pt,
+		toprule=0pt,
+		bottomrule=0pt,
+		breakable,
+		before upper={
+			\setstretch{1.5}\noindent
+			\textcolor{qiancheng}{\XeTeXinterchartokenstate=0\SiYuan\textbf{注~\theremark\if\relax\detokenize{#1}\relax\else\quad #1\fi}}
+			\par\smallskip
+		},
+		after upper={\hfill\textcolor{qiancheng}{$\blacksquare$}},
+	]
+	#2
+	\end{tcolorbox}
+}{}
+
+% 3. 其他盒子设置
+\newtcolorbox{box1}[1]{
+	enhanced,
+	sharp corners,
+	colback=qianbai,
+	colframe=qiancheng,
+	fontupper={\kaishu},
+	halign=justify,
+	boxrule=2pt,
+	breakable,
+	title={\TitleBoxIII{素材库/正文/box1_1}{#1}{素材库/正文/box1_2}{mibai}{qiancheng}},
+	attach boxed title to top left={yshift=0pt, xshift=0mm},
+	boxed title style={
+		boxrule=0pt,
+		boxsep=0pt,
+		top=-2.1pt,
+		bottom=0pt,
+		left=0pt,
+		right=0pt,
+		colback=qianbai,
+		baseline=\ht\strutbox
+	},
+}
+
+\newtcolorbox{box2}[1]{
+	enhanced,
+	sharp corners,
+	colback=qianbai,
+	colframe=qiancheng,
+	fontupper={\kaishu},
+	halign=justify,
+	boxrule=2pt,
+	breakable,
+	title={\TitleBoxIV{素材库/正文/box2_1}{#1}{素材库/正文/box2_2}{qiancheng}{mibai}},
+	attach boxed title to top left={yshift=0pt, xshift=0mm},
+	boxed title style={
+		boxrule=0pt,
+		boxsep=0pt,
+		top=-2.1pt,
+		bottom=0pt,
+		left=0pt,
+		right=0pt,
+		colback=qianbai,
+		baseline=\ht\strutbox
+	},
+}
+
+\newtcolorbox{box3}[1]{
+	enhanced,
+	sharp corners,
+	colback=qianbai,
+	colframe=qiancheng,
+	fontupper={\kaishu},
+	halign=justify,
+	boxrule=2pt,
+	breakable,
+	title={\TitleBoxIII{素材库/正文/box3_1}{#1}{素材库/正文/box3_2}{heise}{mibai}},
+	attach boxed title to top left={yshift=0pt, xshift=0mm},
+	boxed title style={
+		boxrule=0pt,
+		boxsep=0pt,
+		top=-2.1pt,
+		bottom=0pt,
+		left=0pt,
+		right=0pt,
+		colback=qianbai,
+		baseline=\ht\strutbox
+	},
+}
+
+\newtcolorbox{box4}[1]{
+	enhanced,
+	sharp corners,
+	colback=qianbai,
+	colframe=qiancheng,
+	fontupper={\kaishu},
+	halign=justify,
+	boxrule=2pt,
+	breakable,
+	title={\TitleBoxIV{素材库/正文/box4_1}{#1}{素材库/正文/box4_2}{mibai}{qiancheng}},
+	attach boxed title to top left={yshift=0pt, xshift=0mm},
+	boxed title style={
+		boxrule=0pt,
+		boxsep=0pt,
+		top=-2.1pt,
+		bottom=0pt,
+		left=0pt,
+		right=0pt,
+		colback=qianbai,
+		baseline=\ht\strutbox
+	},
+}
+
+\newtcolorbox{bookfield}[1]{
+	enhanced,
+	sharp corners,
+	colback=qianbai,
+	colframe=qiancheng,
+	fontupper={\kaishu},
+	halign=justify,
+	boxrule=2pt,
+	breakable,
+	title={\TitleBoxIV{素材库/正文/box4_1}{#1}{素材库/正文/box4_2}{mibai}{qiancheng}},
+	attach boxed title to top left={yshift=0pt, xshift=0mm},
+	boxed title style={
+		boxrule=0pt,
+		boxsep=0pt,
+		top=-2.1pt,
+		bottom=0pt,
+		left=0pt,
+		right=0pt,
+		colback=qianbai,
+		baseline=\ht\strutbox
+	},
+}
+
+
+%自定义其他命令===================================================
+% 1. 自定义分割线
+\newcommand{\Ark}[0]{
+	\par\vspace{-10pt}
+	\noindent
+	\includegraphics[width=\linewidth, height=2pt]{素材库/正文/separator_1}
+	\par\vspace{-4pt}
+}
+
+% 2. 自定义文字居中
+\newcommand{\C}[1]{\makebox[\linewidth][c]{#1}}
+
+% 3. 自定义增加间隔
+\newcommand{\Q}[0]{\vspace{4pt}}
+
+% 4. 自定义添加文本背景
+\newcommand{\B}[1]{%
+	\tikz[baseline=(char.base)]{%
+		\node[inner sep=0pt, outer sep=0pt] (char) {\phantom{#1}};
+		\fill[qiancheng] (char.south west) rectangle ([xshift=0pt, yshift=1.5pt]char.south east);
+		\node[inner sep=0pt, outer sep=0pt] (char) {#1};
+	}%
+}

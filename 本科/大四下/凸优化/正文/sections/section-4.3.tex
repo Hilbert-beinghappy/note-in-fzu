@@ -1,0 +1,317 @@
+\section{Hahn-Banach 定理}
+
+\label{sec:4-3}
+
+从有限维凸优化的图像直觉看，超平面分离似乎是一个纯几何命题；但在无穷维中，真正起作用的并不是“画一条线把两个集合隔开”，而是在线性子空间上先构造一个受控的线性泛函，再把它延拓到整个空间。这个延拓原理就是 Hahn--Banach 定理。它一方面说明连续线性泛函足够丰富，可以探测凸集的边界；另一方面又把后文的对偶变量、支撑函数和 KKT 乘子统一到同一个对象类型中。特别地，第 \ref{sec:3-3} 节定义~\ref{def:adjoint-operator} 已经告诉我们：一旦对偶变量出现，它们就要通过伴随算子回到原问题空间。因此，本节给出的分离结论并不是孤立的几何装饰，而是第 5 章次微分和第 6 章共轭理论的基础接口。
+
+\subsection{次线性泛函与一维延拓}
+
+\begin{definition}[次线性泛函]\label{def:sublinear-functional}
+设 $X$ 为实向量空间。映射
+\[
+p\colon X\to \mathbb R
+\]
+若满足
+\begin{enumerate}
+  \item $p(x+y)\le p(x)+p(y)$，对任意 $x,y\in X$；
+  \item $p(\lambda x)=\lambda p(x)$，对任意 $\lambda\ge 0$ 与任意 $x\in X$，
+\end{enumerate}
+则称 $p$ 为 $X$ 上的\emph{次线性泛函}。
+\end{definition}
+
+\begin{lemma}[一步延拓引理]\label{lem:hb-one-step}
+设 $M$ 是实向量空间 $X$ 的线性子空间，$p$ 是 $X$ 上的次线性泛函，$f_0\colon M\to\mathbb R$ 为线性泛函且满足
+\[
+f_0(x)\le p(x),\qquad \forall x\in M.
+\]
+若 $x_0\in X\setminus M$，则存在定义在 $M+\mathbb R x_0$ 上的线性泛函 $\widetilde f$，使
+\[
+\widetilde f|_M=f_0,\qquad \widetilde f(x)\le p(x),\ \forall x\in M+\mathbb R x_0.
+\]
+\end{lemma}
+
+\begin{proof}
+我们寻找常数 $c\in\mathbb R$，并定义
+\[
+\widetilde f(m+t x_0):=f_0(m)+tc,\qquad m\in M,\ t\in\mathbb R.
+\]
+要使 $\widetilde f\le p$，等价于要求
+\[
+f_0(m)+tc\le p(m+t x_0),\qquad \forall m\in M,\ \forall t\in\mathbb R.
+\]
+只需考察 $t=1$ 与 $t=-1$，即可得到约束
+\[
+f_0(m)+c\le p(m+x_0),\qquad
+f_0(m)-c\le p(m-x_0),\qquad \forall m\in M.
+\]
+亦即
+\[
+f_0(m)-p(m-x_0)\le c\le p(m+x_0)-f_0(m),\qquad \forall m\in M.
+\]
+因此只要证明区间
+\[
+\left[
+\sup_{m\in M}\bigl(f_0(m)-p(m-x_0)\bigr),\
+\inf_{m\in M}\bigl(p(m+x_0)-f_0(m)\bigr)
+\right]
+\]
+非空即可。
+
+任取 $m_1,m_2\in M$。由 $f_0\le p$ 及次线性，
+\[
+f_0(m_1)+f_0(m_2)
+=f_0(m_1+m_2)
+\le p(m_1+m_2)
+=p((m_1-x_0)+(m_2+x_0))
+\le p(m_1-x_0)+p(m_2+x_0).
+\]
+移项得
+\[
+f_0(m_1)-p(m_1-x_0)\le p(m_2+x_0)-f_0(m_2).
+\]
+对左边取上确界、右边取下确界，便知该区间非空。任选其中一点 $c$，即可得到所需的 $\widetilde f$。
+\end{proof}
+
+\begin{theorem}[Hahn--Banach 的解析形式]\label{thm:hahn-banach-analytic}
+设 $X$ 为实向量空间，$M\subset X$ 为线性子空间，$p$ 为 $X$ 上的次线性泛函，$f_0\colon M\to\mathbb R$ 为线性泛函且满足
+\[
+f_0(x)\le p(x),\qquad \forall x\in M.
+\]
+则存在定义在整个 $X$ 上的线性泛函 $f\colon X\to\mathbb R$，使
+\[
+f|_M=f_0,\qquad f(x)\le p(x),\ \forall x\in X.
+\]
+\end{theorem}
+
+\begin{proof}
+考虑所有满足下列条件的对 $(N,g)$ 所成集合：
+\begin{enumerate}
+  \item $M\subset N\subset X$，且 $N$ 是线性子空间；
+  \item $g\colon N\to\mathbb R$ 线性；
+  \item $g|_M=f_0$；
+  \item $g(x)\le p(x)$ 对任意 $x\in N$ 成立。
+\end{enumerate}
+以“延拓”定义偏序：若 $(N_1,g_1)\preceq (N_2,g_2)$，则指 $N_1\subset N_2$ 且 $g_2|_{N_1}=g_1$。任意全序链的并仍给出一个满足上述条件的上界，因此由 Zorn 引理，存在极大元 $(N^\ast,g^\ast)$。
+
+若 $N^\ast\neq X$，取 $x_0\in X\setminus N^\ast$。由引理~\ref{lem:hb-one-step}，$g^\ast$ 可以延拓到 $N^\ast+\mathbb R x_0$ 上且仍被 $p$ 支配，这与极大性矛盾。故 $N^\ast=X$。令 $f=g^\ast$，即得所求。
+\end{proof}
+
+\begin{remark}
+若 $X$ 还是赋范空间，而次线性泛函 $p$ 满足
+\[
+p(x)\le C\|x\|,\qquad \forall x\in X,
+\]
+则定理~\ref{thm:hahn-banach-analytic} 给出的延拓 $f$ 自动连续，并满足 $\|f\|\le C$。因此，解析形式的 Hahn--Banach 定理不仅保证“存在足够多的线性泛函”，还保证在 Banach 空间里它们属于连续对偶空间 $X^\ast$，这正是后文分离与对偶所需的对象层级。
+\end{remark}
+
+\subsection{几何分离}
+
+\begin{theorem}[Hahn--Banach 的几何形式]\label{thm:hahn-banach-geometric}
+设 $X$ 为实赋范空间，$C\subset X$ 为非空开凸集，$x_0\notin C$。则存在非零连续线性泛函 $f\in X^\ast$ 与常数 $\alpha\in\mathbb R$，使得
+\[
+f(x)<\alpha\le f(x_0),\qquad \forall x\in C.
+\]
+\end{theorem}
+
+\begin{proof}
+任取 $a\in C$，令
+\[
+U:=C-a,\qquad z_0:=x_0-a.
+\]
+则 $U$ 是包含原点的开凸集，而 $z_0\notin U$。定义 $U$ 的 Minkowski 泛函
+\[
+p_U(x):=\inf\{t>0:x\in tU\},\qquad x\in X.
+\]
+由于 $U$ 开、凸且 $0\in U$，由命题~\ref{prop:core-separation-bridge} 的思想可知 $p_U$ 是次线性的。又因为存在 $r>0$ 使
+\[
+B(0,r)\subset U,
+\]
+故对任意 $x\in X$ 都有
+\[
+p_U(x)\le \frac{\|x\|}{r},
+\]
+于是 $p_U$ 还被一个连续半范数控制。
+
+由于 $z_0\notin U$，故
+\[
+p_U(z_0)\ge 1.
+\]
+在一维子空间 $M:=\mathbb R z_0$ 上定义线性泛函
+\[
+f_0(tz_0):=t.
+\]
+我们验证 $f_0\le p_U$。若 $t\ge 0$，则
+\[
+f_0(tz_0)=t\le t\,p_U(z_0)=p_U(tz_0).
+\]
+若 $t<0$，则 $f_0(tz_0)=t\le 0\le p_U(tz_0)$。于是由定理~\ref{thm:hahn-banach-analytic}，存在线性泛函 $f$ 延拓 $f_0$ 且满足
+\[
+f(x)\le p_U(x),\qquad \forall x\in X.
+\]
+再由 $p_U(x)\le \|x\|/r$ 知 $f\in X^\ast$。并且
+\[
+f(z_0)=f_0(z_0)=1,
+\]
+故 $f\neq 0$。
+
+任取 $x\in C$，则 $x-a\in U$。由于 $U$ 是开集且包含原点，存在 $\eta>0$ 使
+\[
+(1+\eta)(x-a)\in U.
+\]
+于是
+\[
+x-a\in \frac{1}{1+\eta}U,
+\]
+从而
+\[
+p_U(x-a)\le \frac{1}{1+\eta}<1.
+\]
+故
+\[
+f(x)-f(a)=f(x-a)\le p_U(x-a)<1=f(z_0)=f(x_0)-f(a),
+\]
+即
+\[
+f(x)<f(x_0),\qquad \forall x\in C.
+\]
+取 $\alpha:=f(x_0)$ 即得结论。
+\end{proof}
+
+\begin{theorem}[严格分离定理]\label{thm:strict-separation}
+设 $X$ 为实赋范空间，$C\subset X$ 为非空闭凸集，$x_0\notin C$。则存在非零连续线性泛函 $f\in X^\ast$ 与实数 $\alpha<\beta$，使
+\[
+f(x)\le \alpha<\beta\le f(x_0),\qquad \forall x\in C.
+\]
+\end{theorem}
+
+\begin{proof}
+记
+\[
+d:=\operatorname{dist}(x_0,C)>0.
+\]
+令
+\[
+V:=C+B\left(0,\frac d2\right).
+\]
+则 $V$ 是非空开凸集，且 $x_0\notin V$。由定理~\ref{thm:hahn-banach-geometric}，存在非零 $f\in X^\ast$ 与 $\gamma\in\mathbb R$，使
+\[
+f(v)<\gamma\le f(x_0),\qquad \forall v\in V.
+\]
+由于 $f\neq 0$，可取某个 $z\in X$ 使 $f(z)>0$，再缩放得到 $h\in B(0,d/2)$ 且 $f(h)>0$。于是对任意 $x\in C$，都有
+\[
+x+h\in V,
+\]
+从而
+\[
+f(x)+f(h)=f(x+h)<\gamma.
+\]
+因此
+\[
+f(x)<\gamma-f(h),\qquad \forall x\in C.
+\]
+取
+\[
+\alpha:=\gamma-f(h),\qquad \beta:=\gamma,
+\]
+便得到
+\[
+f(x)\le \alpha<\beta\le f(x_0),\qquad \forall x\in C.
+\]
+\end{proof}
+
+\begin{proposition}[支撑超平面]\label{prop:supporting-hyperplane}
+设 $X$ 为实赋范空间，$C\subset X$ 为非空闭凸集且 $\operatorname{int}(C)\neq\varnothing$。若 $x_0\in \partial C$，则存在非零连续线性泛函 $f\in X^\ast$ 使
+\[
+f(x)\le f(x_0),\qquad \forall x\in C.
+\]
+因此超平面
+\[
+H:=\{x\in X:f(x)=f(x_0)\}
+\]
+称为 $C$ 在 $x_0$ 处的一个\emph{支撑超平面}。
+\end{proposition}
+
+\begin{proof}
+对开凸集 $\operatorname{int}(C)$ 与外点 $x_0\notin \operatorname{int}(C)$ 应用定理~\ref{thm:hahn-banach-geometric}，可得非零 $f\in X^\ast$ 与常数 $\alpha$，使
+\[
+f(y)<\alpha\le f(x_0),\qquad \forall y\in \operatorname{int}(C).
+\]
+任取 $u\in \operatorname{int}(C)$。对每个 $x\in C$ 及每个 $t\in(0,1]$，由凸性知
+\[
+(1-t)x+tu\in \operatorname{int}(C).
+\]
+于是
+\[
+f((1-t)x+tu)<\alpha.
+\]
+令 $t\downarrow 0$，由连续性得到
+\[
+f(x)\le \alpha,\qquad \forall x\in C.
+\]
+另一方面，对边界点 $x_0$ 仍有
+\[
+(1-t)x_0+tu\in \operatorname{int}(C),\qquad t\in(0,1],
+\]
+故
+\[
+f((1-t)x_0+tu)<\alpha.
+\]
+令 $t\downarrow 0$ 得
+\[
+f(x_0)\le \alpha.
+\]
+与 $\alpha\le f(x_0)$ 合并，即得
+\[
+f(x_0)=\alpha,\qquad f(x)\le f(x_0)\ \forall x\in C.
+\]
+\end{proof}
+
+\begin{remark}
+命题~\ref{prop:supporting-hyperplane} 中出现的 $f\in X^\ast$，就是后文次梯度与对偶变量的原型。对约束问题
+\[
+Tu=b
+\]
+而言，乘子首先属于 $Y^\ast$，随后通过第 \ref{sec:3-3} 节定义~\ref{def:adjoint-operator} 里的伴随算子 $T^\ast$ 拉回到 $X^\ast$。因此，几何分离定理与伴随算子并不是两块独立内容，而是同一套对偶语言的两端。
+\end{remark}
+
+\begin{example}[最小抽象例子：从常数函数子空间的延拓]\label{ex:hahn-banach-extension}
+设 $X=C([0,1])$，$M=\operatorname{span}\{\mathbf 1\}$，定义
+\[
+f_0(c\mathbf 1)=c,\qquad p(u)=\|u\|_\infty.
+\]
+显然 $f_0\le p$。由定理~\ref{thm:hahn-banach-analytic}，$f_0$ 可以延拓为某个 $F\in X^\ast$，并满足 $\|F\|\le 1$。再由第 \ref{sec:2-3} 节定理~\ref{thm:riesz-representation}，$F$ 对应于一个有限符号 Radon 测度。把这个例子放在这里，是为了说明无穷维中的“法向量”常常并不是一个向量，而是一类测度型泛函。
+\end{example}
+
+\begin{example}[有限维坍缩例子：欧氏球的支撑超平面]\label{ex:euclidean-supporting-hyperplane}
+在 $\mathbb R^n$ 中，单位闭球
+\[
+B=\{x\in\mathbb R^n:\|x\|_2\le 1\}
+\]
+在边界点 $x_0$ 处的支撑超平面由
+\[
+\langle x_0,x\rangle=1
+\]
+给出。把这个例子放在这里，是为了把 Boyd 中最熟悉的“法向量接触球面”图像精确识别为命题~\ref{prop:supporting-hyperplane} 在 Hilbert 空间里的有限维坍缩。
+\end{example}
+
+\begin{example}[应用触点例子：对偶乘子的几何来源]\label{ex:dual-multiplier-separation}
+考虑凸约束问题
+\[
+\min_{u\in X}\ \phi(u)\qquad \text{s.t.}\qquad Tu=b,
+\]
+其中 $T\in\mathcal B(X,Y)$。在最优点附近，把目标的下降方向与线性约束切空间分离后，得到的正是某个 $\lambda\in Y^\ast$；再经由 $T^\ast\lambda\in X^\ast$ 把它带回原变量空间。把这个例子放在这里，是为了强调：Boyd 书里写作 $A^\top\lambda$ 的对象，在无穷维中真正依赖的是 Hahn--Banach 分离加上伴随算子，而不是矩阵技巧本身。
+\end{example}
+
+\subsection*{有限维对照}
+
+Boyd 在第 2 章和第 5 章中大量使用超平面分离、支撑函数和对偶变量，但这些对象在有限维里往往直接以向量和矩阵写出，因此它们的泛函本性被隐藏了。本节的结论说明：有限维图像并不是另一套理论，而是定理~\ref{thm:hahn-banach-geometric}、定理~\ref{thm:strict-separation} 与命题~\ref{prop:supporting-hyperplane} 在 Euclidean 空间中的压缩版本。真正变化的只是表面符号；底层机制始终是“线性泛函足够丰富，可以把凸集与点、集合与集合、原问题与对偶问题分开”。
+
+\subsection*{习题（待补）}
+
+\begin{exercise}[一步延拓公式占位]\label{exr:hahn-banach-one-step-placeholder}
+补一题：完整推导引理~\ref{lem:hb-one-step} 中常数 $c$ 所落入的区间，并说明为何该区间非空正是次线性条件的体现。
+\end{exercise}
+
+\begin{exercise}[支撑超平面桥接题占位]\label{exr:supporting-hyperplane-placeholder}
+补一题：在 Hilbert 空间中把命题~\ref{prop:supporting-hyperplane} 退化到闭球情形，直接计算支撑超平面的法向量，并与例~\ref{ex:euclidean-supporting-hyperplane} 对照。
+\end{exercise}

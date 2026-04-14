@@ -1,0 +1,179 @@
+\section{广义 KKT 条件}
+
+\label{sec:7-4}
+
+到这里为止，我们已经有了三块拼图：第 \ref{sec:7-1} 节给出锥与对偶锥，第 \ref{sec:7-2} 节给出抽象标准型，第 \ref{sec:7-3} 节给出强对偶成立的资格条件。KKT 理论所做的，就是把这三块拼图与第 \ref{sec:6-4} 节的次微分最优性条件合成一个统一系统。有限维里这常常被写成若干向量等式；无穷维里真正需要小心的是，乘子所属的空间、法锥的表达方式以及互补松弛究竟对哪一个锥而言成立。
+
+\subsection{KKT 系统的定义}
+
+\begin{definition}[锥规划的 KKT 系统]\label{def:kkt-cone-system}
+考虑定义~\ref{def:abstract-cone-program} 的原问题
+\[
+\inf_{x\in X}\{f(x):Ax-b\in -K\}.
+\]
+称 $(\bar x,\bar y^\ast)\in X\times Y^\ast$ 满足该问题的\emph{KKT 系统}，若
+\[
+A\bar x-b\in -K,
+\]
+\[
+\bar y^\ast\in K^\ast,
+\]
+\[
+0\in \partial f(\bar x)+A^\ast \bar y^\ast,
+\]
+\[
+\langle \bar y^\ast,b-A\bar x\rangle=0.
+\]
+四个条件分别称为原可行性、对偶可行性、驻点条件和互补松弛。
+\end{definition}
+
+\begin{proposition}[锥松弛与对偶锥的互补配对]\label{prop:cone-complementarity-dual-pair}
+设 $K\subset Y$ 为闭凸锥，$s\in K$，$y^\ast\in Y^\ast$。则下列两条等价：
+\[
+y^\ast\in N_{-K}(-s);
+\]
+\[
+y^\ast\in K^\ast,\qquad \langle y^\ast,s\rangle=0.
+\]
+等价地，对任意 $b\in Y$，
+\[
+y^\ast\in N_{b-K}(b-s)
+\quad \Longleftrightarrow \quad
+y^\ast\in K^\ast,\ \langle y^\ast,s\rangle=0.
+\]
+\end{proposition}
+
+\begin{proof}
+先证明关于 $-K$ 的表述。若 $y^\ast\in N_{-K}(-s)$，则对任意 $k\in K$，由于 $-k\in -K$，有
+\[
+\langle y^\ast,(-k)-(-s)\rangle\le 0,
+\]
+即
+\[
+\langle y^\ast,s-k\rangle\le 0.
+\]
+取 $k=0$ 得 $\langle y^\ast,s\rangle\le 0$；取 $k=2s$ 又得 $\langle y^\ast,-s\rangle\le 0$，故
+\[
+\langle y^\ast,s\rangle=0.
+\]
+再代回上式，便得
+\[
+\langle y^\ast,k\rangle\ge 0,\qquad \forall k\in K,
+\]
+即 $y^\ast\in K^\ast$。
+
+反之，若 $y^\ast\in K^\ast$ 且 $\langle y^\ast,s\rangle=0$，则对任意 $k\in K$，
+\[
+\langle y^\ast,(-k)-(-s)\rangle
+=
+\langle y^\ast,s\rangle-\langle y^\ast,k\rangle
+=
+-\langle y^\ast,k\rangle\le 0,
+\]
+从而 $y^\ast\in N_{-K}(-s)$。
+
+最后注意到平移不会改变法锥的方向结构：
+\[
+N_{b-K}(b-s)=N_{-K}(-s).
+\]
+于是第二个等价关系随即成立。
+\end{proof}
+
+\subsection{广义 KKT 定理}
+
+\begin{theorem}[无穷维锥规划的 KKT 定理]\label{thm:infinite-dimensional-kkt}
+设 $X,Y$ 为 Banach 空间，$A\colon X\to Y$ 为有界线性算子，$K\subset Y$ 为闭凸锥，$f\colon X\to \mathbb R\cup\{+\infty\}$ 为 proper、凸且下半连续的泛函。假设第 \ref{sec:7-3} 节定义~\ref{def:generalized-slater-condition} 成立，并设 $\bar x\in X$ 与 $\bar y^\ast\in Y^\ast$ 分别为原问题和对偶问题的可行点。则下列两条等价：
+\begin{enumerate}
+  \item $\bar x$ 与 $\bar y^\ast$ 分别是原问题与对偶问题的最优解；
+  \item $(\bar x,\bar y^\ast)$ 满足定义~\ref{def:kkt-cone-system} 的 KKT 条件。
+\end{enumerate}
+\end{theorem}
+
+\begin{proof}
+把原问题写成
+\[
+\inf_{x\in X}\{f(x)+\iota_{b-K}(Ax)\}.
+\]
+由第 \ref{sec:7-3} 节定理~\ref{thm:slater-strong-duality-cone}，该问题满足强对偶。于是可应用第 \ref{sec:6-4} 节推论~\ref{cor:fenchel-kkt-subdifferential}：$(\bar x,\bar y^\ast)$ 为原--对偶最优对，当且仅当
+\[
+-A^\ast \bar y^\ast\in \partial f(\bar x),
+\qquad
+\bar y^\ast\in \partial \iota_{b-K}(A\bar x).
+\]
+由第 \ref{sec:5-4} 节推论~\ref{cor:normal-cone-indicator}，
+\[
+\partial \iota_{b-K}(A\bar x)=N_{b-K}(A\bar x).
+\]
+再令
+\[
+s:=b-A\bar x.
+\]
+则原可行性就是 $s\in K$，而命题~\ref{prop:cone-complementarity-dual-pair} 给出
+\[
+\bar y^\ast\in N_{b-K}(A\bar x)
+\quad \Longleftrightarrow \quad
+\bar y^\ast\in K^\ast,\ \langle \bar y^\ast,b-A\bar x\rangle=0.
+\]
+因此，第 \ref{sec:6-4} 节的 Fenchel 次微分最优性条件恰好等价于
+\[
+A\bar x-b\in -K,\qquad
+\bar y^\ast\in K^\ast,\qquad
+0\in \partial f(\bar x)+A^\ast \bar y^\ast,\qquad
+\langle \bar y^\ast,b-A\bar x\rangle=0.
+\]
+这就是定义~\ref{def:kkt-cone-system} 的 KKT 系统，故两条等价。
+\end{proof}
+
+\begin{corollary}[KKT 的 Fenchel 次微分写法]\label{cor:kkt-via-fenchel-subdifferential}
+在定理~\ref{thm:infinite-dimensional-kkt} 的假设下，KKT 系统等价于
+\[
+-A^\ast \bar y^\ast\in \partial f(\bar x),
+\qquad
+\bar y^\ast\in \partial \iota_{b-K}(A\bar x).
+\]
+因此，锥规划中的 KKT 条件本质上并不是另一套平行理论，而是第 \ref{sec:6-4} 节推论~\ref{cor:fenchel-kkt-subdifferential} 在指标函数 $g=\iota_{b-K}$ 上的具体化。
+\end{corollary}
+
+\begin{proof}
+这正是定理~\ref{thm:infinite-dimensional-kkt} 证明中的中间等价关系。
+\end{proof}
+
+\subsection{典型例子}
+
+\begin{example}[状态约束最优控制中的测度乘子]\label{ex:measure-valued-multiplier}
+在连续时间最优控制里，若状态约束写成
+\[
+x(t)\le c(t),\qquad t\in[0,T],
+\]
+则对应的乘子往往不再是有限维向量，而是区间 $[0,T]$ 上的正测度。把这个例子放在这里，是为了说明定义~\ref{def:kkt-cone-system} 中的 $\bar y^\ast$ 的确可能住在对偶空间甚至测度空间里；“乘子是测度”不是修辞，而是无穷维 KKT 的标准现象。
+\end{example}
+
+\begin{example}[线性规划的向量乘子]
+当 $K=\mathbb R_+^m$ 时，定义~\ref{def:kkt-cone-system} 退化为
+\[
+Ax\le b,\qquad y\ge 0,\qquad 0\in \partial f(x)+A^\top y,\qquad y^\top(b-Ax)=0.
+\]
+把这个例子放在这里，是为了把 Boyd 书中的 KKT 条件完整回收：有限维里熟悉的乘子向量，只是本节抽象对偶变量的一个最简单特例。
+\end{example}
+
+\begin{example}[影子价格解释]
+在资源配置模型里，约束 $b-Ax\in K$ 表示容量或安全余量非负，而对偶可行变量 $y^\ast\in K^\ast$ 则可解释为影子价格。互补松弛
+\[
+\langle y^\ast,b-Ax\rangle=0
+\]
+意味着“有价格的资源必然被用到边界，有剩余的资源不会产生边际价格”。把这个例子放在这里，是为了给 KKT 系统一个管理科学层面的可解释语义。
+\end{example}
+
+\subsection*{有限维对照}
+
+Boyd 第 5 章中的 KKT 理论常写成几行矩阵方程，因此读者很容易把它理解成线性代数技巧。本节说明，这些公式真正依赖的是四个抽象结构：锥可行性、对偶锥、次微分驻点条件和互补松弛。第 \ref{sec:8-1} 节会进一步看到，一旦回到 $\mathbb R^n$，很多拓扑和对偶上的麻烦都会自动消失；但正因为本节已经把一般形式写清楚，第 \ref{sec:10-3} 节算法中的原--对偶分裂才能被视作 KKT 系统的计算实现，而不只是某种经验公式。
+
+\subsection*{习题（待补）}
+
+\begin{exercise}[KKT 系统占位]
+补一题：对一个给定的锥规划写出定义~\ref{def:kkt-cone-system} 的四条条件，并判断某个候选原--对偶对是否满足它们。
+\end{exercise}
+
+\begin{exercise}[乘子空间桥接题占位]
+补一题：比较一个有限维线性规划与一个函数空间约束问题中的乘子空间，说明为什么前者的乘子是向量，而后者可能是测度。
+\end{exercise}

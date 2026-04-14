@@ -1,0 +1,23 @@
+\chapter{大规模算子分裂算法}
+
+\label{chap:10}
+
+第 \ref{chap:09} 章已经把凸最小化、变分不等式与 KKT 系统统一改写成单调包含
+\[
+0\in Au.
+\]
+因此，本章不再重新发明新的最优性条件，而是讨论怎样围绕 resolvent、prox 与固定点结构设计可扩展的迭代法。所谓“大规模”，在这里并不只是维数高，而是指目标函数、约束与对偶变量往往天然分裂成若干模块，直接求解完整 KKT 系统代价过高；真正可行的方案，是只调用梯度、投影、prox 或局部线性算子，并把耦合留给迭代去吸收。
+
+本章沿四条主线展开。第 \ref{sec:10-1} 节讨论前向--后向分裂，把“一个可显式前向步的单值算子”和“一个可通过 resolvent 处理的极大单调算子”组合起来；这是第 \ref{sec:9-2} 节 prox 和第 \ref{sec:9-4} 节 zero finding 模板的最直接算法化。第 \ref{sec:10-2} 节引入 Douglas--Rachford 分裂，说明反射算子如何把两个极大单调算子的和改写成固定点问题。第 \ref{sec:10-3} 节随后把增广拉格朗日与 ADMM 挂回第 \ref{sec:7-4} 节的 KKT 语言，解释 Boyd 书中最常见的原--对偶迭代其实就是 Douglas--Rachford 在对偶侧的变量消去形式。最后，第 \ref{sec:10-4} 节讨论惰性与加速模板，说明 Hilbert 空间中的加速为什么必须借助能量函数与稳定性分析，而不能把有限维口号不加区分地直接搬到无穷维情形。
+
+本章的正文主舞台是 Hilbert 空间。原因并不神秘：第 \ref{sec:3-1} 节定理~\ref{thm:riesz-representation-hilbert} 使得对偶元素能够被向量化表示，而第 \ref{sec:9-2} 节的 prox、第 \ref{sec:9-3} 节的 Moreau--Yosida 平滑以及平均映射的非扩张几何都在这一背景下最为透明。更一般的 Banach 空间版本当然存在，但其中投影、cocoercivity、firm nonexpansive 与反射算子的几何优势会明显减弱，因此本章只在 remark 中点到这些边界，而不把正文写成一部一般 Banach 分裂算法专著。
+
+从叙事上看，本章恰好是第 \ref{chap:11} 章数值求解与第 \ref{chap:12} 章分布式实现之间的桥。前者关心连续时间极限、离散稳定性与收敛轨道，后者关心共识、通信与模块化实现；而它们共同依赖的，是本章建立的“算子分裂 = 固定点求解 = 局部可计算更新”这一接口。Boyd 的有限维算法表面上看像一组彼此分离的工程配方，本章的任务则是说明，它们其实共享同一条单调算子主线。
+
+\input{正文/sections/section-10.1.tex}
+
+\input{正文/sections/section-10.2.tex}
+
+\input{正文/sections/section-10.3.tex}
+
+\input{正文/sections/section-10.4.tex}

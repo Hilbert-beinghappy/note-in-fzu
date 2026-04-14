@@ -1,0 +1,407 @@
+\section{算子代数初步}
+
+\label{sec:3-4}
+
+本节的标题虽然包含“算子代数”，但目标并不是进入一般 $C^\ast$ 代数理论，而是提炼出优化真正会反复调用的谱论工具。对二次泛函、Hessian 型算子、协方差算子、核积分算子和半正定约束来说，最关键的问题只有几个：一个有界算子的谱是什么，紧算子为何像“无穷维的近似有限秩矩阵”，自伴与正性如何把几何信息编码进二次型，以及在什么条件下算子可以被“对角化”。这些问题在紧自伴情形下有最清晰的答案，而这正是本节要建立的工作台。
+
+\subsection{谱与谱半径}
+
+\begin{definition}[有界算子的谱]\label{def:spectrum-bounded-operator}
+设 $X$ 为复 Banach 空间，$T\in \mathcal B(X)$。若复数 $\lambda$ 使算子
+\[
+\lambda I-T
+\]
+不可逆，则称 $\lambda$ 属于 $T$ 的\emph{谱}，记为 $\sigma(T)$。其补集
+\[
+\rho(T):=\mathbb C\setminus \sigma(T)
+\]
+称为 $T$ 的\emph{预解集}。谱半径定义为
+\[
+r(T):=\sup\{|\lambda|:\lambda\in \sigma(T)\}.
+\]
+\end{definition}
+
+\begin{proposition}[谱的基本性质]
+设 $X$ 为复 Banach 空间，$T\in \mathcal B(X)$。则 $\sigma(T)$ 是非空紧集，且
+\[
+r(T)\le \|T\|.
+\]
+\end{proposition}
+
+\begin{proof}
+当 $|\lambda|>\|T\|$ 时，
+\[
+\lambda I-T=\lambda\left(I-\lambda^{-1}T\right),
+\]
+且 $\|\lambda^{-1}T\|<1$。由 Neumann 级数
+\[
+\left(I-\lambda^{-1}T\right)^{-1}
+=\sum_{n=0}^{\infty}\lambda^{-n}T^n
+\]
+可知 $\lambda I-T$ 可逆，所以
+\[
+\sigma(T)\subset \{\lambda\in \mathbb C:|\lambda|\le \|T\|\}.
+\]
+另一方面，可逆元在 Banach 代数中构成开集，因此预解集 $\rho(T)$ 开，谱 $\sigma(T)$ 闭，于是谱为有界闭集，从而紧。
+
+至于非空性，这是 Banach 代数谱论的基本事实：若 $\sigma(T)=\varnothing$，则预解算子
+\[
+\lambda\mapsto (\lambda I-T)^{-1}
+\]
+成为整函数，并满足无穷远处的衰减估计，借助 Liouville 定理会推出它恒为零，矛盾。故谱非空。
+\end{proof}
+
+\paragraph{为何谱语言对优化有用}
+
+\begin{remark}
+对有限维矩阵，谱不过是特征值集合；但在无穷维中，谱提供了比特征值更稳定的语言。后文讨论二次型、稳定性与半正定约束时，真正不变的对象是谱，而不是某个固定坐标下的矩阵表示。
+\end{remark}
+
+\subsection{紧算子、自伴算子与正算子}
+
+\begin{definition}[紧算子]\label{def:compact-operator}
+设 $X,Y$ 为 Banach 空间。若 $T\in \mathcal B(X,Y)$ 满足：$X$ 的任意有界集在 $T$ 作用下的像都是 $Y$ 中相对紧集，则称 $T$ 为一个\emph{紧算子}。
+\end{definition}
+
+\begin{definition}[自伴算子]\label{def:self-adjoint-operator}
+设 $H$ 为 Hilbert 空间。基于第 \ref{sec:3-3} 节定义~\ref{def:adjoint-operator} 以及推论~\ref{cor:hilbert-adjoint-via-riesz}，若算子 $T\in \mathcal B(H)$ 满足
+\[
+T^\ast=T,
+\]
+则称 $T$ 为\emph{自伴算子}。
+\end{definition}
+
+\begin{definition}[正算子]\label{def:positive-operator}
+设 $H$ 为 Hilbert 空间。若 $T\in \mathcal B(H)$ 满足
+\[
+\langle Tx,x\rangle\ge 0,\qquad \forall x\in H,
+\]
+则称 $T$ 为\emph{正算子}，记作 $T\ge 0$。
+\end{definition}
+
+\begin{proposition}[紧算子把弱收敛提升为强收敛]
+设 $X,Y$ 为 Banach 空间，$T\in \mathcal B(X,Y)$ 为紧算子。若有界网 $x_\alpha$ 在 $X$ 中弱收敛到 $x$，则
+\[
+Tx_\alpha\to Tx
+\]
+在 $Y$ 的范数下成立。
+\end{proposition}
+
+\begin{proof}
+因为 $x_\alpha\rightharpoonup x$，网 $(x_\alpha)$ 有界。由定义~\ref{def:compact-operator}，像网 $(Tx_\alpha)$ 落在某个紧集的闭包中，因此任意子网都有范数收敛子网。设 $Tx_\beta\to y$ 于范数，则它也弱收敛到 $y$。另一方面，$T$ 连续且线性，故 $Tx_\beta\rightharpoonup Tx$。弱极限唯一，遂 $y=Tx$。因此 $(Tx_\alpha)$ 的每个收敛子网都只能收敛到 $Tx$。紧 Hausdorff 空间中的网若所有收敛子网极限相同，则原网收敛到该极限，故结论成立。
+\end{proof}
+
+\begin{proposition}[正算子的基本性质]
+设 $H$ 为 Hilbert 空间，$T\in \mathcal B(H)$。
+\begin{enumerate}
+  \item 若 $T\ge 0$，则 $T$ 必为自伴算子；
+  \item 若 $T$ 自伴，则 $\langle Tx,x\rangle\in \mathbb R$ 对任意 $x\in H$ 成立；
+  \item 若 $T$ 自伴且 $\lambda\in \sigma(T)$ 为特征值，则 $\lambda\in \mathbb R$。
+\end{enumerate}
+\end{proposition}
+
+\begin{proof}
+第二条直接来自
+\[
+\langle Tx,x\rangle=\langle x,Tx\rangle=\overline{\langle Tx,x\rangle}.
+\]
+第三条则由 $Tx=\lambda x$ 推出
+\[
+\lambda \|x\|^2=\langle Tx,x\rangle\in \mathbb R.
+\]
+
+对第一条，考虑极化恒等式。实 Hilbert 空间中有
+\[
+4\langle Tx,y\rangle
+=\langle T(x+y),x+y\rangle-\langle T(x-y),x-y\rangle.
+\]
+复 Hilbert 空间中有
+\[
+4\langle Tx,y\rangle
+=\sum_{k=0}^{3} i^k\langle T(x+i^ky),x+i^ky\rangle.
+\]
+由于 $T\ge 0$ 时右端均可由二次型
+\[
+q(z):=\langle Tz,z\rangle
+\]
+完全恢复，得到
+\[
+\langle Tx,y\rangle=\overline{\langle Ty,x\rangle}=\langle x,Ty\rangle,
+\]
+故 $T=T^\ast$。
+\end{proof}
+
+\begin{proposition}[正算子的范数刻画]
+设 $H$ 为 Hilbert 空间，$T\in \mathcal B(H)$ 且 $T\ge 0$。则
+\[
+\|T\|=\sup_{\|x\|=1}\langle Tx,x\rangle.
+\]
+\end{proposition}
+
+\begin{proof}
+对任意单位向量 $x$，显然有
+\[
+\langle Tx,x\rangle\le \|Tx\|\,\|x\|\le \|T\|,
+\]
+故右端上确界不超过 $\|T\|$。
+
+反过来，对正算子定义半内积
+\[
+[u,v]_T:=\langle Tu,v\rangle.
+\]
+由 Cauchy--Schwarz 不等式，
+\[
+|[x,Tx]_T|^2\le [x,x]_T\,[Tx,Tx]_T.
+\]
+亦即
+\[
+\|Tx\|^4
+\le \langle Tx,x\rangle \,\langle T^2x,Tx\rangle
+\le \langle Tx,x\rangle\,\|T^2x\|\,\|Tx\|
+\le \|T\|\,\langle Tx,x\rangle\,\|Tx\|^2.
+\]
+若 $Tx\neq 0$，可约去 $\|Tx\|^2$，得到
+\[
+\|Tx\|^2\le \|T\|\,\langle Tx,x\rangle.
+\]
+对单位向量取上确界，记
+\[
+a:=\sup_{\|x\|=1}\langle Tx,x\rangle,
+\]
+便有
+\[
+\|T\|^2=\sup_{\|x\|=1}\|Tx\|^2\le \|T\|\,a.
+\]
+若 $T\neq 0$，则 $\|T\|>0$，故 $\|T\|\le a$；若 $T=0$ 则结论显然。综上 $\|T\|=a$。
+\end{proof}
+
+\begin{example}[有限维坍缩：对称矩阵与半正定矩阵]\label{ex:symmetric-matrix-spectrum}
+当 $H=\mathbb R^n$ 时，定义~\ref{def:self-adjoint-operator} 退化为对称矩阵，定义~\ref{def:positive-operator} 退化为半正定矩阵。把这个例子放在这里，是为了说明半正定规划中的矩阵锥并不是一个孤立对象，而是 Hilbert 空间正算子锥的有限维切片。
+\end{example}
+
+\begin{example}[紧算子的典型原型：积分算子]\label{ex:compact-integral-operator}
+在 $L^2(0,1)$ 上，若核函数 $K$ 连续，则
+\[
+(Tf)(s)=\int_0^1 K(s,t)f(t)\,dt
+\]
+定义了一个紧算子。若再满足 $K(s,t)=\overline{K(t,s)}$，则 $T$ 还是自伴算子。把这个例子放在这里，是为了把本节的抽象谱理论直接连接到后文的协方差算子、核方法和 Fredholm 型方程。
+\end{example}
+
+\subsection{紧自伴算子的谱定理}
+
+\begin{lemma}[正紧自伴算子的主特征值]
+设 $H$ 为 Hilbert 空间，$T\in \mathcal B(H)$ 为非零、正、紧、自伴算子。则存在单位向量 $e\in H$ 与实数 $\mu>0$，使
+\[
+Te=\mu e,
+\qquad
+\mu=\|T\|.
+\]
+\end{lemma}
+
+\begin{proof}
+考虑单位闭球
+\[
+B:=\{x\in H:\|x\|\le 1\}.
+\]
+由推论~\ref{cor:hilbert-weak-compactness}，$B$ 在弱拓扑下紧。又由紧算子把弱收敛提升为强收敛这一命题，函数
+\[
+q(x):=\langle Tx,x\rangle
+\]
+在 $B$ 上是弱连续的：若 $x_\alpha\rightharpoonup x$，则弱收敛网必有界，且 $Tx_\alpha\to Tx$ 于范数，于是
+\[
+\langle Tx_\alpha,x_\alpha\rangle-\langle Tx,x\rangle
+=\langle Tx_\alpha-Tx,x_\alpha\rangle+\langle Tx,x_\alpha-x\rangle\to 0.
+\]
+因此 $q$ 在 $B$ 上取到最大值。取单位向量 $e$ 满足
+\[
+q(e)=\max_{\|x\|\le 1} q(x).
+\]
+由于 $T\ge 0$ 且 $T\neq 0$，有 $q(e)>0$。记 $\mu:=q(e)$。
+
+对任意 $y\in H$ 且 $\langle y,e\rangle=0$，考虑函数
+\[
+\phi(t):=q\!\left(\frac{e+ty}{\|e+ty\|}\right),\qquad t\in \mathbb R.
+\]
+因为 $e$ 在单位球上使 $q$ 取极大值，故 $\phi'(0)=0$。直接计算得到
+\[
+\operatorname{Re}\langle Te,y\rangle=0.
+\]
+在复 Hilbert 空间中再将 $y$ 换为 $iy$，可得虚部也为零，因此
+\[
+\langle Te,y\rangle=0,\qquad \forall y\perp e.
+\]
+这说明 $Te$ 与所有垂直于 $e$ 的向量都正交，故 $Te$ 必与 $e$ 共线，即存在标量 $\lambda$ 使 $Te=\lambda e$。再与 $e$ 取内积，得到
+\[
+\lambda=\langle Te,e\rangle=\mu.
+\]
+最后由上一命题，
+\[
+\|T\|
+=\sup_{\|x\|\le 1}\langle Tx,x\rangle
+=q(e)=\mu
+\]
+得出 $\mu=\|T\|$。
+\end{proof}
+
+\begin{proposition}[紧算子的非零特征值只能有限重]
+设 $H$ 为 Hilbert 空间，$T\in \mathcal B(H)$ 为紧算子。若 $\lambda\neq 0$ 是 $T$ 的特征值，则对应特征子空间
+\[
+\ker(T-\lambda I)
+\]
+必为有限维。
+\end{proposition}
+
+\begin{proof}
+若该特征子空间无限维，则可以从中取一组标准正交列 $(e_n)$。对每个 $n$，
+\[
+Te_n=\lambda e_n.
+\]
+由于 $\lambda\neq 0$，序列 $(Te_n)$ 的任意两项之间距离都等于
+\[
+\|Te_n-Te_m\|=|\lambda|\,\|e_n-e_m\|=\sqrt{2}\,|\lambda|,\qquad n\neq m,
+\]
+故不可能含有收敛子列。这与 $T$ 为紧算子矛盾。
+\end{proof}
+
+\begin{theorem}[紧自伴算子的谱定理]\label{thm:compact-selfadjoint-spectral}
+设 $H$ 为 Hilbert 空间，$T\in \mathcal B(H)$ 为紧自伴算子。则存在至多可数的标准正交特征向量族 $\{e_n\}$ 与实特征值列 $\{\lambda_n\}$，满足：
+\begin{enumerate}
+  \item 对每个 $n$，
+  \[
+  Te_n=\lambda_n e_n;
+  \]
+  \item 若非零特征值无限多个，则
+  \[
+  \lambda_n\to 0;
+  \]
+  \item 对任意 $x\in H$，
+  \[
+  Tx=\sum_{n} \lambda_n \langle x,e_n\rangle e_n,
+  \]
+  其中级数在 $H$ 中按范数收敛；
+  \item 非零谱恰好由这些非零特征值组成，每个非零特征值重数有限，且 $0$ 是唯一可能的聚点。
+\end{enumerate}
+\end{theorem}
+
+\begin{proof}
+若 $T=0$，取空特征族即可。以下设 $T\neq 0$。
+
+先考虑
+\[
+S:=T^2=T^\ast T.
+\]
+则 $S$ 是正、紧、自伴算子。由上一个引理，存在单位向量 $u$ 与标量 $\mu=\|S\|=\|T\|^2>0$，使
+\[
+Su=\mu u.
+\]
+记
+\[
+E_\mu:=\ker(S-\mu I).
+\]
+由上一命题，$E_\mu$ 有限维。又因为 $TS=ST$，所以 $T(E_\mu)\subseteq E_\mu$。将 $T$ 限制到有限维 Hilbert 空间 $E_\mu$ 上，便得到一个有限维自伴算子；由有限维线性代数，它可以正交对角化。因此存在单位向量 $e_1\in E_\mu$ 与实数 $\lambda_1$，使
+\[
+Te_1=\lambda_1 e_1,
+\qquad
+|\lambda_1|=\|T\|.
+\]
+
+接着做递归构造。已取到两两正交的单位特征向量 $e_1,\dots,e_n$ 后，记
+\[
+M_n:=\operatorname{span}\{e_1,\dots,e_n\}^\perp.
+\]
+由于 $T$ 自伴，$M_n$ 对 $T$ 不变：若 $x\in M_n$，则对每个 $k\le n$，
+\[
+\langle Tx,e_k\rangle=\langle x,Te_k\rangle=\lambda_k\langle x,e_k\rangle=0.
+\]
+因此限制算子 $T_n:=T|_{M_n}$ 仍是紧自伴算子。若 $T_n\neq 0$，重复上一步便在 $M_n$ 中得到单位特征向量 $e_{n+1}$，对应特征值 $\lambda_{n+1}$，并满足
+\[
+|\lambda_{n+1}|=\|T_n\|\le |\lambda_n|.
+\]
+若某一步 $T_n=0$，则递归终止。于是得到有限或可数的标准正交特征向量族 $\{e_n\}$。
+
+若该族无限，则必须有 $\lambda_n\to 0$。否则存在 $\varepsilon>0$ 与子列 $(\lambda_{n_k})$ 使 $|\lambda_{n_k}|\ge \varepsilon$。但
+\[
+Te_{n_k}=\lambda_{n_k}e_{n_k}
+\]
+不可能含有收敛子列，因为
+\[
+\|Te_{n_k}-Te_{n_\ell}\|^2
+=|\lambda_{n_k}|^2+|\lambda_{n_\ell}|^2
+\ge 2\varepsilon^2,\qquad k\neq \ell,
+\]
+这与紧性矛盾。
+
+设
+\[
+M:=\overline{\operatorname{span}\{e_n\}}.
+\]
+由于每个 $e_n$ 是特征向量，和上面同样的计算表明 $M^\perp$ 对 $T$ 不变。若 $T|_{M^\perp}\neq 0$，则按前述构造又能在 $M^\perp$ 中找到新的特征向量，与 $\{e_n\}$ 的极大性矛盾。故
+\[
+T|_{M^\perp}=0.
+\]
+任取 $x\in H$，由 Hilbert 空间中的正交分解可写成
+\[
+x=\sum_n \langle x,e_n\rangle e_n+z,\qquad z\in M^\perp.
+\]
+于是
+\[
+Tx=\sum_n \lambda_n \langle x,e_n\rangle e_n,
+\]
+因为 $Tz=0$。该级数按范数收敛：一方面 $(\langle x,e_n\rangle)\in \ell^2$，另一方面 $(\lambda_n)$ 有界且在无限情形下趋于零，因此部分和构成 Cauchy 列。
+
+最后说明谱的刻画。对每个非零特征值，有限重性已由上一命题给出。反过来，若 $\lambda\neq 0$ 不属于特征值，则由于 $\lambda_n\to 0$ 且 $\lambda\neq \lambda_n$ 对所有 $n$ 都成立，存在常数
+\[
+\delta:=\inf\bigl(\,|\lambda|,\ |\lambda-\lambda_n|:n\ge 1\,\bigr)>0.
+\]
+对任意分解
+\[
+x=\sum_n a_n e_n+z,\qquad z\in M^\perp,
+\]
+定义
+\[
+R_\lambda x:=\sum_n \frac{a_n}{\lambda-\lambda_n}e_n+\frac1\lambda z.
+\]
+由于
+\[
+\left|\frac1{\lambda-\lambda_n}\right|\le \frac1\delta,
+\qquad
+\left|\frac1\lambda\right|\le \frac1\delta,
+\]
+该级数给出一个有界算子 $R_\lambda$。再由表示式直接计算，
+\[
+(\lambda I-T)R_\lambda x=R_\lambda(\lambda I-T)x=x.
+\]
+因此 $\lambda I-T$ 可逆。综上，非零谱恰由这些非零特征值组成；若谱无限，则唯一可能的聚点只能是 $0$。
+\end{proof}
+
+\paragraph{谱定理与二次型}
+
+\begin{remark}
+定理~\ref{thm:compact-selfadjoint-spectral} 说明，紧自伴算子可以像对称矩阵一样被正交分解。对优化而言，这意味着许多无穷维二次泛函
+\[
+q(x)=\frac12\langle Tx,x\rangle-\langle b,x\rangle
+\]
+仍能在特征方向上逐坐标分析。有限维的 Hessian 对角化、主成分分析和半正定矩阵分解，都只是这一结论的坍缩版本。
+\end{remark}
+
+\begin{example}[协方差算子的谱分解]\label{ex:covariance-operator}
+在 $L^2$ 或 RKHS 环境中，协方差算子常常是正、紧、自伴的，因此可由定理~\ref{thm:compact-selfadjoint-spectral} 分解为
+\[
+Tx=\sum_n \lambda_n \langle x,e_n\rangle e_n,\qquad \lambda_n\ge 0.
+\]
+把这个例子放在这里，是为了把谱定理直接连接到后文的核方法、表示学习与低秩近似：主成分方向就是特征向量，能量大小就是特征值。
+\end{example}
+
+\subsection*{有限维对照}
+
+在有限维 Hilbert 空间里，定理~\ref{thm:compact-selfadjoint-spectral} 退化为“实对称矩阵可正交对角化”。因此半正定规划中的特征值分解、二次型标准形和迹内积，都可以视为本节谱定理在矩阵层面的压缩版。不同之处只在于：无穷维里非零谱可能是可数无限的，而紧性保证它只能向 $0$ 聚集。
+
+\subsection*{习题（待补）}
+
+\begin{exercise}[紧自伴谱定理的矩阵版占位]\label{exr:spectral-matrix-placeholder}
+补一题：把定理~\ref{thm:compact-selfadjoint-spectral} 限制到有限维空间，说明它如何退化为实对称矩阵的正交对角化。
+\end{exercise}
+
+\begin{exercise}[二次型桥接题占位]\label{exr:quadratic-form-placeholder}
+补一题：设 $T\ge 0$ 为紧自伴算子，分析二次泛函 $q(x)=\frac12\langle Tx,x\rangle-\langle b,x\rangle$ 在特征基下的表达，并解释何时它退化为有限维半正定二次规划。
+\end{exercise}

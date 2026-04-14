@@ -1,0 +1,75 @@
+\backgroundsetup{contents={}}
+\backgroundsetup{
+	scale=1.0,
+	angle=0,
+	opacity=1,
+	contents={\includegraphics[width=\paperwidth,height=\paperheight]{素材库/目录}},
+	placement=bottom,
+	pages=some
+}
+
+\pagenumbering{gobble}
+\pagestyle{empty}
+
+\renewcommand{\contentsname}{}
+\setlength{\cftbeforetoctitleskip}{0pt}
+\setlength{\cftaftertoctitleskip}{0pt}
+\setcounter{secnumdepth}{1}
+\setcounter{tocdepth}{1}
+\renewcommand{\cftdot}{}
+
+\makeatletter
+\renewcommand{\l@part}[2]{%
+	\vspace{16pt}
+	\par\noindent
+	{\cftpartfont\ignorespaces#1}
+	\hfill
+	{\cftpartpagefont\ignorespaces#2}
+	\par
+	\vspace{-3pt}
+}
+
+\renewcommand{\l@chapter}[2]{%
+	\vspace{10pt}
+	\par\noindent
+	{\cftchapfont\ignorespaces#1}
+	\hfill
+	{\cftchappagefont\ignorespaces#2}
+	\par
+	\vspace{-4pt}
+	\noindent
+	\raggedright
+	\includegraphics[width=200.5pt, height=4pt]{素材库/正文/separator_1}
+	\par
+}
+
+\renewcommand{\l@section}[2]{%
+	\par\noindent
+	{\cftsecfont\ignorespaces#1}
+	\hfill
+	{\cftsecpagefont\ignorespaces#2}
+	\par
+	\vspace{2pt}
+}
+\makeatother
+
+\renewcommand{\cftpartfont}{\SiYuan\fontsize{17pt}{22pt}\selectfont\bfseries\XeTeXinterchartokenstate=0}
+\renewcommand{\cftpartpagefont}{\SiYuan\fontsize{17pt}{22pt}\selectfont\bfseries\XeTeXinterchartokenstate=0}
+\renewcommand{\cftchapfont}{\SiYuan\fontsize{14pt}{18pt}\selectfont\bfseries\XeTeXinterchartokenstate=0}
+\renewcommand{\cftchappagefont}{\SiYuan\fontsize{14pt}{18pt}\selectfont\bfseries\XeTeXinterchartokenstate=0}
+\renewcommand{\cftsecfont}{\SiYuan\fontsize{11pt}{16pt}\selectfont\bfseries\XeTeXinterchartokenstate=0}
+\renewcommand{\cftsecpagefont}{\SiYuan\fontsize{11pt}{16pt}\selectfont\bfseries\XeTeXinterchartokenstate=0}
+
+\newcommand{\invisibletext}{\phantom{占位本}}
+\newcommand{\makecustomtoc}{%
+	\BgThispage
+	\begin{adjustwidth}{100pt}{0pt}
+		\begin{multicols}{2}
+			\tableofcontents
+			{\invisibletext}\\ {\invisibletext}\\ {\invisibletext}\\ {\invisibletext}\\ {\invisibletext}\\ {\invisibletext}\\ {\invisibletext}\\ {\invisibletext}\\ {\invisibletext}\\ {\invisibletext}\\ {\invisibletext}\\ {\invisibletext}\\ {\invisibletext}\\ {\invisibletext}\\ {\invisibletext}\\ {\invisibletext}\\ {\invisibletext}\\ {\invisibletext}\\ {\invisibletext}\\ {\invisibletext}\\ {\invisibletext}\\ {\invisibletext}\\ {\invisibletext}\\ {\invisibletext}\\
+		\end{multicols}
+	\end{adjustwidth}
+	\AtBeginShipoutNext{\AtBeginShipoutDiscard}%
+}
+
+\hypersetup{linktoc=all}

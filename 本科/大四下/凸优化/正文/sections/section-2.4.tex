@@ -1,0 +1,268 @@
+\section{概率空间与随机过程微积分初步}
+
+\label{sec:2-4}
+
+前面三节已经准备好了事件、积分与拓扑测度的语言，但连续时间优化还需要进一步回答三个问题：随机对象怎样随时间演化，信息怎样逐步显露，噪声如何进入动力系统。为此，本节从概率空间与随机变量出发，经过条件期望、滤过、鞅与停时，最终进入 Brownian motion、Itô 积分与 Itô 公式。目标不是写成一部完整随机分析专著，而是建立后续最优控制、量化交易与路径空间优化真正会调用的最小语法。
+
+\subsection{概率空间、随机变量与条件期望}
+
+\begin{definition}[概率空间]\label{def:probability-space}
+三元组 $(\Omega,\mathscr F,\mathbb P)$ 称为一个\emph{概率空间}，若 $(\Omega,\mathscr F)$ 是可测空间，且 $\mathbb P$ 是满足
+\[
+\mathbb P(\Omega)=1
+\]
+的测度。定义在 $(\Omega,\mathscr F)$ 上、取值于某个可测空间 $(E,\mathscr E)$ 的可测映射 $X\colon \Omega\to E$ 称为一个\emph{随机变量}。
+\end{definition}
+
+\paragraph{期望只是积分}
+
+\begin{remark}
+一旦概率空间被固定，随机变量的期望只是第 \ref{sec:2-2} 节 Lebesgue 积分的特殊记号：
+\[
+\mathbb E[X]=\int_\Omega X\,d\mathbb P.
+\]
+因此所有与极限交换有关的合法性，本质上都回到定理~\ref{thm:monotone-convergence}、引理~\ref{lem:fatou} 与定理~\ref{thm:dominated-convergence}。
+\end{remark}
+
+\begin{definition}[条件期望]\label{def:conditional-expectation}
+设 $(\Omega,\mathscr F,\mathbb P)$ 为概率空间，$\mathscr G\subseteq \mathscr F$ 为子 $\sigma$-代数，$X\in L^1(\mathbb P)$。若随机变量 $Y$ 满足：
+\begin{enumerate}
+  \item $Y$ 是 $\mathscr G$-可测的；
+  \item 对任意 $A\in \mathscr G$，都有
+  \[
+  \int_A Y\,d\mathbb P=\int_A X\,d\mathbb P,
+  \]
+\end{enumerate}
+则称 $Y$ 为 $X$ 关于 $\mathscr G$ 的\emph{条件期望}，记为
+\[
+Y=\mathbb E[X\mid \mathscr G].
+\]
+\end{definition}
+
+\begin{proposition}[条件期望的基本性质]\label{prop:conditional-expectation-basic}
+设 $X,Y\in L^1(\mathbb P)$，$\mathscr G\subseteq \mathscr F$ 为子 $\sigma$-代数，则：
+\begin{enumerate}
+  \item $\mathbb E[X\mid \mathscr G]$ 在几乎处处意义下唯一；
+  \item 条件期望关于 $X$ 线性；
+  \item 若 $X$ 本身 $\mathscr G$-可测，则
+  \[
+  \mathbb E[X\mid \mathscr G]=X \qquad \text{a.s.};
+  \]
+  \item 若 $X\ge 0$ a.s.，则
+  \[
+  \mathbb E[X\mid \mathscr G]\ge 0 \qquad \text{a.s.};
+  \]
+  \item 塔性质成立：若 $\mathscr H\subseteq \mathscr G\subseteq \mathscr F$，则
+  \[
+  \mathbb E[\mathbb E[X\mid \mathscr G]\mid \mathscr H]=\mathbb E[X\mid \mathscr H]
+  \qquad \text{a.s.}
+  \]
+\end{enumerate}
+\end{proposition}
+
+\begin{proof}
+唯一性来自这样一个事实：若 $Y_1,Y_2$ 都满足定义~\ref{def:conditional-expectation}，则对任意 $A\in \mathscr G$ 有
+\[
+\int_A (Y_1-Y_2)\,d\mathbb P=0.
+\]
+取 $A=\{Y_1>Y_2\}\in \mathscr G$ 与 $A=\{Y_2>Y_1\}$ 即得 $Y_1=Y_2$ a.s.。线性与正性由积分恒等式直接验证。若 $X$ 是 $\mathscr G$-可测，则它自己就满足定义中的两条。塔性质只需对任意 $A\in \mathscr H$ 比较积分：
+\[
+\int_A \mathbb E[\mathbb E[X\mid \mathscr G]\mid \mathscr H]\,d\mathbb P
+=\int_A \mathbb E[X\mid \mathscr G]\,d\mathbb P
+=\int_A X\,d\mathbb P.
+\]
+故该随机变量满足 $\mathbb E[X\mid \mathscr H]$ 的刻画。
+\end{proof}
+
+\subsection{独立性、滤过、适应过程与鞅}
+
+\begin{definition}[独立性、滤过与适应性]
+设 $(\Omega,\mathscr F,\mathbb P)$ 为概率空间。
+\begin{enumerate}
+  \item 两个子 $\sigma$-代数 $\mathscr G_1,\mathscr G_2\subseteq \mathscr F$ 称为\emph{独立}的，若对任意 $A\in \mathscr G_1$、$B\in \mathscr G_2$，有
+  \[
+  \mathbb P(A\cap B)=\mathbb P(A)\mathbb P(B).
+  \]
+  \item 一族子 $\sigma$-代数 $\{\mathscr F_t\}_{t\ge0}$ 若满足 $s\le t$ 时
+  \[
+  \mathscr F_s\subseteq \mathscr F_t,
+  \]
+  则称其为一个\emph{滤过}。
+  \item 过程 $X=\{X_t\}_{t\ge0}$ 若对每个 $t$，$X_t$ 都是 $\mathscr F_t$-可测的，则称 $X$ 对该滤过\emph{适应}。
+\end{enumerate}
+\end{definition}
+
+\begin{definition}[鞅]\label{def:martingale}
+设 $(\Omega,\mathscr F,\mathbb P)$ 配有滤过 $\{\mathscr F_t\}_{t\ge0}$。若过程 $M=\{M_t\}_{t\ge0}$ 满足：
+\begin{enumerate}
+  \item $M$ 适应于 $\{\mathscr F_t\}$；
+  \item 对每个 $t$，有 $M_t\in L^1(\mathbb P)$；
+  \item 对任意 $0\le s\le t$，有
+  \[
+  \mathbb E[M_t\mid \mathscr F_s]=M_s \qquad \text{a.s.},
+  \]
+\end{enumerate}
+则称 $M$ 为一个\emph{鞅}。若上式中的等号分别改成“$\ge$”或“$\le$”，则得到次鞅与上鞅。
+\end{definition}
+
+\begin{definition}[停时]
+设给定滤过 $\{\mathscr F_t\}_{t\ge0}$。随机变量 $\tau\colon \Omega\to [0,\infty]$ 称为一个\emph{停时}，若对每个 $t\ge0$，
+\[
+\{\tau\le t\}\in \mathscr F_t.
+\]
+\end{definition}
+
+\begin{proposition}[停时与鞅的基本前瞻]\label{prop:optional-sampling-preview}
+设 $M$ 为离散时间鞅，$\tau$ 为有界停时，则停时过程 $\{M_{n\wedge \tau}\}$ 仍为鞅，因而
+\[
+\mathbb E[M_\tau]=\mathbb E[M_0].
+\]
+\end{proposition}
+
+\begin{proof}
+对每个 $n$，变量 $M_{n\wedge \tau}$ 对 $\mathscr F_n$ 可测且可积。再由分解
+\[
+M_{(n+1)\wedge \tau}=M_n\mathbf 1_{\{\tau\le n\}}+M_{n+1}\mathbf 1_{\{\tau>n\}}
+\]
+并对 $\mathscr F_n$ 取条件期望，利用 $\{\tau>n\}\in \mathscr F_n$ 和定义~\ref{def:martingale} 的鞅性质即可得到
+\[
+\mathbb E[M_{(n+1)\wedge \tau}\mid \mathscr F_n]=M_{n\wedge \tau}.
+\]
+从而停时过程仍为鞅。再取期望便得结论。
+\end{proof}
+
+\subsection{Brownian motion 与 Itô 积分}
+
+\begin{definition}[Brownian motion]\label{def:brownian-motion}
+设 $(\Omega,\mathscr F,\mathbb P)$ 为概率空间，过程 $W=\{W_t\}_{t\ge0}$ 称为一个\emph{Brownian motion}，若满足：
+\begin{enumerate}
+  \item $W_0=0$ a.s.；
+  \item $W$ 具有独立增量：对任意 $0\le t_0<t_1<\cdots<t_n$，随机变量
+  \[
+  W_{t_1}-W_{t_0},\dots,W_{t_n}-W_{t_{n-1}}
+  \]
+  相互独立；
+  \item $W_t-W_s\sim N(0,t-s)$ 对任意 $0\le s<t$ 成立；
+  \item 样本路径几乎处处连续。
+\end{enumerate}
+\end{definition}
+
+\begin{example}[有限维高斯坍缩]\label{ex:gaussian-vector}
+对任意 $0<t_1<\cdots<t_n$，向量
+\[
+(W_{t_1},\dots,W_{t_n})
+\]
+是中心高斯向量，其协方差矩阵为 $(\min\{t_i,t_j\})_{i,j}$。把这个例子放在这里，是为了说明 Brownian motion 可以看成一族彼此相容的有限维高斯向量在时间上的连续拼接。
+\end{example}
+
+\begin{definition}[简单适应过程上的 Itô 积分]\label{def:ito-integral}
+设 $W$ 是适应于滤过 $\{\mathscr F_t\}$ 的 Brownian motion，$T>0$。若过程 $H$ 具有形式
+\[
+H_t(\omega)=\sum_{k=0}^{n-1}\xi_k(\omega)\mathbf 1_{(t_k,t_{k+1}]}(t),
+\]
+其中 $0=t_0<t_1<\cdots<t_n=T$，且每个 $\xi_k$ 都是 $\mathscr F_{t_k}$-可测并满足 $\mathbb E[\xi_k^2]<\infty$，则称 $H$ 为\emph{简单适应过程}，并定义其 \emph{Itô 积分} 为
+\[
+\int_0^T H_t\,dW_t:=\sum_{k=0}^{n-1}\xi_k\bigl(W_{t_{k+1}}-W_{t_k}\bigr).
+\]
+借助 $L^2(\Omega\times [0,T])$ 完备化，可将该定义延拓到所有平方可积适应过程。
+\end{definition}
+
+\begin{proposition}[Itô 等距]\label{prop:ito-isometry}
+对任意简单适应过程 $H$，都有
+\[
+\mathbb E\left[\left(\int_0^T H_t\,dW_t\right)^2\right]
+=
+\mathbb E\left[\int_0^T |H_t|^2\,dt\right].
+\]
+因此 Itô 积分是从平方可积适应过程空间到 $L^2(\Omega)$ 的等距映射。
+\end{proposition}
+
+\begin{proof}
+对定义~\ref{def:ito-integral} 中的简单过程展开平方，得到
+\[
+\left(\sum_{k=0}^{n-1}\xi_k\Delta W_k\right)^2
+=
+\sum_{k=0}^{n-1}\xi_k^2(\Delta W_k)^2
++2\sum_{i<j}\xi_i\xi_j\Delta W_i\Delta W_j,
+\]
+其中 $\Delta W_k:=W_{t_{k+1}}-W_{t_k}$。由于 Brownian motion 具有独立增量，且 $\Delta W_j$ 与 $\mathscr F_{t_j}$ 独立、均值为零，交叉项取期望后消失。于是
+\[
+\mathbb E\left[\left(\int_0^T H_t\,dW_t\right)^2\right]
+=
+\sum_{k=0}^{n-1}\mathbb E[\xi_k^2]\,(t_{k+1}-t_k)
+=
+\mathbb E\left[\int_0^T |H_t|^2\,dt\right].
+\]
+结论成立。
+\end{proof}
+
+\subsection{Itô 公式与最小量级的随机微分方程}
+
+\begin{theorem}[Itô 公式]\label{thm:ito-formula}
+设 $W$ 为 Brownian motion，过程 $X$ 满足
+\[
+X_t=X_0+\int_0^t b_s\,ds+\int_0^t \sigma_s\,dW_s,
+\]
+其中 $b,\sigma$ 为适应过程，并满足使两项积分有意义的可积条件。若 $f\in C^{1,2}([0,T]\times \mathbb R)$，则对任意 $t\in[0,T]$，
+\[
+f(t,X_t)=f(0,X_0)
++\int_0^t \partial_t f(s,X_s)\,ds
++\int_0^t \partial_x f(s,X_s)b_s\,ds
++\int_0^t \partial_x f(s,X_s)\sigma_s\,dW_s
++\frac12\int_0^t \partial_{xx}f(s,X_s)\sigma_s^2\,ds.
+\]
+\end{theorem}
+
+\begin{proof}
+先对时间区间做剖分，对每个小区间应用二元 Taylor 展开：
+\[
+f(t_{k+1},X_{t_{k+1}})-f(t_k,X_{t_k})
+\]
+分解为时间增量、一阶空间增量和二阶空间增量，再把高阶余项控制到零。关键在于
+\[
+(\Delta W_k)^2\approx \Delta t_k,\qquad \Delta W_k\Delta t_k,\ (\Delta t_k)^2
+\]
+在求和极限下都比 $\Delta t_k$ 更高阶，因此只保留二阶项中的二次变差贡献。对随机项与确定项分别取极限，便得到公式。严格论证通常先对简单过程验证，再用 Itô 等距与 $L^2$ 逼近推广。
+\end{proof}
+
+\begin{example}[二次函数的 Itô 公式]\label{ex:ito-quadratic}
+取 $X_t=W_t$，$f(x)=x^2$。由定理~\ref{thm:ito-formula}，
+\[
+W_t^2=2\int_0^t W_s\,dW_s+t.
+\]
+把这个例子放在这里，是为了突出随机微积分与经典微积分最本质的差别：额外出现的 $t$ 项正来自 Brownian motion 的二次变差。
+\end{example}
+
+\begin{example}[应用触点：几何 Brownian motion]\label{ex:geometric-bm}
+考虑随机微分方程
+\[
+dS_t=\mu S_t\,dt+\sigma S_t\,dW_t,\qquad S_0>0.
+\]
+对 $f(x)=\log x$ 应用定理~\ref{thm:ito-formula}，可得
+\[
+d(\log S_t)=\left(\mu-\frac{\sigma^2}{2}\right)dt+\sigma\,dW_t,
+\]
+从而
+\[
+S_t=S_0\exp\left(\left(\mu-\frac{\sigma^2}{2}\right)t+\sigma W_t\right).
+\]
+把这个例子放在这里，是为了说明第 11 章中的连续时间金融建模和随机控制并不需要额外发明一套新分析，而是直接建立在 Itô 公式之上。
+\end{example}
+
+\subsection*{有限维对照}
+
+有限维随机优化通常只显式书写随机向量、协方差矩阵和期望目标；连续时间情形则把“随机向量”替换成路径过程，把“矩阵演化”替换成 Itô 驱动的动力系统。本节的作用，是把这种升维过程中真正新增的结构明确标出：定义~\ref{def:conditional-expectation} 给出信息更新，定义~\ref{def:martingale} 给出公平演化，定义~\ref{def:brownian-motion} 与定义~\ref{def:ito-integral} 给出噪声与积分，而定理~\ref{thm:ito-formula} 则是连续时间随机优化的链式法则。
+
+\subsection*{习题（待补）}
+
+\begin{exercise}[条件期望占位]\label{exr:conditional-expectation-placeholder}
+补一题：在离散有限样本空间上显式计算条件期望，并验证命题~\ref{prop:conditional-expectation-basic} 的塔性质。
+\end{exercise}
+
+\begin{exercise}[Itô 公式桥接题占位]\label{exr:ito-formula-placeholder}
+补一题：从例~\ref{ex:geometric-bm} 出发，验证几何 Brownian motion 的显式解，并说明其如何退化为常微分方程
+\[
+\dot x_t=\mu x_t
+\]
+的有限维无噪声版本。
+\end{exercise}

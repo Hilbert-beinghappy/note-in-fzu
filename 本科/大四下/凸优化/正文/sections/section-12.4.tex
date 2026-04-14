@@ -1,0 +1,144 @@
+\section{大型系统的分布式求解}
+
+\label{sec:12-4}
+
+前两节把表示函数和图结构都放回了 Hilbert 空间与谱论语言；真正的大型推荐系统还需要最后一步：把这些模型拆到多机、多分片和多数据块上求解。此时关键对象不再只是单个目标函数，而是局部子问题、全局一致性约束和乘子更新。本节把这部分内容统一写成第 \ref{sec:10-3} 节 ADMM 的应用层接口。
+
+\subsection{共识模型与分片嵌入}
+
+\begin{definition}[分布式共识模型]\label{def:distributed-consensus-model}
+设 $Z$ 为 Hilbert 空间，$Z_1,\dots,Z_N$ 为局部副本空间，$P_i\colon Z\to Z_i$ 为有界线性算子。若优化问题写成
+\[
+\min_{z\in Z,\ z_i\in Z_i}
+\left\{
+\sum_{i=1}^N F_i(z_i)+G(z)
+:\ z_i=P_i z,\ i=1,\dots,N
+\right\},
+\]
+其中 $F_i,G$ 为 proper、凸且下半连续泛函，则称其为一个\emph{分布式共识模型}。
+\end{definition}
+
+\begin{definition}[分片嵌入问题]\label{def:sharded-embedding-problem}
+在定义~\ref{def:distributed-consensus-model} 的背景下，若 $z$ 表示全局 embedding 参数，$z_i$ 表示第 $i$ 个工作节点上的局部参数副本，而 $F_i$ 编码该节点的局部样本损失、图正则或匹配风险，则称该模型为\emph{分片嵌入问题}。
+\end{definition}
+
+\subsection{ADMM 形式与局部更新}
+
+\begin{proposition}[共识模型的 ADMM 分裂]\label{prop:consensus-admm-splitting}
+定义~\ref{def:distributed-consensus-model} 的问题可写成第 \ref{sec:7-2} 节定义~\ref{def:abstract-cone-program} 的线性约束标准型。对给定罚参数 $\rho>0$，其 ADMM 迭代可写为
+\[
+z_i^{k+1}\in
+\arg\min_{z_i}
+\left\{
+F_i(z_i)+\langle y_i^k,z_i-P_i z^k\rangle+\frac{\rho}{2}\|z_i-P_i z^k\|^2
+\right\},
+\]
+\[
+z^{k+1}\in
+\arg\min_z
+\left\{
+G(z)-\sum_{i=1}^N \langle y_i^k,P_i z\rangle
++\frac{\rho}{2}\sum_{i=1}^N \|z_i^{k+1}-P_i z\|^2
+\right\},
+\]
+\[
+y_i^{k+1}=y_i^k+\rho(z_i^{k+1}-P_i z^{k+1}),
+\qquad i=1,\dots,N.
+\]
+\end{proposition}
+
+\begin{proof}
+令
+\[
+X:=Z_1\times \cdots\times Z_N,
+\qquad
+x:=(z_1,\dots,z_N),
+\qquad
+f(x):=\sum_{i=1}^N F_i(z_i).
+\]
+再令
+\[
+Bz:=(P_1 z,\dots,P_N z)\in X,
+\qquad
+g(z):=G(z).
+\]
+则原问题等价于
+\[
+\min_{x,z}\{f(x)+g(z):x-Bz=0\}.
+\]
+这正是第 \ref{sec:10-3} 节定义~\ref{def:admm-iteration} 的两块线性约束模型，其中 $A=I$、$B=-B$、$b=0$。把定义~\ref{def:admm-iteration} 直接展开到乘积空间，即得到所述更新式。
+\end{proof}
+
+\begin{theorem}[分布式推荐模型的收敛模板]\label{thm:distributed-recommendation-convergence}
+设定义~\ref{def:distributed-consensus-model} 的问题存在鞍点，且命题~\ref{prop:consensus-admm-splitting} 给出的各步极小化子问题都可解。则相应 ADMM 序列满足：
+\begin{enumerate}
+  \item 原残差
+  \[
+  r_i^k:=z_i^k-P_i z^k
+  \]
+  收敛到 $0$；
+  \item 对偶残差收敛到 $0$；
+  \item 任意弱聚点都是该共识模型的原--对偶解。
+\end{enumerate}
+特别地，若解集为单点，则整个序列弱收敛到该解。
+\end{theorem}
+
+\begin{proof}
+把命题~\ref{prop:consensus-admm-splitting} 中的乘积空间模型视为第 \ref{sec:10-3} 节两块问题的特例。此时
+\[
+f(x)=\sum_{i=1}^N F_i(z_i),\qquad g(z)=G(z),
+\]
+而约束算子是有界线性的。于是第 \ref{sec:10-3} 节定理~\ref{thm:admm-primal-dual-convergence} 可直接应用，得到原残差和对偶残差都收敛到零，且每个弱聚点满足相应 KKT 系统。由于这里的 KKT 系统恰是共识约束
+\[
+z_i=P_i z
+\]
+与局部/全局次微分最优性条件的组合，故结论成立。
+\end{proof}
+
+\begin{corollary}[图推荐与表示匹配的分布式模板]\label{cor:graph-recommendation-distributed-template}
+若局部目标取为
+\[
+F_i(z_i)=\ell_i(z_i)+\tau_i\mathcal E_{\mathscr G_i}(z_i)
+\]
+或
+\[
+F_i(z_i)=\mathcal R_{\lambda_i}(M_i),
+\]
+其中 $\mathcal E_{\mathscr G_i}$ 是第 \ref{sec:12-2} 节定义~\ref{def:graph-dirichlet-energy} 的图能量，$\mathcal R_{\lambda_i}$ 是第 \ref{sec:12-3} 节定义~\ref{def:contrastive-risk-functional} 的对比风险，则相应图推荐、检索匹配和分片 embedding 训练都属于定义~\ref{def:distributed-consensus-model} 的范畴。因而，在定理~\ref{thm:distributed-recommendation-convergence} 的假设下，这些模型可由 ADMM 获得一个统一的分布式收敛模板。
+\end{corollary}
+
+\begin{proof}
+图能量与对比风险都已在前两节被写成 proper、凸且下半连续泛函；把它们放到局部节点上，再加上共识约束 $z_i=P_i z$，就正好落入定义~\ref{def:distributed-consensus-model}。于是直接应用定理~\ref{thm:distributed-recommendation-convergence} 即可。
+\end{proof}
+
+\begin{remark}
+从第 \ref{sec:9-4} 节推论~\ref{cor:proximal-point-template} 的角度看，ADMM 仍然是在解一个原--对偶零点问题；只是这里的零点被通信拓扑和参数分片重新组织了。也因此，本节并不扩展到参数服务器、在线排序或工业服务架构细节，而只保留凸分块模型可稳定复用的求解接口。
+\end{remark}
+
+\subsection{典型例子}
+
+\begin{example}[共识矩阵分解]
+把用户块、物品块或时间块分别放到不同节点上，每个节点维护局部矩阵变量，再通过全局一致性约束保证公共因子对齐。这是分布式矩阵分解最常见的抽象形式。
+\end{example}
+
+\begin{example}[图正则推荐]
+若每个节点还带有本地图结构，则局部目标中自然出现第 \ref{sec:12-2} 节的图 Dirichlet 能量。这样得到的模型同时耦合了图平滑与全局共识，正是图推荐系统里经常出现的结构。
+\end{example}
+
+\begin{example}[分片 embedding 训练]
+在大规模推荐系统中，embedding 表往往按词表、用户或物品分片存储。把局部匹配损失写成第 \ref{sec:12-3} 节的对比风险，再通过全局变量协调共享参数，就得到定义~\ref{def:sharded-embedding-problem} 的典型实例。
+\end{example}
+
+\subsection*{有限维对照}
+
+Boyd 关于共识 ADMM 的有限维叙述，仍然是理解本节最好的入口：局部子问题、全局平均和残差监控都保留了下来。但本节的关键补充是，推荐系统中的“参数分片”“图正则”“多塔一致性”并不是新的数学对象，它们只是被重新装进了第 \ref{sec:10-3} 节 ADMM 和第 \ref{sec:7-2} 节标准型接口中。换言之，工业推荐系统里的分布式训练并不是脱离理论的工程技巧，而是 Boyd 母语在无穷维与乘积空间中的一次延伸。
+
+\subsection*{习题（待补）}
+
+\begin{exercise}[共识 ADMM 占位]
+补一题：从定义~\ref{def:distributed-consensus-model} 出发，完整推出命题~\ref{prop:consensus-admm-splitting} 的三组更新式。
+\end{exercise}
+
+\begin{exercise}[图推荐桥接题占位]
+补一题：把一个带图平滑正则的推荐模型写成推论~\ref{cor:graph-recommendation-distributed-template} 的形式，并指出局部项与全局一致性项分别来自哪里。
+\end{exercise}

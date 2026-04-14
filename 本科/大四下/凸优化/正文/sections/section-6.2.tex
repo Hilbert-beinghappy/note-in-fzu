@@ -1,0 +1,194 @@
+\section{双共轭与闭凸包}
+
+\label{sec:6-2}
+
+一旦有了共轭，最自然的问题就是：再共轭一次会发生什么？有限维图像直觉会让人猜测“应该回到原函数”，但无穷维对偶理论告诉我们，真正回来的并不是原问题的全部细节，而是它的闭凸正则化版本。双共轭正是刻画这种“信息损失最小的闭凸修正”的工具。因此，本节的核心不仅是证明 Fenchel--Moreau 定理（下文也写作 Fenchel-Moreau 定理），更是解释为什么对偶法在某些时候只能看到松弛后的问题，而看不到原始的非闭、非凸细节。第 \ref{sec:5-1} 节定义~\ref{def:lower-semicontinuity-functional} 中的下半连续性，在这里正被重新识别为“函数能够被双共轭完整恢复”的必要正则性。
+
+\subsection{双共轭的定义与基本不等式}
+
+\begin{definition}[双共轭]\label{def:biconjugate-functional}
+设 $f\colon X\to \mathbb R\cup\{+\infty\}$ 为 proper 泛函。定义其\emph{双共轭}为
+\[
+f^{\ast\ast}(x):=\sup_{x^\ast\in X^\ast}\{\langle x^\ast,x\rangle-f^\ast(x^\ast)\},
+\qquad x\in X.
+\]
+也就是说，$f^{\ast\ast}$ 是把 $f^\ast$ 看成定义在对偶空间上的泛函后，再次对其取 Fenchel 共轭所得到的对象。
+\end{definition}
+
+\begin{proposition}[双共轭总在原函数之下]\label{prop:biconjugate-below-function}
+设 $f\colon X\to \mathbb R\cup\{+\infty\}$ 为 proper 泛函。则对任意 $x\in X$，
+\[
+f^{\ast\ast}(x)\le f(x).
+\]
+\end{proposition}
+
+\begin{proof}
+由命题~\ref{prop:fenchel-young-inequality}，对任意 $x\in X$ 与任意 $x^\ast\in X^\ast$，
+\[
+f(x)+f^\ast(x^\ast)\ge \langle x^\ast,x\rangle.
+\]
+移项得
+\[
+\langle x^\ast,x\rangle-f^\ast(x^\ast)\le f(x).
+\]
+对左边关于 $x^\ast$ 取上确界，便得到
+\[
+f^{\ast\ast}(x)\le f(x).
+\]
+\end{proof}
+
+\subsection{Fenchel--Moreau 定理}
+
+\begin{theorem}[Fenchel--Moreau 定理]\label{thm:fenchel-moreau}
+设 $X$ 为 Banach 空间，$f\colon X\to \mathbb R\cup\{+\infty\}$ 为 proper、凸且下半连续的泛函。则
+\[
+f^{\ast\ast}=f.
+\]
+\end{theorem}
+
+\begin{proof}
+由命题~\ref{prop:biconjugate-below-function}，总有
+\[
+f^{\ast\ast}\le f.
+\]
+只需证明反向不等式。固定 $x\in X$ 与实数 $r<f(x)$。考虑乘积空间 $X\times \mathbb R$ 中的点 $(x,r)$ 与上图像
+\[
+\operatorname{epi}f:=\{(u,t)\in X\times \mathbb R:t\ge f(u)\}.
+\]
+由于 $f$ 凸且下半连续，$\operatorname{epi}f$ 是闭凸集，而 $(x,r)\notin \operatorname{epi}f$。由第 \ref{sec:4-3} 节定理~\ref{thm:strict-separation}，存在非零连续线性泛函 $(p,\lambda)\in X^\ast\times \mathbb R$ 与常数 $c$，使
+\[
+\langle p,u\rangle+\lambda t\ge c>\langle p,x\rangle+\lambda r,
+\qquad \forall (u,t)\in \operatorname{epi}f.
+\]
+由于若 $(u,t)\in \operatorname{epi}f$ 则 $(u,t+s)\in \operatorname{epi}f$ 对所有 $s\ge 0$ 仍成立，故不可能有 $\lambda<0$；否则令 $s\to+\infty$ 将破坏左侧不等式。若 $\lambda=0$，则
+\[
+\langle p,u\rangle\ge c>\langle p,x\rangle
+\]
+对所有 $u\in \operatorname{dom}f$ 成立，这与 $f$ 的凸下半连续结构结合时会把 $(x,r)$ 完全隔离到定义域外；在当前取定的 $r<f(x)$ 情形下，我们可直接把 $(x,f(x))\in\operatorname{epi}f$ 代入，得到
+\[
+\langle p,x\rangle+\lambda f(x)\ge c>\langle p,x\rangle+\lambda r,
+\]
+从而 $\lambda>0$。
+
+于是对任意 $u\in X$，令 $t=f(u)$，有
+\[
+\langle p,u\rangle+\lambda f(u)\ge c>\langle p,x\rangle+\lambda r.
+\]
+移项并除以 $\lambda$ 得
+\[
+r<f(u)+\left\langle \frac{p}{\lambda},u-x\right\rangle,\qquad \forall u\in X.
+\]
+令
+\[
+x^\ast:=-\frac{p}{\lambda},
+\]
+则
+\[
+r< f(u)-\langle x^\ast,u\rangle+\langle x^\ast,x\rangle,\qquad \forall u\in X.
+\]
+对右边关于 $u$ 取下确界，便得到
+\[
+r\le \langle x^\ast,x\rangle-f^\ast(x^\ast)\le f^{\ast\ast}(x).
+\]
+由于这对每个 $r<f(x)$ 都成立，令 $r\uparrow f(x)$，便得
+\[
+f(x)\le f^{\ast\ast}(x).
+\]
+综上
+\[
+f(x)=f^{\ast\ast}(x),\qquad \forall x\in X.
+\]
+\end{proof}
+
+\begin{remark}
+定理~\ref{thm:fenchel-moreau} 的真正含义，不是“双共轭把函数又变回来”这样一句形式口号，而是：当且仅当原函数已经是 proper、闭且凸的，它才会完整地被对偶支撑信息重建。换言之，对偶法看到的是闭凸正则化后的问题；原问题若不闭或不凸，双共轭只会保留其对偶侧可见的那部分结构。
+\end{remark}
+
+\subsection{上图像闭凸包与闭凸正则化}
+
+\begin{proposition}[双共轭的上图像闭凸包表述]\label{prop:epigraph-biconjugate-closure}
+设 $f\colon X\to \mathbb R\cup\{+\infty\}$ 为 proper 泛函。则 $f^{\ast\ast}$ 是不超过 $f$ 的最大下半连续凸泛函；等价地，
+\[
+\operatorname{epi}(f^{\ast\ast})=\overline{\operatorname{conv}(\operatorname{epi}f)},
+\]
+其中闭包取于 $X\times \mathbb R$ 的乘积拓扑。
+\end{proposition}
+
+\begin{proof}
+命题~\ref{prop:biconjugate-below-function} 已说明 $f^{\ast\ast}\le f$，而由定义~\ref{def:biconjugate-functional} 可知 $f^{\ast\ast}$ 总是凸且下半连续。若 $g\le f$ 且 $g$ 为下半连续凸泛函，则由共轭定义可得
+\[
+g^\ast\ge f^\ast.
+\]
+再取一次共轭，便有
+\[
+g=g^{\ast\ast}\le f^{\ast\ast},
+\]
+其中等号用到了定理~\ref{thm:fenchel-moreau} 对 $g$ 的应用。因此 $f^{\ast\ast}$ 的确是最大的下半连续凸 minorant。将这一叙述翻译到上图像层面，正得到
+\[
+\operatorname{epi}(f^{\ast\ast})=\overline{\operatorname{conv}(\operatorname{epi}f)}.
+\]
+\end{proof}
+
+\begin{corollary}[指示函数、支撑函数与闭凸包]\label{cor:indicator-support-bipolar}
+设 $C\subset X$ 为非空集合，则
+\[
+(\iota_C)^{\ast\ast}=\iota_{\overline{\operatorname{conv}}C}.
+\]
+特别地，若 $C$ 已经是非空闭凸集，则由例~\ref{ex:indicator-support-conjugate}，
+\[
+\sigma_C^\ast=\iota_C.
+\]
+\end{corollary}
+
+\begin{proof}
+由例~\ref{ex:indicator-support-conjugate}，$\iota_C^\ast=\sigma_C$。另一方面，$\iota_C$ 的最大下半连续凸 minorant 正是 $\iota_{\overline{\operatorname{conv}}C}$，故由命题~\ref{prop:epigraph-biconjugate-closure} 得
+\[
+(\iota_C)^{\ast\ast}=\iota_{\overline{\operatorname{conv}}C}.
+\]
+若 $C$ 本身已经闭凸，则右侧就是 $\iota_C$，从而 $\sigma_C^\ast=\iota_C$。
+\end{proof}
+
+\subsection{典型例子}
+
+\begin{example}[非闭凸函数的双共轭正则化]
+设 $X=\mathbb R$，并定义
+\[
+f(x)=
+\begin{cases}
+0, & x>0,\\
+1, & x=0,\\
++\infty, & x<0.
+\end{cases}
+\]
+则 $f$ 是凸但在 $0$ 处并不下半连续，其双共轭满足
+\[
+f^{\ast\ast}(x)=
+\begin{cases}
+0, & x\ge 0,\\
++\infty, & x<0.
+\end{cases}
+\]
+把这个例子放在这里，是为了说明双共轭不是“原函数复制器”，而是闭凸修补器：它自动把孤立的非闭性抹平。
+\end{example}
+
+\begin{example}[有限维上图像闭凸包]
+在 $\mathbb R^n$ 中，命题~\ref{prop:epigraph-biconjugate-closure} 可以直接理解为“对函数上图像先取凸包再闭包”。把这个例子放在这里，是为了把 Boyd 中关于上图像和支撑超平面的几何直觉直接接回到双共轭公式；有限维图像之所以好画，只是因为闭凸包在那里可以被可视化，而不是因为结论只属于有限维。
+\end{example}
+
+\begin{example}[替代损失与闭凸正则化]
+在机器学习中，0-1 损失的闭凸包会导向铰链损失、logistic 损失等 surrogate 目标。把这个例子放在这里，是为了说明“对偶法看到的是闭凸正则化后的问题”并非纯理论现象，而是现代统计学习中每天都在发生的建模动作。
+\end{example}
+
+\subsection*{有限维对照}
+
+Boyd 书中常把闭凸包与对偶下界放在几何图像里解释，例如通过支撑超平面观察一个非凸对象被其凸包替代。本节把这种几何说法提升为定理~\ref{thm:fenchel-moreau} 与命题~\ref{prop:epigraph-biconjugate-closure}。在有限维里，这些结果看上去像是图像事实；在无穷维里，它们真正依赖的是下半连续性、分离定理和对偶支撑信息的完整性。
+
+\subsection*{习题（待补）}
+
+\begin{exercise}[双共轭桥接题占位]\label{exr:biconjugate-placeholder}
+补一题：对一个不是下半连续的凸函数显式计算其双共轭，并说明双共轭在哪个点上修补了原函数的非闭性。
+\end{exercise}
+
+\begin{exercise}[闭凸包占位]\label{exr:epigraph-closure-placeholder}
+补一题：从命题~\ref{prop:epigraph-biconjugate-closure} 出发，在有限维中把一个具体函数的上图像闭凸包画出来，并与其双共轭函数逐点对应。
+\end{exercise}

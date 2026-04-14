@@ -1,0 +1,165 @@
+\section{方向导数：Gâteaux 微分与 Fréchet 微分}
+
+\label{sec:5-2}
+
+存在性解决以后，下一步自然是研究泛函在局部如何变化。有限维里，梯度既是最速上升方向，也是线性近似的系数，因此“可微”通常只剩一种标准形态；但在无穷维中，方向上的极限存在并不自动意味着存在一个统一的连续线性逼近。也就是说，局部一阶信息本身有强弱层级。第 \ref{sec:5-3} 节的次微分正是建立在这种区分之上，而第 10 章的一阶算法则更加依赖其中较强的一层。
+
+\subsection{方向导数与 Gâteaux 微分}
+
+\begin{definition}[方向导数]\label{def:directional-derivative}
+设 $X$ 为实向量空间，$f\colon X\to \mathbb R\cup\{+\infty\}$，$x\in \operatorname{dom}f$，$h\in X$。若极限
+\[
+f'(x;h):=\lim_{t\downarrow 0}\frac{f(x+th)-f(x)}{t}
+\]
+存在于 $\mathbb R\cup\{\pm\infty\}$，则称其为 $f$ 在点 $x$ 沿方向 $h$ 的\emph{方向导数}。
+\end{definition}
+
+\begin{definition}[Gâteaux 微分]\label{def:gateaux-derivative}
+设 $X,Y$ 为 Banach 空间，$U\subset X$ 为开集，$f\colon U\to Y$。若对每个 $h\in X$，极限
+\[
+\lim_{t\to 0}\frac{f(x+th)-f(x)}{t}
+\]
+存在，且存在连续线性算子 $A\in \mathcal L(X,Y)$ 使得
+\[
+\lim_{t\to 0}\frac{f(x+th)-f(x)}{t}=Ah,\qquad \forall h\in X,
+\]
+则称 $f$ 在 $x$ 处\emph{Gâteaux 可微}，并称 $A$ 为 $f$ 在 $x$ 处的 Gâteaux 导数，记为 $D_Gf(x)$。
+\end{definition}
+
+\begin{remark}
+定义~\ref{def:gateaux-derivative} 中最微妙的一点在于：极限是对每个方向逐个成立的。它要求存在一个共同的连续线性算子来记录所有方向的导数，但并不要求余项对所有小扰动同时一致控制。这也是 Gâteaux 微分弱于 Fréchet 微分的根本原因。
+\end{remark}
+
+\subsection{Fréchet 微分与 Hilbert 梯度}
+
+\begin{definition}[Fréchet 微分]\label{def:frechet-derivative}
+设 $X,Y$ 为 Banach 空间，$U\subset X$ 为开集，$f\colon U\to Y$。若存在连续线性算子 $A\in\mathcal L(X,Y)$ 使
+\[
+\lim_{\|h\|\to 0}\frac{\|f(x+h)-f(x)-Ah\|_Y}{\|h\|_X}=0,
+\]
+则称 $f$ 在 $x$ 处\emph{Fréchet 可微}，并称 $A$ 为 $f$ 在 $x$ 处的 Fréchet 导数，记为 $Df(x)$。
+\end{definition}
+
+\begin{proposition}[Fréchet 可微蕴含 Gâteaux 可微]\label{prop:frechet-implies-gateaux}
+设 $U\subset X$ 为 Banach 空间中的开集，$f\colon U\to Y$。若 $f$ 在 $x\in U$ 处 Fréchet 可微，且导数为 $Df(x)$，则 $f$ 在 $x$ 处 Gâteaux 可微，且
+\[
+D_G f(x)h=Df(x)h,\qquad \forall h\in X.
+\]
+\end{proposition}
+
+\begin{proof}
+由定义~\ref{def:frechet-derivative}，对任意 $h\in X$ 与任意标量 $t\neq 0$，
+\[
+f(x+th)-f(x)-Df(x)(th)=r(th),
+\]
+其中
+\[
+\frac{\|r(th)\|_Y}{|t|\|h\|_X}\to 0\qquad (t\to 0).
+\]
+故
+\[
+\frac{f(x+th)-f(x)}{t}=Df(x)h+\frac{r(th)}{t}.
+\]
+当 $t\to 0$ 时，右侧第二项趋于 $0$，于是
+\[
+\lim_{t\to 0}\frac{f(x+th)-f(x)}{t}=Df(x)h.
+\]
+这正是定义~\ref{def:gateaux-derivative}。
+\end{proof}
+
+\begin{remark}
+命题~\ref{prop:frechet-implies-gateaux} 的逆命题一般不成立。也就是说，逐方向的导数存在并拼出一个线性算子，并不能保证余项在小球上受一致控制。对优化而言，这个差别非常重要：Gâteaux 可微往往足以给出形式上的一阶展开，但 Fréchet 可微才更接近数值算法所依赖的稳定线性近似。
+\end{remark}
+
+\begin{definition}[Hilbert 空间中的梯度]\label{def:hilbert-gradient}
+设 $H$ 为 Hilbert 空间，$f\colon H\to \mathbb R$ 在 $x\in H$ 处 Fréchet 可微。由第 \ref{sec:3-1} 节定理~\ref{thm:riesz-representation-hilbert}，存在唯一向量 $\nabla f(x)\in H$ 使
+\[
+Df(x)h=\langle \nabla f(x),h\rangle_H,\qquad \forall h\in H.
+\]
+该向量称为 $f$ 在 $x$ 处的\emph{梯度}。
+\end{definition}
+
+\subsection{凸可微泛函的一阶信息}
+
+\begin{proposition}[凸可微泛函的一阶支撑不等式]
+设 $X$ 为 Banach 空间，$U\subset X$ 为凸开集，$f\colon U\to \mathbb R$ 为凸函数。若 $f$ 在 $x\in U$ 处 Gâteaux 可微，则对任意 $y\in U$ 都有
+\[
+f(y)\ge f(x)+D_Gf(x)(y-x).
+\]
+\end{proposition}
+
+\begin{proof}
+固定 $y\in U$，考虑一维函数
+\[
+\phi(t)=f(x+t(y-x)),\qquad t\in[0,1].
+\]
+由凸性知 $\phi$ 是区间上的凸函数。对任意 $t\in(0,1]$，凸函数的割线斜率单调，故
+\[
+\frac{\phi(t)-\phi(0)}{t}\ge \phi'_+(0).
+\]
+令 $t=1$ 并利用 Gâteaux 导数存在，得到
+\[
+f(y)-f(x)\ge D_Gf(x)(y-x).
+\]
+\end{proof}
+
+\begin{remark}
+这条支撑不等式说明：一旦凸泛函在某点可微，其导数就自动给出该点处的支撑超平面。第 \ref{sec:5-3} 节中的次微分正是要把这种“单值支撑”推广到不可微情形。
+\end{remark}
+
+\subsection{典型例子}
+
+\begin{example}[积分型泛函的 Gâteaux 导数]\label{ex:gateaux-integral-functional}
+设 $\Omega$ 为有限测度空间，$X=L^2(\Omega)$，并考虑
+\[
+f(u)=\int_\Omega \Phi(u(x))\,dx,
+\]
+其中 $\Phi\in C^1(\mathbb R)$ 且 $\Phi'$ 具有适当增长。则在合适的定义域上，
+\[
+D_G f(u)h=\int_\Omega \Phi'(u(x))h(x)\,dx.
+\]
+把这个例子放在这里，是为了说明 Gâteaux 导数自然落在对偶配对之中：方向导数看似是“沿 $h$ 的一维变化”，但最后得到的却是一个连续线性泛函。
+\end{example}
+
+\begin{example}[欧氏二次型的梯度]\label{ex:quadratic-gradient}
+在 $\mathbb R^n$ 上令
+\[
+f(x)=\frac12 x^\top Qx+b^\top x+c,
+\]
+其中 $Q$ 为对称矩阵。则 $f$ Fréchet 可微且
+\[
+\nabla f(x)=Qx+b.
+\]
+把这个例子放在这里，是为了表明 Boyd 书里最熟悉的梯度公式，其实正是定义~\ref{def:hilbert-gradient} 在有限维 Hilbert 空间中的退化。
+\end{example}
+
+\begin{example}[Hilbert 空间中的最小二乘能量]\label{ex:hilbert-least-squares}
+设 $H_1,H_2$ 为 Hilbert 空间，$A\colon H_1\to H_2$ 为有界线性算子。对
+\[
+f(u)=\frac12\|Au-b\|_{H_2}^2
+\]
+有
+\[
+Df(u)h=\langle Au-b,Ah\rangle_{H_2}
+=\langle A^\ast(Au-b),h\rangle_{H_1},
+\]
+其中 $A^\ast$ 由第 \ref{sec:3-3} 节定义~\ref{def:adjoint-operator} 给出。于是
+\[
+\nabla f(u)=A^\ast(Au-b).
+\]
+把这个例子放在这里，是为了连接第 \ref{sec:3-3} 节的伴随算子与本节的梯度概念，也为后文最速下降和正则化算法提供标准原型。
+\end{example}
+
+\subsection*{有限维对照}
+
+Boyd 第 9 章里把梯度、Jacobian 和最速下降法建立在欧氏空间几何之上，因此“可微”几乎默认就是 Fréchet 可微，而且导数自动由向量表示。本节的作用，是把这种有限维母语拆成三个层级：定义~\ref{def:directional-derivative} 只记录单方向变化，定义~\ref{def:gateaux-derivative} 记录逐方向的线性化，而定义~\ref{def:frechet-derivative} 与定义~\ref{def:hilbert-gradient} 则给出算法上真正稳定的一阶近似。
+
+\subsection*{习题（待补）}
+
+\begin{exercise}[Gâteaux 与 Fréchet 区分占位]\label{exr:gateaux-frechet-placeholder}
+补一题：构造一个 Gâteaux 可微但并非 Fréchet 可微的泛函例子，并说明这种失效为什么会破坏基于统一线性近似的一阶算法解释。
+\end{exercise}
+
+\begin{exercise}[Hilbert 梯度桥接题占位]\label{exr:hilbert-gradient-placeholder}
+补一题：对例~\ref{ex:hilbert-least-squares} 验证定义~\ref{def:hilbert-gradient}，并说明当 $H_1=\mathbb R^n$、$H_2=\mathbb R^m$ 时，梯度公式如何退化为 Boyd 书中的矩阵表达。
+\end{exercise}

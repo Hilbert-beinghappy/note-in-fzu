@@ -1,0 +1,160 @@
+\section{抽象凸优化问题标准型}
+
+\label{sec:7-2}
+
+前一节给出了锥诱导的广义不等式，但若没有统一标准型，后文的 Slater 条件、KKT 系统和第 \ref{sec:10-3} 节 ADMM 都会被迫针对每一种约束重新写一遍。本节的任务就是把它们组织成一个可复用的接口层：原问题如何书写，拉格朗日函数如何定义，对偶函数如何得到，以及这些对象怎样与第 \ref{sec:6-4} 节的 Fenchel--Rockafellar 模板接轨。顺便说明一点：按第 \ref{sec:6-1} 节当前正文的规范术语，这里应当说“Fenchel 共轭”，而不是旧控制卡里遗留的“Fenchel-Moreau 共轭”。
+
+\subsection{抽象锥规划标准型}
+
+\begin{definition}[抽象锥规划标准型]\label{def:abstract-cone-program}
+设 $X,Y$ 为实 Banach 空间，$A\colon X\to Y$ 为有界线性算子，$b\in Y$，$K\subset Y$ 为闭凸锥，$f\colon X\to \mathbb R\cup\{+\infty\}$ 为 proper 凸泛函。称问题
+\[
+\inf_{x\in X} f(x)\qquad \text{subject to}\qquad Ax-b\in -K
+\]
+为\emph{抽象锥规划标准型}。它的可行集记为
+\[
+\mathcal F:=\{x\in X:Ax-b\in -K\}=\{x\in X:b-Ax\in K\}.
+\]
+\end{definition}
+
+\begin{definition}[锥规划的拉格朗日函数]\label{def:cone-lagrangian}
+在定义~\ref{def:abstract-cone-program} 的设定下，对任意 $y^\ast\in K^\ast$，定义\emph{拉格朗日函数}
+\[
+L(x,y^\ast):=f(x)+\langle y^\ast,Ax-b\rangle.
+\]
+相应的\emph{对偶函数}定义为
+\[
+q(y^\ast):=\inf_{x\in X}L(x,y^\ast),\qquad y^\ast\in K^\ast.
+\]
+\end{definition}
+
+\begin{proposition}[对偶函数给出原问题下界]\label{prop:cone-dual-function-lower-bound}
+设问题 \eqref{def:abstract-cone-program} 可行，记其最优值为
+\[
+p^\star:=\inf_{x\in \mathcal F} f(x).
+\]
+则对任意 $y^\ast\in K^\ast$，都有
+\[
+q(y^\ast)\le p^\star.
+\]
+\end{proposition}
+
+\begin{proof}
+任取可行点 $x\in \mathcal F$。由可行性，$b-Ax\in K$。又因 $y^\ast\in K^\ast$，故
+\[
+\langle y^\ast,b-Ax\rangle\ge 0,
+\]
+亦即
+\[
+\langle y^\ast,Ax-b\rangle\le 0.
+\]
+于是
+\[
+L(x,y^\ast)=f(x)+\langle y^\ast,Ax-b\rangle\le f(x).
+\]
+对 $x\in\mathcal F$ 取下确界，得
+\[
+q(y^\ast)=\inf_{x\in X}L(x,y^\ast)\le \inf_{x\in\mathcal F}f(x)=p^\star.
+\]
+\end{proof}
+
+\subsection{与 Fenchel 模板的对应}
+
+\begin{proposition}[锥标准型到 Fenchel 对偶的接口]\label{prop:abstract-standard-form-to-fenchel}
+设 $g\colon Y\to \mathbb R\cup\{+\infty\}$ 为集合 $b-K$ 的指示函数：
+\[
+g(y):=\iota_{b-K}(y).
+\]
+则定义~\ref{def:abstract-cone-program} 的原问题可改写为
+\[
+\inf_{x\in X}\{f(x)+g(Ax)\}.
+\]
+此外，对任意 $y^\ast\in Y^\ast$，
+\[
+g^\ast(y^\ast)=\langle y^\ast,b\rangle+\iota_{K^\ast}(y^\ast),
+\]
+从而第 \ref{sec:6-4} 节定义~\ref{def:fenchel-primal-dual-pair} 的 Fenchel 对偶恰化为
+\[
+\sup_{y^\ast\in K^\ast}\{-f^\ast(-A^\ast y^\ast)-\langle y^\ast,b\rangle\}.
+\]
+\end{proposition}
+
+\begin{proof}
+由 $g=\iota_{b-K}$ 可知，$g(Ax)=0$ 当且仅当 $Ax\in b-K$，亦即 $Ax-b\in -K$；否则 $g(Ax)=+\infty$。因此
+\[
+f(x)+g(Ax)
+=
+\begin{cases}
+f(x), & x\in \mathcal F,\\
++\infty, & x\notin \mathcal F.
+\end{cases}
+\]
+故原问题确可写成
+\[
+\inf_{x\in X}\{f(x)+g(Ax)\}.
+\]
+
+接下来计算 $g^\ast$。由共轭定义，
+\[
+g^\ast(y^\ast)=\sup_{y\in b-K}\langle y^\ast,y\rangle.
+\]
+任写 $y=b-s$，其中 $s\in K$，便得
+\[
+g^\ast(y^\ast)=\sup_{s\in K}\{\langle y^\ast,b-s\rangle\}
+=
+\langle y^\ast,b\rangle+\sup_{s\in K}(-\langle y^\ast,s\rangle).
+\]
+若 $y^\ast\in K^\ast$，则对任意 $s\in K$ 都有 $-\langle y^\ast,s\rangle\le 0$，而取 $s=0$ 即见上确界等于 $0$；若 $y^\ast\notin K^\ast$，则存在 $s_0\in K$ 使 $\langle y^\ast,s_0\rangle<0$，于是
+\[
+\sup_{t\ge 0}(-\langle y^\ast,ts_0\rangle)=+\infty.
+\]
+故
+\[
+g^\ast(y^\ast)=\langle y^\ast,b\rangle+\iota_{K^\ast}(y^\ast).
+\]
+最后将其代入第 \ref{sec:6-4} 节命题~\ref{prop:fenchel-weak-duality} 与定理~\ref{thm:fenchel-rockafellar-duality} 所对应的对偶模板，即得所述对偶表达式。
+\end{proof}
+
+\begin{remark}\label{remark:standard-form-interface}
+命题~\ref{prop:abstract-standard-form-to-fenchel} 解释了本节的真正角色：它不是重复第 \ref{chap:06} 章的对偶理论，而是把锥约束问题准确嵌入 Fenchel 框架。后文第 \ref{sec:7-3} 节的 Slater 条件，本质上是在验证指示函数 $g=\iota_{b-K}$ 的资格条件；第 \ref{sec:7-4} 节的 KKT 系统，则是第 \ref{sec:6-4} 节推论~\ref{cor:fenchel-kkt-subdifferential} 的锥版本翻译。再往后，第 \ref{sec:10-3} 节 ADMM 之所以能统一处理分块变量与一致性约束，也正是因为抽象标准型已经把这些结构预先接口化了。
+\end{remark}
+
+\subsection{典型例子}
+
+\begin{example}[积分型目标与算子约束]
+设 $X=L^2(0,T)$，$Y=L^2(0,T)$，$A$ 为积分算子或观测算子，$K=L^2_+(0,T)$，并考虑
+\[
+\inf_{x\in X}\left\{\int_0^T \ell(t,x(t))\,dt:\ Ax-b\in -K\right\}.
+\]
+把这个例子放在这里，是为了说明抽象标准型不是只为矩阵问题设计的；函数空间中的能量最小化、状态约束和观测一致性，同样可以直接写进定义~\ref{def:abstract-cone-program}。
+\end{example}
+
+\begin{example}[Boyd 风格有限维标准型]
+当 $X=\mathbb R^n$、$Y=\mathbb R^m$、$K=\mathbb R_+^m$ 时，定义~\ref{def:abstract-cone-program} 退化为
+\[
+\min f(x)\qquad \text{subject to}\qquad Ax\le b.
+\]
+把这个例子放在这里，是为了把 Boyd 中最熟悉的标准凸优化模型直接接回本章：抽象标准型并没有改变有限维问题，只是把其真正依赖的锥结构显式写了出来。
+\end{example}
+
+\begin{example}[分块变量与一致性约束]
+在分布式学习或推荐系统里，常见模型是
+\[
+\min_{x,z}\ \phi(x)+\psi(z)\qquad \text{subject to}\qquad Bx-Cz=0.
+\]
+把等式约束写成锥约束时，可取 $Y$ 为相应乘积空间，$K=\{0\}$，并把 $(x,z)$ 视为一个联合变量。把这个例子放在这里，是为了给第 \ref{sec:10-3} 节 ADMM 的原--对偶分裂准备统一输入格式。
+\end{example}
+
+\subsection*{有限维对照}
+
+Boyd 书里标准型通常写成“目标函数 + 线性等式/不等式约束”，其后紧跟拉格朗日函数和对偶函数的矩阵公式。本节说明，这种写法在本质上只是定义~\ref{def:abstract-cone-program} 与定义~\ref{def:cone-lagrangian} 的有限维坍缩。矩阵记号看上去更具体，但隐藏了锥、对偶锥和指示函数这三个真正驱动对偶理论的对象。
+
+\subsection*{习题（待补）}
+
+\begin{exercise}[标准型改写占位]
+补一题：把一个带不等式约束和等式约束的具体凸优化模型改写为定义~\ref{def:abstract-cone-program} 的标准型，并写出其拉格朗日函数与对偶函数。
+\end{exercise}
+
+\begin{exercise}[Fenchel 接口桥接题占位]
+补一题：从命题~\ref{prop:abstract-standard-form-to-fenchel} 出发，显式计算一个有限维锥规划的 Fenchel 对偶，并和 Boyd 书中的拉格朗日对偶公式逐项对照。
+\end{exercise}

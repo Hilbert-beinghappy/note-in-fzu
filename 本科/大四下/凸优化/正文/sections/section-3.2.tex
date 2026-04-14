@@ -1,0 +1,184 @@
+\section{弱拓扑与弱星拓扑}
+
+\label{sec:3-2}
+
+第 \ref{sec:3-1} 节建立了 Banach 与 Hilbert 的几何工作台，但仅靠范数拓扑并不足以处理无穷维极值存在。一个基本困难是：在无限维 Banach 空间中，闭有界集通常并不紧，因此“取极小化列，再抽收敛子列”的有限维套路会直接失效。要恢复紧性，我们必须引入比范数拓扑更弱的拓扑结构。弱拓扑与弱$^\ast$拓扑正是在这种背景下出现的：它们牺牲部分收敛强度，换来对偶球或有界集上的紧性，从而为直接法、对偶性和乘子理论提供可操作的极限机制。
+
+\subsection{由函数族诱导的最弱拓扑}
+
+设 $X$ 为集合，$\{f_i\}_{i\in I}$ 是一族映射 $f_i\colon X\to Y_i$，其中每个 $Y_i$ 都带有拓扑。使所有 $f_i$ 连续的最弱拓扑称为由这族函数诱导的\emph{初始拓扑}。弱拓扑与弱$^\ast$拓扑正是把所有连续线性泛函当作坐标函数所得到的初始拓扑。
+
+\begin{definition}[弱拓扑]\label{def:weak-topology}
+设 $X$ 为赋范空间。由对偶空间 $X^\ast$ 中全体连续线性泛函诱导的最弱拓扑，称为 $X$ 上的\emph{弱拓扑}，记为 $\sigma(X,X^\ast)$。换言之，弱拓扑是使每个
+\[
+\varphi\in X^\ast,\qquad \varphi\colon X\to \mathbb F
+\]
+都连续的最弱拓扑。
+\end{definition}
+
+\begin{definition}[弱星拓扑]\label{def:weak-star-topology}
+设 $X$ 为赋范空间。由典范嵌入
+\[
+\hat{x}\colon X^\ast\to \mathbb F,\qquad \hat{x}(f)=f(x),\qquad x\in X,
+\]
+所诱导的 $X^\ast$ 上的最弱拓扑，称为 $X^\ast$ 上的\emph{弱$^\ast$拓扑}，记为 $\sigma(X^\ast,X)$。
+\end{definition}
+
+这两个拓扑的定义形式相近，但角色并不相同。弱拓扑使用的是 $X^\ast$ 中的全部连续线性泛函，因此是 $X$ 本身的拓扑；弱$^\ast$拓扑只使用来自原空间 $X$ 的评价泛函，因此是对偶空间 $X^\ast$ 上更弱的一种拓扑。Banach--Alaoglu 定理给出的紧性恰恰发生在后者上。
+
+\paragraph{弱收敛为何必须用网}
+
+\begin{remark}
+由定义~\ref{def:weak-topology} 与定义~\ref{def:weak-star-topology} 可知，弱与弱$^\ast$收敛本质上是“所有坐标泛函逐点收敛”。但这些拓扑一般并非第一可数，因此不能安全地只谈序列。正如第 \ref{sec:1-1} 节定义~\ref{def:net-convergence} 所揭示的，一旦失去第一可数性，闭包和紧性就必须回到网语言。后文凡使用 Banach--Alaoglu 定理抽取极限点时，都应理解为“存在收敛子网”，而不是未经说明地退回子列。
+\end{remark}
+
+\begin{proposition}[弱收敛与弱星收敛的判别]
+设 $X$ 为赋范空间。
+\begin{enumerate}
+  \item 网 $x_\alpha\to x$ 在 $\sigma(X,X^\ast)$ 下收敛，当且仅当对每个 $\varphi\in X^\ast$ 都有
+  \[
+  \varphi(x_\alpha)\to \varphi(x).
+  \]
+  \item 网 $f_\alpha\to f$ 在 $\sigma(X^\ast,X)$ 下收敛，当且仅当对每个 $x\in X$ 都有
+  \[
+  f_\alpha(x)\to f(x).
+  \]
+\end{enumerate}
+\end{proposition}
+
+\begin{proof}
+这是初始拓扑的直接刻画：网在初始拓扑下收敛，当且仅当其经所有坐标映射后的像网都收敛。这里的坐标映射分别是 $\varphi\in X^\ast$ 与 $\hat{x}\in (X^\ast)^\ast$。
+\end{proof}
+
+\subsection{典范嵌入与自反性}
+
+\begin{definition}[自反空间]\label{def:reflexive-space}
+设 $X$ 为赋范空间。定义典范嵌入
+\[
+J_X\colon X\to X^{\ast\ast},\qquad J_X(x)(\varphi)=\varphi(x),\qquad \varphi\in X^\ast.
+\]
+若 $J_X$ 为满射，则称 $X$ 为\emph{自反空间}。
+\end{definition}
+
+\begin{proposition}[典范嵌入是等距嵌入]
+设 $X$ 为赋范空间，则 $J_X$ 线性且满足
+\[
+\|J_X(x)\|=\|x\|,\qquad \forall x\in X.
+\]
+因此 $X$ 可以等距地看成 $X^{\ast\ast}$ 的闭子空间。
+\end{proposition}
+
+\begin{proof}
+线性由定义直接得到。对任意 $x\in X$，
+\[
+\|J_X(x)\|
+=\sup_{\|\varphi\|\le 1}|J_X(x)(\varphi)|
+=\sup_{\|\varphi\|\le 1}|\varphi(x)|
+\le \|x\|.
+\]
+反向不等式可由 Hahn--Banach 定理得到：对任意 $x\neq 0$，存在 $\varphi\in X^\ast$ 使 $\|\varphi\|=1$ 且 $\varphi(x)=\|x\|$，于是 $\|J_X(x)\|\ge \|x\|$。故二者相等。
+\end{proof}
+
+\paragraph{自反性的优化含义}
+
+\begin{remark}
+自反性不是纯粹的空间分类术语。它意味着原空间的有界集能通过典范嵌入进入双对偶的弱$^\ast$紧框架，再拉回到原空间自身，从而把 Banach--Alaoglu 定理转化为原空间中的弱紧性。这正是无穷维极小值存在论证里最常用的路径。
+\end{remark}
+
+\subsection{Banach--Alaoglu 定理与弱紧性}
+
+前面的讨论已经把弱$^\ast$拓扑放到了正确位置：它是保留对偶球紧性的那层拓扑。下面给出 Banach--Alaoglu 定理及其标准证明。证明的核心思路只有两步：先把对偶球嵌入一个逐点坐标的乘积紧空间，再证明其像集在该乘积空间中闭。
+
+\begin{theorem}[Banach--Alaoglu 定理]\label{thm:banach-alaoglu}
+设 $X$ 为赋范空间，则对偶空间单位闭球
+\[
+B_{X^\ast}:=\{f\in X^\ast:\|f\|\le 1\}
+\]
+在弱$^\ast$拓扑 $\sigma(X^\ast,X)$ 下是紧的。
+\end{theorem}
+
+\begin{proof}
+对每个 $x\in X$，记
+\[
+D_x:=\{z\in \mathbb F:|z|\le \|x\|\}.
+\]
+考虑映射
+\[
+\Phi\colon B_{X^\ast}\to \prod_{x\in X}D_x,\qquad \Phi(f)=(f(x))_{x\in X}.
+\]
+积空间按 Tychonoff 定理是紧的，因为每个 $D_x$ 都是紧集。弱$^\ast$拓扑正是使所有坐标映射
+\[
+f\mapsto f(x)
+\]
+连续的最弱拓扑，因此 $\Phi$ 是一个拓扑嵌入。只需证明 $\Phi(B_{X^\ast})$ 在积空间中是闭集。
+
+设 $\Phi(f_\alpha)\to (z_x)_{x\in X}$ 于积空间。由坐标收敛知对每个 $x\in X$，$f_\alpha(x)\to z_x$。定义
+\[
+f(x):=z_x.
+\]
+极限保线性，因此 $f$ 线性。再由
+\[
+|f(x)|=\lim_\alpha |f_\alpha(x)|\le \|x\|
+\]
+可知 $f$ 有界且 $\|f\|\le 1$。故 $f\in B_{X^\ast}$ 且 $\Phi(f)=(z_x)_{x\in X}$。这说明像集闭，因而是紧的，从而 $B_{X^\ast}$ 在弱$^\ast$拓扑下紧。
+\end{proof}
+
+\begin{proposition}[自反空间中的闭球弱紧]
+设 $X$ 为自反 Banach 空间，则闭单位球
+\[
+B_X:=\{x\in X:\|x\|\le 1\}
+\]
+在弱拓扑 $\sigma(X,X^\ast)$ 下紧。
+\end{proposition}
+
+\begin{proof}
+由定义~\ref{def:reflexive-space}，典范嵌入 $J_X$ 把 $X$ 等距同构到 $X^{\ast\ast}$。根据定理~\ref{thm:banach-alaoglu}，$B_{X^{\ast\ast}}$ 在 $\sigma(X^{\ast\ast},X^\ast)$ 下弱$^\ast$紧。由于 $J_X$ 在自反情形下满射，它把 $B_X$ 与 $B_{X^{\ast\ast}}$ 对应起来，而 $\sigma(X,X^\ast)$ 恰是从双对偶弱$^\ast$拓扑拉回得到的拓扑，故 $B_X$ 弱紧。
+\end{proof}
+
+\begin{corollary}[Hilbert 空间中的弱紧性]\label{cor:hilbert-weak-compactness}
+设 $H$ 为 Hilbert 空间，则每个非空闭有界凸集在弱拓扑下都是紧的；特别地，每个闭球
+\[
+\{x\in H:\|x\|\le r\}
+\]
+在弱拓扑下紧。
+\end{corollary}
+
+\begin{proof}
+第 \ref{sec:3-1} 节定理~\ref{thm:riesz-representation-hilbert} 说明 $H^\ast$ 与 $H$ 等距同构，因此 $H$ 自反。由前一命题，闭球弱紧。任意闭有界凸集 $C\subset H$ 包含于某个闭球中；由于 $C$ 在范数拓扑下闭，而弱拓扑比范数拓扑更弱，范数闭凸集在 Hilbert 空间中也是弱闭集。紧空间的闭子集仍紧，故 $C$ 弱紧。
+\end{proof}
+
+\paragraph{极小值存在的正确表述}
+
+\begin{remark}
+推论~\ref{cor:hilbert-weak-compactness} 并不意味着“只要问题在 Hilbert 空间里就一定有极小值”。正确的说法是：若可行集在弱拓扑下紧，且目标泛函对弱拓扑下半连续，那么直接法才可能成立。实际应用中，弱紧性通常来自三种来源：有界闭凸可行集、自反性、以及由强制性把极小化序列压进某个弱紧闭球。缺少这些条件时，极小值完全可能不存在。
+\end{remark}
+
+\begin{example}[最小抽象例子：对偶球的弱星紧性]\label{ex:dual-ball-weak-star}
+设 $X=C([0,1])$，则 $X^\ast$ 可以通过第 \ref{sec:2-3} 节定理~\ref{thm:riesz-representation} 识别为有限符号 Radon 测度空间。定理~\ref{thm:banach-alaoglu} 表明其中单位球在弱$^\ast$拓扑下紧。把这个例子放在这里，是为了说明对偶变量并不一定是向量；在无穷维中，它们往往是测度，而其紧性首先来自弱$^\ast$拓扑。
+\end{example}
+
+\begin{example}[有限维坍缩：闭有界即紧]\label{ex:finite-dimensional-compactness}
+若 $X=\mathbb R^n$，则弱拓扑、弱$^\ast$拓扑与通常欧氏拓扑一致，因此定理~\ref{thm:banach-alaoglu} 与推论~\ref{cor:hilbert-weak-compactness} 都退化为 Heine--Borel 定理。把这个例子放在这里，是为了说明 Boyd 书里大量“不言自明”的存在性步骤，实际上依赖了维数有限这一隐藏条件。
+\end{example}
+
+\begin{example}[算法触点：弱极限与直接法]\label{ex:weak-direct-method}
+在 Hilbert 空间上考虑泛函
+\[
+u\mapsto \frac12\|Au-b\|^2+\lambda \|u\|^2,
+\]
+若 $A$ 为有界线性算子，则该泛函在闭球上的极小化常先通过推论~\ref{cor:hilbert-weak-compactness} 取到弱收敛子网，再结合弱下半连续性得到极小元。把这个例子放在这里，是为了给后文算法收敛与存在性证明提供统一模板：先有界，再弱紧，再过极限。
+\end{example}
+
+\subsection*{有限维对照}
+
+在有限维空间中，弱拓扑与通常拓扑没有区别，弱$^\ast$拓扑也与对偶空间上的通常拓扑一致。因此很多有限维教材会把“闭有界”“紧”“对偶球紧”混在一起说，而不会显式引入定义~\ref{def:weak-topology} 与定义~\ref{def:weak-star-topology}。本节的作用，是在无穷维情形下把这些层次重新分开，并用定理~\ref{thm:banach-alaoglu} 指出真正保住紧性的拓扑位置。
+
+\subsection*{习题（待补）}
+
+\begin{exercise}[弱拓扑与网占位]\label{exr:weak-topology-net-placeholder}
+补一题：结合第 \ref{sec:1-1} 节命题~\ref{prop:closure-net}，说明为什么 Banach--Alaoglu 定理的结论自然应表述为“任意网有收敛子网”，而不是“任意序列有收敛子列”。
+\end{exercise}
+
+\begin{exercise}[直接法桥接题占位]\label{exr:direct-method-placeholder}
+补一题：在 Hilbert 空间中证明闭球上任意连续凸泛函若再具弱下半连续性，则存在极小元，并指出该证明中哪些步骤依赖推论~\ref{cor:hilbert-weak-compactness}。
+\end{exercise}

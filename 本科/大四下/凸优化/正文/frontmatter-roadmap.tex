@@ -1,0 +1,89 @@
+\chapter*{00-全书路线图与依赖图}
+
+\label{front:roadmap}
+
+\addcontentsline{toc}{chapter}{全书路线图与依赖图}
+
+\subsection*{空间分层声明}
+
+        \begin{itemize}
+  \item \texttt{局部凸空间}：用于最一般的分离、共轭与测度/拓扑接口，不默认有范数、投影或强紧性。
+  \item \texttt{自反 Banach 空间}：用于直接法、弱紧性与一部分原-对偶存在性结论。
+  \item \texttt{Hilbert 空间}：用于投影、邻近算子、分裂算法和加速方法的主工作台。
+\end{itemize}
+
+\subsection*{章节依赖 DAG}
+
+        \begin{verbatim}
+graph TD
+    C0["第0章 导论"] --> C1["第1章 拓扑与描述集合论"]
+    C0 --> C2["第2章 测度论与随机空间"]
+    C1 --> C2
+    C1 --> C3["第3章 泛函分析与算子代数"]
+    C2 --> C3
+    C3 --> C4["第4章 凸集与分离"]
+    C3 --> C5["第5章 凸泛函与微积分"]
+    C4 --> C5
+    C4 --> C6["第6章 共轭与对偶"]
+    C5 --> C6
+    C6 --> C7["第7章 抽象锥优化与KKT"]
+    C3 --> C7
+    C7 --> C8["第8章 Boyd坍缩"]
+    C5 --> C9["第9章 单调算子与预解式"]
+    C6 --> C9
+    C9 --> C10["第10章 算子分裂算法"]
+    C7 --> C10
+    C2 --> C11["第11章 控制与量化交易"]
+    C7 --> C11
+    C10 --> C11
+    C3 --> C12["第12章 图网络与推荐系统"]
+    C6 --> C12
+    C10 --> C12
+\end{verbatim}
+
+\subsection*{四条主线}
+
+        \paragraph{存在性}
+
+\begin{itemize}
+  \item 第 1-3 章建立完备性、弱/弱*紧性与测度正则性。
+  \item 第 5.1 节把弱下半连续、强制性和直接法拼成标准存在性模板。
+  \item 第 7 章以后所有“有解”陈述都必须回链到这些条件，而不是写成无条件断言。
+\end{itemize}
+
+\paragraph{对偶}
+
+\begin{itemize}
+  \item 第 4 章的分离与支撑泛函提供对偶的几何来源。
+  \item 第 5 章的次微分与第 6 章的共轭/双共轭构成原-对偶翻译器。
+  \item 第 7.3-7.4 节用资格条件和 KKT 把对偶落成最优性系统。
+\end{itemize}
+
+\paragraph{算法}
+
+\begin{itemize}
+  \item 第 3.1 节给出 Hilbert 几何。
+  \item 第 5.3-5.4 节提供次微分与演算规则。
+  \item 第 9-10 章把问题统一写成单调算子零点与原-对偶分裂。
+\end{itemize}
+
+\paragraph{Boyd 坍缩}
+
+\begin{itemize}
+  \item 第 0 章先声明整本书不会丢掉有限维参照。
+  \item 第 4-7 章的每个关键小节都单独维护 \texttt{Boyd 对应}。
+  \item 第 8 章集中解释哪些复杂性因维数有限而消失，并把 LP/QP/SOCP/SDP/GP 收束回 Boyd 子集。
+\end{itemize}
+
+\subsection*{Boyd 坍缩回链}
+
+        \begin{itemize}
+  \item \texttt{8.1} 回链 \texttt{3.2}：弱/强拓扑一致后，紧性与存在性条件大幅简化。
+  \item \texttt{8.2} 回链 \texttt{7.4}：抽象 KKT 在矩阵语言中的完整退化。
+  \item \texttt{8.3} 回链 \texttt{3.4}：自伴谱语言退化为对称矩阵特征值分解。
+  \item \texttt{8.4} 回链 \texttt{6.4}：Fenchel-Rockafellar 对偶退化成几何规划的标准对偶写法。
+\end{itemize}
+
+\subsection*{Pre-flight Manifesto}
+
+> Detected legacy finite-dimensional defaults. Applying Hindsight global rules: > > 1. 显式声明空间环境为“局部凸空间 / 自反 Banach / Hilbert”三层之一。 > 2. 任何“极小值存在”陈述都必须绑定弱紧性、强制性或直接法，不得写成自动成立。 > 3. \texttt{3.4} 只保留对优化直接有用的自伴、紧算子与谱工具，不外扩为一般算子代数课程。 > 4. Boyd 坍缩桥段从前两部分开始持续嵌入，不延后到书末一次性处理。

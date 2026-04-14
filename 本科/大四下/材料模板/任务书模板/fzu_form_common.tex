@@ -1,0 +1,50 @@
+\usepackage{array}
+\usepackage{adjustbox}
+\usepackage{multirow}
+\usepackage{graphicx}
+\usepackage{etoolbox}
+\usepackage{amssymb}
+
+\setlength{\parindent}{0pt}
+\setlength{\tabcolsep}{0pt}
+\setlength{\arrayrulewidth}{0.4pt}
+\renewcommand{\arraystretch}{1.0}
+
+\newcommand{\FZUCenteredUnderline}[2]{%
+  \underline{\makebox[#1][c]{#2}}%
+}
+
+\newcommand{\FZUCellBox}[2]{%
+  \begin{minipage}[t][#1][t]{\linewidth}%
+    \setlength{\parindent}{0pt}%
+    #2%
+  \end{minipage}%
+}
+
+\newsavebox{\FZUTextFitBox}
+\newcommand{\FZUFitTextBlock}[2]{%
+  \sbox{\FZUTextFitBox}{%
+    \begin{minipage}[t]{\linewidth}%
+      \setlength{\parindent}{0pt}%
+      \raggedright
+      #2%
+    \end{minipage}%
+  }%
+  \ifdim\dimexpr\ht\FZUTextFitBox+\dp\FZUTextFitBox\relax>#1\relax
+    \resizebox{!}{#1}{\usebox{\FZUTextFitBox}}%
+  \else
+    \usebox{\FZUTextFitBox}%
+  \fi
+}
+
+\newcommand{\FZUCheckboxBox}[1]{%
+  \makebox[1.05em][c]{%
+    \raisebox{0.05em}{%
+      \fboxsep=0pt%
+      \framebox[0.86em][c]{\rule{0pt}{0.84em}#1}%
+    }%
+  }%
+}
+
+\newcommand{\FZUCheckboxEmpty}{\FZUCheckboxBox{}}
+\newcommand{\FZUCheckboxChecked}{\FZUCheckboxBox{\smash{\raisebox{0.06em}{\scriptsize$\checkmark$}}}}

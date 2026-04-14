@@ -1,0 +1,203 @@
+\section{线性算子与伴随算子}
+
+\label{sec:3-3}
+
+从优化的角度看，矩阵只是线性算子在有限维空间中的坐标表达。进入无穷维以后，线性约束 $Ax=b$、梯度映射、积分方程、偏微分方程和状态转移算子都必须用有界线性算子的语言统一处理。尤其重要的是：有限维里熟悉的转置 $A^\top$，在一般 Banach 空间中不再直接作用在原空间上，而是首先作用在对偶空间上，这就是伴随算子的真正来源。只有把这一步说清，后文的 Fenchel 对偶、KKT 乘子和最优控制中的伴随方程才有严密的对象归属。
+
+\subsection{有界线性算子与算子空间}
+
+\begin{definition}[有界线性算子]\label{def:bounded-linear-operator}
+设 $X,Y$ 为赋范空间。线性映射 $T\colon X\to Y$ 若存在常数 $C\ge 0$ 使
+\[
+\|Tx\|_Y\le C\|x\|_X,\qquad \forall x\in X,
+\]
+则称 $T$ 为一个\emph{有界线性算子}。全体此类算子记为 $\mathcal B(X,Y)$，其范数定义为
+\[
+\|T\|:=\sup_{\|x\|_X\le 1}\|Tx\|_Y.
+\]
+\end{definition}
+
+在赋范空间之间，线性算子的连续性与有界性是等价的，因此定义~\ref{def:bounded-linear-operator} 同时给出了“连续线性算子”的全部内容。对优化而言，这意味着线性约束、梯度线性化、状态方程和积分变换都可以统一地放进同一个 Banach 空间 $\mathcal B(X,Y)$ 中讨论。
+
+\begin{proposition}[算子范数的基本性质]
+设 $X,Y,Z$ 为赋范空间，$S,T\in \mathcal B(X,Y)$，$R\in \mathcal B(Y,Z)$，则
+\begin{enumerate}
+  \item $\mathcal B(X,Y)$ 是线性空间；
+  \item 对任意 $x\in X$，有
+  \[
+  \|Tx\|_Y\le \|T\|\,\|x\|_X ;
+  \]
+  \item 复合满足
+  \[
+  \|RT\|\le \|R\|\,\|T\|.
+  \]
+\end{enumerate}
+\end{proposition}
+
+\begin{proof}
+前两条直接来自定义~\ref{def:bounded-linear-operator}。对第三条，任取 $\|x\|_X\le 1$，则
+\[
+\|RTx\|_Z\le \|R\|\,\|Tx\|_Y\le \|R\|\,\|T\|\,\|x\|_X\le \|R\|\,\|T\|.
+\]
+对单位球取上确界即得。
+\end{proof}
+
+\begin{proposition}[Banach 空间值算子空间的完备性]\label{prop:operator-space-banach}
+设 $X$ 为赋范空间，$Y$ 为 Banach 空间，则 $\mathcal B(X,Y)$ 配上算子范数后也是 Banach 空间。
+\end{proposition}
+
+\begin{proof}
+设 $(T_n)$ 是 $\mathcal B(X,Y)$ 中的 Cauchy 列。对任意固定 $x\in X$，
+\[
+\|T_nx-T_mx\|_Y\le \|T_n-T_m\|\,\|x\|_X,
+\]
+故 $(T_nx)$ 在 $Y$ 中是 Cauchy 列。由于 $Y$ 完备，存在元素 $Tx\in Y$ 使 $T_nx\to Tx$。于是定义了映射 $T\colon X\to Y$。
+
+由极限与线性运算交换，$T$ 线性。再由
+\[
+\|Tx\|_Y=\lim_{n\to\infty}\|T_nx\|_Y
+\le \left(\sup_n \|T_n\|\right)\|x\|_X
+\]
+可知 $T$ 有界。最后，因为 $(T_n)$ 在算子范数下是 Cauchy 列，给定 $\varepsilon>0$，取 $N$ 使 $n,m\ge N$ 时 $\|T_n-T_m\|<\varepsilon$。固定 $n\ge N$ 并令 $m\to\infty$，得到
+\[
+\|T_n-T\|\le \varepsilon.
+\]
+故 $T_n\to T$ 于算子范数，证明完毕。
+\end{proof}
+
+\subsection{Banach 空间中的对偶伴随}
+
+\begin{definition}[伴随算子]\label{def:adjoint-operator}
+设 $T\in \mathcal B(X,Y)$，其中 $X,Y$ 为赋范空间。定义映射
+\[
+T^\ast\colon Y^\ast\to X^\ast,\qquad T^\ast f:=f\circ T.
+\]
+称 $T^\ast$ 为 $T$ 的\emph{对偶伴随算子}。
+\end{definition}
+
+\begin{proposition}[伴随算子的基本性质]\label{prop:adjoint-basic-properties}
+设 $X,Y,Z$ 为赋范空间，$T,S\in \mathcal B(X,Y)$，$R\in \mathcal B(Y,Z)$，则：
+\begin{enumerate}
+  \item $T^\ast\in \mathcal B(Y^\ast,X^\ast)$ 且
+  \[
+  \|T^\ast\|=\|T\| ;
+  \]
+  \item $(T+S)^\ast=T^\ast+S^\ast$；
+  \item $(\lambda T)^\ast=\lambda T^\ast$；
+  \item $(RT)^\ast=T^\ast R^\ast$。
+\end{enumerate}
+\end{proposition}
+
+\begin{proof}
+对任意 $f\in Y^\ast$，
+\[
+\|T^\ast f\|
+=\sup_{\|x\|_X\le 1}|f(Tx)|
+\le \|f\|\,\|T\|,
+\]
+故 $T^\ast$ 有界且 $\|T^\ast\|\le \|T\|$。反过来，任取 $\varepsilon>0$，可取 $\|x\|_X=1$ 使
+\[
+\|Tx\|_Y\ge \|T\|-\varepsilon.
+\]
+由 Hahn--Banach 定理，存在 $\|f\|=1$ 使
+\[
+|f(Tx)|=\|Tx\|_Y.
+\]
+于是
+\[
+\|T^\ast\|
+\ge \|T^\ast f\|
+\ge |(T^\ast f)(x)|
+=|f(Tx)|
+\ge \|T\|-\varepsilon.
+\]
+令 $\varepsilon\downarrow 0$ 得 $\|T^\ast\|=\|T\|$。其余三条都由定义~\ref{def:adjoint-operator} 直接验证，例如
+\[
+(RT)^\ast g=g\circ R\circ T=T^\ast(R^\ast g).
+\]
+\end{proof}
+
+\paragraph{核、像与最优性条件}
+
+\begin{remark}
+当约束写成 $Tu=b$ 时，拉格朗日函数中的乘子自然属于 $Y^\ast$，而驻点条件则涉及 $T^\ast\lambda\in X^\ast$。因此在 Banach 空间里，伴随首先是“把对偶变量拉回原问题空间的对偶空间”的算子，而不是像有限维那样仍留在同一个坐标空间中。
+\end{remark}
+
+\subsection{Hilbert 空间中的伴随}
+
+若 $X,Y$ 都是 Hilbert 空间，则第 \ref{sec:3-1} 节定理~\ref{thm:riesz-representation-hilbert} 可以把 $X^\ast$ 与 $X$、$Y^\ast$ 与 $Y$ 重新识别起来，于是 Banach 空间中的对偶伴随可被改写成作用在原 Hilbert 空间之间的伴随。
+
+\begin{corollary}[Hilbert 空间中的伴随表示]\label{cor:hilbert-adjoint-via-riesz}
+设 $H_1,H_2$ 为 Hilbert 空间，$T\in \mathcal B(H_1,H_2)$。则存在唯一算子
+\[
+T^\ast\in \mathcal B(H_2,H_1)
+\]
+使得
+\[
+\langle Tx,y\rangle_{H_2}=\langle x,T^\ast y\rangle_{H_1},
+\qquad \forall x\in H_1,\ \forall y\in H_2.
+\]
+并且
+\[
+\|T^\ast\|=\|T\|.
+\]
+\end{corollary}
+
+\begin{proof}
+固定 $y\in H_2$，考虑映射
+\[
+\varphi_y\colon H_1\to \mathbb F,\qquad \varphi_y(x):=\langle Tx,y\rangle_{H_2}.
+\]
+它是 $H_1$ 上的连续线性泛函，并满足
+\[
+|\varphi_y(x)|\le \|T\|\,\|y\|\,\|x\|.
+\]
+由定理~\ref{thm:riesz-representation-hilbert}，存在唯一元素 $z\in H_1$ 使
+\[
+\varphi_y(x)=\langle x,z\rangle_{H_1},\qquad \forall x\in H_1.
+\]
+定义 $T^\ast y:=z$，就得到所需等式。线性与有界性可由 Riesz 表示中的唯一性直接推出，且
+\[
+\|T^\ast\|=\|T\|
+\]
+来自命题~\ref{prop:adjoint-basic-properties} 与 Riesz 同构的等距性。
+\end{proof}
+
+\begin{example}[矩阵转置作为伴随]\label{ex:matrix-transpose-adjoint}
+当 $H_1=\mathbb R^m$、$H_2=\mathbb R^n$ 配标准内积时，推论~\ref{cor:hilbert-adjoint-via-riesz} 中的 $T^\ast$ 正是矩阵转置 $A^\top$。把这个例子放在这里，是为了说明本节不是引入一种“比矩阵更抽象的新记号”，而是在解释矩阵转置在无穷维环境中的真实含义。
+\end{example}
+
+\begin{example}[积分算子的伴随]\label{ex:integral-operator-adjoint}
+设
+\[
+(Tf)(s)=\int_0^1 K(s,t)f(t)\,dt,
+\qquad f\in L^2(0,1),
+\]
+其中核函数 $K\in L^2((0,1)^2)$。则 $T$ 是 $L^2(0,1)$ 上的有界线性算子，并满足
+\[
+(T^\ast g)(t)=\int_0^1 \overline{K(s,t)}\,g(s)\,ds.
+\]
+把这个例子放在这里，是为了展示伴随算子在函数空间中仍然是可计算对象；后文对偶系统与 Euler--Lagrange 型条件里经常出现的正是这种核的反向传播。
+\end{example}
+
+\begin{example}[控制与 PDE 中的伴随方程]\label{ex:pde-adjoint}
+设状态方程形式上写成
+\[
+\mathcal A u = f
+\]
+并以某个 Hilbert 空间作为状态空间。当目标泛函对状态求导后，需要把变化量从状态端拉回控制端时，出现的正是 $\mathcal A^\ast$。例如在抛物型控制问题中，前向方程与反向伴随方程组成一对耦合系统。把这个例子放在这里，是为了说明“伴随”并不只是线性代数术语，而是最优控制中梯度计算的核心接口。
+\end{example}
+
+\subsection*{有限维对照}
+
+在 Boyd 书里，线性约束与 KKT 条件通常写成 $A^\top \lambda$。本节说明，这个符号在无穷维中的真实上位版本是定义~\ref{def:adjoint-operator} 中的 $T^\ast f=f\circ T$；只有在 Hilbert 空间并借助推论~\ref{cor:hilbert-adjoint-via-riesz} 时，它才重新坍缩为熟悉的“转置仍作用在原空间上”。
+
+\subsection*{习题（待补）}
+
+\begin{exercise}[积分核伴随占位]\label{exr:integral-adjoint-placeholder}
+补一题：对例~\ref{ex:integral-operator-adjoint} 中的积分算子进行严格计算，证明给出的 $T^\ast$ 确实满足推论~\ref{cor:hilbert-adjoint-via-riesz} 的定义恒等式。
+\end{exercise}
+
+\begin{exercise}[有限维桥接题占位]\label{exr:transpose-bridge-placeholder}
+补一题：把命题~\ref{prop:adjoint-basic-properties} 退回矩阵情形，逐条验证它们恰好对应于 $(A+B)^\top=A^\top+B^\top$、$(\lambda A)^\top=\lambda A^\top$ 与 $(BA)^\top=A^\top B^\top$。
+\end{exercise}

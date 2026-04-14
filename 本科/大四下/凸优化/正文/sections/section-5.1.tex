@@ -1,0 +1,162 @@
+\section{下半连续性与极值定理}
+
+\label{sec:5-1}
+
+若把凸优化理解为“在一个几何良好的空间里最小化一个几何良好的目标”，那么存在性问题就是第一道关口。有限维情形中，闭有界集紧、连续函数在紧集上取极值，这一链条几乎不必单独说明；但在无穷维里，闭有界集通常不紧，甚至极小化列都可能完全逃逸。因此，本节要把“极小值存在”重写成真正可复用的标准模板：目标泛函需要适当的下半连续性，可行区域需要某种弱紧性来源，而强制性则负责阻止极小化过程向无穷远逃走。
+
+\subsection{Proper 凸泛函与下半连续性}
+
+\begin{definition}[Proper 凸泛函]\label{def:proper-functional}
+设 $X$ 为实向量空间，函数
+\[
+f\colon X\to \mathbb R\cup\{+\infty\}
+\]
+称为\emph{proper} 的，若其有效定义域
+\[
+\operatorname{dom}f:=\{x\in X:f(x)<+\infty\}
+\]
+非空，且 $f$ 不取值 $-\infty$。若再满足对任意 $x,y\in X$ 与任意 $\lambda\in[0,1]$，
+\[
+f(\lambda x+(1-\lambda)y)\le \lambda f(x)+(1-\lambda)f(y),
+\]
+则称 $f$ 为一个\emph{proper 凸泛函}。
+\end{definition}
+
+\begin{definition}[下半连续与弱下半连续]\label{def:lower-semicontinuity-functional}
+设 $X$ 为拓扑向量空间，$f\colon X\to \mathbb R\cup\{+\infty\}$ 为一个 proper 泛函。若对每个 $r\in\mathbb R$，次水平集
+\[
+\{x\in X:f(x)\le r\}
+\]
+都是闭集，则称 $f$ 在给定拓扑下\emph{下半连续}。当 $X$ 为 Banach 空间且所用拓扑是弱拓扑 $\sigma(X,X^\ast)$ 时，称 $f$ 为\emph{弱下半连续}。
+\end{definition}
+
+\begin{remark}
+定义~\ref{def:lower-semicontinuity-functional} 与第 \ref{sec:1-1} 节命题~\ref{prop:closure-net} 等价地说明：$f$ 在某个拓扑下下半连续，当且仅当对任意收敛网 $x_\alpha\to x$ 都有
+\[
+f(x)\le \liminf_\alpha f(x_\alpha).
+\]
+后文一旦工作在弱拓扑或弱$^\ast$拓扑中，就必须把这条判别理解成关于网的陈述，而不能默认退回序列语言。
+\end{remark}
+
+\begin{definition}[强制性]\label{def:coercive-functional}
+设 $X$ 为赋范空间。proper 泛函 $f\colon X\to \mathbb R\cup\{+\infty\}$ 称为\emph{强制}的，若
+\[
+\|x\|\to\infty \quad\Longrightarrow\quad f(x)\to+\infty.
+\]
+等价地说，对任意实数 $r$，次水平集
+\[
+\{x\in X:f(x)\le r\}
+\]
+都是有界的。
+\end{definition}
+
+\begin{remark}
+强制性并不等于有极小值；它只保证极小化过程不会逃向无穷远。真正的存在性还需要结合弱紧性或紧嵌入等额外结构。第 \ref{sec:3-2} 节推论~\ref{cor:hilbert-weak-compactness} 已经说明：在 Hilbert 或更一般自反 Banach 空间中，闭球的弱紧性才是直接法得以启动的关键。
+\end{remark}
+
+\subsection{弱紧集上的极小值存在}
+
+\begin{theorem}[弱紧集上的弱下半连续泛函取极小值]\label{thm:weak-lsc-attainment}
+设 $X$ 为 Banach 空间，$C\subset X$ 为非空弱紧集，$f\colon X\to \mathbb R\cup\{+\infty\}$ 为 proper 且在 $C$ 上弱下半连续的泛函。则存在 $\bar x\in C$ 使
+\[
+f(\bar x)=\inf_{x\in C}f(x).
+\]
+\end{theorem}
+
+\begin{proof}
+记
+\[
+m:=\inf_{x\in C}f(x).
+\]
+由 proper 性可知 $m<+\infty$。对每个 $\varepsilon>0$ 选取 $x_\varepsilon\in C$ 使
+\[
+f(x_\varepsilon)\le m+\varepsilon.
+\]
+将 $(0,+\infty)$ 赋予反序，即 $\varepsilon_1\preceq \varepsilon_2$ 当且仅当 $\varepsilon_1\ge \varepsilon_2$，于是 $(x_\varepsilon)$ 构成一条以“精度趋于零”为指标的网。由于 $C$ 弱紧，它存在弱收敛子网，仍记为
+\[
+x_\alpha \rightharpoonup \bar x\in C.
+\]
+由定义~\ref{def:lower-semicontinuity-functional} 的网刻画，
+\[
+f(\bar x)\le \liminf_\alpha f(x_\alpha)\le \liminf_\alpha (m+\alpha)=m.
+\]
+另一方面 $m$ 本就是 $C$ 上的下确界，因此 $m\le f(\bar x)$。综上
+\[
+f(\bar x)=m,
+\]
+即 $\bar x$ 是所求极小元。
+\end{proof}
+
+\subsection{自反空间中的直接法}
+
+\begin{theorem}[自反 Banach 空间中的直接法]\label{thm:direct-method-reflexive}
+设 $X$ 为自反 Banach 空间，$f\colon X\to \mathbb R\cup\{+\infty\}$ 为 proper、弱下半连续且强制的凸泛函。则 $f$ 在 $X$ 上取到极小值。
+\end{theorem}
+
+\begin{proof}
+记
+\[
+m:=\inf_{x\in X} f(x).
+\]
+由 proper 性可知 $m<+\infty$。同样对每个 $\varepsilon>0$ 选取 $x_\varepsilon\in X$ 满足
+\[
+f(x_\varepsilon)\le m+\varepsilon.
+\]
+由于 $f$ 强制，这条极小化网必有界；否则若 $\|x_\varepsilon\|\to\infty$，则 $f(x_\varepsilon)\to+\infty$，与上式矛盾。故存在 $R>0$ 使
+\[
+x_\varepsilon\in \overline{B}(0,R),\qquad \forall \varepsilon.
+\]
+由第 \ref{sec:3-2} 节定义~\ref{def:reflexive-space} 及 Banach--Alaoglu 定理的推论，自反 Banach 空间中的闭球在弱拓扑下紧，因此 $\overline{B}(0,R)$ 弱紧。由定理~\ref{thm:weak-lsc-attainment}，$(x_\varepsilon)$ 的某个子网弱收敛到某个 $\bar x\in \overline{B}(0,R)$，且
+\[
+f(\bar x)\le \liminf_\alpha f(x_\alpha)\le m.
+\]
+由 $m$ 的定义，又有 $m\le f(\bar x)$。故
+\[
+f(\bar x)=m.
+\]
+于是 $f$ 在 $X$ 上取到极小值。
+\end{proof}
+
+\begin{remark}
+定理~\ref{thm:direct-method-reflexive} 是本书后文最常调用的存在性模板之一。正确的口号不是“下半连续凸泛函必有极小值”，而是：“若极小化过程被强制性压进某个弱紧区域，并且目标在该拓扑下下半连续，则直接法成立。”这一区分在第 \ref{sec:6-4} 节对偶间隙分析和第 \ref{sec:11-1} 节控制问题里都会反复出现。
+\end{remark}
+
+\subsection{典型例子}
+
+\begin{example}[Sobolev 型能量泛函]\label{ex:sobolev-energy-functional}
+在 Hilbert 空间 $H_0^1(\Omega)$ 上考虑
+\[
+J(u)=\frac12\int_\Omega |\nabla u(x)|^2\,dx+\int_\Omega \Phi(u(x))\,dx-\langle \ell,u\rangle,
+\]
+其中 $\Phi$ 为凸下半连续函数，$\ell\in H^{-1}(\Omega)$。把这个例子放在这里，是为了说明偏微分方程中的变分问题通常正是定理~\ref{thm:direct-method-reflexive} 的标准应用场景：二次梯度项提供强制性，凸势能与线性项决定弱下半连续性和可解性。
+\end{example}
+
+\begin{example}[有限维闭有界水平集]\label{ex:finite-dimensional-level-set}
+当 $X=\mathbb R^n$ 时，弱拓扑与通常拓扑一致，闭有界集自动紧。于是若 $f$ 的某个次水平集
+\[
+\{x\in\mathbb R^n:f(x)\le r\}
+\]
+非空且闭有界，则极小值存在直接退化为 Weierstrass 定理。把这个例子放在这里，是为了说明 Boyd 书里许多“函数连续、水平集闭有界，因此解存在”的论证，实际上是定理~\ref{thm:weak-lsc-attainment} 在欧氏空间中的坍缩。
+\end{example}
+
+\begin{example}[Tikhonov 型正则化]\label{ex:tikhonov-regularization}
+设 $H$ 为 Hilbert 空间，$A\colon H\to Y$ 为有界线性算子，考虑
+\[
+f(u)=\frac12\|Au-b\|_Y^2+\lambda \|u\|_H^2,\qquad \lambda>0.
+\]
+该泛函是 proper、凸、连续且强制的，因此由定理~\ref{thm:direct-method-reflexive} 在 $H$ 上存在极小元。把这个例子放在这里，是为了连接后文的逆问题、机器学习与第 \ref{sec:10-1} 节前向--后向分裂：正则化项不仅改善数值稳定性，也提供存在性所需的强制性。
+\end{example}
+
+\subsection*{有限维对照}
+
+Boyd 第 3 章里关于凸函数、次水平集和极小值存在的叙述，默认都工作在 $\mathbb R^n$ 中，因此“闭有界即紧”这一事实被自动吞掉。本节的作用是把这一步显式拆开：定理~\ref{thm:weak-lsc-attainment} 负责把极小值存在写成“紧性 + 下半连续”的拓扑命题，定理~\ref{thm:direct-method-reflexive} 则说明在无穷维里，这个紧性往往要通过弱拓扑、自反性和强制性重新获得。
+
+\subsection*{习题（待补）}
+
+\begin{exercise}[弱下半连续判别占位]\label{exr:weak-lsc-placeholder}
+补一题：要求把定义~\ref{def:lower-semicontinuity-functional} 用网重写，并结合命题~\ref{prop:closure-net} 说明为什么弱下半连续性的正确语言不是“子列极限”而是“子网极限”。
+\end{exercise}
+
+\begin{exercise}[直接法桥接题占位]\label{exr:direct-method-reflexive-placeholder}
+补一题：在 Hilbert 空间中证明例~\ref{ex:tikhonov-regularization} 的极小元存在，并明确指出证明中分别在哪一步使用了强制性、推论~\ref{cor:hilbert-weak-compactness} 与下半连续性。
+\end{exercise}

@@ -1,0 +1,100 @@
+\chapter*{无穷维凸优化专著}
+
+\label{front:overview}
+
+\addcontentsline{toc}{chapter}{全书说明}
+
+\subsection*{全书定位}
+
+        \begin{itemize}
+  \item 目标：构造一部“无穷维凸优化包容 Boyd 有限维凸优化”的专著控制骨架。
+  \item 组织原则：按“部分目录 -> 章节目录 -> 章 README -> 小节控制卡”落地，确保后续写正文时不会失去结构。
+  \item 独立性：本目录不并入现有 \texttt{数学基础/} 树，只借用其 Obsidian 组织习惯。
+\end{itemize}
+
+\subsection*{读者路线图}
+
+        \begin{itemize}
+  \item 纯数学路线：\hyperref[chap:00]{第0章 前言与导论} -> \hyperref[chap:01]{第1章 拓扑空间与描述集合论初步} -> \hyperref[chap:02]{第2章 测度论与随机空间基础} -> \hyperref[chap:03]{第3章 泛函分析与算子代数} -> \hyperref[chap:04]{第4章 凸集与超平面分离} -> \hyperref[chap:05]{第5章 凸泛函与无穷维微积分} -> \hyperref[chap:06]{第6章 共轭理论与无穷维对偶}
+  \item 算法路线：\hyperref[sec:0-1]{0.1 从有限维到无穷维：优化的升维视角} -> \hyperref[sec:3-1]{3.1 Banach 空间与 Hilbert 空间} -> \hyperref[sec:3-2]{3.2 弱拓扑与弱星拓扑} -> \hyperref[chap:04]{第4章 凸集与超平面分离} -> \hyperref[chap:08]{第8章 特例坍缩——经典有限维凸优化} -> \hyperref[chap:09]{第9章 单调算子与预解式}
+  \item 管理科学与应用路线：\hyperref[sec:2-4]{2.4 概率空间与随机过程微积分初步} -> \hyperref[sec:6-4]{6.4 Fenchel-Rockafellar 对偶框架} -> \hyperref[chap:07]{第7章 抽象空间中的锥优化与 KKT 理论} -> \hyperref[chap:10]{第10章 大规模算子分裂算法} -> \hyperref[chap:11]{第11章 最优控制与量化交易的泛函建模}
+\end{itemize}
+
+\subsection*{章节依赖总览}
+
+        \begin{itemize}
+  \item 总依赖图见 \hyperref[front:roadmap]{00-全书路线图与依赖图}。
+  \item 强存在性主线依赖：弱/弱*紧性、下半连续性与直接法。
+  \item 强对偶主线依赖：分离、次微分、共轭与资格条件。
+  \item 算法主线依赖：Hilbert 几何、次微分、极大单调算子与原-对偶分裂。
+\end{itemize}
+
+\subsection*{Boyd 覆盖说明}
+
+        \begin{itemize}
+  \item 接入策略是双层的：每个相关小节单独维护 \texttt{Boyd 对应}，第三部分再集中做“坍缩视角”的收束。
+  \item 当前版本的 \texttt{可复用例题/习题编号} 先保留“待按手头 Boyd 版本补核”的占位说明，只固定章节、概念与用途摘要，不伪造题号。
+  \item 后续拿到手头 Boyd 原书后，只需批量回填题号，不会打乱目录与依赖骨架。
+\end{itemize}
+
+\subsection*{例子与习题编排原则}
+
+        \begin{itemize}
+  \item 每个小节至少保留 1 个最小抽象例子、1 个有限维坍缩例子、1 个应用或算法触点例子。
+  \item 例子必须解释“为什么放在这里”，禁止只写标题。
+  \item 每个小节都维护 \texttt{Boyd 映射题 / 本节自拟题 / 跨章综合题} 三类习题槽位。
+  \item 章 README 额外汇总“本章 Boyd 映射总表”和“本章习题索引表”，便于后续批量填充。
+\end{itemize}
+
+\subsection*{目录}
+
+        \paragraph{01-导引篇}
+
+\begin{itemize}
+  \item \hyperref[chap:00]{第0章 前言与导论}
+\end{itemize}
+
+\paragraph{02-第一部分 无穷维的基石}
+
+\begin{itemize}
+  \item \hyperref[chap:01]{第1章 拓扑空间与描述集合论初步}
+  \item \hyperref[chap:02]{第2章 测度论与随机空间基础}
+  \item \hyperref[chap:03]{第3章 泛函分析与算子代数}
+\end{itemize}
+
+\paragraph{03-第二部分 凸性、分离与微分}
+
+\begin{itemize}
+  \item \hyperref[chap:04]{第4章 凸集与超平面分离}
+  \item \hyperref[chap:05]{第5章 凸泛函与无穷维微积分}
+  \item \hyperref[chap:06]{第6章 共轭理论与无穷维对偶}
+\end{itemize}
+
+\paragraph{04-第三部分 Boyd坍缩}
+
+\begin{itemize}
+  \item \hyperref[chap:07]{第7章 抽象空间中的锥优化与 KKT 理论}
+  \item \hyperref[chap:08]{第8章 特例坍缩——经典有限维凸优化}
+\end{itemize}
+
+\paragraph{05-第四部分 算法}
+
+\begin{itemize}
+  \item \hyperref[chap:09]{第9章 单调算子与预解式}
+  \item \hyperref[chap:10]{第10章 大规模算子分裂算法}
+\end{itemize}
+
+\paragraph{06-第五部分 应用}
+
+\begin{itemize}
+  \item \hyperref[chap:11]{第11章 最优控制与量化交易的泛函建模}
+  \item \hyperref[chap:12]{第12章 图网络、表示学习与智能推荐系统}
+\end{itemize}
+
+\paragraph{07-附录}
+
+\begin{itemize}
+  \item \hyperref[app:a]{附录 A：实分析速查手册}
+  \item \hyperref[app:b]{附录 B：矩阵分析基础}
+  \item \hyperref[app:c]{附录 C：常用函数的共轭表与次微分表}
+\end{itemize}

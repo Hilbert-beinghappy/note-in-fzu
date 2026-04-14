@@ -1,0 +1,141 @@
+\section{广义 Slater 条件}
+
+\label{sec:7-3}
+
+弱对偶几乎不需要额外条件，但强对偶从来不是免费的。第 \ref{sec:6-4} 节中，Fenchel--Rockafellar 对偶之所以成立，是因为指示函数或代价函数在适当点上具备连续性；对锥规划来说，这种连续性最自然的几何化表达就是严格可行性。Slater 条件的作用，不是给出一个“好看的假设”，而是确保约束边界没有在最优值附近制造病态缺口。
+
+\subsection{严格可行性}
+
+\begin{definition}[广义 Slater 条件]\label{def:generalized-slater-condition}
+考虑定义~\ref{def:abstract-cone-program} 的锥规划问题。若存在某个 $x_0\in \operatorname{dom}f$ 使得
+\[
+b-Ax_0\in \operatorname{int}K,
+\]
+则称该问题满足\emph{广义 Slater 条件}。也就是说，存在一个可行点，其松弛变量不仅属于锥 $K$，而且落在锥的拓扑内部。
+\end{definition}
+
+\begin{proposition}[Slater 条件推出 Fenchel 资格条件]\label{prop:slater-implies-fenchel-qualification}
+设 $g=\iota_{b-K}$，其中 $K\subset Y$ 为闭凸锥。若定义~\ref{def:generalized-slater-condition} 成立，则 $g$ 在点 $Ax_0$ 处连续。因而第 \ref{sec:6-4} 节定义~\ref{def:constraint-qualification-fenchel} 的 Fenchel 型资格条件成立。
+\end{proposition}
+
+\begin{proof}
+由 $b-Ax_0\in \operatorname{int}K$，可知
+\[
+Ax_0\in b-\operatorname{int}K=\operatorname{int}(b-K).
+\]
+因此存在 $0$ 的某个邻域 $U\subset Y$，使
+\[
+Ax_0+U\subset b-K.
+\]
+于是对任意 $u\in U$，
+\[
+g(Ax_0+u)=\iota_{b-K}(Ax_0+u)=0=g(Ax_0).
+\]
+这说明 $g$ 在 $Ax_0$ 的邻域内恒等于常数，因而在该点连续。再结合 $x_0\in\operatorname{dom}f$，便得到第 \ref{sec:6-4} 节定义~\ref{def:constraint-qualification-fenchel} 的资格条件。
+\end{proof}
+
+\subsection{相对内部与 core 的替代}
+
+\begin{proposition}[core 与相对内部版本的 Slater 替代]\label{prop:core-slater-variant}
+设
+\[
+C:=b-K.
+\]
+若存在 $x_0\in \operatorname{dom}f$ 使得
+\[
+Ax_0\in \operatorname{ri} C,
+\]
+则 $g=\iota_C$ 在 $\operatorname{aff}C$ 上相对于其仿射拓扑在 $Ax_0$ 处连续。特别地，当环境空间中 $\operatorname{int}K=\varnothing$ 但 $\operatorname{ri}C$ 或 $\operatorname{core}C$ 非空时，可以把资格条件与分离论证限制在 $\operatorname{aff}C$ 内部进行。
+\end{proposition}
+
+\begin{proof}
+由第 \ref{sec:4-2} 节命题~\ref{prop:ri-convex-properties}，$Ax_0\in \operatorname{ri}C$ 意味着存在 $\operatorname{aff}C$ 中的邻域 $V$ 使
+\[
+(Ax_0+V)\cap \operatorname{aff}C\subset C.
+\]
+于是 $g$ 限制在 $\operatorname{aff}C$ 上时，在该邻域内恒等于 $0$，所以相对于仿射拓扑在 $Ax_0$ 处连续。
+
+另一方面，第 \ref{sec:4-2} 节定义~\ref{def:algebraic-interior} 与命题~\ref{prop:core-separation-bridge} 告诉我们，对于凸集而言，core 提供的正是“沿可行仿射方向仍有余量”的几何信息。在有限维环境中，relative interior 与 core 会重合；而在无穷维里，拓扑内部经常退化为空集，此时就只能退回到相对内部或代数内部的语言。
+\end{proof}
+
+\begin{theorem}[Slater 条件下的锥规划强对偶]\label{thm:slater-strong-duality-cone}
+设 $X,Y$ 为 Banach 空间，$A\colon X\to Y$ 为有界线性算子，$K\subset Y$ 为闭凸锥，$f\colon X\to \mathbb R\cup\{+\infty\}$ 为 proper、凸且下半连续的泛函。考虑问题
+\[
+p^\star:=\inf_{x\in X}\{f(x):Ax-b\in -K\},
+\]
+以及对偶问题
+\[
+d^\star:=\sup_{y^\ast\in K^\ast}\{-f^\ast(-A^\ast y^\ast)-\langle y^\ast,b\rangle\}.
+\]
+若定义~\ref{def:generalized-slater-condition} 成立，则
+\[
+p^\star=d^\star.
+\]
+也就是说，广义 Slater 条件消除了该锥规划的对偶间隙。
+\end{theorem}
+
+\begin{proof}
+按命题~\ref{prop:abstract-standard-form-to-fenchel}，原问题可写成
+\[
+\inf_{x\in X}\{f(x)+\iota_{b-K}(Ax)\}.
+\]
+由命题~\ref{prop:slater-implies-fenchel-qualification}，函数 $g=\iota_{b-K}$ 在某个点 $Ax_0$ 处连续，因此第 \ref{sec:6-4} 节定义~\ref{def:constraint-qualification-fenchel} 的资格条件满足。于是可直接应用第 \ref{sec:6-4} 节定理~\ref{thm:fenchel-rockafellar-duality}，得到
+\[
+\inf_{x\in X}\{f(x)+\iota_{b-K}(Ax)\}
+=
+\sup_{y^\ast\in Y^\ast}\{-f^\ast(-A^\ast y^\ast)-\iota_{b-K}^\ast(y^\ast)\}.
+\]
+再由命题~\ref{prop:abstract-standard-form-to-fenchel} 对 $\iota_{b-K}^\ast$ 的显式计算，
+\[
+\iota_{b-K}^\ast(y^\ast)=\langle y^\ast,b\rangle+\iota_{K^\ast}(y^\ast),
+\]
+从而上式右侧化为
+\[
+\sup_{y^\ast\in K^\ast}\{-f^\ast(-A^\ast y^\ast)-\langle y^\ast,b\rangle\}=d^\star.
+\]
+因此 $p^\star=d^\star$。
+\end{proof}
+
+\begin{remark}\label{remark:interior-vs-core-slater}
+本节最容易被误读的一点，是把“严格可行”机械地等同为“拓扑内部非空”。在 $\mathbb R^m$ 或有限维矩阵空间中，这样做通常没有问题；但在无穷维里，很多天然锥的内部都会退化。例如在非原子测度空间上的 $L^p_+$ 正锥通常没有拓扑内部，而在 $C(\Omega)$ 中的正函数锥却有由严格正下界给出的内部点。因此，一旦环境空间改变，就必须重新判断该用 $\operatorname{int}$、$\operatorname{ri}$ 还是 core，而不能把 Boyd 中的有限维 Slater 条件直接照搬。
+\end{remark}
+
+\subsection{典型例子}
+
+\begin{example}[函数约束留有严格余量]
+设 $X=Y=C(\Omega)$，$K=C(\Omega)_+$，并考虑约束
+\[
+Ax\le_K b.
+\]
+若存在 $x_0$ 使得
+\[
+b(\omega)-Ax_0(\omega)\ge \delta>0,\qquad \forall \omega\in \Omega,
+\]
+则 $b-Ax_0\in \operatorname{int}K$，故 Slater 条件成立。把这个例子放在这里，是为了给无穷维严格可行性一个真正可见的形状：不是“略大于零”的口头说法，而是统一正下界。
+\end{example}
+
+\begin{example}[有限维标准 Slater 条件]
+当 $K=\mathbb R_+^m$ 时，定义~\ref{def:generalized-slater-condition} 退化为
+\[
+Ax_0<b
+\]
+的逐项严格不等式。把这个例子放在这里，是为了把 Boyd 书中最熟悉的一句话准确嵌入本章抽象语言：有限维 Slater 条件只是一般锥内部条件的一个特殊面貌。
+\end{example}
+
+\begin{example}[分布鲁棒约束的缓冲区解释]
+在分布鲁棒或风险约束模型里，$b-Ax\in K$ 往往意味着某种安全裕度或概率缓冲区非负。若存在一个设计点 $x_0$ 使缓冲区严格落在锥内部，则对偶变量就不会被边界病态放大。把这个例子放在这里，是为了说明“资格条件为何消除对偶间隙”并非纯理论话题；它对应的是模型仍留有操作余地的实际语义。
+\end{example}
+
+\subsection*{有限维对照}
+
+Boyd 在强对偶讨论中常把 Slater 条件写成“存在严格可行点”，因为在有限维里 interior、relative interior 与许多局部正则性经常会自动协调。本节说明，这种便利并不属于抽象锥规划本身，而属于欧氏环境。无穷维里一旦锥的拓扑内部消失，就必须把第 \ref{sec:4-2} 节的相对内部和 core 拉回来，重新判断哪一种“严格可行”才是真正有效的资格条件。
+
+\subsection*{习题（待补）}
+
+\begin{exercise}[Slater 条件占位]
+补一题：对一个给定的锥规划，判断定义~\ref{def:generalized-slater-condition} 是否成立，并据此说明能否直接调用定理~\ref{thm:slater-strong-duality-cone}。
+\end{exercise}
+
+\begin{exercise}[相对内部桥接题占位]
+补一题：构造一个锥在环境空间中内部为空但相对内部非空的例子，比较拓扑内部版本与相对内部版本 Slater 条件的差别。
+\end{exercise}

@@ -1,0 +1,186 @@
+\section{连续时间最优控制论}
+
+\label{sec:11-1}
+
+连续时间最优控制最容易被有限维直觉遮蔽的地方，在于它的变量不是某个向量，而是整条控制轨道以及由状态方程生成的整条状态轨道。也正因为如此，正确的建模起点不是“写出 Hamiltonian 再求导”，而是先把控制集、状态空间、状态方程和成本泛函组织成一个真正的函数空间极小化问题，然后再讨论存在性、可微性与一阶必要条件。本节就是要把这条链条写完整。
+
+\subsection{控制空间、状态方程与标准型}
+
+\begin{definition}[可容许控制]\label{def:admissible-control}
+设 $U$ 为 Hilbert 空间，$[0,T]$ 为给定时间区间，$K\subset U$ 为非空闭凸集。若控制函数
+\[
+u\in L^2(0,T;U)
+\]
+满足
+\[
+u(t)\in K \qquad \text{对几乎处处 } t\in[0,T]
+\]
+成立，则称 $u$ 为一个\emph{可容许控制}。所有可容许控制组成的集合记为
+\[
+\mathcal U_{\mathrm{ad}}.
+\]
+\end{definition}
+
+\begin{definition}[控制问题的泛函标准型]\label{def:control-functional-standard-form}
+设 $X$ 为状态空间，$U$ 为控制空间，$S\colon \mathcal U_{\mathrm{ad}}\to L^2(0,T;X)$ 为由状态方程生成的控制到状态映射。给定运行成本 $\ell\colon [0,T]\times X\times U\to \mathbb R\cup\{+\infty\}$ 与终端成本 $\Phi\colon X\to \mathbb R\cup\{+\infty\}$，定义
+\[
+J(u):=\int_0^T \ell\bigl(t,(Su)(t),u(t)\bigr)\,dt+\Phi\bigl((Su)(T)\bigr).
+\]
+极小化问题
+\[
+\min_{u\in \mathcal U_{\mathrm{ad}}} J(u)
+\]
+称为连续时间最优控制问题的\emph{泛函标准型}。
+\end{definition}
+
+\begin{remark}
+定义~\ref{def:control-functional-standard-form} 把最优控制重新挂回了第 \ref{chap:05} 章的 proper 泛函和第 \ref{chap:07} 章的约束标准型。控制约束体现在 $\mathcal U_{\mathrm{ad}}$ 的闭凸性中，状态方程体现在映射 $S$ 中，状态约束和运行成本则都可以被吸收到 $J$ 的取值里。这样做的好处是：存在性和最优性条件可以直接调用定理~\ref{thm:direct-method-reflexive}、定义~\ref{def:gateaux-derivative} 与定义~\ref{def:kkt-cone-system} 的已有接口，而不必重新发明一套平行语法。
+\end{remark}
+
+\subsection{直接法存在性}
+
+\begin{theorem}[最优控制问题的存在性]\label{thm:optimal-control-existence}
+设 $U$ 为 Hilbert 空间，$\mathcal U_{\mathrm{ad}}\subset L^2(0,T;U)$ 为非空闭凸集。假设：
+\begin{enumerate}
+  \item 控制到状态映射 $S\colon \mathcal U_{\mathrm{ad}}\to L^2(0,T;X)$ 弱连续；
+  \item 泛函 $J$ 在 $L^2(0,T;U)$ 上 proper、下半连续且凸；
+  \item $J$ 在 $\mathcal U_{\mathrm{ad}}$ 上强制，即
+  \[
+  \|u_n\|_{L^2}\to\infty \quad\Longrightarrow\quad J(u_n)\to +\infty.
+  \]
+\end{enumerate}
+则控制问题
+\[
+\min_{u\in \mathcal U_{\mathrm{ad}}} J(u)
+\]
+存在至少一个最优控制 $\bar u\in \mathcal U_{\mathrm{ad}}$。
+\end{theorem}
+
+\begin{proof}
+取极小化列 $\{u_n\}\subset \mathcal U_{\mathrm{ad}}$，使
+\[
+J(u_n)\downarrow \inf_{u\in \mathcal U_{\mathrm{ad}}}J(u).
+\]
+由强制性，$\{u_n\}$ 在 $L^2(0,T;U)$ 中有界。由于 $L^2(0,T;U)$ 是 Hilbert 空间，特别是自反空间，故存在子列仍记为 $\{u_n\}$ 与某个 $\bar u\in L^2(0,T;U)$ 使
+\[
+u_n\rightharpoonup \bar u.
+\]
+又因为 $\mathcal U_{\mathrm{ad}}$ 闭凸，所以它在弱拓扑下闭，从而 $\bar u\in \mathcal U_{\mathrm{ad}}$。现在应用第 \ref{sec:5-1} 节定理~\ref{thm:direct-method-reflexive} 的直接法框架：由 $J$ 的下半连续性，
+\[
+J(\bar u)\le \liminf_{n\to\infty}J(u_n)=\inf_{u\in \mathcal U_{\mathrm{ad}}}J(u).
+\]
+故 $\bar u$ 达到极小值。
+\end{proof}
+
+\begin{remark}
+定理~\ref{thm:optimal-control-existence} 的重点不是“控制问题总有最优解”，而是指出最优解来自三个具体机制：可容许控制集的弱闭性、目标泛函的弱下半连续性，以及强制性把极小化列困在一个弱紧区域中。这正是第 \ref{sec:5-1} 节直接法在控制情形中的标准落地。
+\end{remark}
+
+\subsection{伴随状态与一阶必要条件}
+
+\begin{definition}[伴随状态]\label{def:adjoint-state-control}
+设控制问题可写成
+\[
+J(u)=F(Su,u),
+\]
+其中 $F$ 在 $(x,u)$ 变量上 Fr\'echet 可微，$S$ 为有界线性算子。若对某个控制 $\bar u$，存在函数或过程 $p$ 满足
+\[
+S^\ast D_xF(S\bar u,\bar u)=p,
+\]
+则称 $p$ 为与 $\bar u$ 对应的\emph{伴随状态}。在具体微分方程模型中，它往往满足一个反向终端值问题，这正是第 \ref{sec:3-3} 节定义~\ref{def:adjoint-operator} 在控制中的具体化。
+\end{definition}
+
+\begin{theorem}[凸控制问题的 Pontryagin/KKT 型必要条件]\label{thm:pontryagin-convex-necessary}
+设 $\mathcal U_{\mathrm{ad}}\subset L^2(0,T;U)$ 为非空闭凸集，$S\colon L^2(0,T;U)\to L^2(0,T;X)$ 为有界线性算子，$F\colon L^2(0,T;X)\times L^2(0,T;U)\to \mathbb R$ 为凸且 Fr\'echet 可微。若
+\[
+\bar u\in \operatorname*{argmin}_{u\in \mathcal U_{\mathrm{ad}}}F(Su,u),
+\]
+则存在伴随状态 $p$，使得对任意 $u\in \mathcal U_{\mathrm{ad}}$ 都有
+\[
+\left\langle S^\ast D_xF(S\bar u,\bar u)+D_uF(S\bar u,\bar u),\,u-\bar u\right\rangle \ge 0.
+\]
+若再把约束集写成指标函数 $\iota_{\mathcal U_{\mathrm{ad}}}$，则上式等价于
+\[
+0\in S^\ast D_xF(S\bar u,\bar u)+D_uF(S\bar u,\bar u)+N_{\mathcal U_{\mathrm{ad}}}(\bar u),
+\]
+这就是控制问题的 Pontryagin/KKT 型一阶必要条件。
+\end{theorem}
+
+\begin{proof}
+定义复合泛函
+\[
+\mathcal J(u):=F(Su,u).
+\]
+由链式法则和定义~\ref{def:adjoint-state-control}，
+\[
+D\mathcal J(\bar u)h
+=
+\langle D_xF(S\bar u,\bar u),Sh\rangle
+\,+\,\langle D_uF(S\bar u,\bar u),h\rangle
+\]
+\[
+=
+\left\langle S^\ast D_xF(S\bar u,\bar u)+D_uF(S\bar u,\bar u),\,h\right\rangle.
+\]
+由于 $\bar u$ 在闭凸集 $\mathcal U_{\mathrm{ad}}$ 上最优，应用第 \ref{sec:5-2} 节定义~\ref{def:gateaux-derivative} 所刻画的一阶变分和凸集上的最优性条件，得到对任意 $u\in \mathcal U_{\mathrm{ad}}$，
+\[
+D\mathcal J(\bar u)(u-\bar u)\ge 0.
+\]
+代入上式便得
+\[
+\left\langle S^\ast D_xF(S\bar u,\bar u)+D_uF(S\bar u,\bar u),\,u-\bar u\right\rangle \ge 0.
+\]
+再由法锥与指标函数的次微分关系，可将其改写为
+\[
+0\in S^\ast D_xF(S\bar u,\bar u)+D_uF(S\bar u,\bar u)+N_{\mathcal U_{\mathrm{ad}}}(\bar u).
+\]
+这与第 \ref{sec:7-4} 节定义~\ref{def:kkt-cone-system} 的驻点条件完全同型，只是这里的原变量是控制轨道而不是有限维向量。
+\end{proof}
+
+\subsection{典型例子}
+
+\begin{example}[Hilbert 空间上的 LQR]
+考虑线性动力系统
+\[
+\dot x(t)=Ax(t)+Bu(t),\qquad x(0)=x_0,
+\]
+以及二次成本
+\[
+J(u)=\frac12\int_0^T \bigl(\langle Qx(t),x(t)\rangle+\langle Ru(t),u(t)\rangle\bigr)\,dt+\frac12\langle Gx(T),x(T)\rangle.
+\]
+在 $Q,R,G$ 正定时，$J$ 是 Hilbert 空间上的严格凸二次泛函。把这个例子放在这里，是为了把第 \ref{sec:8-2} 节二次规划与第 \ref{sec:3-3} 节伴随算子直接桥接到控制论。
+\end{example}
+
+\begin{example}[离散时间 MPC 的有限维坍缩]
+若把时间区间离散为有限网格，并把状态方程改写为
+\[
+x_{k+1}=A_kx_k+B_ku_k,
+\]
+则整个控制问题坍缩为一个有限维约束优化或二次规划问题。把这个例子放在这里，是为了说明 Boyd 中的 MPC 公式并不是另一套平行理论，而是定义~\ref{def:control-functional-standard-form} 在离散时间与欧氏空间上的直接坍缩。
+\end{example}
+
+\begin{example}[库存--产能平滑控制]
+设 $x(t)$ 为库存水平，$u(t)$ 为生产速度，系统满足
+\[
+\dot x(t)=u(t)-d(t),
+\]
+并以
+\[
+\int_0^T \bigl(c_1x(t)^2+c_2u(t)^2\bigr)\,dt
+\]
+为成本。该模型既可理解为管理科学中的资源调度，也可理解为最小量级的连续时间二次控制。把这个例子放在这里，是为了给第 \ref{sec:11-2} 节交易库存惩罚模型一个确定性基线。
+\end{example}
+
+\subsection*{有限维对照}
+
+Boyd 在有限维控制与 MPC 语境下更习惯直接写矩阵递推、Lagrangian 和 KKT 方程。本节的结论是：这些公式之所以成立，是因为离散时间与有限维把函数空间问题压缩成了标准 QP。一旦回到连续时间，真正需要先做的是定义~\ref{def:admissible-control} 与定义~\ref{def:control-functional-standard-form} 这样的对象整理，然后再用定理~\ref{thm:optimal-control-existence} 和定理~\ref{thm:pontryagin-convex-necessary} 把存在性与一阶条件接回 Boyd 的母语。有限维图像仍然重要，但它只是无穷维主线的坍缩形态。
+
+\subsection*{习题（待补）}
+
+\begin{exercise}[直接法存在性占位]
+补一题：对一个给定的连续时间二次控制问题，验证定理~\ref{thm:optimal-control-existence} 的假设，并说明极小化列为何在弱拓扑下预紧。
+\end{exercise}
+
+\begin{exercise}[伴随系统桥接题占位]
+补一题：从定理~\ref{thm:pontryagin-convex-necessary} 出发，推导一个线性二次控制模型中的伴随方程，并写出其有限维矩阵坍缩。
+\end{exercise}

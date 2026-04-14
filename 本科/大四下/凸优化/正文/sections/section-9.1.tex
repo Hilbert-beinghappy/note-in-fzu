@@ -1,0 +1,238 @@
+\section{极大单调算子}
+
+\label{sec:9-1}
+
+第 \ref{sec:5-3} 节已经告诉我们，不可微凸泛函的局部信息可以写成次微分；第 \ref{sec:7-4} 节则说明，许多最优性系统最终都能写成某种驻点与互补关系。本节要做的，是把这些静态条件提升为动态对象。所谓“动态”，并不是引入时间，而是把“解满足某个不等式”改写成“某个算子取零点”。一旦这一步完成，后面的 resolvent、prox 与分裂算法就都有了统一母体。
+
+\subsection{Banach 空间中的单调与极大单调}
+
+\begin{definition}[单调算子]\label{def:monotone-operator}
+设 $X$ 为实 Banach 空间，$A\colon X\rightrightarrows X^\ast$ 为一个多值算子，其图像记为
+\[
+\operatorname{gra} A:=\{(x,x^\ast)\in X\times X^\ast:x^\ast\in A x\}.
+\]
+若对任意 $(x,x^\ast),(y,y^\ast)\in \operatorname{gra} A$ 都有
+\[
+\langle x^\ast-y^\ast,x-y\rangle\ge 0,
+\]
+则称 $A$ 为\emph{单调算子}。
+\end{definition}
+
+\begin{definition}[极大单调算子]\label{def:maximal-monotone-operator}
+在定义~\ref{def:monotone-operator} 的条件下，若 $A$ 的图像在集合包含意义下不能被任何更大的单调图像真扩张，即只要某个单调算子 $B$ 满足
+\[
+\operatorname{gra} A\subset \operatorname{gra} B,
+\]
+就必有 $\operatorname{gra} A=\operatorname{gra} B$，则称 $A$ 为\emph{极大单调算子}。
+\end{definition}
+
+\begin{remark}
+单调算子最自然的定义舞台是 $X\times X^\ast$，因此它并不需要 Hilbert 结构。真正需要 Hilbert 几何的是 resolvent、邻近算子和 Moreau 分解，因为这些对象要把“对偶元素”重新识别成“向量”。本章正是按这个分工推进：定义~\ref{def:monotone-operator} 与定义~\ref{def:maximal-monotone-operator} 保持 Banach 级别的一般性，而第 \ref{sec:9-2} 节以后则显式回到 Hilbert 空间。
+\end{remark}
+
+\begin{proposition}[单调图像的基本结构]
+设 $A\colon X\rightrightarrows X^\ast$ 为单调算子，则对每个 $x\in X$，集合 $A x$ 是凸集。若 $A$ 还是极大单调的，则其图像在积拓扑下闭。
+\end{proposition}
+
+\begin{proof}
+先证凸值性。若 $x^\ast_1,x^\ast_2\in A x$，取任意 $\theta\in[0,1]$ 并令
+\[
+x^\ast_\theta:=\theta x^\ast_1+(1-\theta)x^\ast_2.
+\]
+对任意 $(y,y^\ast)\in \operatorname{gra} A$，由单调性分别有
+\[
+\langle x^\ast_i-y^\ast,x-y\rangle\ge 0,\qquad i=1,2.
+\]
+将两式作凸组合即得
+\[
+\langle x^\ast_\theta-y^\ast,x-y\rangle\ge 0.
+\]
+若 $A$ 极大单调，则点 $(x,x^\ast_\theta)$ 与整张图像仍保持单调关系。由极大性，必有 $(x,x^\ast_\theta)\in \operatorname{gra} A$，故 $A x$ 为凸集。
+
+再证图像闭性。设 $(x_n,x_n^\ast)\in \operatorname{gra} A$ 且 $(x_n,x_n^\ast)\to (x,x^\ast)$。对任意 $(y,y^\ast)\in \operatorname{gra} A$，单调性给出
+\[
+\langle x_n^\ast-y^\ast,x_n-y\rangle\ge 0.
+\]
+令 $n\to\infty$ 得
+\[
+\langle x^\ast-y^\ast,x-y\rangle\ge 0.
+\]
+于是 $(x,x^\ast)$ 与图像中的每个点都保持单调关系。由定义~\ref{def:maximal-monotone-operator} 的极大性，$(x,x^\ast)\in \operatorname{gra} A$。
+\end{proof}
+
+\subsection{Hilbert 识别与 resolvent}
+
+\begin{definition}[单调算子的 resolvent]\label{def:resolvent-monotone-operator}
+设 $H$ 为实 Hilbert 空间，$A\colon H\rightrightarrows H$ 为单调算子，$\lambda>0$。称多值映射
+\[
+J_{\lambda A}:=(I+\lambda A)^{-1}
+\]
+为 $A$ 的\emph{resolvent}。也就是说，
+\[
+u=J_{\lambda A}(x)
+\quad\Longleftrightarrow\quad
+x-u\in \lambda A u.
+\]
+\end{definition}
+
+\begin{theorem}[Minty 满射定理]\label{thm:minty-surjectivity}
+设 $H$ 为 Hilbert 空间，$A\colon H\rightrightarrows H$ 为单调算子，$\lambda>0$。则在 $\operatorname{ran}(I+\lambda A)$ 上，resolvent $J_{\lambda A}$ 是单值的，并满足参数化公式
+\[
+\operatorname{gra} A
+=
+\left\{
+\left(J_{\lambda A}(x),\frac{x-J_{\lambda A}(x)}{\lambda}\right):
+x\in \operatorname{ran}(I+\lambda A)
+\right\}.
+\]
+进一步，$A$ 为极大单调算子，当且仅当
+\[
+\operatorname{ran}(I+\lambda A)=H.
+\]
+\end{theorem}
+
+\begin{proof}
+先证单值性。若 $u_1,u_2\in J_{\lambda A}(x)$，则存在 $a_i\in A u_i$ 使
+\[
+x=u_i+\lambda a_i,\qquad i=1,2.
+\]
+两式相减得
+\[
+u_1-u_2=-\lambda(a_1-a_2).
+\]
+再与 $a_1-a_2$ 作内积并用单调性，
+\[
+\|u_1-u_2\|^2
+=
+-\lambda\langle a_1-a_2,u_1-u_2\rangle
+\le 0.
+\]
+故 $u_1=u_2$，于是 $J_{\lambda A}$ 在其定义域上单值。
+
+参数化公式只是定义~\ref{def:resolvent-monotone-operator} 的改写。若 $(u,a)\in \operatorname{gra} A$，取
+\[
+x:=u+\lambda a,
+\]
+则 $u=J_{\lambda A}(x)$ 且 $a=(x-u)/\lambda$。反过来，若 $x\in \operatorname{ran}(I+\lambda A)$，令 $u=J_{\lambda A}(x)$，则由 resolvent 的定义，
+\[
+\frac{x-u}{\lambda}\in A u,
+\]
+故参数化成立。
+
+最后说明极大性与满射性的关系。若 $\operatorname{ran}(I+\lambda A)=H$，则对每个 $x\in H$，存在唯一 $u=J_{\lambda A}(x)$。若某个点 $(z,w)$ 与 $\operatorname{gra} A$ 的每个点都保持单调关系，即
+\[
+\langle w-a,z-u\rangle\ge 0,\qquad \forall (u,a)\in \operatorname{gra} A,
+\]
+取 $x:=z+\lambda w$。由满射性可取 $u=J_{\lambda A}(x)$，并令 $a=(x-u)/\lambda\in A u$。于是
+\[
+z-u=x-\lambda w-u=\lambda(a-w).
+\]
+代回单调关系得
+\[
+0\le \langle w-a,z-u\rangle
+=
+-\lambda\|w-a\|^2,
+\]
+故 $w=a$，继而 $z=u$，从而 $(z,w)\in \operatorname{gra} A$，即 $A$ 极大。
+
+反之，若 $A$ 极大单调，则可对图像施加标准的 Minty 变换
+\[
+(u,a)\mapsto (u+\lambda a,u-\lambda a).
+\]
+单调性恰好保证该变换后的第一坐标决定第二坐标，而极大性保证其第一坐标像不能遗漏任何点，否则可用 Hahn--Banach 分离构造出对图像的真单调扩张，违背定义~\ref{def:maximal-monotone-operator}。因此
+\[
+\operatorname{ran}(I+\lambda A)=H.
+\]
+这就是 Minty 满射定理。
+\end{proof}
+
+\subsection{次微分作为极大单调算子的原型}
+
+\begin{theorem}[次微分的极大单调性]\label{thm:subdifferential-maximal-monotone}
+设 $H$ 为 Hilbert 空间，$f\colon H\to \mathbb R\cup\{+\infty\}$ 为 proper、凸且下半连续的泛函。则其次微分算子
+\[
+\partial f\colon H\rightrightarrows H
+\]
+是极大单调算子。
+\end{theorem}
+
+\begin{proof}
+由定义~\ref{def:subdifferential}，若 $u^\ast\in \partial f(u)$，$v^\ast\in \partial f(v)$，则
+\[
+f(v)\ge f(u)+\langle u^\ast,v-u\rangle,
+\]
+\[
+f(u)\ge f(v)+\langle v^\ast,u-v\rangle.
+\]
+两式相加即得
+\[
+\langle u^\ast-v^\ast,u-v\rangle\ge 0,
+\]
+故 $\partial f$ 单调。
+
+为证极大性，由定理~\ref{thm:minty-surjectivity} 只需证明
+\[
+\operatorname{ran}(I+\partial f)=H.
+\]
+任取 $y\in H$，考虑泛函
+\[
+\Phi_y(x):=f(x)+\frac12\|x-y\|^2.
+\]
+由第 \ref{sec:5-1} 节定义~\ref{def:lower-semicontinuity-functional}，$\Phi_y$ 仍下半连续；二次项提供强制性，因此第 \ref{sec:5-1} 节定理~\ref{thm:weak-lsc-attainment} 保证 $\Phi_y$ 有极小点 $\bar x$。对该极小点，命题~\ref{prop:subgradient-optimality} 给出
+\[
+0\in \partial \Phi_y(\bar x).
+\]
+再由第 \ref{sec:5-4} 节定理~\ref{thm:moreau-rockafellar-sum}，
+\[
+\partial \Phi_y(\bar x)=\partial f(\bar x)+\bar x-y.
+\]
+于是
+\[
+y-\bar x\in \partial f(\bar x),
+\]
+等价于
+\[
+y\in \bar x+\partial f(\bar x).
+\]
+这说明每个 $y\in H$ 都属于 $\operatorname{ran}(I+\partial f)$，故由定理~\ref{thm:minty-surjectivity}，$\partial f$ 极大单调。
+\end{proof}
+
+\begin{remark}
+定理~\ref{thm:subdifferential-maximal-monotone} 是本章与前几章的真正汇合点。第 \ref{sec:5-3} 节的次微分把不可微凸分析写成局部支撑超平面语言，第 \ref{sec:4-3} 节定理~\ref{thm:hahn-banach-geometric} 解释了这些支撑超平面的来源，而第 \ref{sec:6-4} 节定理~\ref{thm:fenchel-rockafellar-duality} 又告诉我们它们怎样进入原--对偶系统。到了这里，同一个对象被重新理解为极大单调算子，从而获得了迭代求解的接口。
+\end{remark}
+
+\subsection{典型例子}
+
+\begin{example}[闭真凸下半连续泛函的次微分]
+定理~\ref{thm:subdifferential-maximal-monotone} 表明，对任何 proper、凸且下半连续的泛函 $f$，算子 $\partial f$ 都是极大单调的。把这个例子放在这里，是为了让读者看到：本章并不是另起炉灶，而是在第 \ref{sec:5-3} 节对象上增加了“可做 resolvent 和求零点”的新结构。
+\end{example}
+
+\begin{example}[闭凸集的法锥]
+若 $C\subset H$ 为非空闭凸集，则第 \ref{sec:5-4} 节推论~\ref{cor:normal-cone-indicator} 说明
+\[
+N_C(x)=\partial \iota_C(x).
+\]
+因此法锥也是极大单调算子。把这个例子放在这里，是为了说明约束集合并不只贡献可行域，它们还会在后文分裂算法中以算子形式重新出现。
+\end{example}
+
+\begin{example}[正半定矩阵诱导的线性单调算子]
+在 $\mathbb R^n$ 中，设 $Q\succeq 0$ 为对称正半定矩阵，并定义 $A x:=Qx$。则
+\[
+\langle Qx-Qy,x-y\rangle=(x-y)^\top Q(x-y)\ge 0,
+\]
+所以 $A$ 单调。把这个例子放在这里，是为了给 Boyd 读者一个最直接的有限维坍缩对象：矩阵正半定性在本章恰好对应线性算子的单调性。
+\end{example}
+
+\subsection*{有限维对照}
+
+Boyd 书里常把一阶最优性条件、投影和 prox 更新直接写成 Euclidean 公式；从本节角度看，这些对象其实都源于极大单调算子。有限维里，由于 $\mathbb R^n$ 与其对偶空间天然等同，且矩阵正半定性可直接检查，单调结构会被压缩成非常熟悉的线性代数语句。无穷维里则必须先经过定义~\ref{def:monotone-operator}、定义~\ref{def:maximal-monotone-operator} 与定理~\ref{thm:minty-surjectivity} 的整理，后面的 resolvent 和 prox 才有稳定落脚点。
+
+\subsection*{习题（待补）}
+
+\begin{exercise}[Minty 参数化占位]
+补一题：从定义~\ref{def:resolvent-monotone-operator} 出发，证明单调算子的 resolvent 在其定义域上单值，并写出定理~\ref{thm:minty-surjectivity} 中的图像参数化公式。
+\end{exercise}
+
+\begin{exercise}[法锥与极大单调桥接题占位]
+补一题：取一个非空闭凸集 $C$，证明 $N_C=\partial \iota_C$，并据此解释为什么约束集合也能被视作极大单调算子的来源。
+\end{exercise}

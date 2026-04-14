@@ -1,0 +1,171 @@
+\section{拓扑基础与网的收敛}
+
+\label{sec:1-1}
+
+第 \ref{chap:00} 章提出的第一个失效点，就是“弱拓扑里不能只谈序列”。这是无穷维分析里最容易被低估的一步：在欧氏空间中，闭包、连续性、紧性和聚点几乎都能靠序列表达，于是我们很自然地把“极限”理解成 $n\to\infty$。但只要进入一般拓扑空间，特别是后文会频繁出现的弱拓扑与弱$^\ast$拓扑，这种理解就不再够用。
+
+因此，本节的核心不是再发明一种比序列更复杂的语言，而是把极限过程恢复到真正与拓扑相容的层面。网和滤子之所以重要，不是因为它们更抽象，而是因为它们能准确回答：当变量已经是函数、测度或轨道时，闭包究竟该怎样刻画，连续性究竟该怎样检查，紧性又究竟意味着什么。
+
+\subsection{拓扑语言与定向集}
+
+设 $X$ 为拓扑空间，$x\in X$。记 $\mathcal N(x)$ 为 $x$ 的邻域系，$\overline{A}$ 为子集 $A\subseteq X$ 的闭包。若对任意邻域 $U\in\mathcal N(x)$ 都有 $U\cap A\neq\varnothing$，则 $x\in \overline{A}$。这一定义不依赖于度量，因此比序列极限更基础。
+
+\begin{definition}[定向集]\label{def:directed-set}
+设 $D$ 为非空集合，$\preceq$ 为其上的预序关系，即满足自反性和传递性。若对任意 $\alpha,\beta\in D$ 都存在 $\gamma\in D$ 使得 $\alpha\preceq\gamma$ 且 $\beta\preceq\gamma$，则称 $(D,\preceq)$ 为一个\emph{定向集}。
+\end{definition}
+
+定向集的角色，是提供“最终足够大”这一概念，而不预设索引必须线性排列。自然数集 $(\mathbb N,\le)$ 是最基本的例子；更能反映一般拓扑结构的例子是邻域系 $\mathcal N(x)$ 配以逆包含顺序 $U\preceq V \iff V\subseteq U$。
+
+\begin{definition}[网与网收敛]\label{def:net-convergence}
+设 $(D,\preceq)$ 为定向集，$X$ 为拓扑空间。映射
+\[
+x_\bullet\colon D\to X,\qquad \alpha\mapsto x_\alpha
+\]
+称为 $X$ 中的一个\emph{网}。若对每个邻域 $U\in\mathcal N(x)$，都存在 $\alpha_0\in D$，使得当 $\alpha\succeq\alpha_0$ 时恒有 $x_\alpha\in U$，则称网 $(x_\alpha)_{\alpha\in D}$ \emph{收敛}到 $x$，记作 $x_\alpha\to x$。
+\end{definition}
+
+\begin{definition}[子网与滤子]\label{def:subnet-filter}
+设 $(x_\alpha)_{\alpha\in D}$ 为网。若 $(E,\le)$ 为定向集，$\varphi\colon E\to D$ 满足
+\begin{enumerate}
+  \item $\varphi$ 保序，即 $\beta_1\le \beta_2$ 蕴含 $\varphi(\beta_1)\preceq \varphi(\beta_2)$；
+  \item $\varphi(E)$ 在 $D$ 中共终，即对每个 $\alpha_0\in D$，都存在 $\beta_0\in E$ 使 $\varphi(\beta)\succeq \alpha_0$ 当 $\beta\succeq\beta_0$ 时成立，
+\end{enumerate}
+则称 $(x_{\varphi(\beta)})_{\beta\in E}$ 为原网的一个\emph{子网}。
+
+另一方面，设 $X$ 为非空集合。若非空集合族 $\mathcal B\subseteq \mathcal P(X)$ 满足
+\begin{enumerate}
+  \item $\varnothing\notin \mathcal B$；
+  \item 对任意 $B_1,B_2\in\mathcal B$，都存在 $B_3\in\mathcal B$ 使 $B_3\subseteq B_1\cap B_2$，
+\end{enumerate}
+则称 $\mathcal B$ 为 $X$ 上的一个\emph{滤子基}。滤子基的作用，是只记录“足够大的集合应该包含什么”，而不要求对上超集封闭。
+
+若集合族 $\mathcal F\subseteq \mathcal P(X)$ 进一步满足
+\begin{enumerate}
+  \item $\varnothing\notin \mathcal F$；
+  \item 若 $A,B\in\mathcal F$，则 $A\cap B\in\mathcal F$；
+  \item 若 $A\in\mathcal F$ 且 $A\subseteq C\subseteq X$，则 $C\in\mathcal F$，
+\end{enumerate}
+则称 $\mathcal F$ 为 $X$ 上的一个\emph{滤子}。由任意滤子基 $\mathcal B$ 都可生成一个最小滤子
+\[
+\langle \mathcal B\rangle
+:=
+\{A\subseteq X:\exists B\in\mathcal B\text{ 使 }B\subseteq A\},
+\]
+称为由 $\mathcal B$ \emph{生成的滤子}。
+
+在拓扑空间中，点 $x$ 的邻域系 $\mathcal N(x)$ 本身就是一个滤子；如果只取某个邻域基，则通常先得到的是滤子基。类似地，网的尾集族
+\[
+E_\alpha:=\{x_\beta:\beta\succeq\alpha\},\qquad \alpha\in D,
+\]
+正是一个典型的滤子基，因为定向性保证任意两个尾集都含有更小的公共尾集。由这些尾集生成的滤子，称为该网的\emph{尾滤子}。网与滤子在收敛论中携带的是同一类信息：一个网收敛到 $x$，当且仅当它的尾滤子收敛到邻域滤子 $\mathcal N(x)$；一个点是网的聚点，当且仅当某个比尾滤子更细的滤子收敛到该点。
+
+本书在后续叙述中优先使用网，而不是直接使用滤子，主要有两个原因。第一，子网比“细化滤子”更适合写紧性和提取极限点的过程；第二，优化中的算法迭代、逼近族和约束逼近通常天然以索引族出现，用网语言书写更直接。不过一旦进入可测结构、完备化或抽象收敛论，滤子视角会帮助我们更清楚地识别“最终行为”究竟依赖于哪些集合论信息。
+\end{definition}
+
+可以把滤子理解为“忽略有限初段后剩下的全部信息”。对序列而言，尾滤子正是由集合
+\[
+\{x_n:n\ge N\},\qquad N\in\mathbb N,
+\]
+生成的；对邻域收敛而言，邻域滤子则记录了“一个点附近所有足够小的局部区域”。这两类滤子在形式上十分相似，这也是为什么网收敛与邻域结构能够自然拼接在一起。
+
+\subsection{闭包与连续性的网刻画}
+
+\begin{proposition}[闭包的网刻画]\label{prop:closure-net}
+设 $A\subseteq X$，$x\in X$。则
+\[
+x\in\overline{A}
+\quad\Longleftrightarrow\quad
+\text{存在网 }(x_\alpha)_{\alpha\in D}\subseteq A\text{ 使 }x_\alpha\to x.
+\]
+\end{proposition}
+
+\begin{proof}
+若存在这样的网，则对任意邻域 $U\in\mathcal N(x)$，收敛性保证存在 $\alpha_0$ 使得 $\alpha\succeq\alpha_0$ 时 $x_\alpha\in U\cap A$，从而 $U\cap A\neq\varnothing$，故 $x\in\overline{A}$。
+
+反之，若 $x\in\overline{A}$，则对每个邻域 $U\in\mathcal N(x)$ 都可选取一点 $x_U\in U\cap A$。将 $\mathcal N(x)$ 赋予逆包含顺序：$U\preceq V$ 当且仅当 $V\subseteq U$。这使 $\mathcal N(x)$ 成为定向集，而 $(x_U)_{U\in\mathcal N(x)}$ 是 $A$ 中的网。对任意邻域 $W\in\mathcal N(x)$，若 $U\preceq W$，即 $U\subseteq W$，则 $x_U\in U\subseteq W$。故该网收敛到 $x$。
+\end{proof}
+
+\begin{proposition}[连续性的网刻画]\label{prop:continuity-net}
+设 $f\colon X\to Y$ 为映射，$x\in X$。则 $f$ 在 $x$ 处连续，当且仅当对任意满足 $x_\alpha\to x$ 的网 $(x_\alpha)$，都有 $f(x_\alpha)\to f(x)$。
+\end{proposition}
+
+\begin{proof}
+先设 $f$ 在 $x$ 处连续。任取 $f(x)$ 的邻域 $V$，由连续性可取 $x$ 的邻域 $U$ 使 $f(U)\subseteq V$。若 $x_\alpha\to x$，则存在 $\alpha_0$ 使得 $\alpha\succeq\alpha_0$ 时 $x_\alpha\in U$，于是 $f(x_\alpha)\in V$。故 $f(x_\alpha)\to f(x)$。
+
+反之，假设像网保持收敛。若 $f$ 在 $x$ 不连续，则存在 $f(x)$ 的邻域 $V$ 使得对任意 $x$ 的邻域 $U$ 都有 $U\not\subseteq f^{-1}(V)$。于是每个 $U\in\mathcal N(x)$ 中都可选取 $x_U\in U\setminus f^{-1}(V)$。与命题~\ref{prop:closure-net} 证明中相同，$(x_U)_{U\in\mathcal N(x)}$ 收敛到 $x$，但其像网始终落在 $Y\setminus V$ 中，不可能收敛到 $f(x)$。矛盾。
+\end{proof}
+
+\begin{proposition}[聚点与子网]\label{prop:cluster-subnet}
+设 $(x_\alpha)_{\alpha\in D}$ 为 $X$ 中的网，$x\in X$。则下列命题等价：
+\begin{enumerate}
+  \item 对任意邻域 $U\in\mathcal N(x)$ 与任意 $\alpha_0\in D$，都存在 $\alpha\succeq\alpha_0$ 使 $x_\alpha\in U$；
+  \item 原网存在一个子网收敛到 $x$。
+\end{enumerate}
+\end{proposition}
+
+\begin{proof}
+$(2)\Rightarrow(1)$ 显然，因为收敛子网的尾部落在每个邻域中，而子网索引映射共终。
+
+下证 $(1)\Rightarrow(2)$。令
+\[
+E=\{(\alpha,U):\alpha\in D,\ U\in\mathcal N(x),\ x_\alpha\in U\},
+\]
+并定义
+\[
+(\alpha_1,U_1)\preceq(\alpha_2,U_2)
+\quad\Longleftrightarrow\quad
+\alpha_1\preceq \alpha_2\ \text{且}\ U_2\subseteq U_1.
+\]
+由条件 (1) 可知 $E$ 非空，且对任意两个元素都可找到共同上界，所以 $E$ 是定向集。定义 $\varphi\colon E\to D$ 为 $\varphi(\alpha,U)=\alpha$，则 $\varphi$ 保序且共终，因此 $(x_{\varphi(\beta)})_{\beta\in E}$ 是原网的子网。对任意邻域 $W\in\mathcal N(x)$，若 $\beta=(\alpha,U)\succeq(\alpha_0,W)$，则必有 $U\subseteq W$，因而 $x_{\varphi(\beta)}=x_\alpha\in U\subseteq W$。故此子网收敛到 $x$。
+\end{proof}
+
+\begin{proposition}[第一可数空间中序列已足够]\label{prop:first-countable-sequence}
+若 $X$ 是第一可数空间，$A\subseteq X$，则对任意 $x\in X$，
+\[
+x\in \overline{A}
+\quad\Longleftrightarrow\quad
+\text{存在序列 }(a_n)_{n\ge1}\subseteq A\text{ 使 }a_n\to x.
+\]
+\end{proposition}
+
+\begin{proof}
+由命题~\ref{prop:closure-net} 只需证明右向左的逆向构造。若 $x\in\overline{A}$，取 $x$ 的可数邻域基 $(U_n)_{n\ge1}$，并令
+\[
+V_n:=U_1\cap\cdots\cap U_n.
+\]
+则每个 $V_n$ 仍是 $x$ 的邻域，且 $V_{n+1}\subseteq V_n$。由 $x\in\overline{A}$ 可取 $a_n\in A\cap V_n$。于是对任意邻域 $U$，存在某个 $N$ 使 $U_N\subseteq U$，从而当 $n\ge N$ 时 $a_n\in V_n\subseteq U_N\subseteq U$。故 $a_n\to x$。
+\end{proof}
+
+\paragraph{为何弱拓扑中序列语言不够}
+
+\begin{remark}
+命题~\ref{prop:first-countable-sequence} 表明，序列之所以在欧氏空间中万能，并不是因为“极限天然应该由序列描述”，而是因为这些空间具备第一可数性。后文讨论弱拓扑与弱$^\ast$拓扑时，这一性质往往失效。例如第 \ref{sec:3-2} 节定理~\ref{thm:banach-alaoglu} 给出的弱$^\ast$紧性，在非可分情形通常只能保证网有收敛子网，而不能保证任意序列都有收敛子列。因此本书后文凡涉及弱收敛、弱下半连续性与对偶紧性，默认都应使用网语言，而不是未经说明地退回序列语言。
+\end{remark}
+
+\begin{example}[最小抽象例子：弱$^\ast$极限网]\label{ex:weak-star-net}
+设 $X$ 为赋范空间，$B_{X^\ast}$ 为对偶空间单位球。第 \ref{sec:3-2} 节定理~\ref{thm:banach-alaoglu} 说明 $B_{X^\ast}$ 在弱$^\ast$拓扑下紧。这里“紧”的自然含义是：任意网都存在收敛子网。把这个例子放在本节，是为了提醒读者后文出现的极小化列、乘子列或近似解族，若只在弱$^\ast$拓扑下有紧性，就不能只问“是否存在收敛子列”，而必须问“是否存在收敛子网”。
+\end{example}
+
+\begin{example}[有限维坍缩：欧氏空间中的网与序列]\label{ex:euclidean-net}
+在 $\mathbb R^n$ 的通常拓扑中，第一可数性成立，因此命题~\ref{prop:first-countable-sequence} 告诉我们：闭包、连续性与聚点完全可以由序列刻画。把这个例子放在这里，是为了明确后文与 Boyd 书相接时，为什么很多有限维论证看上去只需处理序列；那并非一般原理，而是欧氏空间的特殊福利。
+\end{example}
+
+\begin{example}[算法触点：函数空间中的迭代极限]\label{ex:function-space-iteration}
+在 Hilbert 空间上研究投影算法或近端算法时，迭代点常常只能先证明有界，再借助弱拓扑获得极限点。若空间或拓扑选择得更一般，例如考虑测度空间上的概率流或策略空间上的松弛解，极限对象很可能首先通过网出现。把这个例子放在这里，是为了给第 9 章与第 10 章的算子分裂算法预留正确的收敛语言接口。
+\end{example}
+
+到这里，本节其实已经回答了第 \ref{chap:00} 章中的第一个问题：为什么一旦离开有限维，连“收敛”都必须重写。下一节将继续回答第二个问题：即便有了正确的极限语言，为什么存在性和稳定性论证仍然离不开完备性与 Baire 方法。
+
+\subsection*{有限维对照}
+
+Boyd 书中关于闭集、极限点和连续映射的讨论，默认都在 $\mathbb R^n$ 这一第一可数环境中完成。因此其结论可以直接用序列表述而不损失信息。本节的作用不是推翻这些有限维叙述，而是指出它们在无穷维中的真实上位版本：定义~\ref{def:net-convergence}、命题~\ref{prop:closure-net} 和命题~\ref{prop:continuity-net}。
+
+\subsection*{习题（待补）}
+
+\begin{exercise}[闭包与子网的练习占位]\label{exr:closure-subnet-placeholder}
+补一题：要求证明命题~\ref{prop:cluster-subnet} 在序列情形退化为“聚点当且仅当存在收敛子列”，并指出证明中哪些地方依赖第一可数性。
+\end{exercise}
+
+\begin{exercise}[弱拓扑桥接题占位]\label{exr:weak-topology-placeholder}
+补一题：把命题~\ref{prop:continuity-net} 落回欧氏空间，比较“网连续”“序列连续”和通常 $\varepsilon$-$\delta$ 连续性的等价性。
+\end{exercise}

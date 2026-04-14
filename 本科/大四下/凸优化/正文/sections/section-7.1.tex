@@ -1,0 +1,159 @@
+\section{广义不等式与闭凸锥}
+
+\label{sec:7-1}
+
+无穷维锥规划的第一步，不是写算法，也不是直接写 KKT，而是先回答一个更基础的问题：在一般线性空间里，什么才叫“非负”？在欧氏空间里，我们习惯用坐标逐项非负或半正定矩阵来回答这个问题；一旦进入函数空间、测度空间或算子空间，这些坐标化描述就不再可靠。能够跨环境保留下来的，是闭凸锥所诱导的偏序结构。广义不等式的全部语言，正是建立在这个观察之上。
+
+\subsection{锥诱导的偏序}
+
+\begin{definition}[锥诱导偏序与适当锥]\label{def:cone-induced-order}
+设 $Y$ 为实 Banach 空间，$K\subset Y$ 为非空闭凸锥，即由定义~\ref{def:convex-cone} 已知满足
+\[
+\lambda K\subset K,\qquad K+K\subset K,\qquad \lambda\ge 0.
+\]
+对任意 $u,v\in Y$，定义
+\[
+u\preceq_K v \quad \Longleftrightarrow \quad v-u\in K.
+\]
+此时称 $\preceq_K$ 为由 $K$ 诱导的\emph{广义不等式}。若进一步有
+\[
+K\cap(-K)=\{0\},
+\]
+则称 $K$ 为\emph{尖锥}；在本章里，闭凸且尖的锥将扮演有限维优化中“正正交体”的抽象替身。
+\end{definition}
+
+\begin{definition}[对偶锥]\label{def:dual-cone}
+设 $K\subset Y$ 为闭凸锥。定义其\emph{对偶锥}为
+\[
+K^\ast:=\{y^\ast\in Y^\ast:\langle y^\ast,y\rangle\ge 0,\ \forall y\in K\}.
+\]
+因此，对偶锥中的元素就是对 $K$ 上所有“非负方向”都取非负值的连续线性泛函。
+\end{definition}
+
+\begin{proposition}[对偶锥仍是闭凸锥]\label{prop:dual-cone-closed-convex}
+设 $K\subset Y$ 为闭凸锥，则 $K^\ast\subset Y^\ast$ 是凸锥，并且在 $Y^\ast$ 的弱$\ast$拓扑下闭。
+\end{proposition}
+
+\begin{proof}
+若 $y_1^\ast,y_2^\ast\in K^\ast$ 且 $\alpha,\beta\ge 0$，则对任意 $y\in K$，
+\[
+\langle \alpha y_1^\ast+\beta y_2^\ast,y\rangle
+=
+\alpha\langle y_1^\ast,y\rangle+\beta\langle y_2^\ast,y\rangle\ge 0,
+\]
+故 $\alpha y_1^\ast+\beta y_2^\ast\in K^\ast$，这说明 $K^\ast$ 是凸锥。
+
+再固定任意 $y\in K$，集合
+\[
+H_y:=\{y^\ast\in Y^\ast:\langle y^\ast,y\rangle\ge 0\}
+\]
+是弱$\ast$闭半空间，因为映射 $y^\ast\mapsto \langle y^\ast,y\rangle$ 在弱$\ast$拓扑下连续。于是
+\[
+K^\ast=\bigcap_{y\in K} H_y
+\]
+是弱$\ast$闭集。
+\end{proof}
+
+\begin{proposition}[锥序的对偶刻画]\label{prop:cone-order-dual-characterization}
+设 $K\subset Y$ 为闭凸锥，$u,v\in Y$。则下列两条等价：
+\[
+u\preceq_K v;
+\]
+\[
+\langle y^\ast,u\rangle\le \langle y^\ast,v\rangle,\qquad \forall y^\ast\in K^\ast.
+\]
+换言之，闭凸锥上的广义不等式完全可以由对偶锥上的正泛函检验。
+\end{proposition}
+
+\begin{proof}
+若 $u\preceq_K v$，则 $v-u\in K$。任取 $y^\ast\in K^\ast$，由定义~\ref{def:dual-cone}，
+\[
+\langle y^\ast,v-u\rangle\ge 0,
+\]
+即
+\[
+\langle y^\ast,u\rangle\le \langle y^\ast,v\rangle.
+\]
+
+反之，设对所有 $y^\ast\in K^\ast$ 都有上述不等式，但 $u\not\preceq_K v$。记
+\[
+w:=v-u.
+\]
+则 $w\notin K$。由于 $K$ 是闭凸集，而 $w$ 是其外点，由第 \ref{sec:4-3} 节定理~\ref{thm:hahn-banach-geometric} 的几何分离形式，存在非零泛函 $y^\ast\in Y^\ast$ 与常数 $c$，使
+\[
+\langle y^\ast,w\rangle<c\le \langle y^\ast,k\rangle,\qquad \forall k\in K.
+\]
+因为 $0\in K$，故 $c\le 0$。又因为 $tk\in K$ 对任意 $t\ge 0$ 仍成立，上式对每个 $t>0$ 给出
+\[
+c\le t\langle y^\ast,k\rangle.
+\]
+令 $t\downarrow 0$ 即得 $\langle y^\ast,k\rangle\ge 0$，故 $y^\ast\in K^\ast$。于是
+\[
+\langle y^\ast,v-u\rangle=\langle y^\ast,w\rangle<c\le 0,
+\]
+即
+\[
+\langle y^\ast,v\rangle<\langle y^\ast,u\rangle,
+\]
+这与假设矛盾。故必有 $u\preceq_K v$。
+\end{proof}
+
+\begin{remark}
+命题~\ref{prop:cone-order-dual-characterization} 是本节的核心接口。它告诉我们：锥约束不是另一套和对偶理论平行的语言，而是分离定理在锥环境中的直接应用。后文的锥对偶、互补松弛和广义 KKT，都会把“可行性”重新翻译为“对偶锥中所有正泛函都看不出违约”。
+\end{remark}
+
+\subsection{锥不等式与互补关系}
+
+由定义~\ref{def:cone-induced-order}，约束
+\[
+Ax-b\preceq_K 0
+\]
+等价于
+\[
+b-Ax\in K.
+\]
+因此锥规划中的可行性，本质上是在判断某个\emph{松弛变量}是否属于给定的闭凸锥。与之对应，对偶变量将被要求属于对偶锥 $K^\ast$。这两类对象之间的配对
+\[
+\langle y^\ast,s\rangle,\qquad y^\ast\in K^\ast,\ s\in K,
+\]
+天然非负，而当该配对等于零时，就出现了后文 KKT 条件里的互补松弛。
+
+\subsection{典型例子}
+
+\begin{example}[正函数锥与正测度锥]\label{ex:positive-cone-measure-space}
+设 $\Omega$ 为紧 Hausdorff 空间，取
+\[
+Y=C(\Omega),\qquad K:=\{u\in C(\Omega):u(\omega)\ge 0,\ \forall \omega\in \Omega\}.
+\]
+则 $K$ 是 $C(\Omega)$ 中的闭凸锥。由第 \ref{sec:2-3} 节定理~\ref{thm:riesz-representation}，$Y^\ast$ 可识别为有限符号 Radon 测度空间，而 $K^\ast$ 恰好对应于所有正 Radon 测度。把这个例子放在这里，是为了说明锥乘子完全可以是“正测度”而不是向量；这正是第 \ref{sec:7-4} 节里测度型乘子的原型。
+\end{example}
+
+\begin{example}[非负正交体与二阶锥]
+在 $Y=\mathbb R^m$ 中，若
+\[
+K=\mathbb R_+^m,
+\]
+则 $u\preceq_K v$ 就是坐标逐项不等式；若
+\[
+K=\{(t,z)\in \mathbb R\times \mathbb R^{m-1}:t\ge \|z\|_2\},
+\]
+则得到二阶锥不等式。把这个例子放在这里，是为了把 LP 和 SOCP 作为抽象闭凸锥的特例立即回收，并为第 \ref{sec:8-3} 节的有限维坍缩做好准备。
+\end{example}
+
+\begin{example}[资源非负约束与影子价格]
+在管理科学问题里，$b-Ax\in K$ 常表示“资源剩余是非负的”，其中 $K$ 可以是逐项非负锥、鲁棒安全余量锥，甚至某个函数空间中的正锥。对偶锥中的元素则可解释为资源影子价格或风险罚率。把这个例子放在这里，是为了说明抽象锥语言并不比工程语言更远；它恰好把各种“非负成本”与“边际价格”统一到了同一配对框架中。
+\end{example}
+
+\subsection*{有限维对照}
+
+Boyd 在讨论广义不等式时，通常从正正交体、半正定锥或二阶锥直接出发，因此读者很容易把“锥”理解成几类可画图的特殊集合。本节说明，这些例子背后真正稳定的结构是定义~\ref{def:cone-induced-order} 与定义~\ref{def:dual-cone}。有限维里能凭直觉看见的几何，在无穷维里必须依赖命题~\ref{prop:cone-order-dual-characterization} 这样的对偶刻画来替代；但两者说的其实是同一件事。
+
+\subsection*{习题（待补）}
+
+\begin{exercise}[对偶锥检验占位]
+补一题：对一个给定的闭凸锥 $K$，显式计算 $K^\ast$，并用命题~\ref{prop:cone-order-dual-characterization} 检验某个广义不等式是否成立。
+\end{exercise}
+
+\begin{exercise}[锥约束桥接题占位]
+补一题：把一个函数空间中的正锥约束退回到 $\mathbb R^m$ 中的逐项非负约束，比较两种环境下对偶锥与乘子含义的变化。
+\end{exercise}

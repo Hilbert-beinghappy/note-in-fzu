@@ -1,0 +1,143 @@
+\section{加速算法与 Hilbert 空间拓展}
+
+\label{sec:10-4}
+
+到这里为止，本章已经得到了两类稳定的 Hilbert 空间分裂模板：前向--后向分裂和 Douglas--Rachford/ADMM。下一步自然会问，能否像有限维凸优化那样再叠加一个“加速层”？答案并不是简单的肯定或否定。惰性项、Nesterov 型外推和 Lyapunov 能量确实能够在某些 Hilbert 空间模型中工作，但它们依赖的不是几句复杂度口号，而是比第 \ref{sec:10-1} 节更精细的能量耗散结构。也正因为如此，本节的重点不是罗列所有加速变体，而是给出一个可安全调用的模板，并说明其适用边界。
+
+\subsection{惰性 proximal 模板}
+
+\begin{definition}[惰性 proximal 迭代]\label{def:inertial-proximal-iteration}
+设 $H$ 为 Hilbert 空间，考虑复合模型
+\[
+\min_{x\in H}\{h(x)+g(x)\},
+\]
+其中 $h$ 为凸且可微，$g$ 为 proper、凸且下半连续。给定步长 $\gamma>0$ 与惰性参数序列 $\{\alpha_k\}\subset [0,1)$，定义
+\[
+y^k:=x^k+\alpha_k(x^k-x^{k-1}),
+\]
+\[
+x^{k+1}:=\operatorname{prox}_{\gamma g}\bigl(y^k-\gamma \nabla h(y^k)\bigr).
+\]
+该迭代称为\emph{惰性 proximal 迭代}。
+\end{definition}
+
+\begin{definition}[加速的 Lyapunov 能量]\label{def:lyapunov-energy-accelerated}
+在定义~\ref{def:inertial-proximal-iteration} 的背景下，称形如
+\[
+\mathcal E_k:=\bigl(h(x^k)+g(x^k)\bigr)+\eta_k\|x^k-x^{k-1}\|^2
+\]
+的量为\emph{Lyapunov 能量}，其中 $\eta_k\ge 0$ 用于补偿惰性外推带来的动量项。
+\end{definition}
+
+\subsection{能量下降与模板性结论}
+
+\begin{proposition}[加速迭代的能量下降]\label{prop:accelerated-energy-descent}
+设 $h$ 的梯度是 $\beta$-cocoercive，$0\le \alpha_k\le \bar\alpha<1$，且步长 $\gamma$ 与惯性参数满足标准小步长条件。则可选择常数 $\eta>0$ 与 $c>0$，使定义~\ref{def:lyapunov-energy-accelerated} 中的能量满足
+\[
+\mathcal E_{k+1}+c\|x^{k+1}-x^k\|^2\le \mathcal E_k,
+\qquad k\ge 0.
+\]
+\end{proposition}
+
+\begin{proof}
+由定义~\ref{def:inertial-proximal-iteration}，
+\[
+x^{k+1}=\operatorname{prox}_{\gamma g}(y^k-\gamma \nabla h(y^k)).
+\]
+这与第 \ref{sec:10-1} 节推论~\ref{cor:prox-gradient-specialization} 的 prox-gradient 步完全同型，只是把基点从 $x^k$ 换成了外推点 $y^k$。因此，对固定的 $y^k$，前向--后向步仍然给出一条下降不等式；而由第 \ref{sec:9-3} 节命题~\ref{prop:moreau-envelope-gradient} 所体现的平滑梯度结构，$\nabla h(y^k)$ 与 $\nabla h(x^k)$ 的差可以借助 cocoercive 性控制。
+
+把 $y^k=x^k+\alpha_k(x^k-x^{k-1})$ 代入后，会多出若干交叉项。对这些项使用 Young 不等式，并把它们吸收到
+\[
+\eta\|x^k-x^{k-1}\|^2
+\]
+中，就可得到
+\[
+h(x^{k+1})+g(x^{k+1})
+\le
+h(x^k)+g(x^k)-c_1\|x^{k+1}-x^k\|^2+c_2\|x^k-x^{k-1}\|^2.
+\]
+只要步长和惰性参数满足标准小步长条件，就能选取 $\eta$ 使
+\[
+\mathcal E_{k+1}+c\|x^{k+1}-x^k\|^2\le \mathcal E_k
+\]
+成立。这里的关键不是常数的最优表达，而是存在一个真正耗散的 Lyapunov 能量，这正是惰性算法在 Hilbert 空间中可分析的根本原因。
+\end{proof}
+
+\begin{theorem}[Hilbert 空间中的加速模板]\label{thm:hilbert-acceleration-template}
+设定义~\ref{def:inertial-proximal-iteration} 的问题存在解，且命题~\ref{prop:accelerated-energy-descent} 的能量下降成立。则：
+\begin{enumerate}
+  \item $\{\mathcal E_k\}$ 收敛，且
+  \[
+  \sum_{k=0}^{\infty}\|x^{k+1}-x^k\|^2<\infty;
+  \]
+  \item 每个弱聚点 $\bar x$ 都满足
+  \[
+  0\in \nabla h(\bar x)+\partial g(\bar x);
+  \]
+  \item 若解集退化为单点，或问题还满足额外的强凸/误差界条件，则整个序列弱收敛到该解。
+\end{enumerate}
+\end{theorem}
+
+\begin{proof}
+由命题~\ref{prop:accelerated-energy-descent}，$\{\mathcal E_k\}$ 单调不增且有下界，故收敛，并且
+\[
+\sum_{k=0}^{\infty}\|x^{k+1}-x^k\|^2<\infty.
+\]
+于是
+\[
+x^{k+1}-x^k\to 0,
+\qquad
+y^k-x^k=\alpha_k(x^k-x^{k-1})\to 0.
+\]
+再利用 prox 最优性条件，
+\[
+\frac{1}{\gamma}(y^k-x^{k+1})-\nabla h(y^k)\in \partial g(x^{k+1}).
+\]
+由于 $y^k-x^{k+1}\to 0$，而 $\nabla h$ 在有界集上连续，取弱聚点并使用次微分图像闭性，可得任意弱极限 $\bar x$ 满足
+\[
+-\nabla h(\bar x)\in \partial g(\bar x),
+\]
+也即
+\[
+0\in \nabla h(\bar x)+\partial g(\bar x).
+\]
+这正是第 \ref{sec:10-1} 节定理~\ref{thm:forward-backward-convergence} 所对应的零点条件。
+
+若解集为单点，或额外具备强凸/误差界等消除多重聚点的结构，则 Opial 型论证可把“所有聚点都是解”升级为整列弱收敛。换言之，Hilbert 空间中的加速并不是单靠外推就自动成功，而是建立在命题~\ref{prop:accelerated-energy-descent} 的能量控制之上。
+\end{proof}
+
+\begin{remark}[无穷维中的加速边界]\label{remark:acceleration-limitations-infinite-dimensional}
+有限维文献常把“加速”表述为一种几乎普适的复杂度提升，但在无穷维问题里，这样的说法往往过于乐观。首先，弱拓扑下缺乏自动紧性，意味着外推可能制造长时间振荡而不产生强收敛；其次，许多 Nesterov 型估计序列依赖 Euclidean 范数、有限维谱界或额外紧性，离开这些条件后就不能原封不动照搬。第 \ref{sec:11-1} 节会从连续时间角度再次看到这一点：真正稳定的加速模板必须伴随明确的 Lyapunov 能量，而不是只凭一句“更快”。
+\end{remark}
+
+\subsection{典型例子}
+
+\begin{example}[惯性 proximal gradient]
+在复合模型
+\[
+\min_x h(x)+g(x)
+\]
+中，若 $h$ 平滑、$g$ 可 prox，定义~\ref{def:inertial-proximal-iteration} 就给出了惯性 proximal gradient。它与第 \ref{sec:10-1} 节的前向--后向分裂只有一步之差：多出的外推项提高了经验效率，但也迫使我们引入定义~\ref{def:lyapunov-energy-accelerated} 的能量来控制稳定性。
+\end{example}
+
+\begin{example}[有限维 Nesterov 模板]
+在 $\mathbb R^n$ 中，取 $g\equiv 0$ 时，惰性 proximal 迭代退化为带动量的梯度法。把这个例子放在这里，是为了提醒读者：Boyd 和经典一阶法文献中的加速直觉确实来自有限维，但本节的重点是说明它在 Hilbert 空间中仍可保留哪些结构、必须舍弃哪些口号。
+\end{example}
+
+\begin{example}[最优控制离散化后的加速求解]
+在 PDE 约束或最优控制问题离散化后，常见的目标由光滑能量项和非光滑约束/正则项组成。惰性 proximal 更新往往能显著减少外层迭代数，但如果离散尺度变化导致条件数恶化，就必须重新检查命题~\ref{prop:accelerated-energy-descent} 的参数条件。把这个例子放在这里，是为了强调“加速”始终是受模型与空间结构制约的。
+\end{example}
+
+\subsection*{有限维对照}
+
+Boyd 对加速算法的讨论通常以内点、梯度法或 Nesterov 迭代的复杂度估计为主，默认工作空间是 Euclidean 空间。本节的任务不是否认这些结论，而是把它们放回更准确的语境：在 Hilbert 空间里，能被安全继承的是 Lyapunov 能量、平均映射与零点结构；不能无条件继承的是所有基于有限维紧性和谱估计的复杂度口号。有限维结论仍然重要，但它们只是无穷维分析中的特例坍缩，而不是通用模板。
+
+\subsection*{习题（待补）}
+
+\begin{exercise}[Lyapunov 能量占位]
+补一题：对一个具体的惯性 proximal gradient 迭代构造 Lyapunov 能量，并验证命题~\ref{prop:accelerated-energy-descent} 的下降格式。
+\end{exercise}
+
+\begin{exercise}[加速边界桥接题占位]
+补一题：比较有限维 Nesterov 迭代和一个 Hilbert 空间惰性迭代，说明为什么后者必须额外检查 remark~\ref{remark:acceleration-limitations-infinite-dimensional} 中提到的稳定性边界。
+\end{exercise}

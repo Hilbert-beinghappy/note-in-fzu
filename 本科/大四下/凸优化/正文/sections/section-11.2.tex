@@ -1,0 +1,220 @@
+\section{量化金融中的随机优化}
+
+\label{sec:11-2}
+
+与上一节的确定性控制相比，量化交易中的真正难点并不只是噪声，而是决策本身必须适应信息流。策略是一个适应过程，财富是一个随机过程，风险约束则通常是终端损益或整个路径上的凸泛函。本节因此不把金融问题拆成“定价”和“交易”两本书，而是只保留与本书主线最贴合的部分：自融资策略、财富过程、凸风险度量、CVaR 约束，以及它们如何进入 Fenchel 对偶和 KKT 语言。
+
+\subsection{策略、财富过程与风险泛函}
+
+\begin{definition}[自融资策略]\label{def:self-financing-strategy}
+设 $(\Omega,\mathscr F,\mathbb P)$ 为定义~\ref{def:probability-space} 的概率空间，$\{\mathscr F_t\}_{t\in[0,T]}$ 为滤过，$S=\{S_t\}_{t\in[0,T]}$ 为资产价格过程。若过程 $\pi=\{\pi_t\}_{t\in[0,T]}$ 适应于该滤过，并满足财富变化完全由持仓收益和交易成本决定，即
+\[
+X_t^\pi
+=
+x_0+\int_0^t \pi_s\,dS_s-\int_0^t c_s(\pi_s)\,ds,
+\]
+则称 $\pi$ 为一个\emph{自融资策略}。
+\end{definition}
+
+\begin{definition}[财富过程泛函]\label{def:wealth-process-functional}
+在定义~\ref{def:self-financing-strategy} 的背景下，称
+\[
+\pi \longmapsto X_T^\pi
+\]
+为与策略 $\pi$ 对应的\emph{终端财富过程泛函}。若再给定库存或冲击惩罚 $G(\pi)$，则随机优化目标常写成
+\[
+\mathcal J(\pi):=\rho(-X_T^\pi)+G(\pi),
+\]
+其中 $\rho$ 是某个风险泛函。
+\end{definition}
+
+\begin{definition}[凸风险度量]\label{def:convex-risk-measure}
+定义在 $L^1(\Omega,\mathscr F,\mathbb P)$ 上的泛函 $\rho$ 称为一个\emph{凸风险度量}，若对任意随机损失 $L,L_1,L_2$ 和 $\lambda\in[0,1]$ 满足：
+\begin{enumerate}
+  \item 单调性：若 $L_1\le L_2$ a.s.，则 $\rho(L_1)\le \rho(L_2)$；
+  \item 平移不变性：对任意常数 $m$，
+  \[
+  \rho(L+m)=\rho(L)+m;
+  \]
+  \item 凸性：
+  \[
+  \rho(\lambda L_1+(1-\lambda)L_2)
+  \le
+  \lambda \rho(L_1)+(1-\lambda)\rho(L_2).
+  \]
+\end{enumerate}
+\end{definition}
+
+\begin{definition}[CVaR]\label{def:cvar-risk}
+设损失随机变量 $L\in L^1$，置信水平 $\alpha\in(0,1)$。定义
+\[
+\operatorname{CVaR}_\alpha(L)
+:=
+\inf_{\eta\in\mathbb R}
+\left\{
+\eta+\frac{1}{1-\alpha}\mathbb E[(L-\eta)_+]
+\right\}.
+\]
+它称为损失 $L$ 在水平 $\alpha$ 下的\emph{条件风险价值}。
+\end{definition}
+
+\subsection{CVaR 的对偶表达与风险约束}
+
+\begin{proposition}[CVaR 的对偶表示]\label{prop:cvar-dual-representation}
+对任意 $L\in L^1$ 与 $\alpha\in(0,1)$，
+\[
+\operatorname{CVaR}_\alpha(L)
+=
+\sup\left\{
+\mathbb E[ZL]:
+Z\ge 0,\ \mathbb E[Z]=1,\ Z\le \frac{1}{1-\alpha}\ \text{a.s.}
+\right\}.
+\]
+\end{proposition}
+
+\begin{proof}
+由定义~\ref{def:cvar-risk}，
+\[
+\operatorname{CVaR}_\alpha(L)
+=
+\inf_{\eta\in\mathbb R}
+\left\{
+\eta+\frac{1}{1-\alpha}\mathbb E[(L-\eta)_+]
+\right\}.
+\]
+对函数 $\varphi(r)=(r)_+$，其共轭满足
+\[
+\varphi^\ast(z)=
+\begin{cases}
+0, & 0\le z\le 1,\\
++\infty, & \text{otherwise}.
+\end{cases}
+\]
+因此
+\[
+\frac{1}{1-\alpha}(L-\eta)_+
+=
+\sup_{0\le Z\le \frac{1}{1-\alpha}} Z(L-\eta)
+\]
+逐点成立。把该式代回并交换积分与上确界，得到
+\[
+\operatorname{CVaR}_\alpha(L)
+=
+\inf_{\eta}\sup_{0\le Z\le \frac{1}{1-\alpha}}
+\left\{
+\eta+\mathbb E[ZL]-\eta \mathbb E[Z]
+\right\}.
+\]
+若 $\mathbb E[Z]\neq 1$，则右侧关于 $\eta$ 的仿射函数无下界；故只有满足 $\mathbb E[Z]=1$ 的 $Z$ 才可能给出有限值。于是
+\[
+\operatorname{CVaR}_\alpha(L)
+=
+\sup\left\{
+\mathbb E[ZL]:
+Z\ge 0,\ \mathbb E[Z]=1,\ Z\le \frac{1}{1-\alpha}\ \text{a.s.}
+\right\}.
+\]
+结论成立。
+\end{proof}
+
+\begin{remark}
+命题~\ref{prop:cvar-dual-representation} 说明，CVaR 并不只是一个工程上“好算”的风险指标，它本质上也是一个对偶对象。约束
+\[
+\operatorname{CVaR}_\alpha(L)\le \tau
+\]
+等价于一族有界密度权重下的最坏情形期望约束。这正是第 \ref{sec:6-4} 节定理~\ref{thm:fenchel-rockafellar-duality} 在风险建模中的典型落点。
+\end{remark}
+
+\subsection{交易执行与风险对偶}
+
+\begin{theorem}[投资组合风险模型的对偶表达]\label{thm:portfolio-risk-duality}
+设 $\mathcal A$ 为一组自融资策略构成的非空闭凸集，$\pi\mapsto X_T^\pi$ 为从 $\mathcal A$ 到 $L^1$ 的连续仿射映射，$G\colon \mathcal A\to \mathbb R\cup\{+\infty\}$ 为 proper、凸且下半连续泛函，$\rho$ 为凸风险度量。若资格条件满足，则原问题
+\[
+\inf_{\pi\in \mathcal A}\{\rho(-X_T^\pi)+G(\pi)\}
+\]
+与对偶问题
+\[
+\sup_{Z\in L^\infty}
+\left\{
+-\rho^\ast(Z)-G^\ast(K^\ast Z)
+\right\},
+\qquad
+K\pi:=-X_T^\pi,
+\]
+具有相同最优值。任意最优原--对偶对 $(\bar\pi,\bar Z)$ 还满足
+\[
+\bar Z\in \partial \rho(-X_T^{\bar\pi}),
+\qquad
+0\in K^\ast \bar Z+\partial G(\bar\pi)+N_{\mathcal A}(\bar\pi).
+\]
+\end{theorem}
+
+\begin{proof}
+把原问题写成
+\[
+\inf_{\pi\in \mathcal A}\bigl\{\rho(K\pi)+G(\pi)\bigr\}.
+\]
+由于 $K$ 连续仿射且 $\mathcal A$ 闭凸，可以把约束通过指标函数 $\iota_{\mathcal A}$ 吸收到 $G$ 中，从而得到标准的复合凸优化模板
+\[
+\inf_{\pi}\bigl\{\rho(K\pi)+\widetilde G(\pi)\bigr\},
+\qquad
+\widetilde G:=G+\iota_{\mathcal A}.
+\]
+现在直接应用第 \ref{sec:6-4} 节定理~\ref{thm:fenchel-rockafellar-duality}，得到
+\[
+\inf_{\pi}\bigl\{\rho(K\pi)+\widetilde G(\pi)\bigr\}
+=
+\sup_{Z}\bigl\{-\rho^\ast(Z)-\widetilde G^\ast(K^\ast Z)\bigr\}.
+\]
+又因为 $\widetilde G=G+\iota_{\mathcal A}$，其最优性条件由第 \ref{sec:7-4} 节推论~\ref{cor:kkt-via-fenchel-subdifferential} 改写为
+\[
+\bar Z\in \partial \rho(-X_T^{\bar\pi}),
+\qquad
+0\in K^\ast \bar Z+\partial G(\bar\pi)+N_{\mathcal A}(\bar\pi).
+\]
+这正是所述原--对偶条件。对偶变量 $\bar Z$ 因而可以被解释为风险约束下的影子价格或极端情景权重。
+\end{proof}
+
+\subsection{典型例子}
+
+\begin{example}[单期均值--方差组合作为有限维坍缩]
+若交易只发生在一个时点，策略退化为有限维向量 $w$，则问题
+\[
+\min_w \left\{-\mu^\top w+\frac{\lambda}{2}w^\top \Sigma w\right\}
+\]
+正是 Boyd 书中最熟悉的均值--方差模型。把这个例子放在这里，是为了说明定义~\ref{def:self-financing-strategy} 和定义~\ref{def:wealth-process-functional} 在单期下会完全压缩成有限维投资组合优化。
+\end{example}
+
+\begin{example}[CVaR 约束下的策略优化]
+若把终端损失写成 $L(\pi)$，并加入约束
+\[
+\operatorname{CVaR}_\alpha(L(\pi))\le \tau,
+\]
+则命题~\ref{prop:cvar-dual-representation} 把它改写成有界密度约束下的最坏期望控制。把这个例子放在这里，是为了把无穷维随机策略与第 \ref{chap:06} 章共轭理论真正接起来。
+\end{example}
+
+\begin{example}[带交易成本与库存惩罚的执行模型]
+设 $\pi_t$ 为交易速度，$q_t$ 为库存，系统满足
+\[
+\dot q_t=-\pi_t,
+\]
+成本由冲击项 $\int_0^T c(\pi_t)\,dt$ 与库存风险项 $\int_0^T \gamma q_t^2\,dt$ 组成。该模型是量化交易执行与风险控制的标准原型。把这个例子放在这里，是为了给下一节的 Bellman 动态规划一个直接前导。
+\end{example}
+
+\begin{example}[风险中性测度作为背景例子]
+在无套利定价里，对偶变量常被解释为等价鞅测度。把这个例子放在这里，只是为了提醒读者：金融中的“对偶价格”并不总是抽象泛函，它有时可以被识别为某种情景加权或测度变换；但本章主线仍然是交易执行与风险控制，而不是一般 FTAP 理论。
+\end{example}
+
+\subsection*{有限维对照}
+
+Boyd 中的均值--方差、鲁棒优化和 CVaR 常以向量权重、样本平均和线性约束出现，因此读者很容易把它们理解成纯粹的有限维数据分析模型。本节说明，一旦把策略扩展成适应过程，真正控制问题结构的对象就变成了定义~\ref{def:self-financing-strategy} 的策略空间、定义~\ref{def:wealth-process-functional} 的财富泛函以及定理~\ref{thm:portfolio-risk-duality} 的原--对偶接口。有限维模型依旧是 Boyd 母语，但它只是过程空间优化的坍缩版本。
+
+\subsection*{习题（待补）}
+
+\begin{exercise}[CVaR 对偶表示占位]
+补一题：从定义~\ref{def:cvar-risk} 出发，重复命题~\ref{prop:cvar-dual-representation} 的推导，并解释有界密度约束的经济含义。
+\end{exercise}
+
+\begin{exercise}[交易执行桥接题占位]
+补一题：把一个带库存惩罚的交易执行模型写成定理~\ref{thm:portfolio-risk-duality} 的标准形式，并指出对偶变量对应的影子价格。
+\end{exercise}

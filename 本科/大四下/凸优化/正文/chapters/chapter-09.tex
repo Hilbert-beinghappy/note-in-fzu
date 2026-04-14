@@ -1,0 +1,23 @@
+\chapter{单调算子与预解式}
+
+\label{chap:09}
+
+第 \ref{chap:05} 章把凸泛函的局部最优性写成了次微分条件，第 \ref{chap:06} 章说明共轭与下确界卷积怎样把这些局部信息重新组织成对偶与平滑，第 \ref{chap:07} 章则把原--对偶系统放进锥约束与 KKT 语言中统一处理。到这一章，问题已经不再是“如何写出最优性条件”，而是“如何把最优性条件改写成可迭代求解的对象”。单调算子理论正是完成这一步的标准接口。
+
+本章沿四条线索推进。第 \ref{sec:9-1} 节先在 Banach/Hilbert 的双层背景下定义单调与极大单调，并把次微分、法锥这些熟悉对象提升为极大单调算子的原型。第 \ref{sec:9-2} 节随后把视角收束到 Hilbert 空间：在这里，借助第 \ref{sec:3-1} 节定理~\ref{thm:riesz-representation-hilbert} 的向量化识别，resolvent 可以被具体写成邻近算子，投影、软阈值和 Moreau 分解也都获得清晰的几何意义。第 \ref{sec:9-3} 节继续讨论 Moreau--Yosida 正则化，说明第 \ref{sec:6-3} 节中的 Moreau 包络如何从对偶代数对象变成算法中的平滑代理。最后第 \ref{sec:9-4} 节把最优化、变分不等式和可行性问题统一改写为单调包含
+\[
+0\in Au,
+\]
+从而把第 \ref{chap:10} 章的分裂算法全部放到同一个零点框架下。
+
+阅读本章时，最需要记住的是环境分层。对一般 Banach 空间而言，单调算子的自然值域是对偶空间 $X^\ast$；因此“单调”这一概念本身并不依赖 Hilbert 结构。真正把 resolvent、prox、firm nonexpansive 和 Moreau 分解写成最简洁形式的，是 Hilbert 几何。也正因为如此，本章采用双层叙述：第 \ref{sec:9-1} 节保留 Banach/Hilbert 共通的极大单调主线，第 \ref{sec:9-2} 节以后则明确回到 Hilbert 主舞台，不把更一般 Banach 版的近端理论塞进正文中心。
+
+如果把第 \ref{chap:08} 章看成“抽象理论向 Boyd 母语的有限维坍缩”，那么本章恰好走的是相反方向：Boyd 中的 prox、投影、平滑和固定点，在这里被重新解释为极大单调、resolvent、Yosida 正则化和单调包含。这样做的目的不是增加抽象术语，而是为了让第 \ref{chap:10} 章之后的算法不再停留于经验公式，而能被理解为对统一解析结构的计算实现。
+
+\input{正文/sections/section-9.1.tex}
+
+\input{正文/sections/section-9.2.tex}
+
+\input{正文/sections/section-9.3.tex}
+
+\input{正文/sections/section-9.4.tex}

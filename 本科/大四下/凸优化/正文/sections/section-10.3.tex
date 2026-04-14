@@ -1,0 +1,230 @@
+\section{交替方向乘子法的泛函视角}
+
+\label{sec:10-3}
+
+第 \ref{sec:7-4} 节已经说明，带约束凸优化的真正核心对象不是原问题本身，而是一个 KKT 原--对偶系统。ADMM 的价值就在于，它并不试图一次性解这个系统，而是借助增广拉格朗日把耦合项放进一个二次罚项里，再通过交替最小化与乘子更新逐步逼近鞍点。有限维里，这常被当成 Boyd 式工程算法来讲；本节要说明的是，它其实可以完全挂回第 \ref{sec:10-2} 节的 Douglas--Rachford 分裂与第 \ref{sec:7-2} 节的标准型接口。
+
+\subsection{两块模型与增广拉格朗日}
+
+\begin{definition}[ADMM 的增广拉格朗日]\label{def:augmented-lagrangian-admm}
+设 $X,Z,Y$ 为 Hilbert 空间，$A\colon X\to Y$、$B\colon Z\to Y$ 为有界线性算子，$b\in Y$。考虑两块凸问题
+\[
+\min_{x\in X,\ z\in Z}\{f(x)+g(z):Ax+Bz=b\},
+\]
+其中 $f\colon X\to \mathbb R\cup\{+\infty\}$、$g\colon Z\to \mathbb R\cup\{+\infty\}$ 为 proper、凸且下半连续泛函。对给定罚参数 $\rho>0$，定义其\emph{增广拉格朗日}为
+\[
+\mathcal L_\rho(x,z;y)
+:=
+f(x)+g(z)+\langle y,Ax+Bz-b\rangle+\frac{\rho}{2}\|Ax+Bz-b\|^2.
+\]
+\end{definition}
+
+\begin{definition}[ADMM 迭代]\label{def:admm-iteration}
+在定义~\ref{def:augmented-lagrangian-admm} 的条件下，给定 $(x^0,z^0,y^0)$ 与 $\rho>0$，定义
+\[
+x^{k+1}\in \arg\min_x \mathcal L_\rho(x,z^k;y^k),
+\]
+\[
+z^{k+1}\in \arg\min_z \mathcal L_\rho(x^{k+1},z;y^k),
+\]
+\[
+y^{k+1}=y^k+\rho(Ax^{k+1}+Bz^{k+1}-b).
+\]
+这组更新称为 \emph{ADMM}。相应地，定义原残差与对偶残差
+\[
+r^{k+1}:=Ax^{k+1}+Bz^{k+1}-b,
+\qquad
+s^{k+1}:=\rho B^\ast(z^{k+1}-z^k).
+\]
+\end{definition}
+
+\begin{remark}
+定义~\ref{def:admm-iteration} 中的乘子更新，正是把约束违反量 $r^{k+1}$ 回灌到对偶变量中。它与第 \ref{sec:7-4} 节定义~\ref{def:kkt-cone-system} 的关系是直接的：若 $r^{k+1}\to 0$ 且两个块的最优性条件稳定下来，就会逼近 KKT 系统。也因此，ADMM 最终要验证的不是某个经验停止准则，而是原--对偶残差是否把 KKT 条件逼近到可接受精度。
+\end{remark}
+
+\subsection{ADMM 与 Douglas--Rachford 的接口}
+
+\begin{proposition}[ADMM 是 Douglas--Rachford 分裂的变量消去形式]\label{prop:admm-as-dr-splitting}
+在标准的资格条件下，把定义~\ref{def:augmented-lagrangian-admm} 的原问题经由第 \ref{sec:7-2} 节命题~\ref{prop:abstract-standard-form-to-fenchel} 写成对偶问题后，可得到两个极大单调算子
+\[
+M_f:=\partial\bigl(f^\ast\circ(-A^\ast)\bigr)+b,
+\qquad
+M_g:=\partial\bigl(g^\ast\circ(-B^\ast)\bigr).
+\]
+对偶变量的一个仿射重参数化满足第 \ref{sec:10-2} 节定义~\ref{def:douglas-rachford-iteration} 的 Douglas--Rachford 迭代。因此，ADMM 可以看成对偶侧 DR 分裂在原变量与乘子变量上的显式展开。
+\end{proposition}
+
+\begin{proof}
+由 $x$-步的最优性条件，
+\[
+0\in \partial f(x^{k+1})+A^\ast y^k+\rho A^\ast(Ax^{k+1}+Bz^k-b).
+\]
+再利用乘子更新 $y^{k+1}=y^k+\rho r^{k+1}$，可重写为
+\[
+-A^\ast\bigl(y^{k+1}+\rho B(z^k-z^{k+1})\bigr)\in \partial f(x^{k+1}).
+\]
+同样地，$z$-步给出
+\[
+-B^\ast y^{k+1}\in \partial g(z^{k+1}).
+\]
+把这两条最优性条件通过 Fenchel 反演改写到对偶空间，并引入标准的中间变量，就会得到两个 resolvent 的交替作用；其组合正是
+\[
+\frac12\bigl(I+R_{\rho M_f}R_{\rho M_g}\bigr)
+\]
+的 Douglas--Rachford 形式。这里真正重要的不是坐标层面的繁琐代换，而是结构：ADMM 的“交替最小化 + 乘子更新”并不是额外发明的一套规则，而是第 \ref{sec:10-2} 节 DR 分裂在对偶侧的等价写法。
+\end{proof}
+
+\subsection{收敛与 KKT 极限}
+
+\begin{theorem}[ADMM 的原--对偶收敛]\label{thm:admm-primal-dual-convergence}
+设定义~\ref{def:augmented-lagrangian-admm} 的问题存在鞍点 $(\bar x,\bar z,\bar y)$，并假设定义~\ref{def:admm-iteration} 生成的序列有界。则原残差与对偶残差满足
+\[
+r^k\to 0,
+\qquad
+s^k\to 0.
+\]
+并且每个弱聚点 $(x^\infty,z^\infty,y^\infty)$ 都满足相应的 KKT 系统；若 KKT 解集在所考虑模型下是单点，则整个序列弱收敛到该原--对偶解。
+\end{theorem}
+
+\begin{proof}
+先写出 ADMM 两个子问题的一阶最优性条件。对 $x$-步，
+\[
+0\in \partial f(x^{k+1})+A^\ast y^k+\rho A^\ast(Ax^{k+1}+Bz^k-b),
+\]
+即
+\[
+-A^\ast\bigl(y^{k+1}+\rho B(z^k-z^{k+1})\bigr)\in \partial f(x^{k+1}).
+\]
+对 $z$-步，
+\[
+0\in \partial g(z^{k+1})+B^\ast y^k+\rho B^\ast(Ax^{k+1}+Bz^{k+1}-b),
+\]
+于是
+\[
+-B^\ast y^{k+1}\in \partial g(z^{k+1}).
+\]
+再与鞍点的 KKT 条件
+\[
+-A^\ast\bar y\in \partial f(\bar x),
+\qquad
+-B^\ast\bar y\in \partial g(\bar z),
+\qquad
+A\bar x+B\bar z-b=0
+\]
+配对，并利用次微分的单调性，得到
+\[
+\bigl\langle A(x^{k+1}-\bar x),\, y^{k+1}-\bar y+\rho B(z^k-z^{k+1}) \bigr\rangle \le 0,
+\]
+\[
+\bigl\langle B(z^{k+1}-\bar z),\, y^{k+1}-\bar y \bigr\rangle \le 0.
+\]
+把两式相加，并用
+\[
+A(x^{k+1}-\bar x)=r^{k+1}-B(z^{k+1}-\bar z)
+\]
+代入，可得
+\[
+\langle r^{k+1},y^{k+1}-\bar y\rangle
+\le
+\rho \langle B(z^{k+1}-\bar z),\,B(z^k-z^{k+1})\rangle.
+\]
+再利用恒等式
+\[
+y^{k+1}-y^k=\rho r^{k+1}
+\]
+以及极化公式
+\[
+2\langle u-v,u-w\rangle
+=
+\|u-w\|^2-\|v-w\|^2+\|u-v\|^2,
+\]
+可将上式化为
+\[
+\|y^{k+1}-\bar y\|^2+\rho^2\|B(z^{k+1}-\bar z)\|^2
+\le
+\|y^k-\bar y\|^2+\rho^2\|B(z^k-\bar z)\|^2
+\]
+\[
+\qquad\qquad
+-\rho^2\|r^{k+1}\|^2-\rho^2\|B(z^{k+1}-z^k)\|^2.
+\]
+因此序列
+\[
+\Phi_k:=\|y^k-\bar y\|^2+\rho^2\|B(z^k-\bar z)\|^2
+\]
+单调不增且有下界，故收敛。于是
+\[
+\sum_{k=0}^\infty \|r^{k+1}\|^2<\infty,
+\qquad
+\sum_{k=0}^\infty \|B(z^{k+1}-z^k)\|^2<\infty,
+\]
+从而
+\[
+r^k\to 0.
+\]
+由定义~\ref{def:admm-iteration} 中对偶残差的定义，也得到
+\[
+s^k=\rho B^\ast(z^k-z^{k-1})\to 0.
+\]
+
+再取任意弱聚点 $(x^\infty,z^\infty,y^\infty)$。由 $r^k\to 0$，可得
+\[
+Ax^\infty+Bz^\infty=b.
+\]
+对 $x$-步与 $z$-步最优性条件取极限，并利用 $s^k\to 0$ 与图像闭性，得到
+\[
+0\in \partial f(x^\infty)+A^\ast y^\infty,
+\qquad
+0\in \partial g(z^\infty)+B^\ast y^\infty.
+\]
+这正是第 \ref{sec:7-4} 节定义~\ref{def:kkt-cone-system} 与推论~\ref{cor:kkt-via-fenchel-subdifferential} 在当前线性约束模型中的 KKT 条件。若 KKT 解集为单点，则所有聚点一致，因而整个序列弱收敛到该点。
+\end{proof}
+
+\begin{corollary}[ADMM 的 KKT 极限]\label{cor:admm-kkt-limit}
+在定理~\ref{thm:admm-primal-dual-convergence} 的假设下，任意极限点 $(x^\infty,z^\infty,y^\infty)$ 都满足
+\[
+Ax^\infty+Bz^\infty=b,
+\]
+\[
+0\in \partial f(x^\infty)+A^\ast y^\infty,
+\qquad
+0\in \partial g(z^\infty)+B^\ast y^\infty.
+\]
+因此，ADMM 的极限点正是相应原问题与对偶问题的 KKT 点。
+\end{corollary}
+
+\begin{proof}
+这只是定理~\ref{thm:admm-primal-dual-convergence} 末尾结论的重述。
+\end{proof}
+
+\subsection{典型例子}
+
+\begin{example}[两块变量的标准 ADMM]
+当约束写成
+\[
+Lx-z=0
+\]
+时，ADMM 变成最常见的共识模型：$x$-步处理复杂损失，$z$-步处理简单正则或约束，乘子变量负责把两块重新绑在一起。把这个例子放在这里，是为了给第 \ref{sec:10-2} 节 DR 结构一个最直接的算法外观。
+\end{example}
+
+\begin{example}[函数空间上的一致性约束分裂]
+在函数空间优化中，$x$ 可能代表状态变量，$z$ 代表控制或辅助变量，而 $Ax+Bz=b$ 编码 PDE、边界或一致性约束。此时 ADMM 的意义不在于矩阵分块，而在于把原本强耦合的 KKT 系统拆成两个局部可解子问题。
+\end{example}
+
+\begin{example}[推荐系统与分布式共识]
+在推荐系统、联邦学习或分布式训练中，常把局部模型变量和全局共识变量分开建模，再用 ADMM 交替更新。把这个例子放在这里，是为了说明 Boyd 中“增广拉格朗日 + ADMM”的工程配方，本质上正是前七章抽象对象在算法层的一次计算实现。
+\end{example}
+
+\subsection*{有限维对照}
+
+Boyd 对 ADMM 的经典叙述通常从增广拉格朗日和残差图表开始，这在有限维工程问题里非常有效。但如果把它只看成一个“经验上好用的迭代模板”，就会错过它与第 \ref{sec:10-2} 节 Douglas-Rachford 分裂、第 \ref{sec:7-4} 节 KKT 系统以及第 \ref{sec:9-4} 节单调包含之间的统一结构。本节的要点恰恰是：有限维矩阵公式只是抽象原--对偶分裂在 Euclidean 空间中的坍缩版本。
+
+\subsection*{习题（待补）}
+
+\begin{exercise}[增广拉格朗日占位]
+补一题：对一个两块约束模型写出增广拉格朗日，并逐步推出定义~\ref{def:admm-iteration} 的三个更新式。
+\end{exercise}
+
+\begin{exercise}[DR--ADMM 接口题占位]
+补一题：在一个简单共识模型中，说明 ADMM 如何由第 \ref{sec:10-2} 节的 Douglas--Rachford 分裂恢复出来。
+\end{exercise}

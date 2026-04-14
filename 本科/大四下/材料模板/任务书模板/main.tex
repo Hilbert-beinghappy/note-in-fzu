@@ -1,0 +1,196 @@
+% 福州大学本科生毕业设计（论文）任务书
+% 填写入口：
+% 1. 先修改“基本信息”里的题目、姓名、学号、学院、专业、年级、指导教师和起止日期。
+% 2. 再修改“设计任务内容”“主要内容”“主要参考文献”三个长文本宏。
+% 3. “过程指导记录”请按实际指导时间和内容逐行填写。
+% 编译方式：latexmk -xelatex -shell-escape -interaction=nonstopmode -halt-on-error main.tex
+
+\documentclass[12pt,a4paper]{ctexart}
+\usepackage{geometry}
+\input{fzu_form_common.tex}
+
+\geometry{top=2.35cm,bottom=2.35cm,left=2.85cm,right=2.85cm}
+
+% ===== 基本信息 =====
+\newcommand{\题目}{}
+\newcommand{\姓名}{}
+\newcommand{\学号}{}
+\newcommand{\学院}{}
+\newcommand{\专业}{}
+\newcommand{\年级}{}
+\newcommand{\指导教师}{}
+
+\newcommand{\开始年}{}
+\newcommand{\开始月}{}
+\newcommand{\开始日}{}
+\newcommand{\结束年}{}
+\newcommand{\结束月}{}
+\newcommand{\结束日}{}
+
+\newcommand{\设计任务内容}{\textbf{此处填写设计（论文）任务。}\par
+\vspace{0.22cm}
+建议包含以下内容：\par
+1．原始数据、资料来源或项目背景；\par
+2．技术要求、研究边界和完成标准；\par
+3．阶段性进度安排与时间节点；\par
+4．提交材料、工作要求和其他说明。}
+
+\newcommand{\主要内容}{此处填写毕业设计（论文）的主要内容。建议按 3 至 5 点概括研究对象、核心任务、方法路线、系统实现、实验安排或论文预期成果。}
+
+\newcommand{\主要参考文献}{此处填写主要参考文献。建议列出与课题直接相关的基础文献、代表性方法文献和应用文献，并按学校要求统一格式。}
+% ====================
+
+\newcommand{\封面字段}[3]{%
+  \noindent\hspace*{2.05cm}\makebox[2.55cm][l]{\zihao{3}#1}%
+  \FZUCenteredUnderline{#2}{#3}%
+}
+
+\newcommand{\过程记录空行}{%
+  \noalign{\hrule height 0.5pt}
+  \rule{0pt}{0.56cm} & \\
+}
+
+\newcommand{\过程记录条目}[2]{%
+  \noalign{\hrule height 0.5pt}
+  \rule{0pt}{0.68cm}\zihao{5}#1 & \zihao{5}#2 \\
+}
+
+\begin{document}
+
+% ===== 封面 =====
+\thispagestyle{empty}
+\begin{center}
+  \vspace*{1.0cm}
+  \includegraphics[width=7.3cm]{fzu_logo.png}
+
+  \vspace{2.4cm}
+  {\zihao{1}\bfseries 本科生毕业设计（论文）任务书}
+
+  \vspace{1.9cm}
+  {\zihao{3}
+    \FZUCenteredUnderline{1.95cm}{\开始年}年
+    \FZUCenteredUnderline{1.28cm}{\开始月}月
+    \FZUCenteredUnderline{1.28cm}{\开始日}日至
+    \FZUCenteredUnderline{1.95cm}{\结束年}年
+    \FZUCenteredUnderline{1.28cm}{\结束月}月
+    \FZUCenteredUnderline{1.28cm}{\结束日}日
+  }
+\end{center}
+
+\vspace{1.45cm}
+\封面字段{题\hspace{1.8em}目：}{9.2cm}{\题目}
+
+\vspace{0.8cm}
+\noindent\hspace*{4.60cm}\FZUCenteredUnderline{8.15cm}{}
+
+\vspace{0.95cm}
+\封面字段{姓\hspace{1.8em}名：}{8.15cm}{\姓名}
+
+\vspace{0.95cm}
+\封面字段{学\hspace{1.8em}号：}{8.15cm}{\学号}
+
+\vspace{0.95cm}
+\封面字段{学\hspace{1.8em}院：}{8.15cm}{\学院}
+
+\vspace{0.95cm}
+\封面字段{专\hspace{1.8em}业：}{8.15cm}{\专业}
+
+\vspace{0.95cm}
+\封面字段{年\hspace{1.8em}级：}{8.15cm}{\年级}
+
+\vspace{0.95cm}
+\noindent\hspace*{2.05cm}\makebox[2.55cm][l]{\zihao{3}指导教师：}%
+\FZUCenteredUnderline{6.35cm}{\指导教师}\hspace{0.3cm}{\zihao{3}（签名）}
+
+\newpage
+
+% ===== 设计（论文）任务 =====
+\begin{center}
+  \vspace*{0.55cm}
+  {\zihao{2}\bfseries 设 计 （ 论 文 ） 任 务}
+
+  \vspace{0.35cm}
+  {\zihao{4}（包括原始数据、技术要求、进度安排、工作要求）}
+\end{center}
+
+\vspace{0.5cm}
+\noindent
+\begin{tabular}{|p{15.08cm}|}
+\hline
+\FZUCellBox{18.25cm}{%
+  \vspace*{0.18cm}
+  {\zihao{5}\bfseries （不够写可另加页）}\par
+  \vspace{0.25cm}
+  \ifstrempty{\设计任务内容}{\vspace*{\fill}}{\zihao{5}\设计任务内容\vspace*{\fill}}%
+} \\
+\hline
+\end{tabular}
+
+\newpage
+
+% ===== 主要内容 =====
+\begin{center}
+  \vspace*{0.75cm}
+  {\zihao{2}\bfseries 毕业设计（论文）的主要内容}
+\end{center}
+
+\vspace{0.45cm}
+\noindent
+\begin{tabular}{|p{15.08cm}|}
+\hline
+\FZUCellBox{17.35cm}{%
+  \vspace*{0.18cm}
+  {\zihao{5}\bfseries （不够写可另加页）}\par
+  \vspace{0.25cm}
+  \ifstrempty{\主要内容}{\vspace*{\fill}}{\zihao{5}\主要内容\vspace*{\fill}}%
+} \\
+\hline
+\end{tabular}
+
+\newpage
+
+% ===== 过程指导记录 =====
+\begin{center}
+  \vspace*{0.10cm}
+  {\zihao{2}\bfseries 毕业设计（论文）过程指导记录}
+\end{center}
+
+\vspace{0.15cm}
+\noindent
+\begin{tabular}{|>{\centering\arraybackslash}p{4.35cm}|>{\centering\arraybackslash}p{10.73cm}|}
+\hline
+\rule{0pt}{0.78cm}{\zihao{4}\bfseries 时\qquad 间} & {\zihao{4}\bfseries 指\quad 导\quad 内\quad 容} \\
+\过程记录空行
+\过程记录空行
+\过程记录空行
+\过程记录空行
+\过程记录空行
+\过程记录空行
+\过程记录空行
+\过程记录空行
+\过程记录空行
+\noalign{\hrule height 0.5pt}
+\end{tabular}
+
+\newpage
+
+% ===== 主要参考文献 =====
+\begin{center}
+  \vspace*{0.75cm}
+  {\zihao{2}\bfseries 主要参考文献}
+\end{center}
+
+\vspace{0.45cm}
+\noindent
+\begin{tabular}{|p{15.08cm}|}
+\hline
+\FZUCellBox{18.8cm}{%
+  \vspace*{0.18cm}
+  {\zihao{5}\bfseries （不够写可另加页）}\par
+  \vspace{0.25cm}
+  \ifstrempty{\主要参考文献}{\vspace*{\fill}}{\zihao{5}\主要参考文献\vspace*{\fill}}%
+} \\
+\hline
+\end{tabular}
+
+\end{document}

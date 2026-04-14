@@ -1,0 +1,199 @@
+\section{再生核 Hilbert 空间}
+
+\label{sec:12-1}
+
+本节的任务是把表示学习中最稳定的一条主线写回泛函分析：不是直接讨论网络参数，而是先讨论函数类本身。RKHS 的重要性在于，它允许我们一方面保留无限维函数空间的表达力，另一方面又通过样本点评价把问题压缩到有限参数。这个压缩并不是经验技巧，而是 Hilbert 空间几何、直接法存在性和正则化共同作用的结果。
+
+\subsection{正定核与 RKHS}
+
+\begin{definition}[正定核]\label{def:positive-definite-kernel}
+设 $\mathcal X$ 为非空集合。函数
+\[
+K\colon \mathcal X\times \mathcal X\to \mathbb R
+\]
+称为 $\mathcal X$ 上的\emph{正定核}，如果对任意有限点集 $x_1,\dots,x_m\in \mathcal X$ 与任意系数 $c_1,\dots,c_m\in \mathbb R$，都有
+\[
+\sum_{i,j=1}^m c_i c_j K(x_i,x_j)\ge 0.
+\]
+\end{definition}
+
+\begin{definition}[再生核 Hilbert 空间]\label{def:rkhs}
+设 $K$ 为定义~\ref{def:positive-definite-kernel} 的正定核。若 Hilbert 空间 $\mathcal H_K$ 由定义在 $\mathcal X$ 上的实值函数组成，并满足：
+\begin{enumerate}
+  \item 对任意 $x\in \mathcal X$，函数 $K_x:=K(x,\cdot)$ 属于 $\mathcal H_K$；
+  \item 对任意 $f\in \mathcal H_K$ 与任意 $x\in \mathcal X$，
+  \[
+  f(x)=\langle f,K_x\rangle_{\mathcal H_K},
+  \]
+\end{enumerate}
+则称 $\mathcal H_K$ 为核 $K$ 的\emph{再生核 Hilbert 空间}。
+\end{definition}
+
+\begin{proposition}[点评价泛函连续]\label{prop:rkhs-evaluation-continuity}
+在定义~\ref{def:rkhs} 的条件下，对任意 $x\in \mathcal X$，点评价映射
+\[
+\delta_x\colon \mathcal H_K\to \mathbb R,\qquad \delta_x(f)=f(x)
+\]
+是连续线性泛函，并满足估计
+\[
+|f(x)|\le \|f\|_{\mathcal H_K}\sqrt{K(x,x)},
+\qquad \forall f\in \mathcal H_K.
+\]
+\end{proposition}
+
+\begin{proof}
+线性性显然。由再生性质，
+\[
+f(x)=\langle f,K_x\rangle_{\mathcal H_K}.
+\]
+再由 Cauchy--Schwarz 不等式，
+\[
+|f(x)|\le \|f\|_{\mathcal H_K}\|K_x\|_{\mathcal H_K}.
+\]
+而
+\[
+\|K_x\|_{\mathcal H_K}^2
+=
+\langle K_x,K_x\rangle_{\mathcal H_K}
+=
+K(x,x),
+\]
+故结论成立。
+\end{proof}
+
+\begin{remark}
+命题~\ref{prop:rkhs-evaluation-continuity} 把 RKHS 与第 \ref{sec:3-1} 节定义~\ref{def:hilbert-space} 及定理~\ref{thm:riesz-representation-hilbert} 直接接了起来：样本点评价之所以能够被写成内积，不是因为数据科学中特殊的坐标技巧，而是因为在 Hilbert 空间里连续线性泛函本来就能由向量表示。
+\end{remark}
+
+\subsection{Tikhonov 正则化与表示定理}
+
+在样本 $x_1,\dots,x_m\in \mathcal X$ 上，考虑带 Tikhonov 项的学习问题
+\[
+\min_{f\in \mathcal H_K}
+\left\{
+\Phi\bigl(f(x_1),\dots,f(x_m)\bigr)+\lambda \|f\|_{\mathcal H_K}^2
+\right\},
+\qquad \lambda>0,
+\]
+其中 $\Phi\colon \mathbb R^m\to \mathbb R\cup\{+\infty\}$ 为 proper、凸且下半连续泛函。由于正则项强制了 $\mathcal H_K$ 范数，结合命题~\ref{prop:rkhs-evaluation-continuity} 的连续性，上式正是第 \ref{sec:5-1} 节定理~\ref{thm:direct-method-reflexive} 可处理的 Hilbert 空间直接法模型。
+
+\begin{theorem}[Representer Theorem]\label{thm:representer-theorem}
+设 $\Phi$ 与 $\lambda$ 如上。若 $f_\star$ 是问题
+\[
+\min_{f\in \mathcal H_K}
+\left\{
+\Phi\bigl(f(x_1),\dots,f(x_m)\bigr)+\lambda \|f\|_{\mathcal H_K}^2
+\right\}
+\]
+的极小元，则存在系数 $\alpha_1,\dots,\alpha_m\in \mathbb R$ 使
+\[
+f_\star(\cdot)=\sum_{i=1}^m \alpha_i K(x_i,\cdot).
+\]
+换言之，极小元一定落在有限维子空间
+\[
+\operatorname{span}\{K(x_1,\cdot),\dots,K(x_m,\cdot)\}
+\]
+中。
+\end{theorem}
+
+\begin{proof}
+记
+\[
+M:=\operatorname{span}\{K(x_1,\cdot),\dots,K(x_m,\cdot)\}\subset \mathcal H_K.
+\]
+由第 \ref{sec:3-1} 节定理~\ref{thm:orthogonal-projection}，任意 $f\in \mathcal H_K$ 都可唯一分解为
+\[
+f=f_M+f_\perp,
+\qquad
+f_M\in M,\quad f_\perp\in M^\perp.
+\]
+由于 $f_\perp\perp K(x_i,\cdot)$，对每个样本点 $x_i$ 有
+\[
+f_\perp(x_i)=\langle f_\perp,K(x_i,\cdot)\rangle_{\mathcal H_K}=0.
+\]
+因此
+\[
+f(x_i)=f_M(x_i),\qquad i=1,\dots,m,
+\]
+从而数据项只依赖于 $f_M$：
+\[
+\Phi\bigl(f(x_1),\dots,f(x_m)\bigr)
+=
+\Phi\bigl(f_M(x_1),\dots,f_M(x_m)\bigr).
+\]
+另一方面，由正交分解，
+\[
+\|f\|_{\mathcal H_K}^2=\|f_M\|_{\mathcal H_K}^2+\|f_\perp\|_{\mathcal H_K}^2
+\ge \|f_M\|_{\mathcal H_K}^2.
+\]
+故对任意 $f\in \mathcal H_K$，
+\[
+\Phi\bigl(f(x_1),\dots,f(x_m)\bigr)+\lambda \|f\|_{\mathcal H_K}^2
+\ge
+\Phi\bigl(f_M(x_1),\dots,f_M(x_m)\bigr)+\lambda \|f_M\|_{\mathcal H_K}^2.
+\]
+这说明把 $f$ 替换成其在 $M$ 上的正交投影不会增大目标值。于是任何极小元都可取在 $M$ 中。由于 $M$ 由核截面张成，结论成立。
+\end{proof}
+
+\begin{remark}
+定理~\ref{thm:representer-theorem} 是本章最关键的有限样本坍缩结论。它告诉我们：无限维函数学习并没有被偷偷地变成有限维，而是在样本驱动与二次正则的共同作用下，自然塌缩到了一个由数据决定的有限维截面空间。若把目标写成
+\[
+F(f):=\Phi(Cf)+\lambda\|f\|_{\mathcal H_K}^2,
+\]
+则最优性条件可以进一步写成
+\[
+0\in C^\ast\partial \Phi(Cf_\star)+2\lambda f_\star,
+\]
+这正是第 \ref{sec:5-3} 节定义~\ref{def:subdifferential} 的函数空间版本。
+\end{remark}
+
+\subsection{典型例子}
+
+\begin{example}[核岭回归]\label{ex:kernel-ridge-regression}
+取
+\[
+\Phi(z_1,\dots,z_m)=\frac{1}{m}\sum_{i=1}^m (z_i-y_i)^2.
+\]
+则相应问题为
+\[
+\min_{f\in \mathcal H_K}
+\left\{
+\frac{1}{m}\sum_{i=1}^m (f(x_i)-y_i)^2+\lambda \|f\|_{\mathcal H_K}^2
+\right\}.
+\]
+由定理~\ref{thm:representer-theorem}，极小元可写成
+\[
+f_\star(\cdot)=\sum_{i=1}^m \alpha_i K(x_i,\cdot).
+\]
+把它代回目标，即得到关于系数向量 $\alpha$ 的有限维二次规划。把这个例子放在这里，是为了说明 RKHS 并不排斥可计算性；相反，它给出了核岭回归这类算法的最自然理论母体。
+\end{example}
+
+\begin{example}[有限维线性回归的坍缩]
+若核取为线性核
+\[
+K(x,x')=\langle x,x'\rangle_{\mathbb R^d},
+\]
+则 $\mathcal H_K$ 与 $\mathbb R^d$ 等同，函数 $f$ 由向量 $w$ 表示为 $f(x)=\langle w,x\rangle$。此时定理~\ref{thm:representer-theorem} 退化为
+\[
+w_\star\in \operatorname{span}\{x_1,\dots,x_m\},
+\]
+这正是有限维线性回归的经典结论。
+\end{example}
+
+\begin{example}[文本与政策匹配中的核表示]
+在政策文本检索或企业画像匹配中，常把文档先映射到高维语义特征，再以核函数近似相似性。若学习目标是正则化经验风险，则定理~\ref{thm:representer-theorem} 说明最优匹配函数只由训练样本对应的核截面张成。把这个例子放在这里，是为了给第 \ref{sec:12-3} 节的多塔匹配问题准备一个函数空间入口。
+\end{example}
+
+\subsection*{有限维对照}
+
+Boyd 在有限维正则化模型里常把岭回归写成矩阵方程或二次规划；这当然是正确的，但它默认参数已经是一个向量。本节的结论说明，Boyd 的有限维公式并不是与函数学习平行的一套理论，而是 RKHS 正则化经过定理~\ref{thm:representer-theorem} 坍缩后的欧氏版本。正因为如此，后文谈图表示、检索匹配与分布式训练时，才能不断把现代学习对象重新翻译回 Hilbert 空间与凸优化语法。
+
+\subsection*{习题（待补）}
+
+\begin{exercise}[表示定理占位]
+补一题：把定理~\ref{thm:representer-theorem} 中的二次正则替换成严格单调的范数函数，说明表示定理仍如何成立。
+\end{exercise}
+
+\begin{exercise}[核岭回归系数占位]
+补一题：对例~\ref{ex:kernel-ridge-regression} 写出 Gram 矩阵形式的系数方程，并说明它如何退化为有限维岭回归。
+\end{exercise}

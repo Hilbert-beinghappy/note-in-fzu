@@ -1,0 +1,160 @@
+\section{线性规划与二次规划的复盘}
+
+\label{sec:8-2}
+
+第 \ref{sec:7-2} 节已经给出了抽象锥规划标准型，第 \ref{sec:7-4} 节则给出了无穷维 KKT 系统。本节要做的，不是重新讲一遍教科书里的 LP/QP 基础，而是把这些抽象对象逐项坍缩回矩阵语言。也正因此，线性规划和二次规划在这里的角色更像“坐标化译本”：同一个原--对偶结构，在有限维里被写成矩阵、向量和互补松弛式。
+
+\subsection{线性规划与其对偶}
+
+\begin{definition}[有限维线性规划]\label{def:linear-program-finite}
+设 $c\in \mathbb R^n$，$A\in \mathbb R^{p\times n}$，$G\in \mathbb R^{m\times n}$，$b\in \mathbb R^p$，$h\in \mathbb R^m$。称问题
+\[
+\min_{x\in \mathbb R^n}\ c^\top x
+\qquad \text{subject to}\qquad
+Ax=b,\quad Gx\le h
+\]
+为一个\emph{线性规划}。
+\end{definition}
+
+\begin{proposition}[LP 的矩阵对偶形式]\label{prop:lp-dual-matrix-form}
+定义~\ref{def:linear-program-finite} 的线性规划，其拉格朗日函数可写为
+\[
+L(x,\nu,\lambda)=c^\top x+\nu^\top(Ax-b)+\lambda^\top(Gx-h),
+\qquad \lambda\ge 0.
+\]
+相应对偶问题为
+\[
+\max_{\nu\in \mathbb R^p,\ \lambda\in \mathbb R_+^m}\ -b^\top \nu-h^\top \lambda
+\]
+subject to
+\[
+c+A^\top \nu+G^\top \lambda=0.
+\]
+\end{proposition}
+
+\begin{proof}
+这正是第 \ref{sec:7-2} 节定义~\ref{def:abstract-cone-program} 在 $K=\mathbb R_+^m$ 且等式约束单独列出的有限维形式。对偶函数定义为
+\[
+q(\nu,\lambda):=\inf_{x\in \mathbb R^n}L(x,\nu,\lambda).
+\]
+若
+\[
+c+A^\top \nu+G^\top \lambda\neq 0,
+\]
+则 $L(x,\nu,\lambda)$ 对 $x$ 是非常数仿射函数，其下确界为 $-\infty$。只有当
+\[
+c+A^\top \nu+G^\top \lambda=0
+\]
+时，对偶函数才有限，此时
+\[
+q(\nu,\lambda)=-b^\top \nu-h^\top \lambda.
+\]
+再结合 $\lambda\ge 0$，便得到所述矩阵对偶形式。
+\end{proof}
+
+\begin{theorem}[LP 的矩阵型 KKT 条件]\label{thm:lp-kkt-matrix}
+设线性规划存在最优解，并满足有限维 Slater 型严格可行性。则 $x^\star$ 为原问题最优解、$(\nu^\star,\lambda^\star)$ 为对偶最优解，当且仅当
+\[
+Ax^\star=b,\qquad Gx^\star\le h,
+\]
+\[
+\lambda^\star\ge 0,
+\]
+\[
+c+A^\top \nu^\star+G^\top \lambda^\star=0,
+\]
+\[
+\lambda_i^\star(h_i-g_i^\top x^\star)=0,\qquad i=1,\dots,m.
+\]
+\end{theorem}
+
+\begin{proof}
+这正是第 \ref{sec:7-4} 节定理~\ref{thm:infinite-dimensional-kkt} 在有限维 Euclidean 空间中的坍缩。原可行性与对偶可行性分别对应前两组和第三组条件；驻点条件由
+\[
+0\in \partial(c^\top x)+A^\top \nu^\star+G^\top \lambda^\star
+\]
+简化为线性方程
+\[
+c+A^\top \nu^\star+G^\top \lambda^\star=0;
+\]
+互补松弛则由
+\[
+\langle \lambda^\star,h-Gx^\star\rangle=0
+\]
+在逐项非负锥上的配对写成逐坐标乘积等于零。
+\end{proof}
+
+\subsection{二次规划}
+
+\begin{definition}[有限维二次规划]\label{def:quadratic-program-finite}
+设 $H\in \mathbb S^n_+$ 为对称半正定矩阵，$c\in \mathbb R^n$。称问题
+\[
+\min_{x\in \mathbb R^n}\ \frac12 x^\top Hx+c^\top x
+\qquad \text{subject to}\qquad
+Ax=b,\quad Gx\le h
+\]
+为一个\emph{凸二次规划}。
+\end{definition}
+
+\begin{proposition}[QP 的矩阵型 KKT 系统]\label{prop:qp-kkt-matrix}
+在定义~\ref{def:quadratic-program-finite} 中，若满足有限维严格可行性，则 $x^\star$ 为最优解，当且仅当存在 $(\nu^\star,\lambda^\star)$ 使
+\[
+Ax^\star=b,\qquad Gx^\star\le h,\qquad \lambda^\star\ge 0,
+\]
+\[
+Hx^\star+c+A^\top \nu^\star+G^\top \lambda^\star=0,
+\]
+\[
+\lambda_i^\star(h_i-g_i^\top x^\star)=0,\qquad i=1,\dots,m.
+\]
+\end{proposition}
+
+\begin{proof}
+由 $H\succeq 0$，目标函数是凸且可微，其梯度为
+\[
+\nabla\!\left(\frac12 x^\top Hx+c^\top x\right)=Hx+c.
+\]
+因此第 \ref{sec:5-2} 节的一阶微分语言和第 \ref{sec:7-4} 节的 KKT 系统结合后，驻点条件正好化为
+\[
+Hx^\star+c+A^\top \nu^\star+G^\top \lambda^\star=0.
+\]
+其余条件与线性规划完全一致，故结论成立。
+\end{proof}
+
+\begin{remark}
+命题~\ref{prop:qp-kkt-matrix} 说明，第 \ref{sec:7-4} 节中的抽象乘子系统在有限维里会同时吸收第 \ref{sec:5-2} 节的梯度与第 \ref{sec:5-3} 节的次微分语言。LP 对应的是线性目标的次梯度为常向量，QP 对应的是二次目标的梯度为仿射映射；而结构本身并没有变化。
+\end{remark}
+
+\subsection{典型例子}
+
+\begin{example}[多面体上线性目标]
+线性规划中的可行集是多面体，目标则是线性泛函。把这个例子放在这里，是为了把第 \ref{sec:4-4} 节极点与支撑超平面的语言回收到最经典的 LP 场景：抽象分离与极点理论，在有限维里正好对应多面体几何。
+\end{example}
+
+\begin{example}[标准二次规划]
+当 $H$ 为对称半正定矩阵时，定义~\ref{def:quadratic-program-finite} 给出的 QP 同时体现了第 \ref{sec:5-2} 节的梯度、第 \ref{sec:7-2} 节的标准型和第 \ref{sec:7-4} 节的 KKT 条件。把这个例子放在这里，是为了让读者看到 Hessian、乘子和互补松弛在有限维中如何自然拼接起来。
+\end{example}
+
+\begin{example}[均值--方差投资组合]
+均值--方差组合优化可写为
+\[
+\min_x \frac12 x^\top \Sigma x-\mu^\top x
+\qquad \text{subject to}\qquad
+\mathbf 1^\top x=1,\quad x\ge 0.
+\]
+把这个例子放在这里，是为了给第 \ref{chap:11} 章连续时间模型一个静态有限维基线，同时说明 QP 的矩阵型 KKT 公式具有直接的经济解释。
+\end{example}
+
+\subsection*{有限维对照}
+
+Boyd 书中 LP 和 QP 的拉格朗日对偶与 KKT 条件通常直接写成矩阵形式，这会给人一种错觉：似乎这些结论只属于线性代数世界。本节的作用正相反。通过回链定义~\ref{def:abstract-cone-program}、定理~\ref{thm:infinite-dimensional-kkt} 与推论~\ref{cor:kkt-via-fenchel-subdifferential}，我们看到矩阵公式只是抽象 KKT 在 $\mathbb R^n$ 中的坐标表示。
+
+\subsection*{习题（待补）}
+
+\begin{exercise}[LP 对偶占位]
+补一题：从定义~\ref{def:linear-program-finite} 出发，直接计算线性规划的对偶函数并推出命题~\ref{prop:lp-dual-matrix-form}。
+\end{exercise}
+
+\begin{exercise}[QP KKT 桥接题占位]
+补一题：对一个带不等式约束的凸二次规划写出命题~\ref{prop:qp-kkt-matrix} 的全部条件，并说明哪些部分来自第 \ref{sec:7-4} 节的抽象 KKT 系统。
+\end{exercise}

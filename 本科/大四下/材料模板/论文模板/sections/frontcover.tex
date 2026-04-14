@@ -1,0 +1,62 @@
+% 请在本文件顶部填写封面信息。
+% 若题目较长，建议先编译检查封面是否跑版，再决定是否手动换行。
+\school{}
+\major{}
+\student{}{}{}
+\thesistitle{}{}
+\thesistitleeng{}{}
+\thesisadvisor{}{}
+\thesisdate{}{}{}
+
+\newcommand{\FZUThesisCoverField}[3]{%
+  \noindent\hspace*{2.05cm}\makebox[2.55cm][l]{\zihao{3}#1}%
+  \underline{\makebox[#2][c]{#3}}%
+}
+
+\begin{titlepage}
+\thispagestyle{empty}
+\begingroup
+\setstretch{1.0}
+\begin{center}
+  \vspace*{0.55cm}
+  \includegraphics[width=6.6cm]{fzu_logo.png}
+
+  \vspace{1.55cm}
+  {\zihao{1}\bfseries 本科生毕业设计（论文）}
+\end{center}
+
+\vspace{1.25cm}
+\FZUThesisCoverField{题\hspace{1.8em}目：}{8.4cm}{\fzuthesistitle}
+
+\vspace{0.55cm}
+\noindent\hspace*{4.60cm}\underline{\makebox[7.35cm][c]{}}
+
+\vspace{0.68cm}
+\FZUThesisCoverField{姓\hspace{1.8em}名：}{7.35cm}{\fzuauthor}
+
+\vspace{0.68cm}
+\FZUThesisCoverField{学\hspace{1.8em}号：}{7.35cm}{\fzuauthornumber}
+
+\vspace{0.68cm}
+\FZUThesisCoverField{学\hspace{1.8em}院：}{7.35cm}{\fzuschool}
+
+\vspace{0.68cm}
+\FZUThesisCoverField{专\hspace{1.8em}业：}{7.35cm}{\fzumajor}
+
+\vspace{0.68cm}
+\FZUThesisCoverField{年\hspace{1.8em}级：}{7.35cm}{\fzugrade}
+
+\vspace{0.72cm}
+\noindent\hspace*{2.05cm}\makebox[2.55cm][l]{\zihao{3}校内指导教师：}%
+\hspace*{0.95cm}\underline{\makebox[4.35cm][c]{\fzuthesisadvisor}}\hspace{0.28cm}{\zihao{3}（签名）}
+
+\vspace{1.55cm}
+\begin{center}
+  {\zihao{3}
+    \underline{\makebox[1.70cm][c]{\fzuthesisyear}}年\hspace{1.0em}
+    \underline{\makebox[1.10cm][c]{\fzuthesismonth}}月\hspace{1.0em}
+    \underline{\makebox[1.10cm][c]{\fzuthesisday}}日
+  }
+\end{center}
+\endgroup
+\end{titlepage}

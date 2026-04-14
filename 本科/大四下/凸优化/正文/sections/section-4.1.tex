@@ -1,0 +1,153 @@
+\section{无穷维向量空间中的凸集}
+
+\label{sec:4-1}
+
+凸性首先是一种代数稳定性：它要求集合在两点之间的线段上闭合，而并不预设任何坐标、内积或维数。因此，凸集理论天然适用于函数空间、测度空间和算子空间。真正进入无穷维以后，困难并不在“凸”的定义本身，而在于拓扑直觉不再自动成立。有限维里常见的事实，例如闭有界集有较好几何边界、闭凸集常常带有非空内部、凸包与闭包的运算容易可视化，在一般 Banach 或 Hilbert 空间中都需要重新说明。特别是当我们谈论闭包时，实际上已经回到了第 \ref{sec:1-1} 节命题~\ref{prop:closure-net} 所建立的网语言；而当我们谈论最小二乘、正则化与投影时，又必须回到第 \ref{sec:3-1} 节定义~\ref{def:hilbert-space} 所代表的几何环境。
+
+\subsection{基本对象}
+
+\begin{definition}[凸集]\label{def:convex-set}
+设 $X$ 为实向量空间，$C\subset X$。若对任意 $x,y\in C$ 与任意 $\lambda\in[0,1]$ 都有
+\[
+\lambda x+(1-\lambda)y\in C,
+\]
+则称 $C$ 为一个\emph{凸集}。
+\end{definition}
+
+\begin{definition}[仿射集]\label{def:affine-set}
+设 $X$ 为实向量空间，$A\subset X$。若对任意 $x,y\in A$ 与任意 $\lambda\in\mathbb R$ 都有
+\[
+\lambda x+(1-\lambda)y\in A,
+\]
+则称 $A$ 为一个\emph{仿射集}。等价地，$A$ 是某个线性子空间的平移。
+\end{definition}
+
+\begin{definition}[凸锥]\label{def:convex-cone}
+设 $X$ 为实向量空间，$K\subset X$。若对任意 $x,y\in K$ 与任意 $\alpha,\beta\ge 0$ 都有
+\[
+\alpha x+\beta y\in K,
+\]
+则称 $K$ 为一个\emph{凸锥}。
+\end{definition}
+
+若 $E\subset X$，则记
+\[
+\operatorname{conv}(E)
+\]
+为包含 $E$ 的最小凸集，称为 $E$ 的\emph{凸包}；记
+\[
+\operatorname{aff}(E)
+\]
+为包含 $E$ 的最小仿射集，称为 $E$ 的\emph{仿射包}；记
+\[
+\operatorname{cone}(E)
+\]
+为包含 $E$ 的最小凸锥。只要 $X$ 还带有拓扑，我们就继续使用 $\overline{E}$ 和 $\operatorname{int}(E)$ 分别表示闭包与内部。
+
+\begin{proposition}[闭包保持凸性]\label{prop:convex-closure}
+设 $X$ 为拓扑向量空间，$C\subset X$ 为凸集，则其闭包 $\overline{C}$ 仍为凸集。
+\end{proposition}
+
+\begin{proof}
+任取 $x,y\in \overline{C}$ 与 $\lambda\in[0,1]$。由第 \ref{sec:1-1} 节命题~\ref{prop:closure-net}，存在取值于 $C$ 的网 $(x_\alpha)_{\alpha\in D}$ 与 $(y_\beta)_{\beta\in E}$，分别收敛到 $x$ 与 $y$。令 $D\times E$ 配上坐标逐点序构成定向集，则
+\[
+z_{(\alpha,\beta)}:=\lambda x_\alpha+(1-\lambda)y_\beta\in C
+\]
+对每个 $(\alpha,\beta)\in D\times E$ 成立。加法与数乘在拓扑向量空间中连续，因此
+\[
+z_{(\alpha,\beta)}\to \lambda x+(1-\lambda)y.
+\]
+再次应用命题~\ref{prop:closure-net}，得到 $\lambda x+(1-\lambda)y\in \overline{C}$。故 $\overline{C}$ 为凸集。
+\end{proof}
+
+\begin{proposition}[凸包与仿射包的基本性质]\label{prop:convex-hull-properties}
+设 $E\subset X$，其中 $X$ 为实向量空间，则有：
+\begin{enumerate}
+  \item $\operatorname{conv}(E)$ 是包含 $E$ 的所有凸集的交，且
+  \[
+  \operatorname{conv}(E)
+  =
+  \left\{
+    \sum_{j=1}^{m}\lambda_j x_j :
+    m\in\mathbb N,\ x_j\in E,\ \lambda_j\ge 0,\ \sum_{j=1}^{m}\lambda_j=1
+  \right\};
+  \]
+  \item $\operatorname{aff}(E)$ 是包含 $E$ 的所有仿射集的交，且
+  \[
+  \operatorname{aff}(E)
+  =
+  \left\{
+    \sum_{j=1}^{m}\lambda_j x_j :
+    m\in\mathbb N,\ x_j\in E,\ \lambda_j\in\mathbb R,\ \sum_{j=1}^{m}\lambda_j=1
+  \right\};
+  \]
+  \item $\operatorname{cone}(E)$ 是包含 $E$ 的所有凸锥的交，且
+  \[
+  \operatorname{cone}(E)
+  =
+  \left\{
+    \sum_{j=1}^{m}\lambda_j x_j :
+    m\in\mathbb N,\ x_j\in E,\ \lambda_j\ge 0
+  \right\}.
+  \]
+\end{enumerate}
+\end{proposition}
+
+\begin{proof}
+只证明第一条，其余两条完全类似。记右端集合为 $C_0$。显然 $E\subset C_0$，且两组有限凸组合再做凸组合，仍是有限凸组合，因此 $C_0$ 是凸集。于是 $\operatorname{conv}(E)\subset C_0$。
+
+反过来，若 $C$ 是任意包含 $E$ 的凸集，则由于 $C$ 对两点凸组合闭合，归纳可得它对任意有限凸组合都闭合，所以 $C_0\subset C$。因此 $C_0$ 包含于所有包含 $E$ 的凸集之中，故 $C_0$ 就是这些集合的交，即 $\operatorname{conv}(E)$。
+\end{proof}
+
+\paragraph{无穷维中的第一个陷阱}
+
+\begin{remark}
+在有限维空间中，很多读者会不自觉地把“闭凸”与“具有明显体积”联系起来。但在无穷维里，闭凸集完全可能没有任何拓扑内点。最简单的例子是 Hilbert 空间中的真闭子空间：它是闭、凸、仿射的，但内部为空。后面第 \ref{sec:4-2} 节引入代数内部与相对内部，正是为了修补这类现象。
+\end{remark}
+
+\begin{example}[最小抽象例子：函数空间中的正锥]\label{ex:function-space-positive-cone}
+设 $X=C([0,1])$ 或 $X=L^p(0,1)$，定义
+\[
+X_+:=\{u\in X:u(t)\ge 0 \text{ a.e.}\}.
+\]
+则 $X_+$ 是一个凸锥，因为非负函数的非负线性组合仍非负。把这个例子放在这里，是为了给后文的广义不等式、正算子与锥约束提供最小抽象原型：在无穷维优化中，“$x\ge 0$”往往不再是逐坐标条件，而是属于某个函数锥的包含关系。
+\end{example}
+
+\begin{example}[有限维坍缩例子：多面体与欧氏球]\label{ex:polytope-and-ball}
+在 $\mathbb R^n$ 中，半空间的有限交
+\[
+P=\{x\in\mathbb R^n:Ax\le b\}
+\]
+是凸集，非负正交第一象限是凸锥，而欧氏闭球
+\[
+\{x\in\mathbb R^n:\|x\|_2\le r\}
+\]
+则是闭凸集。把这个例子放在这里，是为了保留 Boyd 中最熟悉的几何母语：多面体、范数球与锥都是本节抽象定义的有限维投影，而不是另一套平行理论。
+\end{example}
+
+\begin{example}[算法触点例子：正则化问题的水平集]\label{ex:regularization-level-set}
+设 $H$ 为 Hilbert 空间，$A\in\mathcal B(H,Y)$ 为有界线性算子，考虑泛函
+\[
+\Phi(u)=\frac12\|Au-b\|_Y^2+\lambda\|u\|_H^2,
+\qquad \lambda>0.
+\]
+其下水平集
+\[
+L_c:=\{u\in H:\Phi(u)\le c\}
+\]
+是闭凸集。把这个例子放在这里，是为了说明“凸集”并不只是静态几何对象，它们正是迭代算法与存在性证明实际操作的可行域。后文讨论弱紧性、投影与邻近算子时，几乎总要先确认某个水平集是否属于本节建立的框架。
+\end{example}
+
+\subsection*{有限维对照}
+
+Boyd 第 2 章中的凸集、锥、范数球和水平集，大多画在 $\mathbb R^2$ 或 $\mathbb R^3$ 中，因此读者很容易把“可视化”误认为“定义本身”。本节强调的恰恰相反：定义~\ref{def:convex-set} 到定义~\ref{def:convex-cone} 完全不依赖维数，真正依赖空间结构的是闭包、内部与紧性。有限维里许多几何事实因为欧氏拓扑过于良性而被自动吞掉；无穷维里则必须先把对象语法写清，后面的分离、对偶和极值存在才有可靠的起点。
+
+\subsection*{习题（待补）}
+
+\begin{exercise}[闭包保凸的序列版桥接题]\label{exr:convex-closure-sequence-placeholder}
+补一题：在度量线性空间中把命题~\ref{prop:convex-closure} 改写成序列证明，并说明它与命题~\ref{prop:closure-net} 的网证明相比，在哪些一般拓扑环境下会失效。
+\end{exercise}
+
+\begin{exercise}[凸包有限表示占位]\label{exr:convex-hull-placeholder}
+补一题：证明命题~\ref{prop:convex-hull-properties} 中的凸包公式，并把它退回到 $\mathbb R^n$ 的多面体情形，解释为什么有限维中常常只需追踪有限个顶点。
+\end{exercise}

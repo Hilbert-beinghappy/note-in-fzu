@@ -1,0 +1,75 @@
+\clearpage  
+\thispagestyle{empty}  
+\newgeometry{top=0pt, bottom=0pt, left=0pt, right=0pt}
+\defaultfontfeatures{LetterSpace=0, LetterSpaceLimit=-200}
+
+
+\newcommand{\SSS}[0]{\includegraphics[width=270pt, height=4pt]{素材库/正文/separator_1}}
+\newcommand{\FFF}[0]{\includegraphics[width=199pt, height=!]{素材库/封面分割线}}
+\newcommand{\TitleText}{
+	\fontsize{36}{12}\selectfont\color{qiancheng}\XeTeXinterchartokenstate=0
+	\AvantGarde\addfontfeatures{LetterSpace=-5} Convex Optimization
+	\SSS \\[8pt] 
+	\SiYuan 凸优化
+}
+
+\newcommand{\AuthorText}{
+	\fontsize{15}{16}\selectfont\color{qiancheng}\XeTeXinterchartokenstate=0
+	\AvantGarde\addfontfeatures{LetterSpace=-5} Author Placeholder
+}
+
+\newcommand{\ReferenceText}{
+	\FFF \\[14pt]
+	\fontsize{9}{7}\selectfont\color{qiancheng}\AvantGarde\XeTeXinterchartokenstate=0 Project Scope: \\
+	\fontsize{6}{7}\selectfont\color{heise}\AvantGarde\XeTeXinterchartokenstate=0 Control-layer transfer from Obsidian planning cards \\
+	\fontsize{6}{7}\selectfont\color{heise}\AvantGarde\XeTeXinterchartokenstate=0 Template adapted from Arknight Lone Trail LaTeX theme \\
+	\fontsize{6}{7}\selectfont\color{heise}\AvantGarde\XeTeXinterchartokenstate=0 Structure: Parts, Chapters, Sections, Appendices \\[12pt]
+	\fontsize{9}{7}\selectfont\color{qiancheng}\AvantGarde\XeTeXinterchartokenstate=0 Editing Notes: \\
+	\fontsize{6}{7}\selectfont\color{heise}\AvantGarde\XeTeXinterchartokenstate=0 Update cover metadata directly in cover.tex when needed \\
+	}
+
+
+\begin{tikzpicture}[remember picture, overlay]
+    \node[anchor=north west, inner sep=0pt, outer sep=0pt] at (current page.north west) {
+        \includegraphics[
+            width=\paperwidth,    
+            height=\paperheight,  
+            keepaspectratio=false % 
+        ]{素材库/封面} 
+    };
+    
+   \node[
+   anchor=north west,
+   minimum width=280pt,
+   minimum height=100pt,
+   text width=280pt,
+   inner sep=0pt,
+   outer sep=0pt,
+   align=left,
+   ] at ($(current page.north west) + (10.096cm,-5.4467cm)$) {\TitleText};
+   
+   \node[
+   anchor=north west,
+   minimum width=110pt,
+   minimum height=12pt,
+    text width=110pt,
+   inner sep=0pt,
+   outer sep=0pt,
+   align=center,
+   ] at ($(current page.north west) + (16.1444cm,-10.4991cm)$) {\AuthorText};
+   
+    \node[
+   anchor=south west,
+   minimum width=199pt,
+   minimum height=11.8577pt,
+   text width=199pt,
+   inner sep=0pt,
+   outer sep=0pt,
+   align=left,
+   ] at ($(current page.north west) + (5.5611 cm,-27.6346cm)$) {\ReferenceText};
+   
+\end{tikzpicture}
+
+
+\restoregeometry
+\clearpage 

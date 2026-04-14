@@ -1,0 +1,170 @@
+% 福州大学本科生毕业设计（论文）文献综述
+% 填写入口：
+% 1. 先修改“基本信息”中的题目、姓名、学号、学院、专业、年级、指导教师和日期。
+% 2. 再修改摘要、关键词以及七个正文部分的内容。
+% 3. 最后的参考文献页请按学校要求替换为真实参考文献条目。
+% 编译方式：latexmk -xelatex -shell-escape -interaction=nonstopmode -halt-on-error main.tex
+
+\documentclass[12pt,a4paper]{ctexart}
+\usepackage{geometry}
+\usepackage[superscript]{cite}
+\usepackage{enumitem}
+\usepackage{setspace}
+\usepackage[hidelinks]{hyperref}
+\input{fzu_form_common.tex}
+
+\geometry{top=2.35cm,bottom=2.35cm,left=2.85cm,right=2.85cm}
+\setlength{\parindent}{2em}
+\setlength{\parskip}{0pt}
+\setlist[enumerate]{label=（\arabic*）,leftmargin=2.6em,itemsep=0.15em,topsep=0.2em,parsep=0pt,partopsep=0pt}
+
+% ===== 基本信息 =====
+\newcommand{\题目}{}
+\newcommand{\姓名}{}
+\newcommand{\学号}{}
+\newcommand{\学院}{}
+\newcommand{\专业}{}
+\newcommand{\年级}{}
+\newcommand{\校内指导教师}{}
+\newcommand{\校外指导教师}{}
+\newcommand{\日期年}{}
+\newcommand{\日期月}{}
+\newcommand{\日期日}{}
+
+\newcommand{\摘要内容}{此处填写摘要。建议概括文献综述的研究背景、综述范围、主要研究进展、存在问题以及本文的研究定位。}
+\newcommand{\关键词内容}{关键词1；关键词2；关键词3}
+\newcommand{\研究背景内容}{此处填写研究背景。建议说明课题所属方向、应用场景、研究价值，以及为什么需要围绕该主题开展文献综述。}
+\newcommand{\结构化处理内容}{此处填写与课题相关的第一类研究方向综述。可结合你的课题替换为“理论基础研究”“方法一相关研究”或其他更贴切的小节标题。}
+\newcommand{\排序研究内容}{此处填写与课题相关的第二类研究方向综述。建议概括代表性方法、常见技术路线、典型优缺点及其适用场景。}
+\newcommand{\图结构内容}{此处填写与课题相关的第三类研究方向综述。可根据课题调整标题和内容，突出与你的论文方法直接相关的研究脉络。}
+\newcommand{\系统研究内容}{此处填写与课题相关的系统、平台或应用研究综述，也可替换为实验研究、应用研究或工程实现相关综述。}
+\newcommand{\不足与定位条目一}{此处填写现有研究的第一点不足或空白。}
+\newcommand{\不足与定位条目二}{此处填写现有研究的第二点不足或空白。}
+\newcommand{\不足与定位条目三}{此处填写现有研究的第三点不足或空白。}
+\newcommand{\不足与定位总结}{此处总结你的课题在现有研究中的定位，说明本文准备从什么角度展开研究。}
+\newcommand{\小结内容}{此处填写全文小结，概括本次文献综述的主要结论，并引出后续论文工作的切入点。}
+% ====================
+
+\newcommand{\封面字段}[3]{%
+  \noindent\hspace*{2.05cm}\makebox[2.55cm][l]{\zihao{3}#1}%
+  \FZUCenteredUnderline{#2}{#3}%
+}
+
+\begin{document}
+
+% ===== 封面 =====
+\thispagestyle{empty}
+\begin{center}
+  \vspace*{1.0cm}
+  \includegraphics[width=7.3cm]{fzu_logo.png}
+
+  \vspace{2.4cm}
+  {\zihao{1}\bfseries 本科生毕业设计（论文）文献综述}
+\end{center}
+
+\vspace{1.95cm}
+\封面字段{题\hspace{1.8em}目：}{9.2cm}{\题目}
+
+\vspace{0.8cm}
+\noindent\hspace*{4.60cm}\FZUCenteredUnderline{8.15cm}{}
+
+\vspace{0.95cm}
+\封面字段{姓\hspace{1.8em}名：}{8.15cm}{\姓名}
+
+\vspace{0.95cm}
+\封面字段{学\hspace{1.8em}号：}{8.15cm}{\学号}
+
+\vspace{0.95cm}
+\封面字段{学\hspace{1.8em}院：}{8.15cm}{\学院}
+
+\vspace{0.95cm}
+\封面字段{专\hspace{1.8em}业：}{8.15cm}{\专业}
+
+\vspace{0.95cm}
+\封面字段{年\hspace{1.8em}级：}{8.15cm}{\年级}
+
+\vspace{0.95cm}
+\noindent\hspace*{2.05cm}\makebox[2.55cm][l]{\zihao{3}校内指导教师：}%
+\hspace*{1.20cm}\FZUCenteredUnderline{4.95cm}{\校内指导教师}\hspace{0.3cm}{\zihao{3}（签名）}
+
+\vspace{2.30cm}
+\begin{center}
+  {\zihao{3}
+    \FZUCenteredUnderline{1.95cm}{\日期年}年\hspace{1.2em}
+    \FZUCenteredUnderline{1.28cm}{\日期月}月\hspace{1.2em}
+    \FZUCenteredUnderline{1.28cm}{\日期日}日
+  }
+\end{center}
+
+\newpage
+
+\pagestyle{plain}
+\setcounter{page}{1}
+
+\begin{center}
+  {\zihao{3}\bfseries \题目}
+\end{center}
+
+\vspace{0.85cm}
+\begin{center}
+  {\zihao{3}\bfseries 摘要}
+\end{center}
+
+\vspace{0.55cm}
+\zihao{-4}\摘要内容\par
+
+\vspace{0.85cm}
+{\zihao{4}\bfseries 关键词：}\zihao{-4}\关键词内容\par
+
+\clearpage
+
+{\zihao{4}\bfseries 一、研究背景}\par
+\zihao{-4}\研究背景内容\par
+
+\vspace{0.35cm}
+{\zihao{4}\bfseries 二、相关研究方向一}\par
+\zihao{-4}\结构化处理内容\par
+
+\vspace{0.35cm}
+{\zihao{4}\bfseries 三、相关研究方向二}\par
+\zihao{-4}\排序研究内容\par
+
+\vspace{0.35cm}
+{\zihao{4}\bfseries 四、相关研究方向三}\par
+\zihao{-4}\图结构内容\par
+
+\vspace{0.35cm}
+{\zihao{4}\bfseries 五、应用或系统相关研究}\par
+\zihao{-4}\系统研究内容\par
+
+\vspace{0.35cm}
+{\zihao{4}\bfseries 六、现有研究不足与本文定位}\par
+\zihao{-4}
+\begin{enumerate}
+  \item \不足与定位条目一
+  \item \不足与定位条目二
+  \item \不足与定位条目三
+\end{enumerate}
+\不足与定位总结\par
+
+\vspace{0.35cm}
+{\zihao{4}\bfseries 七、小结}\par
+\zihao{-4}\小结内容\par
+
+\clearpage
+\begingroup
+\renewcommand{\refname}{参考文献}
+\zihao{5}
+\raggedright
+\begin{thebibliography}{99}
+\setlength{\itemsep}{0.12em}
+\setlength{\parskip}{0pt}
+\setlength{\parsep}{0pt}
+\setlength{\topsep}{0pt}
+\setlength{\partopsep}{0pt}
+\bibitem{placeholder}
+请按学校要求将本页替换为真实参考文献条目；如需继续添加，可仿照本条新增参考文献项。
+\end{thebibliography}
+\endgroup
+
+\end{document}
