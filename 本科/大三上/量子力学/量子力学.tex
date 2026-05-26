@@ -51,7 +51,7 @@
 \section{简单历史}
 \subsection{经典理论遇到的问题——黑体辐射}
 
-\textbf{黑体}：能吸收外来的全部电磁辐射，不发生反射和投射
+\textbf{黑体}：能吸收外来的全部电磁辐射，不发生反射和透射
 
 \textbf{黑体辐射}：黑体会发出热辐射，其光谱特征仅与黑体的温度有关，与黑体的材质，大小形状均无关系
 
@@ -62,23 +62,23 @@
 	\includegraphics[width=0.5\linewidth]{figure/screenshot001}
 \end{figure}
 
-使用$\mathop {\underbrace{\text{经典理论}}} \limits_{\text{能量连续}}$公式的wien,Rayleigh和Jeans都失败了
+使用$\mathop {\underbrace{\text{经典理论}}} \limits_{\text{能量连续}}$公式的Wien、Rayleigh和Jeans都失败了
 
 以Rayleigh-Jeans公式为例，它以能量均分定律(每一个自由度吸收$\frac{1}{2}kT$的能量)为基础，给出
 \begin{equation}
 	I\left( \omega \right) =\frac{\omega ^2}{\pi ^2c^2}kT
 \end{equation}
-这个公式在$\omega$较大时候会快速发散
+这个公式在$\omega$较大时会快速发散
 
-Plunk先从插值法通过Wien公式和Rayleigh-Jeans公式拟合出了Plunk公式
+Planck先从插值法通过Wien公式和Rayleigh-Jeans公式拟合出了Planck公式
 \begin{equation}
-	I\left( \omega \right) =\frac{1}{e^{\frac{a\omega}{\mu T}}}\cdot \frac{b\omega ^2}{\pi ^2c^2}\left( a,b\text{为常数} \right) 
+	I\left( \omega \right) =\frac{1}{e^{\frac{a\omega}{kT}}}\cdot \frac{b\omega ^2}{\pi ^2c^2}\left( a,b\text{为常数} \right) 
 \end{equation}
 这与实验数据完全符合
 
 接着，他开始思考为什么正确的公式会是这样
 
-他发现左边的像Bolztmann分布
+他发现左边的像Boltzmann分布
 \begin{equation}
 	N_n=N_1e^{-\frac{\left( E_n-E_1 \right)}{kT}}
 \end{equation}
@@ -94,7 +94,7 @@ Plunk先从插值法通过Wien公式和Rayleigh-Jeans公式拟合出了Plunk公�
 \begin{equation}
 	\begin{split}
 		N_n=&N_0e^{-\frac{E_n}{kT}}\\
-		&N_0e^{-\frac{n\omega}{kT}}
+		&N_0e^{-\frac{na\omega}{kT}}
 	\end{split}
 \end{equation}
 
@@ -128,11 +128,11 @@ Plunk先从插值法通过Wien公式和Rayleigh-Jeans公式拟合出了Plunk公�
 		\\
 	\end{split}
 \end{equation}
-其中的$a$就是如今的约化Plunk常量$\hbar $
+其中的$a$就是如今的约化Planck常量$\hbar $
 \begin{equation}
-		I\left( \omega \right)=\frac{1}{e^{\frac{\hbar\omega}{kT}}-1}\frac{a\omega ^3}{\pi ^2c^2}
+		I\left( \omega \right)=\frac{1}{e^{\frac{\hbar\omega}{kT}}-1}\frac{\hbar\omega ^3}{\pi ^2c^2}
 \end{equation}
-以上就为Plunk公式
+以上就为Planck公式
 \subsection{Einstein和光电效应}
 \begin{figure}[H]
 	\centering
@@ -141,7 +141,7 @@ Plunk先从插值法通过Wien公式和Rayleigh-Jeans公式拟合出了Plunk公�
 
 实验发现，光打在金属上会使电流表有示数，且对于单色光，只有特定频率以上的光才能使电流表有示数
 
-Einstein利用Plunk的假说提出光是由一份一份的能量子/光量子构成的
+Einstein利用Planck的假说提出光是由一份一份的能量子/光量子构成的
 
 \begin{enumerate}
 	\item 每份光量子的能量为$h\nu$($\hbar\omega$)
@@ -153,11 +153,11 @@ Einstein利用Plunk的假说提出光是由一份一份的能量子/光量子构
 对于光量子，我们有
 \begin{enumerate}
 	\item $E=h\nu$
-	\item $E^2=m^2c^4=m_0^{2}+(pc)^{2}$
+	\item $E^2=m_0^{2}c^4+(pc)^{2}$
 	\item $E=pc\rightarrow p=\frac{h\nu}{c}=\frac{h}{\lambda}$
 \end{enumerate}
 \subsection{波粒二象性}
-\subsubsection{comptom效应}
+\subsubsection{Compton效应}
 \begin{figure}[H]
 	\centering
 	\includegraphics[width=0.7\linewidth]{figure/screenshot003}
@@ -172,13 +172,15 @@ X射线打到碳靶上后部分散射光波变长
 
 因此光不但具有波动性，还具有粒子性
 
-\subsubsection{实物粒子的波粒二象性——deBrogile波}
+\subsubsection{实物粒子的波粒二象性——de Broglie波}
 既然长久被大量实验和完备的Maxwell方程组所支持的“光是波”的观点已经被打破，光具有粒子性，那么凭什么实物粒子反过来不能是波呢？
 
-出于对物理对称性的尊重，deBrogile大胆提出所有的实物粒子都具有波动性，其波长$
-\lambda=\frac{h}{mv^2}$
+出于对物理对称性的尊重，de Broglie大胆提出所有的实物粒子都具有波动性，其波长
+\[
+\lambda=\frac{h}{p}
+\]
 \subsection{Schrödinger方程}
-Schrödinger根据光的波动方程和deBrogile的波粒二象性
+Schrödinger根据光的波动方程和de Broglie的波粒二象性
 
 猜测出了实物粒子的波动方程
 
@@ -206,11 +208,11 @@ Schrödinger根据光的波动方程和deBrogile的波粒二象性
 而
 \begin{equation}
 	\begin{split}
-		\frac{\partial ^2\psi}{\partial x^2}&=\left( -\frac{1}{i\hbar}p \right) ^2Ae^{\frac{i}{\hbar}\left( px-Et \right)}
+		\frac{\partial ^2\psi}{\partial x^2}&=\left( \frac{ip}{\hbar} \right) ^2Ae^{\frac{i}{\hbar}\left( px-Et \right)}
 		\\
-		&=\left( -\frac{1}{i\hbar}p \right) ^2\psi 
+		&=-\frac{p^2}{\hbar^2}\psi 
 		\\
-		&=\left( -\frac{1}{i\hbar} \right) ^22\mu E\psi 
+		&=-\frac{2\mu E}{\hbar^2}\psi 
 	\end{split}
 \end{equation}
 
@@ -231,11 +233,11 @@ Schrödinger根据光的波动方程和deBrogile的波粒二象性
 \subsection{波函数的意义}
 玻恩的统计诠释：因为光波的模平方等于光强，表示光子在该处的密度大小，因此对实物粒子也一样，波函数的模平方表示实物粒子出现在该处的概率密度大小
 
-波函数本省则为概率振幅，没有确切的物理意义
+波函数本身则为概率振幅，没有确切的物理意义
 
-这个性质要求$\int_{-\infty}^{+\infty}{|\psi |^2}=1$，因为概率总和为1，称为归一化条件
-\subsection{态叠加原理$\&$量子态的坍缩}
-\subsubsection{轻机枪氏双缝}
+这个性质要求$\int_{-\infty}^{+\infty}{|\psi |^2dx}=1$，因为概率总和为1，称为归一化条件
+\subsection{态叠加原理\texorpdfstring{$\&$}{和}量子态的坍缩}
+\subsubsection{电子枪式双缝}
 \begin{figure}[H]
 	\centering
 	\includegraphics[width=0.7\linewidth]{figure/screenshot004}
@@ -266,7 +268,7 @@ Schrödinger根据光的波动方程和deBrogile的波粒二象性
 \end{enumerate}
 所以这种波描述的是电子出现在某处的概率密度
 
-类比光的干涉，这种概率应正比于波在该处模场的平方$|\psi|^2$
+类比光的干涉，这种概率应正比于波在该处模的平方$|\psi|^2$
 
 我们称这种波为电子的概率波
 
@@ -300,9 +302,9 @@ Schrödinger根据光的波动方程和deBrogile的波粒二象性
 		\\
 		&=|c_1|^2|\psi _1|^2+|c_2|^2|\psi _2|^2+2\mathrm{Re}\left( {c_1}^*c_2{\psi _1}^*\psi _2 \right) 
 		\\
-		&=|c_1|^2|\psi _1|^2+|c_2|^2|\psi _2|^2+2\mathrm{Re}\left( |c_1||c_2||\psi _1|||\psi _2|e^{i\left( \theta _2-\theta _1 \right)} \right) 
+		&=|c_1|^2|\psi _1|^2+|c_2|^2|\psi _2|^2+2\mathrm{Re}\left( |c_1||c_2||\psi _1||\psi _2|e^{i\left( \theta _2-\theta _1 \right)} \right) 
 		\\
-		&=|c_1|^2|\psi _1|^2+|c_2|^2|\psi _2|^2+2\underset{\text{干涉项}}{\underbrace{|c_1||c_2||\psi _1|||\psi _2|\cos \left( \theta _2-\theta _1 \right) }}
+		&=|c_1|^2|\psi _1|^2+|c_2|^2|\psi _2|^2+2\underset{\text{干涉项}}{\underbrace{|c_1||c_2||\psi _1||\psi _2|\cos \left( \theta _2-\theta _1 \right) }}
 	\end{split}
 \end{equation}
 
@@ -312,18 +314,18 @@ $A:$干涉花样会消失，变成单独开两缝时光强的简单相加
 
 原因：当放置一个探测器时，测量会使$\psi=c_1\psi_1+c_2\psi_2$
 
-以$|c_1|^2$的概率坍缩到$\psi_1$态上，打到光屏上的强度为$I_1$=$c_1^{2}\psi_1^{2}$
+以$|c_1|^2$的概率坍缩到$\psi_1$态上，打到光屏上的强度为$I_1=|c_1|^{2}|\psi_1|^{2}$
 
-以$|c_2|^2$的概率坍缩到$\psi_2$态上，打到光屏上的强度为$I_2$=$c_2^{2}\psi_2^{2}$
+以$|c_2|^2$的概率坍缩到$\psi_2$态上，打到光屏上的强度为$I_2=|c_2|^{2}|\psi_2|^{2}$
 
-总强度$I=I_1+I_2=c_1^{2}\psi_1^{2}+c_2^{2}\psi_2^{2}$，无干涉项
+总强度$I=I_1+I_2=|c_1|^{2}|\psi_1|^{2}+|c_2|^{2}|\psi_2|^{2}$，无干涉项
 
 
 $Q_2$：双缝干涉实验中，电子必通过两缝之一而打到屏上，因此打到屏上的电子总数必定等于分别通过两缝的电子数之和，这种说法是否正确，为什么？
 
 $A$：不正确，因为电子不是分别通过两缝之一而打到屏上，而是以概率波的形式同时通过双缝的
 
-一但确定了电子从哪个缝通过，就会破坏掉干涉花样
+一旦确定了电子从哪个缝通过，就会破坏掉干涉花样
 
 因此我们得到了一个粗略版本的不确定性原理
 
@@ -338,9 +340,9 @@ $A$：不正确，因为电子不是分别通过两缝之一而打到屏上，�
 等电子通过狭缝以后，再加上检测器，仍然会使干涉花样消失
 
 \subsubsection{概率振幅解释}
-按照波函数的统计诠释，波函数的模平方表示粒子出现在该处的概率密度，波函数本身则为概率幅$\rho(x)=|\psi(x)|^2$
+按照波函数的统计诠释，波函数的模平方表示粒子出现在该处的概率密度，波函数本身则为概率幅，概率密度为$\rho(x)=|\psi(x)|^2$
 
-我们可以标记粒子出现这在x处这一位置的本征态为$|x\rangle $
+我们可以标记粒子出现在$x$处这一位置的本征态为$|x\rangle $
 
 而粒子处于态$|\psi\rangle $
 
@@ -388,7 +390,7 @@ $\rho=|\left< x \middle| \psi \right> |^2$
 
 即$\psi=c_1\psi_1+c_2\psi_2+c_3\psi_3$
 
-若开n个缝，则$\left< x \middle| s \right>=\left< x \middle| s \right> =\sum_{i=1}^n{\left< x \middle| i \right> \left< i \middle| s \right>}
+若开n个缝，则$\left< x \middle| s \right> =\sum_{i=1}^n{\left< x \middle| i \right> \left< i \middle| s \right>}
 $
 
 即$\psi=\sum_{i=1}^n{c_i\psi_i}$
@@ -402,15 +404,15 @@ $
 则最终达到接收屏上x处的概率振幅
 \begin{equation}
 	\begin{split}
-		\left< x \middle| s \right> &=\left< x \middle| 1 '\right> \left< 1' \middle| 1 \right> \left< 1 \middle| s \right> +\left< x \middle| 1' \right> \left< 1' \middle| 2 \right> \left< 2 \middle| s \right> 
-		\\
-		&=\left< x \middle| 2 '\right> \left< 2' \middle| 1 \right> \left< 1 \middle| s \right> +\left< x \middle| 2' \right> \left< 2' \middle| 2 \right> \left< 2 \middle| s \right> 
+			\left< x \middle| s \right> &=\left< x \middle| 1 '\right> \left< 1' \middle| 1 \right> \left< 1 \middle| s \right> +\left< x \middle| 1' \right> \left< 1' \middle| 2 \right> \left< 2 \middle| s \right> 
+			\\
+			&\quad+\left< x \middle| 2 '\right> \left< 2' \middle| 1 \right> \left< 1 \middle| s \right> +\left< x \middle| 2' \right> \left< 2' \middle| 2 \right> \left< 2 \middle| s \right> 
 	\end{split}
 \end{equation}
 
 若两个挡板都开n个缝
 \begin{equation}
-	\left< x \middle| s \right> =\sum_i^n{\sum_j^n{\langle x|i\rangle \langle i|j\rangle \langle i|s\rangle}}
+	\left< x \middle| s \right> =\sum_{i=1}^n{\sum_{j=1}^n{\langle x|i\rangle \langle i|j\rangle \langle j|s\rangle}}
 \end{equation}
 
 若m个挡板n个缝
@@ -418,16 +420,16 @@ $
 	\left< x \middle| s \right> =\mathop {\underbrace{\sum_i^n{\sum_j^n{\sum_k^n{\cdots \sum_?^n{}}}}}} \limits_{m\text{个求和号}}\left< x \middle| i \right> \left< i \middle| j \right> \left< j \middle| \cdots \right> \cdots \left< \cdots \middle| ? \right> \left< ? \middle| s \right> 
 \end{equation}
 
-令m和n趋向于$\infty$,则我们就遍历了整个空间，这样我们就知道了自由空间中电子由s到单班x处的概率幅，它与s到屏上x处的所有可能路径有关、
+令m和n趋向于$\infty$,则我们就遍历了整个空间，这样我们就知道了自由空间中电子由s到屏上x处的概率幅，它与s到屏上x处的所有可能路径有关、
 
 \subsection{Bohr的氢原子模型}
 \subsubsection{Bohr之前的原子模型}
-a.J.J.Thompson的枣糕模型——被$\alpha$粒子散射实验否定
+a.J.J.Thomson的枣糕模型——被$\alpha$粒子散射实验否定
 \begin{figure}[H]
 	\centering
 	\includegraphics[width=0.7\linewidth]{figure/screenshot0010}
 \end{figure}
-1909年Rutherford和他的学生做了用$\alpha$粒子轰击铝箔的实验
+1909年Rutherford和他的学生做了用$\alpha$粒子轰击金箔的实验
 
 \begin{figure}[H]
 	\centering
@@ -459,13 +461,13 @@ b.Rutherford的行星轨道模型
 
 实验给出氢原子的光谱为
 \begin{equation}
-	\tilde{v}\left( m,n \right) =R_H\left( \frac{1}{m^2}-\frac{1}{n^2} \right) =T\left( m \right) -T\left( n \right) 
+	\tilde{\nu}\left( m,n \right) =R_H\left( \frac{1}{m^2}-\frac{1}{n^2} \right) =T\left( m \right) -T\left( n \right) 
 \end{equation}
 
 Bohr模型提出的基础（1913年）
 \begin{enumerate}
 	\item Rutherford行星轨道模型（部分继承）
-	\item Plunk对黑体辐射理论的大胆创新（提出能量是分立的）以及Einstein对光电效应的解释和光子说($E=h$$\nu$)
+	\item Planck对黑体辐射理论的大胆创新（提出能量是分立的）以及Einstein对光电效应的解释和光子说($E=h\nu$)
 	\item 氢原子光谱的经验公式
 \end{enumerate}
 Bohr模型的三大假设
@@ -512,11 +514,11 @@ Bohr假设
 \end{itemize}
 \subsection{矩阵力学}
 
-Heiseinberg几乎在同一时间以独立的方式给出了量子力学的另一种等价形式——矩阵力学
+Heisenberg几乎在同一时间以独立的方式给出了量子力学的另一种等价形式——矩阵力学
 
 他主张：整个量子论只能从可观测量/力学量为基础，因此Bohr理论中的“轨道根本没有意义（不可观测）”
 
-只有能极差才有价值，因为它是一个可观测量（频率谱线）
+只有能级差才有价值，因为它是一个可观测量（频率谱线）
 
 由于从一个状态到另一个状态的变化由两个状态（初，末）共同决定
 
@@ -528,7 +530,7 @@ Heiseinberg几乎在同一时间以独立的方式给出了量子力学的另一
 
 其元素数目应为$N_{\text{初}}\times N_{\text{末}} $，由于$N_{\text{初}}= N_{\text{末}} =N$，元素数目为$N^2$
 
-于是Heiseinberg提出应用二维的数表（今天我们称之为矩阵）来表示状态的改变方式。
+于是Heisenberg提出应用二维的数表（今天我们称之为矩阵）来表示状态的改变方式。
 
 作为算符（operator），对应一种观测（操作）
 
@@ -560,7 +562,7 @@ $\overset{\hat{O}}{\overbrace{\left[ \begin{matrix}
 
 矢量和：$|v_1 \rangle $+$|v_2 \rangle $
 
-矢量数乘：：$a|v \rangle $
+矢量数乘：$a|v \rangle $
 
 其满足如下的运算法则（这个就是高代的线性空间的性质）
 \begin{enumerate}
@@ -586,13 +588,13 @@ $\overset{\hat{O}}{\overbrace{\left[ \begin{matrix}
 
 \textbf{Definition3}：线性相关性
 
-若一组矢量满足$\sum_{i=1}^n{a_i|v_i\rangle =|0\rangle}$有平凡解（所有的系数$a_i$都为0）则称他们时线性关的，若只有平凡解则称为是线性无关的
+若一组矢量满足$\sum_{i=1}^n{a_i|v_i\rangle =|0\rangle}$有非平凡解（存在不全为0的系数$a_i$）则称它们是线性相关的，若只有平凡解则称为线性无关的
 
 \textbf{Definition4}：若一个线性空间最多有n个线性无关的矢量，则称该线性空间是几维的
 
  \textbf{Definition5}：若$|v\rangle$是n维矢量空间中的矢量，则$|v\rangle$一定可以写成几个线性无关的矢量的线性组合
  
-\textbf{Definition6}：n维度线性空间下的n个线性无关的矢量称为该线性空间的一组基（）basis，一般来说不是唯一的
+\textbf{Definition6}：n维线性空间下的n个线性无关的矢量称为该线性空间的一组基（basis），一般来说不是唯一的
 
 \textbf{Definition7}：矢量在基下的展开系数称为这组基下的分量（component）
 
@@ -605,7 +607,7 @@ $
 其满足如下性质
 \begin{enumerate}
 	\item $\overrightarrow{A}\cdot \overrightarrow{B}=\overrightarrow{B}\cdot \overrightarrow{A}$
-	\item $\overrightarrow{A}\cdot \overrightarrow{B}\ge 0$
+	\item $\overrightarrow{A}\cdot \overrightarrow{A}\ge 0$
 	\item $\overrightarrow{A}\cdot \left( b\overrightarrow{B}+c\overrightarrow{C} \right) =b\overrightarrow{A}\cdot \overrightarrow{B}+c\overrightarrow{A}\cdot \overrightarrow{C}
 	$
 \end{enumerate}
@@ -640,9 +642,9 @@ $|\rangle$ket（右矢），其在一组基下的具体形式是一个列矩阵
 \begin{itemize}
 	\item $\langle V|V\rangle \ge 0$,矢量的模长是一个非负实数
 	\item $\langle A|B\rangle $=$\langle B|A\rangle^* $在实矢量空间中退化为$\langle A|B\rangle $=$\langle B|A\rangle $，这保证了$\langle V|V\rangle $是实数
-	\item $\langle A|B\rangle =\sum_{i}^{n}a^{*}_i b_i=\left[ \begin{matrix}
-		a_{1}^{*}&		a_{2}^{*}&		a_{3}^{*}&		\cdots\\
-	\end{matrix}\,\,a_{n}^{*} \right] \left[ \begin{array}{c}
+	\item $\langle A|B\rangle =\sum_{i=1}^{n}a^{*}_i b_i=\left[ \begin{matrix}
+		a_{1}^{*}&		a_{2}^{*}&		a_{3}^{*}&		\cdots&		a_{n}^{*}
+	\end{matrix} \right] \left[ \begin{array}{c}
 		b_1\\
 		b_2\\
 		b_3\\
@@ -673,7 +675,7 @@ $|\rangle$ket（右矢），其在一组基下的具体形式是一个列矩阵
 
 \textbf{Definition2}：若$\langle A|B\rangle $=0，则称这两个是正交的
 
-\textbf{Definition3}：$\sqrt{\langle V|V\rangle }$称为$|V\rangle$的范数，若其范数唯一，则称$|V\rangle$为归一化的矢量
+\textbf{Definition3}：$\sqrt{\langle V|V\rangle }$称为$|V\rangle$的范数，若其范数为1，则称$|V\rangle$为归一化的矢量
 
 \textbf{Definition4}：一组范数均为1且两两正交的基称为正交归一基
 
@@ -693,11 +695,11 @@ Q:已知一给定的矢量和一组正交归一基，如何确定其展开系数
 	|v\rangle=\sum_{i}v_i|v_i\rangle
 \end{equation*}
 
-A:两边同时左乘$\langle V|$
+A:两边同时左乘$\langle v_j|$
 \begin{equation*}
 	\begin{split}
 		\langle v_j|v\rangle&=\sum_{i}v_i\langle v_j|v_i\rangle\\
-		&=\sum_{i}v_j\delta_{ij}\\
+		&=\sum_{i}v_i\delta_{ij}\\
 		&=v_j
 	\end{split}
 \end{equation*}
@@ -711,12 +713,13 @@ A:两边同时左乘$\langle V|$
 
 因此$ |v\rangle =\sum_i|v_i\rangle \langle v_i|v\rangle$
 	
-另外，我们称$\hat{P}=|v_i\rangle \langle v_j|\text{为}|v_i\rangle \text{的投影算符}$
+另外，我们称$\hat{P}_i=|v_i\rangle \langle v_i|$为沿$|v_i\rangle$方向的投影算符
 
 因为
 \begin{equation*}
 	\begin{split}
-		\hat{P}|v\rangle &=\hat{P}\sum_i|v_i\rangle \langle v_i|v\rangle\\&=v_i|v_i\rangle
+		\hat{P}_i|v\rangle &=|v_i\rangle \langle v_i|\sum_j|v_j\rangle \langle v_j|v\rangle\\
+		&=|v_i\rangle \langle v_i|v\rangle
 	\end{split}
 \end{equation*}
 它挑选了任意矢量$|v\rangle$中沿着$|v_i\rangle$的部分
@@ -728,17 +731,17 @@ A:两边同时左乘$\langle V|$
 
 1.将$|1\rangle$放缩为$|I\rangle$，使$\langle I|I\rangle=1$
 
-若$|2\rangle$与$|1\rangle$不正交，则$\langle 1|2\rangle\ne0$,即$|2\rangle$中有与$|1\rangle$平行的分量，其大小为$\langle 1|2\rangle$
+若$|2\rangle$与$|I\rangle$不正交，则$\langle I|2\rangle\ne0$,即$|2\rangle$中有与$|I\rangle$平行的分量，其大小为$\langle I|2\rangle$
 
 2.将$|2\rangle$中与$|1\rangle$平行的分量减去
 
-$|2'\rangle=|2\rangle-\langle 1|2\rangle|1\rangle$
+$|2'\rangle=|2\rangle-\langle I|2\rangle|I\rangle$
 
 再将$|2'\rangle$放缩为$|II\rangle$，使$\langle II|II\rangle=1$
 
 3.将$|3\rangle$中与$|1\rangle$平行的分量和与$|2\rangle$平行的分量减去
 
-$|3'\rangle=|3\rangle-\langle 1|3\rangle|1\rangle-\langle 2|3\rangle|2\rangle$
+$|3'\rangle=|3\rangle-\langle I|3\rangle|I\rangle-\langle II|3\rangle|II\rangle$
 
 再将$|3'\rangle$放缩为$|III\rangle$，使$\langle III|III\rangle=1$
 
@@ -797,22 +800,22 @@ $\left[ \begin{array}{c}
 	\alpha _2\\
 	\vdots\\
 	\alpha _n\\
-\end{array} \right] \left[ \beta \begin{matrix}
-	_{1}^{*}&		\beta _{2}^{*}&		\cdots&		\beta _{n}^{*}\\
-\end{matrix} \right] $
+	\end{array} \right] \left[ \begin{matrix}
+		\beta _{1}^{*}&		\beta _{2}^{*}&		\cdots&		\beta _{n}^{*}\\
+	\end{matrix} \right] $
 
-故$|\alpha  \langle  |$是一个算符，这种运算称为矢量的外积
+故$|\alpha \rangle \langle \beta |$是一个算符，这种运算称为矢量的外积
 
-由矩阵乘法的转置，我们可推得$\left( \hat{A}\hat{B} \right) ^{\dagger}=\left( \left( \hat{A}\hat{B} \right) ^* \right) ^T=\hat{A}^{\dagger}\hat{B}^{\dagger}
+由矩阵乘法的转置，我们可推得$\left( \hat{A}\hat{B} \right) ^{\dagger}=\left( \left( \hat{A}\hat{B} \right) ^* \right) ^T=\hat{B}^{\dagger}\hat{A}^{\dagger}
 $
-\subsubsection{厄米算符$\&$反厄米算符}
+\subsubsection{厄米算符\texorpdfstring{$\&$}{和}反厄米算符}
 
 厄米算符：$\hat{O}^{\dagger}=\hat{O},\text{即}O_{ij}={O_{ji}}^*
 $
 
 反厄米算符：$\hat{O}^{\dagger}=-\hat{O},\text{即}O_{ij}=-{O_{ji}}^*$
 
-定理：任意算符都可以写成厄米算符和反厄密算符的线性组合（类比任何矩阵都可以写成对称矩阵和反对称矩阵的和）
+定理：任意算符都可以写成厄米算符和反厄米算符的线性组合（类比任何矩阵都可以写成对称矩阵和反对称矩阵的和）
 \subsubsection{幺正算符}
 
 \begin{equation*}
@@ -834,16 +837,16 @@ $
 \begin{equation*}
 	(\hat{O}-O_n)|n\rangle=|0\rangle
 \end{equation*}
-将$O_n$乘以一个单位矩阵1
+将$O_n$乘以一个单位矩阵$\hat{I}$
 \begin{equation*}
-	(\hat{O}-O_n1)|n\rangle=|0\rangle
+	(\hat{O}-O_n\hat{I})|n\rangle=|0\rangle
 \end{equation*}
 
 这是个$n$个方程$n$个未知数齐次线性方程组
 
 其有非零解的条件是其系数行列式为0
 \begin{equation*}
-	\rightarrow|	(\hat{O}-O_n)|=0
+	\rightarrow \det(\hat{O}-O_n\hat{I})=0
 \end{equation*}
 
 通过这个方程我们就能解出本征值$O_n$，再将$O_n$代入本征方程即可解出本征矢
@@ -855,20 +858,20 @@ $
 定理三：幺正算符的本征值是模长为1的复数
 
 \subsubsection{厄米算符的对角化}
-定理1：算符在用其自身一组正交归一本征矢构成的的基下表示为一个对角矩阵
+定理1：算符在用其自身一组正交归一本征矢构成的基下表示为一个对角矩阵
 
-定理2：若$\hat{O}$在某正交归一基下是一个Hermite矩阵，则总存在一个幺正矩阵$\hat{U}
+定理2：若$\hat{O}$在某正交归一基下是一个Hermitian矩阵，则总存在一个幺正矩阵$\hat{U}
 $使得$\hat{U}^{\dagger}\hat{O}\hat{U}$在该基下是对角矩阵
 
 以上的证明为高代内容，参考高代笔记
 
 \chapter{理论基础}
-\section{Stem-Granch实验}
+\section{Stern-Gerlach实验}
 \begin{figure}[H]
 	\centering
 	\includegraphics[width=0.9\linewidth]{figure/screenshot0015}
 \end{figure}
-磁矩在非均匀磁场中z方向的受力$F_z=\mu\frac{\partial B_z}{\partial z}$
+磁矩在非均匀磁场中z方向的受力$F_z=\mu_z\frac{\partial B_z}{\partial z}$
 
 但银原子束分裂了，且分裂成独立的两束
 
@@ -876,11 +879,11 @@ which tells us
 
 I.电子除轨道角动量还有某个“角动量”
 
-II.这个角动量的大小为$\frac{1}{2}\hbar$
+II.这个角动量的z方向分量大小为$\frac{1}{2}\hbar$
 
-1925年Uhlenbeck和Goudsimt提出电子有自选假设：
+1925年Uhlenbeck和Goudsmit提出电子有自旋假设：
 
-(1)每一个电子都具有内禀角动量(自旋角动量)$\hat{S}$,其大小为$\frac{1}{2}\hbar$
+(1)每一个电子都具有内禀角动量(自旋角动量)$\hat{S}$,其z方向分量大小为$\frac{1}{2}\hbar$
 
 (2)自旋磁矩与自旋角动量的关系：
 $\begin{cases}
@@ -888,7 +891,7 @@ $\begin{cases}
 	g_s=2\quad  \left( g_l=1 \right)\\
 \end{cases}$
 
-因此我们效仿杨氏双缝，将向上偏转的电子态记为$|\uparrow \rangle $,向下偏转的电子态记为$\downarrow$
+因此我们效仿杨氏双缝，将向上偏转的电子态记为$|\uparrow \rangle $,向下偏转的电子态记为$|\downarrow\rangle$
 
 \subsection{级联S-G实验}
 \begin{figure}[H]
@@ -896,7 +899,7 @@ $\begin{cases}
 	\includegraphics[width=0.7\linewidth]{figure/screenshot0016}
 \end{figure}
 
-银原子未通过z方向的SG后分裂成两束，一束向上偏移，一束向下偏移
+银原子通过z方向的SG后分裂成两束，一束向上偏移，一束向下偏移
 
 取自旋态$|\uparrow \rangle $的粒子来通过x方向的SG装置，结果一束向x正方向偏转，一束向x负方向偏转，分别占总数的50$\%$
 
@@ -904,7 +907,7 @@ $\begin{cases}
 
 结果还是一束向上偏移，一束向下偏移
 
-这个结果很反直觉，因为我们再第一步就已经把z方向自旋向上的粒子挑选出来了
+这个结果很反直觉，因为我们在第一步就已经把z方向自旋向上的粒子挑选出来了
 
 \begin{enumerate}
 	\item  这个实验说明，对于$S_x$的测量把粒子$S_z$的信息抹去了,因此我们无法同时得到粒子$S_z$和$S_x$的信息，我们称$S_z$和$S_x$是互不相容的可观测量
@@ -912,27 +915,27 @@ $\begin{cases}
 \end{enumerate}
 这似乎告诉我们，在经典和量子世界中，测量扮演着十分不同的角色
 
-\section{用线性代数的语言来描述力}
+\section{用线性代数的语言来描述力学量}
 1、我们发现量子力学与线性代数有很多相似之处
 
 \begin{enumerate}
 	\item 可观测量在其本征态上有确定的值，矩阵作用在本征矢上得到一个确定的值
 	\item 叠加态原理告诉我们不同的态可以线性叠加成为一个新的可能态，矢量之间也可以通过线性叠加构造一个新的矢量
-	\item S.eq是线性偏微分方程，其同解为本征解（特解）的线性组合，这些本征解可以作为LVS的基，任意的通解可以通过基前面的系数的组合来表述
+	\item Schrödinger方程是线性偏微分方程，其通解为本征解（特解）的线性组合，这些本征解可以作为LVS的基，任意的通解可以通过基前面的系数的组合来表述
 	\item 可观测量由初，末两个状态来决定，应是二维的，而测量会使一个态转化为另一个态，矩阵是二阶张量，矩阵作用在一个矢量上会使其变为另一个矢量
 \end{enumerate}
 因此，我们可以用矢量来描述量子系统的状态(称为态矢量)，
 
 $|\psi \rangle $:态矢量，它包含了系统的全部信息
 
-$|\hat{O} \rangle $:力学量
+$\hat{O}$:力学量
 
 但并不是所有的矩阵都能描述力学量
 
-因为可观测量是物理的，即其测量值（本征值）应为实数，因此其应用一个厄米矩阵来描述
+因为可观测量是物理的，即其测量值（本征值）应为实数，因此其应由一个厄米矩阵来描述
 \subsection{拓展到无穷维}
 
-量子力学体系中，很多系统无法用有限个维度来描述，而是无穷维的，这个时候我们能就要对我们在第一章所学的线代知识经行拓展
+量子力学体系中，很多系统无法用有限个维度来描述，而是无穷维的，这个时候我们就要对我们在第一章所学的线代知识进行拓展
 
 考虑定义在$[a,b]$上的函数$f(x)$
 \begin{figure}[H]
@@ -951,7 +954,7 @@ $|\hat{O} \rangle $:力学量
 	\end{array} \right] \text{即}f\text{在每一}x_i\text{的函数值等于}|f\rangle \text{用}|x_i\rangle \text{展开的展开系数}
 \end{equation*}
 
-而该空间生成的基矢为$|x_i\rangle=|x_i\rangle =\left[ \begin{array}{c}
+而该空间生成的基矢为$|x_i\rangle =\left[ \begin{array}{c}
 	0\\
 	0\\
 	\vdots\\
@@ -965,7 +968,7 @@ $|\hat{O} \rangle $:力学量
 
 若沿用离散有限维时的内积定义
 \begin{equation*}
-	\langle f|g\rangle =\underset{n\rightarrow \infty}{\lim}\sum_i^n{f^*\left( x_i \right) g\left( x_i \right)}
+	\langle f|g\rangle =\underset{n\rightarrow \infty}{\lim}\sum_{i=1}^n{f^*\left( x_i \right) g\left( x_i \right)}
 \end{equation*}
 
 由于$f^*\left( x_i \right) g\left( x_i \right)$都是有限的,因此求和可能会无限大
@@ -975,9 +978,9 @@ $|\hat{O} \rangle $:力学量
 一个合乎情理的方式是,取其在每个点上的平均值,这样结果一定是有界的,故
 \begin{equation*}
 	\begin{split}
-		\langle f|g\rangle &=\underset{n\rightarrow \infty}{\lim}\sum_i^n{f^*\left( x_i \right) g\left( x_i \right)}\frac{1}{n+1}
+		\langle f|g\rangle &=\underset{n\rightarrow \infty}{\lim}\sum_{i=1}^n{f^*\left( x_i \right) g\left( x_i \right)}\Delta x
 		\\
-		&=\int\limits_a^b{f^*\left( x_i \right) g\left( x_i \right) dx}
+		&=\int\limits_a^b{f^*\left( x \right) g\left( x \right) dx}
 	\end{split}
 \end{equation*}
 
@@ -990,18 +993,18 @@ $
 因此
 \begin{equation*}
 	\begin{split}
-		\langle f|g\rangle &=\int\limits_a^b{f^*\left( x_i \right) g\left( x_i \right) dx}
+		\langle f|g\rangle &=\int\limits_a^b{f^*\left( x \right) g\left( x \right) dx}
 		\\
 		&=\int\limits_a^b{\langle f|x\rangle \langle x|g\rangle dx}	
 	\end{split}
 \end{equation*}
 
-得到$\int\limits_a^b{| x\rangle \langle x| dx}=1	$
+得到$\int\limits_a^b{| x\rangle \langle x| dx}=\hat{I}	$
 \subsection{Dirac归一化}
 
 我们考虑连续空间中基矢的正交归一性
 
-由于这个无穷维的矢量空间中的个基矢不含彼此的成分
+由于这个无穷维的矢量空间中的各个基矢不含彼此的成分
 
 因此$\langle x|x'\rangle$=0$x\ne x'$
 
@@ -1014,7 +1017,7 @@ $
 
 两边同时左乘$\langle x|$
 \begin{equation*}
-	f(x)=\langle x|f\rangle =\int\limits_a^b{\langle x|x\rangle \langle x|f\rangle dx}
+	f(x)=\langle x|f\rangle =\int\limits_a^b{\langle x|x'\rangle \langle x'|f\rangle dx'}
 \end{equation*}
 
 由于此$\langle x|x'\rangle$在x$\ne$x'处全为零
@@ -1022,7 +1025,7 @@ $
 因此积分区间可改写为$ x$附近的无穷小邻域
 \begin{equation*}
 	\begin{split}
-		f\left( x \right) &=\int\limits_{x-\varepsilon}^{x+\varepsilon}{\langle x|x\rangle \langle x'|f\rangle dx'}
+		f\left( x \right) &=\int\limits_{x-\varepsilon}^{x+\varepsilon}{\langle x|x'\rangle \langle x'|f\rangle dx'}
 		\\
 		&=f\left( x \right) \int\limits_{x-\varepsilon}^{x+\varepsilon}{\langle x|x'\rangle dx'}
 		\\
@@ -1041,12 +1044,12 @@ $
 	\end{cases}
 \end{equation*}
 
-为了方便起见,我们定义一一个新的函数$\langle x|x'\rangle=\delta(x-x') $,其满足
+为了方便起见,我们定义一个新的函数$\langle x|x'\rangle=\delta(x-x') $,其满足
 \begin{equation*}
 	\delta \left( x-x' \right) =\begin{cases}
 		0,x\ne x'\\
 		\infty ,x=x'\\
-	\end{cases}.\int_{-\infty}^{+\infty}{\delta \left( x-x' \right)}=1
+		\end{cases},\quad \int_{-\infty}^{+\infty}{\delta \left( x-x' \right)dx}=1
 \end{equation*}
  
  其图像一般表示为:
@@ -1054,29 +1057,29 @@ $
  	\centering
  	\includegraphics[width=0.7\linewidth]{figure/screenshot0018}
  \end{figure}
- 显然其为关于x的偶函数
- \subsubsection{Dirac-$\delta$函数的性质}
+ 显然$\delta(x)$为偶函数
+ \subsubsection{Dirac-\texorpdfstring{$\delta$}{delta}函数的性质}
  \begin{enumerate}
  	\item 采样性:$\int_{-\infty}^{+\infty}{\delta \left( x-x' \right) f\left( x \right) dx}=f\left( x' \right) 
  	$
  	\item 放缩性:$\delta \left( ax \right) =\frac{1}{|a|}\delta \left( x \right) 
  	$
  	\item 实值性
- 	\item $\delta$函数的傅里叶变换:
- 	\begin{equation*}
- 		\frac{1}{\sqrt{2\pi}}\int\limits_{-\infty}^{+\infty}{e^{-ikx}\delta \left( x-x' \right) dx=}\frac{1}{\sqrt{2\pi}}e^{-ikx'}
- 	\end{equation*}
+	 	\item $\delta$函数的傅里叶变换:
+	 	\begin{equation*}
+	 		\frac{1}{\sqrt{2\pi}}\int\limits_{-\infty}^{+\infty}{e^{-ikx}\delta \left( x-x' \right) dx}=\frac{1}{\sqrt{2\pi}}e^{-ikx'}
+	 	\end{equation*}
  	\item 含$\delta$函数的导数积分
  	\begin{equation*}
- 	\delta' \left( x-x' \right) =\delta \left( x-x' \right) \frac{d}{dx}
+	 	\int_{-\infty}^{+\infty}{\delta' \left( x-x' \right) f\left( x \right) dx}=-f'\left( x' \right)
  	\end{equation*}
- 	\item 单位界越函数和$\delta$函数
+	 	\item 单位阶跃函数和$\delta$函数
  	\begin{figure}[H]
  		\centering
  		\includegraphics[width=0.7\linewidth]{figure/screenshot0019}
  	\end{figure}
  	\begin{equation*}
- 		\frac{d}{dx}\theta =\begin{cases}
+	 		\frac{d}{dx}\theta(x) =\begin{cases}
  			\infty ,x=0\\
  			0,x\ne 0\\
  		\end{cases}=\delta \left( x \right)\\
@@ -1088,39 +1091,39 @@ $
  	\hat{O}|f\rangle=|\hat{f}\rangle
  \end{equation*}
  
- 最简单的例子便是\textbf{求导算}符$\hat{D}$
+ 最简单的例子便是\textbf{求导算符}$\hat{D}$
  \begin{equation*}
- 		\hat{D}|f\rangle=|\frac{d}{dx}f\rangle
+ 		\hat{D}|f\rangle=\left|\frac{d}{dx}f\right\rangle
  \end{equation*}
  
- 其中$|\frac{d}{dx}f\rangle$表示对应函数$f'(x)$的右矢,其每一个分量为$\frac{df}{dx}$即$f'(x)$
+ 其中$\left|\frac{d}{dx}f\right\rangle$表示对应函数$f'(x)$的右矢,其每一个分量为$\frac{df}{dx}$即$f'(x)$
  
  那么$\hat{D}$在基$|x\rangle$下的矩阵表示是什么?
  
  这等价于求矩阵元
  在上式左乘$\langle x|$
  
- $\langle x|\hat{D}f|\rangle=\langle x|\frac{d}{dx}f\rangle=f'(x)$
+ $\langle x|\hat{D}|f\rangle=\left\langle x\middle|\frac{d}{dx}f\right\rangle=f'(x)$
  
  $\int{\langle x|\hat{D}|x'\rangle \langle x'|f\rangle dx' =f'(x)}$
  
- $\int{\hat{D}_{xx'}f\left( x' \right) dx'=f\prime(x)}$
+ $\int{\hat{D}_{xx'}f\left( x' \right) dx'=f'(x)}$
  
  因此$\hat{D}_{xx'}=\delta'(x-x')$
  
- 求导算符是反厄米算符: $\bar{D}^\dagger=-\bar{D}$
- 
- \subsubsection{位置算符$\bar{X}$}
- $\bar{X}|x_j\rangle=x_j|x_j\rangle$
+ 求导算符是反厄米算符: $\hat{D}^\dagger=-\hat{D}$
+	 
+ \subsubsection{位置算符\texorpdfstring{$\hat{X}$}{X}}
+ $\hat{X}|x_j\rangle=x_j|x_j\rangle$
  $\rightarrow X_{ij}=x_j\delta(x_i-x_j)$
  
- 因此$\bar{X}$在$|x\rangle$基下的矩阵表示为对角矩阵
+ 因此$\hat{X}$在$|x\rangle$基下的矩阵表示为对角矩阵
  \subsubsection{无限维下的厄米算符}
- 厄米算符是量子力学种我们特别关心的一类算符,因为厄米算符的本征值为实数,而可观测量是物理的,即测量到的结果(本征值)必须是实数,因此我们用厄米算符来表示可观测量
- 
- 命题:若$\bar{K}$为厄米算符,则$\langle \hat{K}f|g\rangle =\langle f|\hat{K}g\rangle  $
- 
- 这是说明$\bar{K}$为厄米算符的另一种判据,在不方便求解$\bar{K}^T$时十分有用
+ 厄米算符是量子力学中我们特别关心的一类算符,因为厄米算符的本征值为实数,而可观测量是物理的,即测量到的结果(本征值)必须是实数,因此我们用厄米算符来表示可观测量
+	 
+ 命题:若$\hat{K}$为厄米算符,则$\langle \hat{K}f|g\rangle =\langle f|\hat{K}g\rangle  $
+	 
+ 这是说明$\hat{K}$为厄米算符的另一种判据,在不方便求解$\hat{K}^{\dagger}$时十分有用
  \subsubsection{力学量的平均值}
  
  以位置为例,我们知道$|\psi(x)|^2$表示粒子在x处出现的概率密度,则x在全空间上的均值应等于$\int_{-\infty}^{+\infty}x\rho(x)dx$
@@ -1135,17 +1138,17 @@ $
  		\\
  		&=\int\limits_{-\infty}^{+\infty}{\psi ^*\left( x \right) x\psi \left( x \right) dx}
  		\\
- 		&=\langle \psi |x|\psi \rangle \text{记作}<x>
+ 		&=\langle \psi |x|\psi \rangle \text{记作}\langle x\rangle
  	\end{split}
  \end{equation*}
  
- 实际上,对于任意力学量$\bar{\Omega}$
+ 实际上,对于任意力学量$\hat{\Omega}$
  
  在$|\psi\rangle$态下对其测量时总是会落入对应特定本征值$\omega_i$的本征态$|\omega_i\rangle$
  
  而对应的概率为$P_i =|\langle\omega_i|\psi\rangle|^2$
  
- 力学量<$\bar{\Omega}$>在某个态$|\psi\rangle$下的平均值为$\langle\psi|\bar{\Omega}|\psi\rangle$,\text{记作}<$\bar{\Omega}$>
+ 力学量$\hat{\Omega}$在某个态$|\psi\rangle$下的平均值为$\langle\psi|\hat{\Omega}|\psi\rangle$,\text{记作}$\langle\hat{\Omega}\rangle$
  
  例:求自由粒子速度的平均值
  \begin{equation*}
@@ -1166,15 +1169,15 @@ $
  		\\
  		&=\int_{-\infty}^{+\infty}{x\frac{i}{\hbar}\left( \hat{H}\psi ^*\psi -\psi ^*\hat{H}\psi \right)}dx
  		\\
- 		&=\int_{-\infty}^{+\infty}{x\frac{i}{\hbar}\frac{\hbar ^2}{2\mu}\left( H\psi ^*\frac{\partial ^2}{\partial x^2}\psi -\frac{\partial ^2}{\partial x^2}\psi ^*\psi \right)}dx
+ 		&=\int_{-\infty}^{+\infty}{x\frac{i\hbar}{2\mu}\left( \psi ^*\frac{\partial ^2}{\partial x^2}\psi -\frac{\partial ^2\psi ^*}{\partial x^2}\psi \right)}dx
  		\\
- 		&=\int_{-\infty}^{+\infty}{x\frac{i}{\hbar}\frac{\hbar ^2}{2\mu}\frac{\partial}{\partial x}\left( \psi ^*\frac{\partial}{\partial x}\psi -\frac{\partial}{\partial x}\psi ^*\psi \right)}dx
+ 		&=\int_{-\infty}^{+\infty}{x\frac{i\hbar}{2\mu}\frac{\partial}{\partial x}\left( \psi ^*\frac{\partial}{\partial x}\psi -\frac{\partial \psi ^*}{\partial x}\psi \right)}dx
  		\\
- 		&=\frac{-ih}{2\mu}\left( \int_{-\infty}^{+\infty}{\psi ^*\frac{\partial}{\partial x}\psi dx-\int_{-\infty}^{+\infty}{d\psi ^*\psi}} \right) 
+ 		&=\frac{-i\hbar}{2\mu}\left( \int_{-\infty}^{+\infty}{\psi ^*\frac{\partial}{\partial x}\psi dx-\int_{-\infty}^{+\infty}{\frac{\partial \psi ^*}{\partial x}\psi dx}} \right) 
  		\\
- 		&=\int_{-\infty}^{+\infty}{\psi ^*\frac{-ih}{\mu}\frac{\partial}{\partial x}\psi}dx
+ 		&=\int_{-\infty}^{+\infty}{\psi ^*\frac{-i\hbar}{\mu}\frac{\partial}{\partial x}\psi}dx
  		\\
- 		&=\langle \psi |\frac{-ih}{\mu}\frac{\partial}{\partial x}|\psi \rangle =\left< v_x \right> 
+ 		&=\langle \psi |\frac{-i\hbar}{\mu}\frac{\partial}{\partial x}|\psi \rangle =\left< v_x \right> 
  	\end{split}
  \end{equation*}
  
@@ -1187,9 +1190,9 @@ $
  	\item 全同粒子假设:内禀属性完全相同的粒子不可分辨
  	
  \end{enumerate}
- \section{自旋$\frac{1}{2}$系统的矩阵形式}
+ \section{自旋\texorpdfstring{$\frac{1}{2}$}{1/2}系统的矩阵形式}
  
- 1.在$\hat{S_z}$自身的本征矢构成的基下,$\hat{S_z}$是一个对角矩阵,其对角线元素即为本征值,因此
+ 1.在$\hat{S}_z$自身的本征矢构成的基下,$\hat{S}_z$是一个对角矩阵,其对角线元素即为本征值,因此
 
  取\begin{equation*}
  	|\uparrow \rangle =\left[ \begin{array}{c}
@@ -1207,11 +1210,11 @@ $
  			0&		-\frac{\hbar}{2}\\
  		\end{matrix} \right] 
  		\\
- 		&=\frac{\hbar}{2}|\uparrow \rangle \langle \downarrow |+\left( -\frac{\hbar}{2} \right) |\downarrow \rangle \langle \downarrow |
+ 		&=\frac{\hbar}{2}|\uparrow \rangle \langle \uparrow |+\left( -\frac{\hbar}{2} \right) |\downarrow \rangle \langle \downarrow |
  	\end{split}
  \end{equation*}
  
- 那在$\hat{S_2}$的矩阵形式是什么?(把在$\hat{S_z}$的上下换成正负即可)
+ 那在$\hat{S}_x$自身表象下的矩阵形式是什么?(把在$\hat{S}_z$的上下换成正负即可)
  
  2.现在,问题在于,如何在$S_z $表象(以上下箭头为本征向量的)中表示$S_x $的矩阵
  
@@ -1220,7 +1223,7 @@ $
  	\begin{split}
  		\rho =|\psi \left( x \right) |^2&=\psi ^*\left( x \right) \psi \left( x \right) 
  		\\
- 		&=\psi \left( x \right) e^{-i\alpha}\psi \left( x \right) e^{i\alpha}
+ 		&=\psi ^*\left( x \right) e^{-i\alpha}\psi \left( x \right) e^{i\alpha}
  		\\
  		&=|\psi \left( x \right) e^{i\alpha}|^2
  	\end{split}
@@ -1249,10 +1252,10 @@ $
  
  而$\langle -|+\rangle$=0,则
  \begin{equation*}
- 	\left( \frac{1}{\sqrt{2}}|\uparrow \rangle +\frac{1}{\sqrt{2}}e^{i\delta _2}|\downarrow \rangle \right) \left( \frac{1}{\sqrt{2}}|\uparrow \rangle +\frac{1}{\sqrt{2}}e^{i\delta' _2}|\downarrow \rangle \right) =\frac{1}{2}+\frac{1}{2}e^{i\left( \delta _2-\delta' _2 \right)}=0
+ 	\langle -|+\rangle=\left( \frac{1}{\sqrt{2}}\langle\uparrow |+\frac{1}{\sqrt{2}}e^{-i\delta' _2}\langle\downarrow | \right) \left( \frac{1}{\sqrt{2}}|\uparrow \rangle +\frac{1}{\sqrt{2}}e^{i\delta _2}|\downarrow \rangle \right) =\frac{1}{2}+\frac{1}{2}e^{i\left( \delta _2-\delta' _2 \right)}=0
  \end{equation*}
  
- 则$\frac{1}{2}e^{i\left( \delta _2-\delta' _2 \right)}=-1$
+ 则$\frac{1}{2}e^{i\left( \delta _2-\delta' _2 \right)}=-\frac{1}{2}$
  
  即$\frac{1}{2}e^{i\left( \delta _2 \right)}=-\frac{1}{2}e^{i\left( \delta' _2 \right)}$
  
@@ -1263,7 +1266,7 @@ $
  
  则\begin{equation*}
  	\begin{split}
- 		|+\rangle \langle +|&=\left( \frac{1}{\sqrt{2}}|\uparrow \rangle +\frac{1}{\sqrt{2}}e^{i\delta _2}|\downarrow \rangle \right) \left( \frac{1}{\sqrt{2}}|\uparrow \rangle +\frac{1}{\sqrt{2}}e^{i\delta _2}|\downarrow \rangle \right) 
+ 		|+\rangle \langle +|&=\left( \frac{1}{\sqrt{2}}|\uparrow \rangle +\frac{1}{\sqrt{2}}e^{i\delta _2}|\downarrow \rangle \right) \left( \frac{1}{\sqrt{2}}\langle\uparrow |+\frac{1}{\sqrt{2}}e^{-i\delta _2}\langle\downarrow | \right) 
  		\\
  		&=\frac{1}{2}\left( |\uparrow \rangle \langle \uparrow |+e^{-i\delta _2}|\uparrow \rangle \langle \downarrow |+e^{i\delta _2}|\downarrow \rangle \langle \uparrow |+|\downarrow \rangle \langle \downarrow | \right) 
  	\end{split}
@@ -1271,7 +1274,7 @@ $
  
  \begin{equation*}
  	\begin{split}
- 		|-\rangle \langle -|&=\left( \frac{1}{\sqrt{2}}|\uparrow \rangle -\frac{1}{\sqrt{2}}e^{i\delta _2}|\downarrow \rangle \right) \left( \frac{1}{\sqrt{2}}|\uparrow \rangle -\frac{1}{\sqrt{2}}e^{i\delta _2}|\downarrow \rangle \right) 
+ 		|-\rangle \langle -|&=\left( \frac{1}{\sqrt{2}}|\uparrow \rangle -\frac{1}{\sqrt{2}}e^{i\delta _2}|\downarrow \rangle \right) \left( \frac{1}{\sqrt{2}}\langle\uparrow |-\frac{1}{\sqrt{2}}e^{-i\delta _2}\langle\downarrow | \right) 
  		\\
  		&=\frac{1}{2}\left( |\uparrow \rangle \langle \uparrow |-e^{-i\delta _2}|\uparrow \rangle \langle \downarrow |-e^{i\delta _2}|\downarrow \rangle \langle \uparrow |+|\downarrow \rangle \langle \downarrow | \right) 
  	\end{split}
@@ -1282,7 +1285,7 @@ $
  	\begin{split}
  		\hat{S}_x&=\frac{\hbar}{2}|+\rangle \langle +|-\frac{\hbar}{2}|-\rangle \langle -|
  		\\
- 		&=\frac{\hbar}{2}\left( |\uparrow \rangle \langle \uparrow |+e^{-i\delta _2}|\uparrow \rangle \langle \downarrow |+e^{i\delta _2}|\downarrow \rangle \langle \uparrow |+|\downarrow \rangle \langle \downarrow | \right)\\ &-\frac{\hbar}{2}\left( |\uparrow \rangle \langle \uparrow |-e^{-i\delta _2}|\uparrow \rangle \langle \downarrow |-e^{i\delta _2}|\downarrow \rangle \langle \uparrow |+|\downarrow \rangle \langle \downarrow | \right) 
+ 		&=\frac{\hbar}{4}\left( |\uparrow \rangle \langle \uparrow |+e^{-i\delta _2}|\uparrow \rangle \langle \downarrow |+e^{i\delta _2}|\downarrow \rangle \langle \uparrow |+|\downarrow \rangle \langle \downarrow | \right)\\ &-\frac{\hbar}{4}\left( |\uparrow \rangle \langle \uparrow |-e^{-i\delta _2}|\uparrow \rangle \langle \downarrow |-e^{i\delta _2}|\downarrow \rangle \langle \uparrow |+|\downarrow \rangle \langle \downarrow | \right) 
  		\\
  		&=\frac{\hbar}{2}\left( e^{-i\delta _2}|\uparrow \rangle \langle \downarrow |+e^{i\delta _2}|\downarrow \rangle \langle \uparrow | \right) ,\text{现选取}\hat{S}_z\text{表象}
  		\\
@@ -1305,7 +1308,7 @@ $
  \end{equation*}
  由于y是第三个轴,我们要对其加以约束
  \begin{equation*}
- 	|<S_{y+1}|->|^{2}=|<S_{y-1}|->|^{2}= |<S_{y+1}|+>|^{2}= |<S_{y-1}|+>|^{2}=\frac{1}{2}
+ 	|\langle S_{y+}|-\rangle|^{2}=|\langle S_{y-}|-\rangle|^{2}= |\langle S_{y+}|+\rangle|^{2}= |\langle S_{y-}|+\rangle|^{2}=\frac{1}{2}
  \end{equation*}
  
  代入计算可得到
@@ -1353,7 +1356,7 @@ $
 \begin{equation*}
 	[\hat{S}_{\alpha},\hat{S}_{\beta}]=\varepsilon _{\alpha \beta \gamma}i\hbar \hat{S}_{\gamma}
 \end{equation*}
-$\varepsilon_{\alpha\beta\gamma}$称为levu-civita记号,逆序数为偶数时等于1,逆序数为奇时为-1
+	$\varepsilon_{\alpha\beta\gamma}$称为Levi-Civita记号,逆序数为偶数时等于1,逆序数为奇数时为-1
 
 
 还可以定义
@@ -1373,7 +1376,7 @@ $\varepsilon_{\alpha\beta\gamma}$称为levu-civita记号,逆序数为偶数时�
 	\begin{split}
 		|+\rangle &=\frac{1}{\sqrt{2}}|\uparrow \rangle +\frac{1}{\sqrt{2}}|\downarrow \rangle 
 		\\
-		|-\rangle &=\frac{1}{\sqrt{2}}|\uparrow \rangle +\frac{1}{\sqrt{2}}|\downarrow \rangle 
+			|-\rangle &=\frac{1}{\sqrt{2}}|\uparrow \rangle -\frac{1}{\sqrt{2}}|\downarrow \rangle 
 	\end{split}
 \end{equation*}
 
@@ -1383,7 +1386,7 @@ $\varepsilon_{\alpha\beta\gamma}$称为levu-civita记号,逆序数为偶数时�
 
 答案是可以的.我们称这样的力学量为相容力学量
 
-因为算符对应着测量,因此如果$\hat{A}$和$\hat{B}$可以同时取确定的值,则先测$\hat{A}$后测$\hat{B}$还是先测$\hat{B}$后测$\hat{A}$应没有区别,则$\hat{A}$$\hat{B}$=$\hat{B}$$\hat{A}$,即[$\hat{A}$,$\hat{B}$]=0
+	因为算符对应着测量,因此如果$\hat{A}$和$\hat{B}$可以同时取确定的值,则先测$\hat{A}$后测$\hat{B}$还是先测$\hat{B}$后测$\hat{A}$应没有区别,则$\hat{A}\hat{B}=\hat{B}\hat{A}$,即$[\hat{A},\hat{B}]=0$
 
 所以我们断言,$\text{力学量}\hat{A}\text{和}\hat{B}\text{存在一组共同的本征态}\Leftrightarrow \left[ \hat{A},\hat{B} \right] =0$
 
@@ -1396,7 +1399,7 @@ $\varepsilon_{\alpha\beta\gamma}$称为levu-civita记号,逆序数为偶数时�
 
 
 
-计算$[x,\hat{P_x}$
+	计算$[x,\hat{P}_x]$
 
 将其作用在任意波函数上
 \begin{equation*}
@@ -1409,35 +1412,35 @@ $\varepsilon_{\alpha\beta\gamma}$称为levu-civita记号,逆序数为偶数时�
 	\end{split}
 \end{equation*}
 
-因此,$[x,\hat{P_x}]=i\hbar$
+	因此,$[x,\hat{P}_x]=i\hbar$
 
 几个对易式的基本性质
 \begin{itemize}
 	\item $[ \hat{A} ,\hat{B} ]=- [ \hat{B} ,\hat{A} ]$
-	\item $[\hat{A},f(A)]=0$
+		\item $[\hat{A},f(\hat{A})]=0$
 	\item $[\hat{A},const]=0$
 	\item $[\hat{A},\hat{B}+\hat{C}]=[\hat{A},\hat{B}]+[\hat{A},\hat{C}]$
 	\item $[ \hat{A} ,\hat{B}\hat{C} ]=\hat{B}[ \hat{A} ,\hat{C} ]+[ \hat{A} ,\hat{B} ] \hat{C} $
 	\item $[\hat{A}\hat{B},\hat{C}]=\hat{A}[\hat{B},\hat{C}]+[\hat{A},\hat{C}]\hat{B}$
-	\item $[\hat{A},[\hat{B},\hat{C}]]+[\hat{B}[\hat{C},\hat{A}]]+[\hat{C},[\hat{A},\hat{B}]]=0.$
+		\item $[\hat{A},[\hat{B},\hat{C}]]+[\hat{B},[\hat{C},\hat{A}]]+[\hat{C},[\hat{A},\hat{B}]]=0.$
 \end{itemize}
 
 \textbf{例}请计算
 \begin{enumerate}
-	\item $[x,\frac{-\hbar}{2\mu}\hat{p}^{2}+V(x)]$
+		\item $[x,\frac{\hat{p}^{2}}{2\mu}+V(x)]$
 	\item $[\hat{p},f(x)]$
 	\item $[x,f(\hat{p})]$
 \end{enumerate}
 
 1.\begin{equation*}
 	\begin{split}
-		[x,\frac{-\hbar}{2\mu}\hat{p}^2+V(x)]&=[x,\frac{-\hbar}{2\mu}\hat{p}^2]+[x,V(x)]
+			[x,\frac{\hat{p}^2}{2\mu}+V(x)]&=[x,\frac{\hat{p}^2}{2\mu}]+[x,V(x)]
 		\\
-		&=\frac{-\hbar}{2\mu}[x,\hat{p}^2]+[x,V(x)]
+			&=\frac{1}{2\mu}[x,\hat{p}^2]+[x,V(x)]
 		\\
-		&=\frac{-\hbar}{2\mu}\left( \hat{p}[x,\hat{p}]+[x,\hat{p}]\hat{p} \right) 
+			&=\frac{1}{2\mu}\left( \hat{p}[x,\hat{p}]+[x,\hat{p}]\hat{p} \right) 
 		\\
-		&=\frac{-\hbar ^2}{\mu}\hat{p}
+			&=\frac{i\hbar}{\mu}\hat{p}
 	\end{split}
 \end{equation*}
 
@@ -1476,11 +1479,11 @@ $\varepsilon_{\alpha\beta\gamma}$称为levu-civita记号,逆序数为偶数时�
 
 令新引入的算符为$\hat{B}$,$\hat{A}$的非简并本征态矢也是$\hat{B}$的本征态矢
 
-$\hat{A}$的件补本征态矢可以通过线性组合构造出$\hat{B}$的本征态矢
+	$\hat{A}$的简并本征态矢可以通过线性组合构造出$\hat{B}$的本征态矢
 
 新构造出来的本征态矢仍关于$\hat{A}$简并,但不一定关于$\hat{B}$简并
 
-若关于$\hat{B}$都是非简并的,则通过$\hat{B}$的测量值就能确定下上一步中$\hat{A}$不能确定的态.这样便能唯一地确定下系统的状态,我们边称$ \left\lbrace \hat{A},\hat{B}\right\rbrace $为新的一组CSCO
+	若关于$\hat{B}$都是非简并的,则通过$\hat{B}$的测量值就能确定上一步中$\hat{A}$不能确定的态.这样便能唯一地确定系统的状态,我们便称$ \left\lbrace \hat{A},\hat{B}\right\rbrace $为新的一组CSCO
 
 显然,CSCO中力学量的个数对应着系统的自由度
 
@@ -1492,10 +1495,10 @@ $\hat{A}$的件补本征态矢可以通过线性组合构造出$\hat{B}$的本�
 
 则$\hat{A}$,$\hat{B}$在一般情况下不能同时取确定的测量值
 
-因此在一般态上和$\hat{A}$$\hat{B}$的不确定度不能同时取0
+	因此在一般态上$\hat{A}$和$\hat{B}$的不确定度不能同时取0
 
 那么是否意味着,$\varDelta\hat{A}\varDelta\hat{B}>0$呢?
-\subsubsection{不确定性原理和ehrenfest定理}
+	\subsubsection{不确定性原理和Ehrenfest定理}
 海森堡不确定性原理
 
 根据概率论公式\quad $(\varDelta A)^2=\overline{(A-\bar{A})^2}$
@@ -1503,9 +1506,9 @@ $\hat{A}$的件补本征态矢可以通过线性组合构造出$\hat{B}$的本�
 因此在一般态$|\psi\rangle$上,
 \begin{equation*}
 	\begin{split}
-		\left( \varDelta \hat{A} \right) ^2&=\langle \psi |(A-\bar{A})^2|\psi \rangle 
+			\left( \varDelta \hat{A} \right) ^2&=\langle \psi |(\hat{A}-\langle\hat{A}\rangle)^2|\psi \rangle 
 		\\
-		\left( \varDelta \hat{B} \right) ^2&=\langle \psi |(B-\bar{B})^2|\psi \rangle 
+			\left( \varDelta \hat{B} \right) ^2&=\langle \psi |(\hat{B}-\langle\hat{B}\rangle)^2|\psi \rangle 
 	\end{split}
 \end{equation*}
 
@@ -1518,7 +1521,7 @@ $\hat{A}$的件补本征态矢可以通过线性组合构造出$\hat{B}$的本�
 		\\
 		&=\langle \psi |\hat{A}^2|\psi \rangle -2\left< \hat{A} \right> ^2\langle \psi |\psi \rangle +\left< \hat{A} \right> ^2\langle \psi |\psi \rangle 
 		\\
-		&=\left( \langle \psi |\hat{A}-\langle \psi |\left< \hat{A} \right> \right) \left( \hat{A}|\psi \rangle -\left< \hat{A} \right> |\psi \rangle \right) 
+			&=\left( \langle \psi |\hat{A}-\langle \psi |\left< \hat{A} \right> \right) \left( \hat{A}|\psi \rangle -\left< \hat{A} \right> |\psi \rangle \right) 
 		\\
 		&=\langle \left( \hat{A}-\left< \hat{A} \right> \right) \psi |\left( \hat{A}-\left< \hat{A} \right> \right) \psi \rangle ,\text{令}\left( \hat{A}-\left< \hat{A} \right> \right) \psi =f
 		\\
@@ -1528,7 +1531,7 @@ $\hat{A}$的件补本征态矢可以通过线性组合构造出$\hat{B}$的本�
 同理
 \begin{equation*}
 	\begin{split}
-		\left( \varDelta A \right) ^2&=\langle \left( \hat{B}-\left< \hat{B} \right> \right) \psi |\left( \hat{B}-\left< \hat{B} \right> \right) \psi \rangle ,\text{令}\left( \hat{B}-\left< \hat{B} \right> \right) \psi =g
+			\left( \varDelta B \right) ^2&=\langle \left( \hat{B}-\left< \hat{B} \right> \right) \psi |\left( \hat{B}-\left< \hat{B} \right> \right) \psi \rangle ,\text{令}\left( \hat{B}-\left< \hat{B} \right> \right) \psi =g
 		\\
 		&=\langle g|g\rangle 
 	\end{split}
@@ -1543,7 +1546,7 @@ $\langle f|g\rangle$是复数
 
 则$|z|^2=x^2+y^2\ge y^2=[\frac{1}{2i}(z-z^*)]^2 $
 
-$\rightarrow\left( \varDelta \hat{A} \right) ^2\left( \varDelta \hat{B} \right) ^2\ge |\langle f|g\rangle |^2\ge \left( \frac{1}{2i}\langle f|g\rangle -\langle g|f\rangle \right) ^2$
+	$\rightarrow\left( \varDelta \hat{A} \right) ^2\left( \varDelta \hat{B} \right) ^2\ge |\langle f|g\rangle |^2\ge \left| \frac{1}{2i}\left( \langle f|g\rangle -\langle g|f\rangle \right) \right| ^2$
 
 我们就可计算出
 \begin{equation*}
@@ -1558,8 +1561,8 @@ $\rightarrow\left( \varDelta \hat{A} \right) ^2\left( \varDelta \hat{B} \right) 
 特别的,我们有时间-能量不确定性原理
 
 $\varDelta E\varDelta t\ge \frac{\hbar}{2}$,但需注意的是,式中的$\varDelta t$指的并不是时间的不确定度,而是指变化一个标准差所用的时间(推导见视频)
-\subsubsection{表象变换}
-在第一章我们已经说明过，可以通过幺正变换 $\hat{U}$将一组正交归一基转变为另一组基 $\{ |b^{(i)}\rangle \}$ ，即 $\langle U  |a^{(i)}\rangle =  |b^{(i)}\rangle$。
+	\subsubsection{表象变换}
+	在第一章我们已经说明过，可以通过幺正变换 $\hat{U}$将一组正交归一基转变为另一组基 $\{ |b^{(i)}\rangle \}$ ，即 $\hat{U}|a^{(i)}\rangle =  |b^{(i)}\rangle$。
 
 现在我们来探讨下其具体的形式
 
@@ -1587,13 +1590,13 @@ $\varDelta E\varDelta t\ge \frac{\hbar}{2}$,但需注意的是,式中的$\varDel
 	
 	我们来用一个快捷的方法
 	
-	我们在 $A$ 表示下求解 $B$ 的本征方程
+		我们在 $A$ 表象下求解 $B$ 的本征方程
 	
 	\[
 	\hat{B} | b^{j} \rangle = b_j | b^{j} \rangle
 	\]
 	
-	两边同乘 $\langle a^{i} | \Rightarrow \langle a^{i} | \hat{B} | b^{ij} \rangle = b_j \langle a^{i} | b^{j} \rangle$
+		两边同乘 $\langle a^{i} | \Rightarrow \langle a^{i} | \hat{B} | b^{j} \rangle = b_j \langle a^{i} | b^{j} \rangle$
 	
 	\[
 	\sum_k \langle a^{i} | \hat{B} | a^{k} \rangle \langle a^{k} | b^{j} \rangle = b_j \langle a^{i} | b^{j} \rangle
@@ -1624,30 +1627,30 @@ $\varDelta E\varDelta t\ge \frac{\hbar}{2}$,但需注意的是,式中的$\varDel
 	
 	因此$b_j$对应的本征矢即为$U$矩阵第j列的矩阵元,将$\hat{B}$所有的本征矢求出并列起来便可得到变换矩阵U
 	
-	\textbf{[例1]} 求 $S_2$ 表示到 $S_x$ 表示的变换矩阵 $U_{zx}$，并证明其正交性。
+		\textbf{[例1]} 求 $S_z$ 表象到 $S_x$ 表象的变换矩阵 $U_{zx}$，并证明其正交性。
 	
 	\textbf{解:} 在 $S_z$ 表示求解 $S_x$ 的本征方程。
 	
 	\[
-	\frac{1}{2} \begin{pmatrix} 0 & 1 \\ 1 & 0 \end{pmatrix} \left[ \alpha_\beta \right] = S_x \left[ \alpha_\beta \right]
+		\frac{\hbar}{2} \begin{pmatrix} 0 & 1 \\ 1 & 0 \end{pmatrix} \begin{pmatrix} \alpha \\ \beta \end{pmatrix} = S_x \begin{pmatrix} \alpha \\ \beta \end{pmatrix}
 	\]
 	
-	得到 $S_{x+} = \frac{1}{2}$，$S_{x-} = -\frac{1}{2}$
+		得到 $S_{x+} = \frac{\hbar}{2}$，$S_{x-} = -\frac{\hbar}{2}$
 	
 	\[
 	| + \rangle = \frac{1}{\sqrt{2}} \begin{pmatrix} 1 \\ 1 \end{pmatrix}, \quad | - \rangle = \frac{1}{\sqrt{2}} \begin{pmatrix} 1 \\ -1 \end{pmatrix}
 	\]
 	
-	定义 $U = \frac{1}{\sqrt{2}} \begin{pmatrix} 1 & -1 \\ 1 & 1 \end{pmatrix}$
+		定义 $U = \frac{1}{\sqrt{2}} \begin{pmatrix} 1 & 1 \\ 1 & -1 \end{pmatrix}$
 	
 	\textbf{计算:}
 	
 	\[
-	U | 1 \rangle = \frac{1}{\sqrt{2}} \begin{pmatrix} 1 & -1 \\ 1 & 1 \end{pmatrix} \begin{pmatrix} 1 \\ 0 \end{pmatrix} = \frac{1}{\sqrt{2}} \begin{pmatrix} 1 \\ 1 \end{pmatrix} = | + \rangle
+		U | 1 \rangle = \frac{1}{\sqrt{2}} \begin{pmatrix} 1 & 1 \\ 1 & -1 \end{pmatrix} \begin{pmatrix} 1 \\ 0 \end{pmatrix} = \frac{1}{\sqrt{2}} \begin{pmatrix} 1 \\ 1 \end{pmatrix} = | + \rangle
 	\]
 	
 	\[
-	U | 1 \rangle = \frac{1}{\sqrt{2}} \begin{pmatrix} 1 & -1 \\ 1 & 1 \end{pmatrix} \begin{pmatrix} 0 \\ 1 \end{pmatrix} = \frac{1}{\sqrt{2}} \begin{pmatrix} -1 \\ 1 \end{pmatrix} = | - \rangle
+		U | 2 \rangle = \frac{1}{\sqrt{2}} \begin{pmatrix} 1 & 1 \\ 1 & -1 \end{pmatrix} \begin{pmatrix} 0 \\ 1 \end{pmatrix} = \frac{1}{\sqrt{2}} \begin{pmatrix} 1 \\ -1 \end{pmatrix} = | - \rangle
 	\]
 	
 	\item 在旧基中表示的矢量如何在新基中表示
@@ -1665,7 +1668,7 @@ $\varDelta E\varDelta t\ge \frac{\hbar}{2}$,但需注意的是,式中的$\varDel
 	\]
 	
 	\[
-	= \sum_j \langle a^{j} | b^{i} \rangle \langle a^{j} | \omega \rangle
+		= \sum_j \langle a^{j} | b^{i} \rangle^* \langle a^{j} | \omega \rangle
 	\]
 	
 	\[
@@ -1699,11 +1702,11 @@ $\varDelta E\varDelta t\ge \frac{\hbar}{2}$,但需注意的是,式中的$\varDel
 	\]
 	
 	\[
-	= \sum_{\alpha} \sum_{\beta} \langle b^{n} | a^{\alpha} \rangle \langle a^{\alpha} | \Omega | a^{\beta} \rangle \langle a^{\beta} | b \rangle
+		= \sum_{\alpha} \sum_{\beta} \langle b^{m} | a^{\alpha} \rangle \langle a^{\alpha} | \Omega | a^{\beta} \rangle \langle a^{\beta} | b^{n} \rangle
 	\]
 	
 	\[
-	= \sum_{\alpha} \sum_{\beta} \langle a^{\alpha} | U^{\dagger} | b^{n} \rangle \langle a^{\alpha} | \Omega | a^{\beta} \rangle \langle a^{\beta} | U | a^{m} \rangle
+		= \sum_{\alpha} \sum_{\beta} \langle b^{m} | a^{\alpha} \rangle \langle a^{\alpha} | \Omega | a^{\beta} \rangle \langle a^{\beta} | b^{n} \rangle
 	\]
 	
 	则 
@@ -1721,7 +1724,7 @@ $\varDelta E\varDelta t\ge \frac{\hbar}{2}$,但需注意的是,式中的$\varDel
 
 全态矢量 $| \psi \rangle$ ：
 
-粒子处于x位置态为 $| x \rangle$。
+	粒子处于x位置态为 $| x \rangle$。
 
 则在 $| x \rangle$ 态中找到了粒子的概率为 $|\langle x | \psi \rangle|^2$。
 
@@ -1741,11 +1744,11 @@ $\varDelta E\varDelta t\ge \frac{\hbar}{2}$,但需注意的是,式中的$\varDel
 = \int \langle x | \psi \rangle | x \rangle \, dx=\int  \psi(x)  | x \rangle \, dx
 \]
 
-态矢量不依靠于表像而客观存在,波函数是态矢量用具体表象描述时的描述方式
+	态矢量不依靠于表象而客观存在,波函数是态矢量用具体表象描述时的描述方式
 
 但 $x$ 表示并没有特定的性质，它只是在我们需要时使用的表象。
 
-那么同样的，我们将 $P$ 表象将 $| 1 \rangle$ 展开：
+	那么同样的，我们在 $p$ 表象将 $| \psi \rangle$ 展开：
 
 \[
 | \psi \rangle = \int | p \rangle \langle p | \psi \rangle \, dp.
@@ -1765,7 +1768,7 @@ $\varDelta E\varDelta t\ge \frac{\hbar}{2}$,但需注意的是,式中的$\varDel
 |\psi(p)|^2 = |\langle p | \psi \rangle|^2
 \]
 
-为在态 $| \psi \rangle$ 中 $P$ 处找到粒子的概率密度。
+	为在态 $| \psi \rangle$ 中动量为 $p$ 处找到粒子的概率密度。
 
 \begin{itemize}
 	\item $\psi(x)$ 和 $\psi(p)$ 的变换。
@@ -1786,11 +1789,11 @@ $\varDelta E\varDelta t\ge \frac{\hbar}{2}$,但需注意的是,式中的$\varDel
 现在，我们需要得到 $\langle p | x \rangle$ 使得由 $\psi(x)$ 得到 $\psi(p)$。
 
 \[
-| x \rangle = \int | p \rangle \langle p | x \rangle \, dx
+	| x \rangle = \int | p \rangle \langle p | x \rangle \, dp
 \]
 
 \[
-= \int \langle p | x \rangle | p \rangle \, dx.
+	= \int \langle p | x \rangle | p \rangle \, dp.
 \]
 
 \text{其中 $\langle p | x \rangle$ 的意义为 $x$ 的状态用 $p$ 基态展开时的系数。}
@@ -1800,9 +1803,9 @@ $\varDelta E\varDelta t\ge \frac{\hbar}{2}$,但需注意的是,式中的$\varDel
 令 $\langle x | p \rangle$ 为 $f_p(x)$，
 
 
-P的本征方程:
-\[
-\hat{p} | p \rangle = p | P \rangle
+	p的本征方程:
+	\[
+	\hat{p} | p \rangle = p | p \rangle
 \]
 
 左乘 $\langle x |$：
@@ -1822,31 +1825,31 @@ P的本征方程:
 即 
 
 \[
--i\hbar \frac{\partial}{\partial x}= p \cdot f_p.
+	-i\hbar \frac{\partial f_p}{\partial x}= p \cdot f_p.
 \]
 
 \[
-\frac{df_p}{dx} = \frac{iP}{\hbar} f_p
+	\frac{df_p}{dx} = \frac{ip}{\hbar} f_p
 \]
 
 \[
-\Rightarrow f_p = c e^{i \frac{P}{\hbar} x}
+	\Rightarrow f_p = c e^{i \frac{p}{\hbar} x}
 \]
 
 为常数 $c$。
 
-我们先考虑 $\delta(x - x') = \langle x | x' \rangle = \int \langle x | P \rangle \langle P | x' \rangle \, dp$。
+	我们先考虑 $\delta(x - x') = \langle x | x' \rangle = \int \langle x | p \rangle \langle p | x' \rangle \, dp$。
 
 \[
-= \int \langle x | P \rangle \langle P | x' \rangle \, dp
+	= \int \langle x | p \rangle \langle p | x' \rangle \, dp
 \]
 
 \[
-= \int c e^{i \frac{P}{\hbar} x} \cdot c^* e^{-i \frac{P}{\hbar} x'} \, dp
+	= \int c e^{i \frac{p}{\hbar} x} \cdot c^* e^{-i \frac{p}{\hbar} x'} \, dp
 \]
 
 \[
-= |c|^2 \int e^{i P (x - x')} \, dp.=|c|^22\pi\hbar\delta(x-x')
+	= |c|^2 \int e^{i p (x - x')/\hbar} \, dp=|c|^2 2\pi\hbar\delta(x-x')
 \]
 
 \[
@@ -1876,35 +1879,35 @@ P的本征方程:
 \textbf{动量表象下的x的矩阵元}
 
 \[
-X_{p'p} = \langle p | \hat{X} | p \rangle
+	X_{p'p} = \langle p' | \hat{X} | p \rangle
 \]
 
 \[
-= \int dx; \, dx \langle P | x' \rangle \langle x' | \hat{X} | x \rangle \langle x | P \rangle
+	= \int dx' \, dx \langle p' | x' \rangle \langle x' | \hat{X} | x \rangle \langle x | p \rangle
 \]
 
 \[
-= \int dx' \, dx \frac{1}{\sqrt{2\pi \hbar}} e^{-i \frac{p x'}{\hbar}} x \langle x | x \rangle \frac{1}{\sqrt{2\pi \hbar}} e^{i \frac{p x}{\hbar}}
+	= \int dx' \, dx \frac{1}{\sqrt{2\pi \hbar}} e^{-i \frac{p' x'}{\hbar}} x \delta(x'-x) \frac{1}{\sqrt{2\pi \hbar}} e^{i \frac{p x}{\hbar}}
 \]
 
 \[
-= \frac{1}{2\pi \hbar} \int dx \, dx' e^{-i \frac{p x'}{\hbar}} x \delta(x - x') e^{i \frac{p x}{\hbar}}
+	= \frac{1}{2\pi \hbar} \int dx \, dx' e^{-i \frac{p' x'}{\hbar}} x \delta(x - x') e^{i \frac{p x}{\hbar}}
 \]
 
 \[
-= \frac{1}{2\pi \hbar} \int dx \, x e^{-i \frac{p x'}{\hbar}} e^{i \frac{p x}{\hbar}}
+	= \frac{1}{2\pi \hbar} \int dx \, x e^{-i \frac{p' x}{\hbar}} e^{i \frac{p x}{\hbar}}
 \]
 
 \[
-= \frac{1}{2\pi \hbar} \int dx \, i\hbar \frac{d}{dp} e^{-i \frac{p x'}{\hbar}} e^{i \frac{p x}{\hbar}}
+	= \frac{1}{2\pi \hbar} \int dx \, i\hbar \frac{d}{dp'} e^{-i \frac{p' x}{\hbar}} e^{i \frac{p x}{\hbar}}
 \]
 
 \[
-= i\hbar \frac{d}{dp'} \left( \frac{1}{2\pi \hbar} \int dx \, e^{-i \frac{p x'}{\hbar}} e^{i \frac{p x}{\hbar}} \right)
+	= i\hbar \frac{d}{dp'} \left( \frac{1}{2\pi \hbar} \int dx \, e^{-i \frac{p' x}{\hbar}} e^{i \frac{p x}{\hbar}} \right)
 \]
 
 \[
-= it \frac{d}{dp'} \langle p' | p \rangle
+	= i\hbar \frac{d}{dp'} \langle p' | p \rangle
 \]
 
 \[
@@ -1914,14 +1917,14 @@ X_{p'p} = \langle p | \hat{X} | p \rangle
 \textbf{算符形式},考虑
 
 \[
-| \varphi \rangle = \hat{x} | \phi \rangle
+	| \varphi \rangle = \hat{x} | \phi \rangle
 \]
 
-在 $P$ 表象中，这个形式表示成一个矩阵乘法：
+	在 $p$ 表象中，这个形式表示成一个矩阵乘法：
 
 \[
 \begin{pmatrix}
-	\langle P | \varphi \rangle \\
+		\langle p | \varphi \rangle \\
 	\vdots
 \end{pmatrix} = [X_{pp'}]
 \begin{pmatrix}
@@ -1933,28 +1936,28 @@ X_{p'p} = \langle p | \hat{X} | p \rangle
 则 
 
 \[
-\langle P | \varphi \rangle = \varphi_p
+	\langle p | \varphi \rangle = \varphi_p
 \]
 
 \[
-= \int_{-\infty}^{\infty} x_{pp'} \phi_{p'} \, dp'
+	= \int_{-\infty}^{\infty} X_{pp'} \phi_{p'} \, dp'
 \]
 
 \[
-= -\int_{-\infty}^{\infty} x_{pp'} \phi_{p'} \, dp'
+	= \int_{-\infty}^{\infty} i \hbar \frac{d}{dp} \delta(p - p') \phi_{p'} \, dp'
 \]
 
 \[
-= -\int_{-\infty}^{\infty} i \hbar \frac{d}{dp'} \delta(p - p') \phi_{p'} \, dp'
+	= i \hbar \frac{d}{dp}\int_{-\infty}^{\infty} \delta(p - p') \phi_{p'} \, dp'
 \]
 
 \[
-= -i \hbar \left[ \delta(p - p') \phi_p \right]_{-\infty}^{\infty} + i \hbar \int_{-\infty}^{\infty} \delta(p - p') \frac{d}{dp} \varphi_{p'} \, dp'=i\hbar\frac{d}{dp}\phi_p
+	= i\hbar\frac{d}{dp}\phi_p
 \]
 
 故p表象中
 \begin{equation*}
-	\varphi_p=\hbar\frac{d}{dp}\phi_p\Rightarrow \hat{X_p}=i\hbar\frac{d}{dp}
+		\varphi_p=i\hbar\frac{d}{dp}\phi_p\Rightarrow \hat{X}_p=i\hbar\frac{d}{dp}
 \end{equation*}
 
 \subsubsection{p表象下的能量本征方程}
@@ -1968,27 +1971,27 @@ X_{p'p} = \langle p | \hat{X} | p \rangle
 \]
 
 \[
-\int dp'  | (\hat{H} + V - E) | p' \rangle \langle p' | \psi \rangle = 0
+	\int dp'  (\hat{H} - E) | p' \rangle \langle p' | \psi \rangle = 0
 \]
 
 投影到 $| p \rangle$ 方向：
 
 \[
-\langle p | \int dp' (\hat{H} + V - E) | P' \rangle \langle P | \psi \rangle = 0
+	\langle p | \int dp' (\hat{H} - E) | p' \rangle \langle p' | \psi \rangle = 0
 \]
 
 则有：
 
 \[
-\int dp' \left( \langle p | \hat{H} | p' \rangle + \langle P | V | P' \rangle - E \langle P | P' \rangle \right) \varphi_{P'} = 0
+	\int dp' \left( \langle p | \hat{H} | p' \rangle - E \langle p | p' \rangle \right) \varphi_{p'} = 0
 \]
 
 \[
-\Rightarrow \int dp' \left( \frac{\hat{p}^2}{2\mu} \langle P | P' \rangle + V_{pp'} - E \delta(p - p') \right) \varphi_{P'} = 0
+	\Rightarrow \int dp' \left( \frac{p^2}{2\mu} \langle p | p' \rangle + V_{pp'} - E \delta(p - p') \right) \varphi_{p'} = 0
 \]
 
 \[
-\int dp' \left( \frac{\hat{p}^2}{2\mu} \delta(p - p') + V_{pp'} - E \delta(p - p') \right) \varphi_{P'} = 0
+	\int dp' \left( \frac{p^2}{2\mu} \delta(p - p') + V_{pp'} - E \delta(p - p') \right) \varphi_{p'} = 0
 \]
 
 \[
@@ -1997,41 +2000,41 @@ X_{p'p} = \langle p | \hat{X} | p \rangle
 
 
 \[
-V_{pp'} = \langle P | V | P' \rangle
+	V_{pp'} = \langle p | V | p' \rangle
 \]
 
 \[
-= \int dx \, dx' \langle P | x \rangle \langle x | V \hat{x} | x' \rangle \langle x' | P' \rangle
+	= \int dx \, dx' \langle p | x \rangle \langle x | V(\hat{x}) | x' \rangle \langle x' | p' \rangle
 \]
 
 \[
-= \int dx \, dx' \frac{1}{\sqrt{2\pi \hbar}} e^{-i \frac{p x}{\hbar}} V(x) \langle x | x' \rangle \frac{1}{\sqrt{2\pi \hbar}} e^{i \frac{p' x'}{\hbar}} dx \, dx'
+	= \int dx \, dx' \frac{1}{\sqrt{2\pi \hbar}} e^{-i \frac{p x}{\hbar}} V(x) \delta(x-x') \frac{1}{\sqrt{2\pi \hbar}} e^{i \frac{p' x'}{\hbar}}
 \]
 
 \[
-= \frac{1}{2\pi \hbar} \int dx \, e^{-i \frac{p x}{\hbar}} V(x)  e^{i \frac{p' x'}{\hbar}} dx'
+	= \frac{1}{2\pi \hbar} \int dx \, e^{-i \frac{p x}{\hbar}} V(x)  e^{i \frac{p' x}{\hbar}}
 \]
 
 \[
-= \frac{1}{2\pi \hbar} \int V(x) e^{-i \frac{p x}{\hbar}} e^{i \frac{p' x'}{\hbar}} dx
+	= \frac{1}{2\pi \hbar} \int V(x) e^{-i \frac{(p-p') x}{\hbar}} dx
 \]
 
 特别地，若 $V(\hat{x})$ 可表示为 $V(\hat{x}) = \sum_n C_n \hat{x}^n$，则
 
-由于 $\hat{x} e^{i \frac{p-p'}{\hbar} \hat{x}} = i \hbar \frac{d}{dp} e^{i \frac{p-p'}{\hbar} \hat{x}}$，
+	由于 $x e^{-i \frac{(p-p')x}{\hbar}} = i \hbar \frac{d}{dp} e^{-i \frac{(p-p')x}{\hbar}}$，
 
 则 
 
 \[
-V_{pp'} = \int \sum_n C_n \hat{x}^n e^{i \frac{p-p'}{\hbar} \hat{x}} \, dp'
+	V_{pp'} = \frac{1}{2\pi\hbar}\int \sum_n C_n x^n e^{-i \frac{(p-p')x}{\hbar}} \, dx
 \]
 
 \[
-= \sum_n C_n \frac{1}{2\pi \hbar} \int (i \hbar \frac{\partial}{\partial p})^n e^{i \frac{p - p'}{\hbar} \hat{x}} \, dp'
+	= \sum_n C_n \frac{1}{2\pi \hbar} \int (i \hbar \frac{\partial}{\partial p})^n e^{-i \frac{(p - p')x}{\hbar}} \, dx
 \]
 
 \[
-= \sum_n C_n \frac{1}{2\pi \hbar}(i \hbar \frac{\partial}{\partial p})^n\int e^{i \frac{p - p'}{\hbar} \hat{x}} \, dp'
+	= \sum_n C_n (i \hbar \frac{\partial}{\partial p})^n\frac{1}{2\pi \hbar}\int e^{-i \frac{(p - p')x}{\hbar}} \, dx
 \]
 
 \[
@@ -2046,7 +2049,7 @@ V_{pp'} = \int \sum_n C_n \hat{x}^n e^{i \frac{p-p'}{\hbar} \hat{x}} \, dp'
 
 则这种情况下,p的表象的能量本征方程可表示为
 \[
-E \left( \frac{p^2}{2\mu} + \int V(\hat{x}) \delta(p - p')  \varphi(p)\, dp' \right) = E \varphi(p)
+	\frac{p^2}{2\mu}\varphi(p) + \int V(\hat{x}) \delta(p - p')  \varphi(p')\, dp' = E \varphi(p)
 \]
 
 \[
@@ -2059,7 +2062,7 @@ E \left( \frac{p^2}{2\mu} + \int V(\hat{x}) \delta(p - p')  \varphi(p)\, dp' \ri
 V(\hat{x}) =  \frac{1}{2} \mu \omega^2 \hat{x}^2
 \]
 
-在 $P$ 表象下：
+	在 $p$ 表象下：
 
 \[
 \left( \frac{p^2}{2\mu} + \frac{1}{2} \mu \omega^2 \hat{x}^2 \right) \varphi(p) = E \varphi(p)
@@ -2071,7 +2074,7 @@ V(\hat{x}) =  \frac{1}{2} \mu \omega^2 \hat{x}^2
 \]
 
 \[
-\psi(x_i + a) = \psi(x_i) + \frac{a}{1!} \frac{d}{dx} \psi(x_i) + \frac{a^2}{2!} \frac{d^2}{dx^2} \psi(x_i) + \ldots
+	\psi(x_i + a) = \psi(x_i) + \frac{a}{1!} \frac{d}{dx} \psi(x_i) + \frac{a^2}{2!} \frac{d^2}{dx^2} \psi(x_i) + \ldots
 \]
 
 \text{若 } a \text{ 很小可取 } 1 \text{阶 的近似}
@@ -2098,55 +2101,55 @@ $\text{其中 } (1 + a \frac{d}{dx}) \text{ 为 } \hat{g}(a) \text{ 的无穷小
 
 因此乘上量纲为 $ML^2T^{-1}$（动量量纲）的常数$\hbar$
 
- $\pm \hbar\frac{d}{dx}$。
+	 $\mp i\hbar\frac{d}{dx}$。
 
-则 $g(a) = (1 \pm \frac{1}{i\hbar} \cdot a \hat{P})$。
+	则 $g(a) = (1 \mp \frac{i}{\hbar} \cdot a \hat{P})$。
 
-$= (1 - \frac{1}{i\hbar} \cdot a \hat{P})$。
+	$= (1 - \frac{i}{\hbar} \cdot a \hat{P})$。
 
-取 $g(a) = [1 + \frac{1}{i\hbar} ( - i a \frac{d}{dx})]$。
-$g(a) = [1 - \frac{1}{i\hbar} a \hat{P}]$。
+	取 $g(a) = [1 + a \frac{d}{dx}]$。
+	$g(a) = [1 - \frac{i}{\hbar} a \hat{P}]$。
 
 令 $\hat{P} = - i \hbar \frac{d}{dx}$。
 
-则 $g(a) = 1 + \frac{i}{\hbar} \hat{P} a$。
+	则 $g(a) = 1 - \frac{i}{\hbar} \hat{P} a$。
 
 \begin{align*}
 	\psi(x_i + a) & = \psi(x_i) + \frac{a}{1!} \frac{d}{dx} \psi(x_i) + \frac{a^2}{2!} \frac{d^2}{dx^2} \psi(x_i) + \ldots \\
 	& = \psi(x_i) + \frac{a \hat{D}}{1!} \psi(x_i) + \frac{a^2 \hat{D}^2}{2!} \psi(x_i) + \ldots \\
-	& = \psi(x_i) + \left(1 + \frac{\frac{i}{\hbar}\hat{P} a}{1!} + \frac{(\frac{i}{\hbar}\hat{P} a)^2}{2!} + \ldots \right) \psi(x_i) \\
-	& = e^{\frac{i \hat{P} a}{\hbar}} \psi(x_i)
+		& = \left(1 - \frac{\frac{i}{\hbar}\hat{P} a}{1!} + \frac{(-\frac{i}{\hbar}\hat{P} a)^2}{2!} + \ldots \right) \psi(x_i) \\
+		& = e^{-\frac{i \hat{P} a}{\hbar}} \psi(x_i)
 \end{align*}
 
-平移算符$e^{\frac{i \hat{P} a}{\hbar}}$,记为$\hat{T}$
+	平移算符$e^{-\frac{i \hat{P} a}{\hbar}}$,记为$\hat{T}(a)$
 
 需要注意的是，这是对态的操作。
 
 \[
-\hat{T} \psi(x_i) = \psi(x_i + a)
+	\hat{T}(a) \psi(x_i) = \psi(x_i + a)
 \]
 
 现在考虑 $\hat{T}$ 对 $|x\rangle$ 的作用。
 
 \begin{align*}
-	\langle x | \hat{T} & = \langle x | a \\
+	\langle x | \hat{T}(a) | \psi\rangle & = \psi(x+a) \\
 	\hat{T}(-a) | x \rangle & = \hat{T}^+ | x \rangle = | x + a \rangle \\
 	\hat{T}(a) | x \rangle & = | x - a \rangle \\
-	e^{\frac{i p a}{\hbar}} | x \rangle & = | x - a \rangle = \left( 1 + \frac{i \hat{P} a}{\hbar} \right) | x \rangle \\
-	e^{-\frac{i p a}{\hbar}} | x \rangle & = | x + a \rangle = \left( 1 - \frac{i \hat{P} a}{\hbar} \right) | x \rangle
+		e^{\frac{i \hat{P} a}{\hbar}} | x \rangle & = | x - a \rangle = \left( 1 + \frac{i \hat{P} a}{\hbar} \right) | x \rangle \\
+		e^{-\frac{i \hat{P} a}{\hbar}} | x \rangle & = | x + a \rangle = \left( 1 - \frac{i \hat{P} a}{\hbar} \right) | x \rangle
 \end{align*}
 \chapter{量子动力学}
 \section{时间平移与时间演化算符}
 类比空间平移
 
-分析力学中\quad 每一种对称性都对应着一个守恒量(Nother定理)每一个守恒量都对应着一种对称变换的生成元
+分析力学中\quad 每一种对称性都对应着一个守恒量(Noether定理)每一个守恒量都对应着一种对称变换的生成元
 
-要找到无穷小时间平移(演化)算符$\hat{u}$\quad\quad ($\text{（其作用为：} \hat{u} \psi(t_0) \rightarrow \hat{u} \psi(t_0 + t) \text{）}$)
+要找到无穷小时间平移(演化)算符$\hat{u}$\quad\quad ($\text{（其作用为：} \hat{u} \psi(t_0) \rightarrow \psi(t_0 + dt) \text{）}$)
 
 
 可以猜测无穷小时间演化算符的形式应为$\hat{u}=1-\frac{i}{\hbar}\hat{H}dt$
 
-接着我们猜时间演化算符的形式应为$\hat{U}=e^{-\frac{i}{\hbar}\hat{H}t}$,任意$t_0$时刻的时间演化算符$\hat{U}=e^{-\frac{i}{\hbar}\hat{H}()t-t_0}$
+接着我们猜时间演化算符的形式应为$\hat{U}(t)=e^{-\frac{i}{\hbar}\hat{H}t}$,任意$t_0$时刻的时间演化算符$\hat{U}(t,t_0)=e^{-\frac{i}{\hbar}\hat{H}(t-t_0)}$
 
 
 考虑时间演化算符应满足的性质
@@ -2168,7 +2171,7 @@ $	\text{因此 } \hat{U}(t_2, t_0) = \hat{U}(t_2, t_1) \hat{U}(t_1, t_0).$
 	\item$\text{从 } t_0 \rightarrow t_0 \text{ 的时间演化算符应为单位算符。} \\
 	\hat{U}(t_0, t_0) = \hat{I}$
 \end{enumerate}
-\section{自旋s=$\frac{1}{2}$体系中的时间演化}
+\section{自旋\texorpdfstring{$s=\frac{1}{2}$}{s=1/2}体系中的时间演化}
 \begin{example}
 	设粒子一开始处于 $S_x = \frac{\hbar}{2}$ 的本征态，现加入沿 $z$ 轴的磁场 $\vec{B} = B \vec{e}_z$。
 	
@@ -2184,7 +2187,7 @@ $	\text{因此 } \hat{U}(t_2, t_0) = \hat{U}(t_2, t_1) \hat{U}(t_1, t_0).$
 		|\psi(t)\rangle &= \hat{U}(t) |\psi(0)\rangle, \\
 		|\psi(0)\rangle &= |+\rangle, \\
 		\hat{U}(t) &= e^{-i \hat{H} t / \hbar}, \\
-		\hat{H} &= -\vec{\mu} \cdot \vec{B} = -\mu_z \hat{S}_z \cdot B.\\
+		\hat{H} &= -\vec{\mu} \cdot \vec{B} = -\mu_z B\\
 		\hat{H} &= -\gamma \hat{S}_z B \\
 		&= -\gamma B \hat{S}_z,
 		\end{align*}
@@ -2234,7 +2237,7 @@ $	\text{因此 } \hat{U}(t_2, t_0) = \hat{U}(t_2, t_1) \hat{U}(t_1, t_0).$
 			\langle \hat{S}_x \rangle &= \langle \psi(t) | \hat{S}_x | \psi(t) \rangle \\
 			&= \frac{\hbar}{2} \cdot \frac{1}{\sqrt{2}} \begin{bmatrix} e^{-i\omega t} & e^{i\omega t} \end{bmatrix} \begin{bmatrix} 0 & 1 \\ 1 & 0 \end{bmatrix} \frac{1}{\sqrt{2}} \begin{bmatrix} e^{i\omega t} \\ e^{-i\omega t} \end{bmatrix} \\
 			&= \frac{\hbar}{4} \begin{bmatrix} e^{-i\omega t} & e^{i\omega t} \end{bmatrix} \begin{bmatrix} e^{-i\omega t} \\ e^{i\omega t} \end{bmatrix} \\
-			&= \frac{\hbar}{4} \left[ -e^{-i2\omega t} + e^{i2\omega t} \right] \\
+			&= \frac{\hbar}{4} \left[ e^{-i2\omega t} + e^{i2\omega t} \right] \\
 			&= \frac{\hbar}{2} \cos(2\omega t).
 		\end{align*}
 		
@@ -2350,15 +2353,15 @@ H绘景：
 \end{itemize}
 
 \begin{align*}
-	\frac{d}{dt} \hat{A}_H(t) &= \frac{d}{dt} \langle \hat{U}^\dagger \hat{A}_S(0) \hat{U} \rangle \\
-	&= \frac{d}{dt} \langle \hat{U}^\dagger \hat{A}_S \hat{U} \rangle \\
-	&= \frac{d}{dt} \langle e^{i \hat{H}_S t / \hbar} \hat{A}_S e^{-i \hat{H}_S t / \hbar} \rangle \\
+		\frac{d}{dt} \hat{A}_H(t) &= \frac{d}{dt} \left( \hat{U}^\dagger \hat{A}_S(0) \hat{U} \right) \\
+		&= \frac{d}{dt} \left( \hat{U}^\dagger \hat{A}_S \hat{U} \right) \\
+		&= \frac{d}{dt} \left( e^{i \hat{H}_S t / \hbar} \hat{A}_S e^{-i \hat{H}_S t / \hbar} \right) \\
 	&= \left( \frac{d}{dt} e^{i \hat{H}_S t / \hbar} \right) \hat{A}_S e^{-i \hat{H}_S t / \hbar} + e^{i \hat{H}_S t / \hbar} \hat{A}_S \left( \frac{d}{dt} e^{-i \hat{H}_S t / \hbar} \right) \\
 	&= \frac{i \hat{H}_S}{\hbar} e^{i \hat{H}_S t / \hbar} \hat{A}_S e^{-i \hat{H}_S t / \hbar} + e^{i \hat{H}_S t / \hbar} \hat{A}_S \left( -\frac{i \hat{H}_S}{\hbar} \right) e^{-i \hat{H}_S t / \hbar} \\
-	&= -\frac{i}{\hbar} e^{i \hat{H}_S t / \hbar} \hat{H}_S \hat{A}_S e^{-i \hat{H}_S t / \hbar} + \frac{i}{\hbar} e^{i \hat{H}_S t / \hbar} \hat{A}_S \hat{H}_S e^{-i \hat{H}_S t / \hbar} \\
-	&= -\frac{i}{\hbar} \hat{U}^\dagger \hat{H}_S \hat{A}_S \hat{U} + \frac{i}{\hbar} \hat{U}^\dagger \hat{A}_S \hat{H}_S \hat{U} \\
-	&= -\frac{i}{\hbar} \hat{H} \hat{A}_H(t) + \frac{i}{\hbar} \hat{A}_H(t) \hat{H} \\
-	&= \frac{1}{i \hbar} [\hat{A}_H(t), \hat{H}]
+		&= \frac{i}{\hbar} e^{i \hat{H}_S t / \hbar} \hat{H}_S \hat{A}_S e^{-i \hat{H}_S t / \hbar} - \frac{i}{\hbar} e^{i \hat{H}_S t / \hbar} \hat{A}_S \hat{H}_S e^{-i \hat{H}_S t / \hbar} \\
+		&= \frac{i}{\hbar} \hat{U}^\dagger \hat{H}_S \hat{A}_S \hat{U} - \frac{i}{\hbar} \hat{U}^\dagger \hat{A}_S \hat{H}_S \hat{U} \\
+		&= \frac{i}{\hbar} \hat{H} \hat{A}_H(t) - \frac{i}{\hbar} \hat{A}_H(t) \hat{H} \\
+		&= \frac{i}{\hbar} [\hat{H},\hat{A}_H(t)]
 \end{align*}
 \chapter{一维问题}
 \section{定态Schrödinger 方程}
@@ -2424,11 +2427,11 @@ $i \hbar \frac{1}{T(t)} \frac{d T(t)}{d t} =E= -\frac{\hbar^2}{2m} \frac{1}{\var
 
 
 
-\textbf{I.} 假设 \(\hat{H} \varphi_1(x) = E_1 \varphi_1(x)\), \(\hat{H} \varphi_1'(x) = E_1 \varphi_1'(x)\)
+	\textbf{I.} 假设 \(\hat{H} \varphi_1(x) = E_1 \varphi_1(x)\), \(\hat{H} \varphi_2(x) = E_1 \varphi_2(x)\)
 
-则 \(\hat{H} [\varphi_1(x) + c_2 \varphi_2'(x)] = E_1 [\varphi_1(x) + c_2 \varphi_2'(x)]\)
+	则 \(\hat{H} [\varphi_1(x) + c_2 \varphi_2(x)] = E_1 [\varphi_1(x) + c_2 \varphi_2(x)]\)
 
-则 \(\varphi_1(x) + \varphi_2'(x)\) 也满足定态 Schrödinger 方程，于是它也是定态。
+	则 \(\varphi_1(x) + c_2\varphi_2(x)\) 也满足定态 Schrödinger 方程，于是它也是定态。
 
 \textbf{II.} 假设
 \begin{align*}
@@ -2470,9 +2473,9 @@ $i \hbar \frac{1}{T(t)} \frac{d T(t)}{d t} =E= -\frac{\hbar^2}{2m} \frac{1}{\var
 
 在定态上考虑 \(\langle x \cdot \hat{p} \rangle\) 随时间的变化：
 \begin{align*}
-	\frac{d}{dt} \langle x \cdot \hat{p_x} \rangle &= \frac{1}{i\hbar} \langle [x \cdot \hat{p_x}, \hat{H}] \rangle = 0 \\
-	\text{其中} \quad [x \cdot \hat{p}, \hat{H}] &= x \cdot [\hat{p}, \hat{H}] + [\hat{H}, x] \cdot \hat{p} \\
-	&= x \cdot \left[ \hat{p}_x \cdot \left( \frac{\hat{p}_x^2}{2m} + V(x) \right) \right] + \left[ x \cdot \left( \frac{\hat{p}_x^2}{2m} + V(x) \right) \right] \cdot \hat{p}_x \\
+		\frac{d}{dt} \langle x \cdot \hat{p}_x \rangle &= \frac{1}{i\hbar} \langle [x \cdot \hat{p}_x, \hat{H}] \rangle = 0 \\
+		\text{其中} \quad [x \cdot \hat{p}, \hat{H}] &= x \cdot [\hat{p}, \hat{H}] + [x, \hat{H}] \cdot \hat{p} \\
+		&= x \cdot \left[ \hat{p}_x, \left( \frac{\hat{p}_x^2}{2m} + V(x) \right) \right] + \left[ x, \left( \frac{\hat{p}_x^2}{2m} + V(x) \right) \right] \cdot \hat{p}_x \\
 	&= x \cdot \left( -i\hbar \frac{\partial}{\partial x} V(x) \right) + i\hbar \frac{\hat{p}_x^2}{m} \\
 	&= i\hbar \left( 2 \hat{T} - x \cdot \frac{\partial V(x)}{\partial x} \right)
 \end{align*}
@@ -2483,8 +2486,8 @@ $i \hbar \frac{1}{T(t)} \frac{d T(t)}{d t} =E= -\frac{\hbar^2}{2m} \frac{1}{\var
 即
 \[ 2 \langle \hat{T} \rangle = \langle x \cdot \frac{\partial V(x)}{\partial x} \rangle \]
 
-对于三维情况,只需要把偏导换成狄拉克算符即可
-\[2\langle \hat{T}\rangle =\langle x\cdot \bigtriangledown V(r)\rangle \]
+	对于三维情况,只需要把偏导换成梯度算符即可
+	\[2\langle \hat{T}\rangle =\langle \vec{r}\cdot \nabla V(\vec{r})\rangle \]
 \textbf{[Feynman-Hellman定理]}
 
 \[
@@ -2519,7 +2522,7 @@ $i \hbar \frac{1}{T(t)} \frac{d T(t)}{d t} =E= -\frac{\hbar^2}{2m} \frac{1}{\var
 \left[-\frac{\hbar^2}{2m}\frac{d^2}{dx^2} + V(x)\right]\varphi(x) = E\varphi(x)
 \]
 
-粒子不能存在于势能为 $\infty$ 的区域，因此 $\varphi(x) = 0$ 当 $-\infty < x < 0$ 和 $x > \alpha$。
+	粒子不能存在于势能为 $\infty$ 的区域，因此 $\varphi(x) = 0$ 当 $-\infty < x < 0$ 和 $x > a$。
 
 在 $(0, a)$ 区间 $V(x) = 0$。
 
@@ -2560,11 +2563,11 @@ A(\cos(Kx) + i \sin(Kx)) + B(\cos(Kx) - i \sin(Kx))
 由波函数连续性：
 
 \begin{equation*}
-	\psi(0_-) = \psi(0_+) \quad \text{①}
+	\psi(0_-) = \psi(0_+) \quad \text{(1)}
 \end{equation*}
 
 \begin{equation*}
-	\psi(a_-) = \psi(a_+) \quad \text{②}
+	\psi(a_-) = \psi(a_+) \quad \text{(2)}
 \end{equation*}
 
 由1得：
@@ -2630,7 +2633,7 @@ E_n = \frac{\hbar^2 k^2}{2m} = \frac{n^2 \pi^2 \hbar^2}{2ma^2}
 	
 	\item 能级相对间隔
 	\[
-	\frac{\Delta E_n}{E_n} = \frac{\left[(n+1)^2 - n^2\right] \frac{\pi^2 \hbar^2}{2ma^2}}{n^2 \pi^2 \frac{\hbar^2}{2ma^2}} = \frac{2}{n}
+	\frac{\Delta E_n}{E_n} = \frac{\left[(n+1)^2 - n^2\right] \frac{\pi^2 \hbar^2}{2ma^2}}{n^2 \frac{\pi^2 \hbar^2}{2ma^2}} = \frac{2n+1}{n^2}
 	\]
 	因此当 $n \rightarrow \infty$ 时，能级相对间隔 $\rightarrow 0$，能量趋向于连续变化。
 \end{enumerate}
@@ -2640,8 +2643,8 @@ E_n = \frac{\hbar^2 k^2}{2m} = \frac{n^2 \pi^2 \hbar^2}{2ma^2}
 \[
 V(x,y,z) = 
 \begin{cases} 
-	0 & \text{elsewhere.} \\
-	\infty & \text{elsewhere.}
+		0 & 0<x<a,\ 0<y<b,\ 0<z<c, \\
+		\infty & \text{elsewhere.}
 \end{cases}
 \]
 
@@ -2669,9 +2672,9 @@ V(x,y,z) =
 
 
 \begin{align*}
-	-\frac{\hbar^2}{2m} \frac{\varphi''_x(x)}{\varphi_x(x)} &= E, \\
-	-\frac{\hbar^2}{2m} \frac{\varphi''_y(y)}{\varphi_y(y)} &= E, \\
-	-\frac{\hbar^2}{2m} \frac{\varphi''_z(z)}{\varphi_z(z)} &= E,
+		-\frac{\hbar^2}{2m} \frac{\varphi''_x(x)}{\varphi_x(x)} &= E_x, \\
+		-\frac{\hbar^2}{2m} \frac{\varphi''_y(y)}{\varphi_y(y)} &= E_y, \\
+		-\frac{\hbar^2}{2m} \frac{\varphi''_z(z)}{\varphi_z(z)} &= E_z,
 \end{align*}
 
 其中 $E_x + E_y + E_z = E$.
@@ -2710,7 +2713,7 @@ Quantum case: 存在量子隧穿（粒子有一定概率通过高于其能量的
 \textbf{朗斯基行列式}
 
 \[
-w(\psi_1, \psi_2) = 
+	W(\psi_1, \psi_2) = 
 \begin{vmatrix}
 	\psi_1 & \psi_1' \\
 	\psi_2 & \psi_2'
@@ -2724,7 +2727,7 @@ W(\psi_1, \psi_2) = C (\psi_2 \psi_2' - \psi_2 \psi_2') = 0.
 \]
 
 \begin{itemize}
-	\item 若 \(w(\psi_1, \psi_2) = 0\)，则称 \(\psi_1\) 和 \(\psi_2\) 线性相关。
+		\item 若 \(W(\psi_1, \psi_2) = 0\)，则称 \(\psi_1\) 和 \(\psi_2\) 线性相关。
 	\item 若 \(W(\psi_1, \psi_2) \neq 0\)，则称 \(\psi_1\) 和 \(\psi_2\) 线性无关。
 \end{itemize}
 
@@ -2765,14 +2768,14 @@ W(\psi_1, \psi_2) = C (\psi_2 \psi_2' - \psi_2 \psi_2') = 0.
 \end{proposition}
 
 \begin{proof}
-	假设 $E$ 对应三个独立的本征解 $\psi_1, \psi_2, \psi_3$。
+		假设 $E$ 对应三个独立的本征解 $\psi_1, \psi_2, \psi_3$。
 	
 	则由命题1：
 	\[
-	W(\psi_1, \psi_3) = C_{13} C_{10}
+		W(\psi_1, \psi_2) = C_{12}
 	\]
 	\[
-	W(\psi_1, \psi_3) = C_{13} C_{10}
+		W(\psi_1, \psi_3) = C_{13}
 	\]
 	
 	则
@@ -2918,7 +2921,7 @@ W(\psi_1, \psi_2) = C (\psi_2 \psi_2' - \psi_2 \psi_2') = 0.
 	
 	由命题4，一维束缚态无简并，因此：
 	\[
-	\psi(x) = c^2 \psi(-x)
+		\psi(x) = c \psi(-x)
 	\]
 	
 	应用宇称算符 $\hat{P}$，我们得到：
@@ -3043,15 +3046,18 @@ W(\psi_1, \psi_2) = C (\psi_2 \psi_2' - \psi_2 \psi_2') = 0.
 \[
 \Rightarrow B \cos(\beta a) = A e^{-\alpha a} \quad \text{(1)}
 \]
-\[
-\psi_1'(a) = \psi_2'(a)
-\]
-\[
-\Rightarrow B' \sin(\beta a) = -A' e^{-\alpha a} \quad \text{(2)}
-\]
-\[
-\Rightarrow \beta B' \cos(\beta a) = \alpha A' e^{\alpha a} \quad \text{(4)}
-\]
+	\[
+	\psi_1'(a) = \psi_2'(a)
+	\]
+	\[
+	\Rightarrow \beta B \sin(\beta a) = \alpha A e^{-\alpha a} \quad \text{(2)}
+	\]
+	\[
+	\Rightarrow B' \sin(\beta a) = -A' e^{-\alpha a} \quad \text{(3)}
+	\]
+	\[
+	\Rightarrow \beta B' \cos(\beta a) = \alpha A' e^{-\alpha a} \quad \text{(4)}
+	\]
 
 我们不关心 \(A\) 与 \(B\) 的取值，同样也不关心 \(A'\) 与 \(B'\) 的取值。
 
@@ -3065,12 +3071,12 @@ W(\psi_1, \psi_2) = C (\psi_2 \psi_2' - \psi_2 \psi_2') = 0.
 \]
 
 令 \(\beta a = \xi\)，\(\alpha a = \eta\)，则有：
-\[
-\xi \tan(\xi) = \eta
-\]
-\[
--\xi \cot(\pi) = \eta
-\]
+	\[
+	\xi \tan(\xi) = \eta
+	\]
+	\[
+	-\xi \cot(\xi) = \eta
+	\]
 
 又因为：
 \[
@@ -3130,11 +3136,11 @@ W(\psi_1, \psi_2) = C (\psi_2 \psi_2' - \psi_2 \psi_2') = 0.
 	\end{figure}
 	\begin{align*}
 		\text{1区：} & -\frac{\hbar^2}{2\mu} \frac{d^2}{dx^2} \psi_1(x) = E \psi_1(x) & \Rightarrow \psi_1(x) = A e^{ikx} + B e^{-ikx} \\
-		\text{2区：} & \left[ -\frac{\hbar^2}{2\mu} \frac{d^2}{dx^2} - V_0 \right] \psi_2(x) = E \psi_2(x) & \Rightarrow \psi_2(x) = C e^{ikx} + D e^{-ikx} \\
-		\text{3区：} & -\frac{\hbar^2}{2\mu} \frac{d^2}{dx^2} \psi_3(x) = E \psi_3(x) & \Rightarrow \psi_3(x) = E e^{ikx} + F e^{-ikx}
+		\text{2区：} & \left[ -\frac{\hbar^2}{2\mu} \frac{d^2}{dx^2} - V_0 \right] \psi_2(x) = E \psi_2(x) & \Rightarrow \psi_2(x) = C e^{ilx} + D e^{-ilx} \\
+		\text{3区：} & -\frac{\hbar^2}{2\mu} \frac{d^2}{dx^2} \psi_3(x) = E \psi_3(x) & \Rightarrow \psi_3(x) = G e^{ikx} + F e^{-ikx}
 	\end{align*}
 	
-$	\text{其中 } k = \sqrt{\frac{2\mu E}{\hbar^2}}, \quad l = \sqrt{\frac{2\mu (E-V_0)}{\hbar^2}}.$
+$	\text{其中 } k = \sqrt{\frac{2\mu E}{\hbar^2}}, \quad l = \sqrt{\frac{2\mu (E+V_0)}{\hbar^2}}.$
 
 	考虑真实的散射情况，设粒子从左侧入射，则 $F = 0$。
 	
@@ -3145,7 +3151,7 @@ $	\text{其中 } k = \sqrt{\frac{2\mu E}{\hbar^2}}, \quad l = \sqrt{\frac{2\mu (
 	其中 $r$ 为反射系数。
 	
 	\[
-	\psi_2(x) = C_0 e^{ikx} + D_0 e^{-ikx} = C \sin(kx) + D \cos(kx)
+	\psi_2(x) = C_0 e^{ilx} + D_0 e^{-ilx} = C \sin(lx) + D \cos(lx)
 	\]
 	这里 $C_0$ 和 $D_0$ 为常数，可以表示为 $C$ 和 $D$。
 	
@@ -3155,9 +3161,9 @@ $	\text{其中 } k = \sqrt{\frac{2\mu E}{\hbar^2}}, \quad l = \sqrt{\frac{2\mu (
 	这里 $t$ 为透射系数。
 	
 	\begin{align*}
-		j_i &= \frac{\hbar k}{2\mu} \\
-		j_r &= |r|^2 \frac{\hbar k}{2\mu} \\
-		j_t &= |t|^2 \frac{\hbar k}{2\mu}
+		j_i &= \frac{\hbar k}{\mu} \\
+		j_r &= |r|^2 \frac{\hbar k}{\mu} \\
+		j_t &= |t|^2 \frac{\hbar k}{\mu}
 	\end{align*}
 	
 	因此，反射率 \( R = \frac{j_r}{j_i} = |r|^2 \) 和透射率 \( T = \frac{j_t}{j_i} = |t|^2 \)。
@@ -3166,31 +3172,31 @@ $	\text{其中 } k = \sqrt{\frac{2\mu E}{\hbar^2}}, \quad l = \sqrt{\frac{2\mu (
 	
 	在 $x = -a$ 处：
 	\begin{align*}
-		\psi_1(-a) &= \psi_2(-a) \Rightarrow e^{-ika} + r e^{ika} = -C \sin(ka) + D \cos(ka). \tag{1} \\
-		\psi_1'(-a) &= \psi_2'(-a) \Rightarrow ike^{-ika} - rik e^{ika} = C \cos(ka) + D \sin(ka) \tag{2}
+		\psi_1(-a) &= \psi_2(-a) \Rightarrow e^{-ika} + r e^{ika} = -C \sin(la) + D \cos(la). \tag{1} \\
+		\psi_1'(-a) &= \psi_2'(-a) \Rightarrow ike^{-ika} - rik e^{ika} = lC \cos(la) + lD \sin(la) \tag{2}
 	\end{align*}
 	
 	在 $x = a$ 处：
 	\begin{align*}
-		\psi_1(a) &= \psi_2(a) \Rightarrow C \sin(ka) + D \cos(ka) = t e^{ika} \tag{3} \\
-		\psi_1'(a) &= \psi_2'(a) \Rightarrow C \cos(ka) - D \sin(ka) = tike^{ika} \tag{4}
+		\psi_2(a) &= \psi_3(a) \Rightarrow C \sin(la) + D \cos(la) = t e^{ika} \tag{3} \\
+		\psi_2'(a) &= \psi_3'(a) \Rightarrow lC \cos(la) - lD \sin(la) = ikt e^{ika} \tag{4}
 	\end{align*}
 	
 	或写成：
 	\begin{align*}
-		-e^{ika} r + (C - \sin(ka)) C + \cos(ka) D &= e^{-ika} \\
-		ike^{ika} r + (\cos(ka) C + \sin(ka) D) &= ike^{-ika} \\
-		\sin(ka) C + \cos(ka) D + (-e^{ika}) t &= 0 \\
-		\cos(ka) C + (-\sin(ka)) D + (-ike^{ika}) t &= 0
+		-e^{ika} r - \sin(la) C + \cos(la) D &= e^{-ika} \\
+		ike^{ika} r + l\cos(la) C + l\sin(la) D &= ike^{-ika} \\
+		\sin(la) C + \cos(la) D - e^{ika} t &= 0 \\
+		l\cos(la) C - l\sin(la) D - ike^{ika} t &= 0
 	\end{align*}
 	
 	即
 	\[
 	\begin{bmatrix}
-		-e^{ika} & -\sin(ka) & \cos(ka) & 0 \\
-		ike^{ika} & \cos(ka) & \sin(ka) & 0 \\
-		0 & \sin(ka) & \cos(ka) & -e^{ika} \\
-		0 & \cos(ka) & -\sin(ka) & -ike^{ika}
+		-e^{ika} & -\sin(la) & \cos(la) & 0 \\
+		ike^{ika} & l\cos(la) & l\sin(la) & 0 \\
+		0 & \sin(la) & \cos(la) & -e^{ika} \\
+		0 & l\cos(la) & -l\sin(la) & -ike^{ika}
 	\end{bmatrix}
 	\begin{bmatrix}
 		r \\
@@ -3209,36 +3215,17 @@ $	\text{其中 } k = \sqrt{\frac{2\mu E}{\hbar^2}}, \quad l = \sqrt{\frac{2\mu (
 \end{solution}
 
 \[
-t = \frac{\det(M_1)}{\det(M_0)} = \frac{1}{\det(M_0)}
-\begin{vmatrix}
-	-e^{ika} & -\sin(ka) & \cos(ka) & 0 \\
-	ike^{ika} & l\cos(ka) & l\sin(ka) & ke^{-ika} \\
-	0 & \sin(ka) & \cos(ka) & 0 \\
-	0 & l\cos(ka) & -l\sin(ka) & 0
-\end{vmatrix}
+t = \frac{e^{-2ika}}{\cos(2la) - i\frac{k^2+l^2}{2kl}\sin(2la)}
 \]
 
 \[
-= \frac{1}{\det(m_0)} \begin{vmatrix}
-	-e^{ika} & -\sin(ka) & \cos(ka) & 0 \\
-	ike^{ika} & l\cos(ka) & l\sin(ka) & 0 \\
-	0 & \sin(ka) & \cos(ka) & -e^{ika} \\
-	0 & l\cos(ka) & -l\sin(ka) & -ike^{ika}
-\end{vmatrix}
-\]
-
-\[
-= \frac{2ikl}{e^{ika} \left[ (l^2k^2) \sin(2ka) + 2ikl \cos(2ka) \right]} = \frac{e^{-ika}}{\cos(ka) - i \left( \frac{l^2k^2}{2} \right) \sin(ka)}
-\]
-
-\[
-T = |t|^2 = \frac{1}{1 + \frac{(k^2 - l^2)^2}{4k^2l^2} \sin^2(2ka)} = \frac{1}{1 + \frac{V_0^2}{4E(E + V_0)} \sin^2 \left[ \frac{2a}{\hbar} \sqrt{2\mu(E + V_0)} \right]}
+T = |t|^2 = \frac{1}{1 + \frac{(k^2 - l^2)^2}{4k^2l^2} \sin^2(2la)} = \frac{1}{1 + \frac{V_0^2}{4E(E + V_0)} \sin^2 \left[ \frac{2a}{\hbar} \sqrt{2\mu(E + V_0)} \right]}
 \]
 观察透射率 \( T \) 的形式，我们发现，当 \( \sin \theta = 0 \) 时，\( T \) 取最大值 1，意味着完全透射，势阱好像不存在。
 
 当 \( b \) 很大时能量满足：
 \[
-(E + V_0) = \frac{\hbar^2 k^2}{2\mu}
+(E + V_0) = \frac{\hbar^2 l^2}{2\mu}
 \]
 
 \[
@@ -3293,25 +3280,25 @@ $V(x)=0$
 = C \int_{-\infty}^{\infty} D(k) e^{ikx} \, dk.
 \]
 
-而 $\psi(x) = \frac{1}{\sqrt{2\pi\hbar}} \int_{-\infty}^{\infty} \varphi(k) e^{ikx} dk$. 坐标 $\leftrightarrow$ 波矢 表象变换。
+而 $\psi(x) = \frac{1}{\sqrt{2\pi}} \int_{-\infty}^{\infty} \varphi(k) e^{ikx} dk$. 坐标 $\leftrightarrow$ 波矢 表象变换。
 
-因此 $C = \frac{1}{\sqrt{2\pi\hbar}}$ 且 $D(k) = \varphi(k)$。
+因此 $C = \frac{1}{\sqrt{2\pi}}$ 且 $D(k) = \varphi(k)$。
 
 \[
-\Rightarrow \text{一维自由粒子定态波函数} \quad \psi_k(x) = \frac{1}{\sqrt{2\pi\hbar}} e^{ikx}
-\]
-
-完整定态波函数（含时） $\psi_k(x,t) = \frac{1}{\sqrt{2\pi\hbar}} e^{ikx} \cdot e^{-i\frac{\hbar E_k}{\hbar}t}$
+	\Rightarrow \text{一维自由粒子定态波函数} \quad \psi_k(x) = \frac{1}{\sqrt{2\pi}} e^{ikx}
+	\]
+	
+	完整定态波函数（含时） $\psi_k(x,t) = \frac{1}{\sqrt{2\pi}} e^{ikx} \cdot e^{-i\frac{E_k}{\hbar}t}$
 
 其服从的正交归一条件为
 \[
-\langle \psi_k | \psi_{k'} \rangle = \delta_{k,k'}
+	\langle \psi_k | \psi_{k'} \rangle = \delta(k-k')
 \]
 并不满足严格的归一化条件，我们称这种归一化为“Dirac函数归一”。
 
 自由粒子的含时波函数为：
 \[
-\psi(x,t) = \frac{1}{\sqrt{2\pi}} \int_{-\infty}^{\infty} \varphi(k) e^{i(kx - \frac{\hbar}{2m}t)} \, dk
+\psi(x,t) = \frac{1}{\sqrt{2\pi}} \int_{-\infty}^{\infty} \varphi(k) e^{i(kx - \frac{\hbar k^2}{2\mu}t)} \, dk
 \]
 这个时候粒子可以存在于有限区域，又由于 $\psi(x,t)$ 包含了不同波矢的平面波成份，因此形成一个波包。
 
@@ -3319,29 +3306,29 @@ $V(x)=0$
 \[
 \psi(x,t) = \frac{1}{\sqrt{2\pi}} \int_{k_0 - \Delta k}^{k_0 + \Delta k} \varphi(k) e^{i(kx - \omega(k)t)} \, dk
 \]
-其中 $\omega(k) = \frac{\hbar k^2}{2m}$。
+其中 $\omega(k) = \frac{\hbar k^2}{2\mu}$。
 
 考虑 $\Delta k$ 较小的情况，则此时 $\varphi(k) \approx \varphi(k_0)$。
 
 令 $\xi = k - k_0$，$k = \xi + k_0$。
 
-则 $w(k) = w(k_0 + 3)$，使用泰勒展开（Taylor expansion）：
+	则 $\omega(k) = \omega(k_0 + \xi)$，使用泰勒展开（Taylor expansion）：
 
 \[
-= w(k_0) + \left. \frac{dw(k)}{dk} \right|_{k=k_0} \xi + \cdots
+= \omega(k_0) + \left. \frac{d\omega(k)}{dk} \right|_{k=k_0} \xi + \cdots
 \]
 
 \[
-\approx w(k_0) + \left. \frac{dw(k)}{dk} \right|_{k=k_0} \xi
+\approx \omega(k_0) + \left. \frac{d\omega(k)}{dk} \right|_{k=k_0} \xi
 \]
 
-\begin{align*}
-	\psi(x,t) &= \frac{1}{\sqrt{2\pi}} \int_{-\Delta k}^{\Delta k} \varphi(k) e^{i(kx - \omega(k)t)} e^{i\left(x - \frac{d\omega(k)}{dk}\bigg|_{k=k_0} t\right)} \, dk \\
-	&= \frac{1}{\sqrt{2\pi}} e^{i k_0 x} \cdot e^{-\omega(k_0) t} \varphi(k_0) \int_{-\Delta k}^{\Delta k} e^{i\left(x - \frac{d\omega(k)}{dk}\bigg|_{k=k_0} t\right)} \, dk \\
-	&= \frac{1}{\sqrt{2\pi}} \varphi(k_0) e^{i(k_0 x - \omega(k_0) t)} \left[ \frac{1}{i\left(x - \frac{d\omega(k)}{dk}\bigg|_{k=k_0} t\right)} \left( e^{i\left(x - \frac{d\omega(k)}{dk}\big|_{k=k_0} t\right)} - e^{-i\left(x - \frac{d\omega(k)}{dk}\big|_{k=k_0} t\right)} \right) \right] \\
-	&= \frac{1}{\sqrt{2\pi}} \varphi(k_0) e^{i(k_0 x - \omega(k_0) t)} \frac{1}{i\left(x - \frac{d\omega(k)}{dk}\big|_{k=k_\infty} t\right)} 2i \sin\left(x - \frac{d\omega(k)}{dk}\big|_{k=k_\infty} t\right) \Delta k \\
-	&= \frac{2}{\sqrt{2\pi}} \frac{\sin\left\{x - \frac{d\omega}{dk}\bigg|_{k=k_\infty} t\right\} \Delta k}{x - \frac{d\omega}{dk}\big|_{k=k_\infty} t}\varphi(k_0) e^{i(k_0 x - \omega(k_0) t)} 
-\end{align*}
+	\begin{align*}
+		\psi(x,t) &\approx \frac{\varphi(k_0)}{\sqrt{2\pi}} e^{i(k_0x-\omega(k_0)t)}
+		\int_{-\Delta k}^{\Delta k} e^{i\xi\left(x-\frac{d\omega}{dk}\big|_{k=k_0}t\right)}\,d\xi \\
+		&= \frac{\varphi(k_0)}{\sqrt{2\pi}} e^{i(k_0x-\omega(k_0)t)}
+		\frac{2\sin\left[\Delta k\left(x-\frac{d\omega}{dk}\big|_{k=k_0}t\right)\right]}
+		{x-\frac{d\omega}{dk}\big|_{k=k_0}t}
+	\end{align*}
 
 因此，波包整体移动的速度（群速度）为：
 \[
@@ -3362,10 +3349,10 @@ v_g = \left. \frac{d\omega}{dk} \right|_{k=k_0} = \frac{2k_0 \hbar}{2\mu} = \fra
 \]
 
 \[
-\psi_p(x,t) = \frac{1}{\sqrt{2\pi\hbar}} \int_{-\infty}^{\infty} \varphi(p) e^{i(p x - \frac{E_p}{\hbar} t)} \, dp
+\psi(x,t) = \frac{1}{\sqrt{2\pi\hbar}} \int_{-\infty}^{\infty} \varphi(p) e^{\frac{i}{\hbar}(p x - E_p t)} \, dp
 \]
 
-其中 \(\langle \psi_p | \psi_p' \rangle = \delta(p - p')\)。
+其中 \(\langle \psi_p | \psi_{p'} \rangle = \delta(p - p')\)。
 \subsection{概率流密度}
 回顾电磁学中的流守恒方程。
 
@@ -3392,43 +3379,31 @@ NR QM 里 概率是守恒的，“粒子不能凭空产生，也不能凭空消�
 	\frac{\partial \rho}{\partial t} = \frac{\partial}{\partial t} (\psi^* \psi) = (\partial_t \psi^*) \psi + \psi^* (\partial_t \psi)
 	\]
 	
-	设 $\hat{H} \psi = E \psi$，则有 $(-\frac{\hbar^2}{2\mu} \nabla^2 + V) \psi = E \psi$，因此 $\partial_t \psi = \frac{i}{\hbar} (-\frac{\hbar^2}{2\mu} \nabla^2 + V) \psi$。
+		由含时 Schrödinger 方程有 $i\hbar\partial_t\psi = (-\frac{\hbar^2}{2\mu} \nabla^2 + V) \psi$，因此 $\partial_t \psi = \frac{1}{i\hbar} (-\frac{\hbar^2}{2\mu} \nabla^2 + V) \psi$。
 	
 	\[
-	\Rightarrow \partial_t \psi^* = \frac{i}{\hbar} (-\frac{\hbar^2}{2\mu} \nabla^2 + V) \psi^*
+		\Rightarrow \partial_t \psi^* = -\frac{1}{i\hbar} \left(-\frac{\hbar^2}{2\mu} \nabla^2 + V\right) \psi^*
 	\]
 	
 	\[
-	\Rightarrow \partial_t \psi^* = \frac{i}{\hbar} (-\frac{\hbar^2}{2\mu} \nabla^2 + V) \psi^*
+		\frac{\partial \rho}{\partial t}
+		= -\frac{1}{i\hbar} \left(-\frac{\hbar^2}{2\mu}\nabla^2+V\right)\psi^*\psi
+		+ \psi^*\frac{1}{i\hbar}\left(-\frac{\hbar^2}{2\mu}\nabla^2+V\right)\psi
 	\]
 	
 	\[
-	= -\frac{i}{\hbar} (-\frac{\hbar^2}{2\mu} \nabla^2 + V) \psi^* \psi + \psi^* \frac{i}{\hbar} (-\frac{\hbar^2}{2\mu} \nabla^2 + V) \psi
+		= \frac{i\hbar}{2\mu}\left(\psi^*\nabla^2\psi-\psi\nabla^2\psi^*\right)
 	\]
 	
 	\[
-	= \frac{1}{i\hbar} \left( -\frac{\hbar^2}{2\mu} \right) \left[ \psi^* \nabla^2 \psi - (\nabla \psi)^2 \right]
+		= \frac{i\hbar}{2\mu}\nabla\cdot(\psi^*\nabla\psi-\psi\nabla\psi^*)
 	\]
 	
 	\[
-	= \frac{i\hbar}{2\mu} \left[ \psi^* \nabla^2 \psi - \psi (\nabla \psi)^2 \right]
-	\]
-	
-	\[
-	= \frac{i\hbar}{2\mu} \nabla \cdot (\psi^* \nabla \psi - \psi \nabla \psi^*)
-	\]
-	
-	\[
-	= \nabla \cdot \left[ \frac{i\hbar}{2\mu} (\psi^* \nabla \psi - \psi \nabla \psi^*) \right]
+		= -\nabla \cdot \left[ \frac{\hbar}{2\mu i}(\psi^*\nabla\psi-\psi\nabla\psi^*) \right]
 	\]
 	
 考虑概率密度随时间的变化。
-
-\[
-\frac{\partial \rho}{\partial t} - \frac{i\hbar}{2\mu} (\psi^* \nabla \psi - \psi \nabla \psi^*) = \vec{J} \cdot \vec{c}(\vec{r},t)
-\]
-
-则
 
 \[
 \frac{\partial \rho}{\partial t} + \nabla \cdot \vec{J}(\vec{r},t) = 0
@@ -3437,29 +3412,29 @@ NR QM 里 概率是守恒的，“粒子不能凭空产生，也不能凭空消�
 我们称
 
 \[
-\vec{J} = \frac{i\hbar}{2\mu} (\psi^* \nabla \psi - \psi \nabla \psi^*)
+\vec{J} = \frac{\hbar}{2\mu i}(\psi^*\nabla\psi-\psi\nabla\psi^*)
 \]
 
 为概率流密度。
 
 
 \begin{equation*}
-	\text{概率守恒方程}\left\{ \begin{array}{l}
-		\frac{\partial \rho}{\partial t}+\nabla \cdot \vec{J}=0\text{微分形式}\\
-		\iiint{\rho}(\vec{r})d\tau +\varoiint{\vec{J}}\cdot d\vec{S}=0\text{积分形式}\\
-	\end{array} \right. 
-\end{equation*}
+		\text{概率守恒方程}\left\{ \begin{array}{l}
+			\frac{\partial \rho}{\partial t}+\nabla \cdot \vec{J}=0\text{微分形式}\\
+			\frac{d}{dt}\iiint{\rho}(\vec{r})d\tau +\varoiint{\vec{J}}\cdot d\vec{S}=0\text{积分形式}\\
+		\end{array} \right. 
+	\end{equation*}
 \begin{example}
 	$e^{ikx}$
 \end{example}
 \begin{solution}
 	\begin{align*}
-		J(x) &= \frac{i\hbar}{2\mu} \left( e^{ikx} \frac{\partial}{\partial x} e^{-ikx} - e^{-ikx} \frac{\partial}{\partial x} e^{ikx} \right) \\
-		&= \frac{i\hbar}{2\mu} \left( -ik e^{ikx} e^{-ikx} - ik e^{-ikx} e^{ikx} \right) \\
-		&= \frac{i\hbar}{2\mu} \left( -2ik \right) = \frac{\hbar k}{\mu} = v.
+		J(x) &= \frac{\hbar}{2\mu i} \left( e^{-ikx} \frac{\partial}{\partial x} e^{ikx} - e^{ikx} \frac{\partial}{\partial x} e^{-ikx} \right) \\
+		&= \frac{\hbar}{2\mu i} \left( ik e^{-ikx} e^{ikx} + ik e^{ikx} e^{-ikx} \right) \\
+		&= \frac{\hbar}{2\mu i} \left( 2ik \right) = \frac{\hbar k}{\mu} = v.
 	\end{align*}
 \end{solution}
-\section{一维有限高方势垒$\&$量子隧穿}
+\section{一维有限高方势垒\texorpdfstring{$\&$}{和}量子隧穿}
 \begin{figure}[H]
 	\centering
 	\includegraphics[width=0.7\linewidth]{figure/screenshot0027}
@@ -3488,13 +3463,13 @@ NR QM 里 概率是守恒的，“粒子不能凭空产生，也不能凭空消�
 	-\frac{\hbar^2}{2\mu} \frac{d^2}{dx^2} \psi(x) = E \psi(x) \Rightarrow \frac{d^2}{dx^2} \psi(x) = \frac{-2\mu E}{\hbar^2} \psi(x)
 	\]
 	\[
-	\psi_3(x) = E e^{ikx} + F e^{-ikx}
+		\psi_3(x) = G e^{ikx} + F e^{-ikx}
 	\]
 	
 	与一维有限深方势阱问题完全相同。
 	
 	\begin{align*}
-		T &= \frac{1}{1 + \frac{V_0^2}{4E(E + V_0)} \sin^2\left(\frac{2a}{\hbar} \sqrt{2\mu(E - V_0)}\right)} \\
+		T &= \frac{1}{1 + \frac{V_0^2}{4E(E - V_0)} \sin^2\left(\frac{2a}{\hbar} \sqrt{2\mu(E - V_0)}\right)} \\
 		R &= 1 - T
 	\end{align*}
 	
@@ -3507,7 +3482,7 @@ NR QM 里 概率是守恒的，“粒子不能凭空产生，也不能凭空消�
 		& -a < x < a: \quad \left[ -\frac{\hbar^2}{2\mu} \frac{d^2}{dx^2} + V_0 \right] \psi_2(x) = E \psi_2(x) \quad \Rightarrow \frac{d^2}{dx^2} \psi(x) = \frac{-2\mu(E - V_0)}{\hbar^2} \psi(x) \\
 		& \Rightarrow \psi_2(x) = C e^{lx} + D e^{-lx} \\
 		& x > a: \quad -\frac{\hbar^2}{2\mu} \frac{d^2}{dx^2} \psi(x) = E \psi(x) \quad \Rightarrow \frac{d^2}{dx^2} \psi(x) = \frac{-2\mu E}{\hbar^2} \psi(x) \\
-		& \Rightarrow \psi_3(x) = E e^{ikx} + F e^{-ikx}
+		& \Rightarrow \psi_3(x) = G e^{ikx} + F e^{-ikx}
 	\end{align*}
 	
 	其中 $k = \sqrt{\frac{2\mu E}{\hbar^2}}$ 和 $l = \sqrt{\frac{-2\mu(E - V_0)}{\hbar^2}}$.
@@ -3519,7 +3494,7 @@ NR QM 里 概率是守恒的，“粒子不能凭空产生，也不能凭空消�
 	\]
 	
 	\[
-	\psi_2(x) = C e^{ix} + D e^{-ix}
+	\psi_2(x) = C e^{lx} + D e^{-lx}
 	\]
 	
 	\[
@@ -3539,23 +3514,23 @@ NR QM 里 概率是守恒的，“粒子不能凭空产生，也不能凭空消�
 		\psi_1(-a) &= \psi_2(-a) \Rightarrow e^{-ika} + r e^{ika} = C e^{-la} + D e^{la} \\
 		\psi_1'(-a) &= \psi_2'(-a) \Rightarrow ike^{-ika} - ikr e^{ika} = l C e^{-la} - lDe^{la} \\
 		\psi_2(a) &= \psi_3(a) \Rightarrow C e^{la} + D e^{-la} = te^{ika} \\
-		\psi_3'(a) &= \psi_3'(a) \Rightarrow lC e^{la} - lDe^{-la} = ikte^{ika}
+		\psi_2'(a) &= \psi_3'(a) \Rightarrow lC e^{la} - lDe^{-la} = ikte^{ika}
 	\end{align*}
 	
 	$\Rightarrow$
 	\begin{align*}
 		-e^{ika} r + e^{-la} C + e^{la} D &= e^{-ika} \\
 		ike^{ika} r + (e^{-la} C + (-le^{la}) D) &= ike^{-ika} \\
-		e^{la} C + e^{-la} D + e^{ika} t &= \\
-		le^{la} C + (le^{-la}) D + ike^{ika} t &= 0
+		e^{la} C + e^{-la} D - e^{ika} t &= 0 \\
+		le^{la} C - le^{-la} D - ike^{ika} t &= 0
 	\end{align*}
 	
 	\[
 	\begin{bmatrix}
-		-e^{i\alpha} & e^{-i\alpha} & e^{i\alpha} & 0 \\
-		ike^{i\alpha} & le^{-i\alpha} & -le^{i\alpha} & 0 \\
-		0 & e^{ix} & e^{-ix} & e^{i\alpha} \\
-		0 & le^{i\alpha} & -le^{-i\alpha} & ike^{i\alpha}
+		-e^{ika} & e^{-la} & e^{la} & 0 \\
+		ike^{ika} & le^{-la} & -le^{la} & 0 \\
+		0 & e^{la} & e^{-la} & -e^{ika} \\
+		0 & le^{la} & -le^{-la} & -ike^{ika}
 	\end{bmatrix}
 	\begin{bmatrix}
 		r \\
@@ -3565,7 +3540,7 @@ NR QM 里 概率是守恒的，“粒子不能凭空产生，也不能凭空消�
 	\end{bmatrix}
 	=
 	\begin{bmatrix}
-		e^{i\alpha} \\
+		e^{-ika} \\
 		ike^{-i\alpha} \\
 		0 \\
 		0
@@ -3573,11 +3548,11 @@ NR QM 里 概率是守恒的，“粒子不能凭空产生，也不能凭空消�
 	\]
 	
 	\[
-	T = |t|^2 = \left| \frac{\det M_4}{\det M_0} \right|^2 = \frac{1}{1 + \left[ 1 + \frac{l^2 - k^2}{\alpha(k)^2} \right] \sinh^2(2l\alpha)}
+	T = |t|^2 = \left| \frac{\det M_4}{\det M_0} \right|^2 = \frac{1}{1 + \frac{(k^2+l^2)^2}{4k^2l^2}\sinh^2(2la)}
 	\]
 	
 	\[
-	= \frac{1}{1 + \frac{V_0^2}{4EC(V_0 - E)} \sinh^2 \left( \frac{l\alpha}{\hbar} \sqrt{2m(V_0 - E)} \right)}
+	= \frac{1}{1 + \frac{V_0^2}{4E(V_0 - E)} \sinh^2 \left( \frac{2a}{\hbar} \sqrt{2\mu(V_0 - E)} \right)}
 	\]
 	
 	\[
@@ -3614,10 +3589,10 @@ NR QM 里 概率是守恒的，“粒子不能凭空产生，也不能凭空消�
 		\end{cases}
 	\end{equation*}
 	\begin{align*}
-		\psi_1(-a) &= \psi_1(-a) \implies e^{-ika} + re^{ika} = -Aa + B \\
-		\psi_1'(-a) &= \psi_1'(-a) \implies ike^{-ika} - ikre^{ika} = A \\
-		\psi_2(a) &= \psi_2(a) \implies te^{ika} = Aa + B \\
-		\psi_2'(a) &= \psi_2'(a) \implies ikte^{ika} = A
+			\psi_1(-a) &= \psi_2(-a) \implies e^{-ika} + re^{ika} = -Aa + B \\
+			\psi_1'(-a) &= \psi_2'(-a) \implies ike^{-ika} - ikre^{ika} = A \\
+			\psi_2(a) &= \psi_3(a) \implies te^{ika} = Aa + B \\
+			\psi_2'(a) &= \psi_3'(a) \implies ikte^{ika} = A
 	\end{align*}
 	\[
 	\begin{bmatrix}
@@ -3642,14 +3617,14 @@ NR QM 里 概率是守恒的，“粒子不能凭空产生，也不能凭空消�
 	\]
 	
 	\[
-	T = |t|^2 = \left| \frac{\det(M_4)}{\det(M_0)} \right|^2 = \frac{1}{1 + k^2a^2} = \frac{1}{1 + \frac{2m\hbar}{\hbar^2}a^2}
+T = |t|^2 = \left| \frac{\det(M_4)}{\det(M_0)} \right|^2 = \frac{1}{1 + k^2a^2} = \frac{1}{1 + \frac{2mE}{\hbar^2}a^2}
 	\]
 	
 	\[
 	R = 1 - T
 	\]
 \end{enumerate}
-\section{$\delta$势阱/势垒}
+\section{\texorpdfstring{$\delta$}{delta}势阱/势垒}
 \begin{figure}[H]
 	\centering
 	\includegraphics[width=0.7\linewidth]{figure/screenshot0028}
@@ -3684,7 +3659,7 @@ $x \rightarrow +\infty$ 时 $\psi(x)$ 有界 $\implies C = 0 \implies \psi_2(x) 
 
 由于 $x=0$ 处 $\psi(x)$ 的连续性 $\implies A = D$
 
-由于 $x=0$ 处是奇点，因此 $\psi(x)$ 在该处不连续。
+由于 $x=0$ 处是奇点，因此 $\psi'(x)$ 在该处不连续。
 
 现考虑 $\psi(x)$ 在 $x=0$ 处的跳跃性：
 
@@ -3699,25 +3674,25 @@ $x \rightarrow +\infty$ 时 $\psi(x)$ 有界 $\implies C = 0 \implies \psi_2(x) 
 \]
 
 \[
-\left. \frac{d}{dx} \psi(x) \right|_{0^+} - \left. \frac{d}{dx} \psi(x) \right|_{0^-} = \frac{2m\alpha}{\hbar^2} \int_{-\varepsilon}^{+\varepsilon} \delta(x) \psi(x) dx
+\left. \frac{d}{dx} \psi(x) \right|_{0^+} - \left. \frac{d}{dx} \psi(x) \right|_{0^-} = -\frac{2m\alpha}{\hbar^2} \int_{-\varepsilon}^{+\varepsilon} \delta(x) \psi(x) dx
 \]
 
 \[
-\psi'(0^+) - \psi'(0^-) = \frac{2m\alpha}{\hbar^2} \psi(0)
+\psi'(0^+) - \psi'(0^-) = -\frac{2m\alpha}{\hbar^2} \psi(0)
 \]
 
 因此：
 
 \[
-\psi'(0) - \psi'(0) = \frac{2m\alpha}{\hbar^2} \psi(0)
+\psi'(0^+) - \psi'(0^-) = -\frac{2m\alpha}{\hbar^2} \psi(0)
 \]
 
 \[
--kAe^{-k\cdot0} - kAe^{k\cdot0} = \frac{2m\alpha}{\hbar^2} A e^{k\cdot0}
+-kAe^{-k\cdot0} - kAe^{k\cdot0} = -\frac{2m\alpha}{\hbar^2} A e^{k\cdot0}
 \]
 
 \[
-2kA = \frac{2m\alpha}{\hbar^2} A
+-2kA = -\frac{2m\alpha}{\hbar^2} A
 \]
 
 \[
@@ -3750,7 +3725,7 @@ $\psi_2(x) = C e^{ikx}$ $\psi_2(x) = t e^{ikx}$
 
 由边界条件 $\psi(0) = \psi(0)$：
 \[
-e^{ik\cdot0} + r e^{-ik\cdot0} = t e^{ik\cdot0} \implies 1 + r = t \quad \textcircled{1}
+e^{ik\cdot0} + r e^{-ik\cdot0} = t e^{ik\cdot0} \implies 1 + r = t \quad \text{(1)}
 \]
 
 由 $\delta$ 势处 $\frac{d}{dx} \psi(x)$ 的跳跃条件：
@@ -3758,7 +3733,7 @@ e^{ik\cdot0} + r e^{-ik\cdot0} = t e^{ik\cdot0} \implies 1 + r = t \quad \textci
 ikte^{ik\cdot0} - ik e^{ik\cdot0} + ikr e^{-ik\cdot0} = \frac{2m\alpha}{\hbar^2} t e^{ik\cdot0}
 \]
 \[
-ik(t + r - 1) = \frac{2m\alpha}{\hbar^2} t \quad \textcircled{2}
+ik(t + r - 1) = \frac{2m\alpha}{\hbar^2} t \quad \text{(2)}
 \]
 
 由1,2得：
@@ -3771,11 +3746,11 @@ ik(t + r - 1) = \frac{2m\alpha}{\hbar^2} t \quad \textcircled{2}
 \right.
 \]
 
-入射波的概率流密度为 $J_i = \frac{i\hbar}{2m} (\psi_1^* \frac{d\psi_1}{dx} - \psi_1 \frac{d\psi_1^*}{dx}) = \frac{\hbar k}{2m}$
+入射波的概率流密度为 $J_i = \frac{\hbar}{2mi} (\psi_i^* \frac{d\psi_i}{dx} - \psi_i \frac{d\psi_i^*}{dx}) = \frac{\hbar k}{m}$
 
-反射波的概率流密度为 $J_r = \frac{i\hbar}{2m} (\psi_r^* \frac{d\psi_r}{dx} - \psi_r \frac{d\psi_r^*}{dx}) = \frac{\hbar k}{2m} |r|^2$
+反射波的概率流密度大小为 $J_r = \frac{\hbar k}{m} |r|^2$
 
-透射波的概率流密度为 $J_t = \frac{i\hbar}{2m} (\psi_t^* \frac{d\psi_t}{dx} - \psi_t \frac{d\psi_t^*}{dx}) = \frac{\hbar k}{2m} |t|^2$
+透射波的概率流密度为 $J_t = \frac{\hbar k}{m} |t|^2$
 
 则透射概率为：
 \[
@@ -3788,15 +3763,15 @@ R = \frac{J_r}{J_i} = |r|^2 = 1 - T
 \]
 \section{简谐振子}
 \[
-F = -kx = -\omega x
+F = -kx = -m\omega^2 x
 \]
 
 势能
 \[
-V(x) = \frac{1}{2}kx^2 = \frac{1}{2}\omega x^2 \quad \text{其中} \quad \omega = \sqrt{\frac{k}{m}}
+V(x) = \frac{1}{2}kx^2 = \frac{1}{2}m\omega^2 x^2 \quad \text{其中} \quad \omega = \sqrt{\frac{k}{m}}
 \]
 
-在量子力学中，同样考虑粒子在势场 \( V(x) = \frac{1}{2}\omega x^2 \) 中运动，则定态 Schrödinger 方程为
+在量子力学中，同样考虑粒子在势场 \( V(x) = \frac{1}{2}m\omega^2 x^2 \) 中运动，则定态 Schrödinger 方程为
 \[
 \left[ -\frac{\hbar^2}{2m} \frac{d^2}{dx^2} + \frac{1}{2}m\omega^2 x^2 \right] \psi(x) = E \psi(x)
 \]
@@ -3805,7 +3780,7 @@ V(x) = \frac{1}{2}kx^2 = \frac{1}{2}\omega x^2 \quad \text{其中} \quad \omega 
 
 观察这个问题中的 Hamiltonian：
 \[
-\hat{H} = \frac{\hat{p}^2}{2m} + \frac{1}{2}m\omega^2 x^2 = \left( \frac{m\omega}{2\pi\hbar} \right)^{1/2} \left( \hat{a}^\dagger \hat{a} + \frac{1}{2} \right)
+\hat{H} = \frac{\hat{p}^2}{2m} + \frac{1}{2}m\omega^2 x^2 = \hbar\omega \left( \hat{a}^\dagger \hat{a} + \frac{1}{2} \right)
 \]
 
 在经典情况下，平方和可以做因式分解。
@@ -3816,19 +3791,19 @@ V(x) = \frac{1}{2}kx^2 = \frac{1}{2}\omega x^2 \quad \text{其中} \quad \omega 
 
 或写成
 \[
-\hat{H} = \hbar \omega \frac{1}{\sqrt{2m\omega}} (\mu \omega x - i \hat{p}) \cdot \frac{1}{\sqrt{2m\omega}} (\mu \omega x + i \hat{p}) + \frac{1}{2} \hbar \omega
+\hat{H} = \hbar \omega \frac{1}{\sqrt{2m\hbar\omega}} (m \omega x - i \hat{p}) \cdot \frac{1}{\sqrt{2m\hbar\omega}} (m \omega x + i \hat{p}) + \frac{1}{2} \hbar \omega
 \]
 
-因为其等于 \(\frac{1}{2m} (\mu \omega x \hat{p} + \hat{p} \mu \omega x) + i \omega \hat{x} \hat{p} - i \omega \hat{p} \hat{x})\) 但在量子情况下，\(x \hat{p} \neq \hat{p} x\) \(-i\hbar \omega \hat{H}\)
+因为在量子情况下，\(x\hat{p}\neq \hat{p}x\)，乘积展开会多出由 \([\hat{x},\hat{p}]=i\hbar\) 决定的零点能项。
 
 因此，需改写为
 \[
-\hat{\mathcal{H}} = \hbar \omega \left[ \frac{1}{\sqrt{2m\omega}} (\mu \omega x - i \hat{p}) \cdot \frac{1}{\sqrt{2m\omega}} (\mu \omega x + i \hat{p}) \right] + \frac{\hbar \omega}{2}
+\hat{\mathcal{H}} = \hbar \omega \left[ \frac{1}{\sqrt{2m\hbar\omega}} (m \omega x - i \hat{p}) \cdot \frac{1}{\sqrt{2m\hbar\omega}} (m \omega x + i \hat{p}) \right] + \frac{\hbar \omega}{2}
 \]
 
-令 \(\frac{1}{\sqrt{2m\omega}} (\mu \omega x - i \hat{p}) = \hat{a}^\dagger\) （这里可以看出，\(\hat{a}, \hat{a}^\dagger\) 均不是厄米算符）
+令 \(\frac{1}{\sqrt{2m\hbar\omega}} (m \omega x - i \hat{p}) = \hat{a}^\dagger\) （这里可以看出，\(\hat{a}, \hat{a}^\dagger\) 均不是厄米算符）
 
-则 \(\frac{1}{\sqrt{2m\omega}} (\mu \omega x + i \hat{p}) = \hat{a}\)
+则 \(\frac{1}{\sqrt{2m\hbar\omega}} (m \omega x + i \hat{p}) = \hat{a}\)
 
 \[
 \hat{\mathcal{H}} = (\hat{a}^\dagger \hat{a} + \frac{1}{2}) \hbar \omega
@@ -3843,8 +3818,8 @@ V(x) = \frac{1}{2}kx^2 = \frac{1}{2}\omega x^2 \quad \text{其中} \quad \omega 
 
 考虑 \([ \hat{a}, \hat{a}^\dagger ]\)
 \[
-= \left[ \frac{1}{\sqrt{2m\hbar\omega}} (\mu \omega x + i \hat{p}), \frac{1}{\sqrt{2m\hbar\omega}} (\mu \omega x - i \hat{p}) \right]
-= \frac{i\mu\omega}{2\hbar} (-[x, \hat{p}] + [\hat{p}, x])
+= \left[ \frac{1}{\sqrt{2m\hbar\omega}} (m \omega x + i \hat{p}), \frac{1}{\sqrt{2m\hbar\omega}} (m \omega x - i \hat{p}) \right]
+= \frac{im\omega}{2m\hbar\omega} (-[x, \hat{p}] + [\hat{p}, x])
 = \frac{i}{2\hbar} (-i\hbar - i\hbar)
 = 1
 \]
@@ -3871,12 +3846,15 @@ V(x) = \frac{1}{2}kx^2 = \frac{1}{2}\omega x^2 \quad \text{其中} \quad \omega 
 
 现考虑 \(|n'\rangle\) 到底是什么态。
 \[
-\hat{a} |n'\rangle = \hat{a}^\dagger \hat{a} |n'\rangle
-= \hat{a}^\dagger \hat{a} \frac{1}{\sqrt{n}} \hat{a} |n\rangle
-= \frac{1}{\sqrt{n}} (\hat{a} \hat{a}^\dagger - 1) \hat{a} |n\rangle
-= \frac{1}{\sqrt{n}} (\hat{a} n' |n\rangle - \hat{a} |n\rangle)
-= \frac{1}{\sqrt{n}} (n' |n\rangle - \hat{a} |n\rangle)
-= (n-1) \frac{1}{\sqrt{n}} \hat{a} |n\rangle = (n-1) |n'\rangle
+\begin{aligned}
+	\hat{N} |n'\rangle
+	&= \hat{a}^\dagger \hat{a} |n'\rangle \\
+	&= \hat{a}^\dagger \hat{a} \frac{1}{\sqrt{n}} \hat{a} |n\rangle \\
+	&= \frac{1}{\sqrt{n}} (\hat{a} \hat{a}^\dagger - 1) \hat{a} |n\rangle \\
+	&= \frac{1}{\sqrt{n}} (\hat{a} n |n\rangle - \hat{a} |n\rangle) \\
+	&= (n-1) \frac{1}{\sqrt{n}} \hat{a} |n\rangle \\
+	&= (n-1) |n'\rangle
+\end{aligned}
 \]
 因此 \(|n'\rangle\) 也是 \(\hat{N}\) 的本征态，本征值为 \(n-1\)。
 
@@ -3907,7 +3885,7 @@ V(x) = \frac{1}{2}kx^2 = \frac{1}{2}\omega x^2 \quad \text{其中} \quad \omega 
 
 而 \(\hat{a}^\dagger\) 会使 \(n+1\)，因此 \(n=0, 1, 2, 3, \cdots\) 的态一定存在。若 \(n\) 取非整数，则 \(\hat{a}\) 不能使其降至 \(|0\rangle\) 态，从而会产生负能级。
 
-（例如，若 \(n=0.6\)，则 \(\hat{a} |0.3\rangle = C_1 |0.3-1\rangle\)，\(\hat{a}^2 |0.3\rangle = C_1 C_1 |0.3-2\rangle \cdots\)）
+	（例如，若 \(n=0.6\)，则 \(\hat{a} |0.6\rangle = C_1 |0.6-1\rangle\)，\(\hat{a}^2 |0.6\rangle = C_2 |0.6-2\rangle \cdots\)）
 
 因此 \(n\) 只能取非负整数。
 
@@ -3923,29 +3901,29 @@ E_n = \left( n + \frac{1}{2} \right) \hbar \omega \quad n = 0, 1, 2, 3, \cdots
 考虑基态，\(\hat{a} \psi_0(x) = 0\)
 
 \[
-(\mu \omega x + i \hat{p}) \psi_0(x) = 0
+(m \omega x + i \hat{p}) \psi_0(x) = 0
 \]
 
 \[
-\frac{d}{dx} \psi_0(x) = -\frac{\mu \omega}{\hbar} x \psi_0(x)
+\frac{d}{dx} \psi_0(x) = -\frac{m \omega}{\hbar} x \psi_0(x)
 \]
 
 \[
-\frac{1}{\psi_0(x)} d\psi_0(x) = -\frac{\mu \omega}{\hbar} x dx
+\frac{1}{\psi_0(x)} d\psi_0(x) = -\frac{m \omega}{\hbar} x dx
 \]
 
 \[
-\ln \psi_0(x) = -\frac{\mu \omega}{2\hbar} x^2 + C
+\ln \psi_0(x) = -\frac{m \omega}{2\hbar} x^2 + C
 \]
 
 \[
-\psi_0(x) = A e^{-\frac{\mu \omega}{2\hbar} x^2}
+\psi_0(x) = A e^{-\frac{m \omega}{2\hbar} x^2}
 \]
 
-归一化，\(|A|^2 \int_{-\infty}^{\infty} e^{-\frac{\mu \omega}{\hbar} x^2} dx = 1 \Rightarrow |A|^2 \sqrt{\frac{\pi \hbar}{\mu \omega}} = 1 \Rightarrow A = \left( \frac{\mu \omega}{\pi \hbar} \right)^{1/4}\)
+归一化，\(|A|^2 \int_{-\infty}^{\infty} e^{-\frac{m \omega}{\hbar} x^2} dx = 1 \Rightarrow |A|^2 \sqrt{\frac{\pi \hbar}{m \omega}} = 1 \Rightarrow A = \left( \frac{m \omega}{\pi \hbar} \right)^{1/4}\)
 
 \[
-\psi_0(x) = \left( \frac{\mu \omega}{\pi \hbar} \right)^{1/4} e^{-\frac{\mu \omega}{2\hbar} x^2}
+\psi_0(x) = \left( \frac{m \omega}{\pi \hbar} \right)^{1/4} e^{-\frac{m \omega}{2\hbar} x^2}
 \]
 
 由 \(\hat{a}^\dagger |n\rangle = \sqrt{n+1} |n+1\rangle \Rightarrow \hat{a}^\dagger \psi_n = \sqrt{n+1} \psi_{n+1}\)
@@ -3963,18 +3941,18 @@ E_n = \left( n + \frac{1}{2} \right) \hbar \omega \quad n = 0, 1, 2, 3, \cdots
 \]
 
 \[
-\psi_n = \frac{1}{\sqrt{n!}} (\hat{a}^\dagger)^n \psi_0 = N_n e^{-\alpha x^2/2} H_n(\alpha x)
+\psi_n = \frac{1}{\sqrt{n!}} (\hat{a}^\dagger)^n \psi_0 = N_n e^{-\lambda^2 x^2/2} H_n(\lambda x)
 \]
 
-其中 \(\alpha = \sqrt{\frac{\mu \omega}{\hbar}}\)，\(N_n = \sqrt{\frac{\alpha}{\sqrt{\pi} 2^n n!}}\) 为归一化常数，\(H_n(\alpha x)\) 为厄米多项式。
+其中 \(\lambda = \sqrt{\frac{m \omega}{\hbar}}\)，\(N_n = \sqrt{\frac{\lambda}{\sqrt{\pi} 2^n n!}}\) 为归一化常数，\(H_n(\lambda x)\) 为厄米多项式。
 
 \textbf{[x, \(\hat{p}\)] 递推关系}
 \[
 \left\{
-\begin{array}{l}
-	\hat{a} = \frac{1}{\sqrt{2m\omega}} (\mu \omega x + i \hat{p}) \\
-	\hat{a}^\dagger = \frac{1}{\sqrt{2m\omega}} (\mu \omega x - i \hat{p})
-\end{array}
+	\begin{array}{l}
+		\hat{a} = \frac{1}{\sqrt{2m\hbar\omega}} (m \omega x + i \hat{p}) \\
+		\hat{a}^\dagger = \frac{1}{\sqrt{2m\hbar\omega}} (m \omega x - i \hat{p})
+	\end{array}
 \right.
 \]
 
@@ -3983,7 +3961,7 @@ E_n = \left( n + \frac{1}{2} \right) \hbar \omega \quad n = 0, 1, 2, 3, \cdots
 \left\{
 \begin{array}{l}
 	x = \sqrt{\frac{\hbar}{2m\omega}} (\hat{a} + \hat{a}^\dagger) \\
-	\hat{p} = -i \sqrt{\frac{\mu \hbar \omega}{2}} (\hat{a} - \hat{a}^\dagger) \\
+	\hat{p} = -i \sqrt{\frac{m \hbar \omega}{2}} (\hat{a} - \hat{a}^\dagger) \\
 	\frac{d}{dx} = \sqrt{\frac{m\omega}{2\hbar}} (\hat{a} - \hat{a}^\dagger)
 \end{array}
 \right.
@@ -4013,13 +3991,17 @@ x |n\rangle = \sqrt{\frac{\hbar}{2m\omega}} (\hat{a} + \hat{a}^\dagger) |n\rangl
 
 \[
 \hat{N} = \begin{bmatrix}
-	0 & 1 & 2 & 3 & \cdots \\
+	0 & 0 & 0 & 0 & \cdots \\
+	0 & 1 & 0 & 0 & \cdots \\
+	0 & 0 & 2 & 0 & \cdots \\
+	0 & 0 & 0 & 3 & \cdots \\
+	\vdots & \vdots & \vdots & \vdots & \ddots
 \end{bmatrix}
 \]
 
 而
 \[
-\hat{a}_m = \langle m | \hat{a} | n \rangle = \sqrt{n} \langle m | n-1 \rangle = \sqrt{n} \delta_{m, n-1}
+a_{mn} = \langle m | \hat{a} | n \rangle = \sqrt{n} \langle m | n-1 \rangle = \sqrt{n} \delta_{m, n-1}
 \]
 
 因此
@@ -4080,7 +4062,7 @@ x |n\rangle = \sqrt{\frac{\hbar}{2m\omega}} (\hat{a} + \hat{a}^\dagger) |n\rangl
 
 据此猜测：无穷小转动算符：\(\hat{d}_n(\varepsilon) = 1 - \frac{i}{\hbar} \hat{J}_n \varepsilon\)
 
-转动算符：\(\hat{D}_n(\theta) = e^{-i \hat{J}_n \theta}/\hbar\)
+转动算符：\(\hat{D}_n(\theta) = e^{-i \hat{J}_n \theta/\hbar}\)
 
 
 \textbf{经典转动}
@@ -4088,8 +4070,8 @@ x |n\rangle = \sqrt{\frac{\hbar}{2m\omega}} (\hat{a} + \hat{a}^\dagger) |n\rangl
 \textbf{定义}
 \begin{enumerate}
 	\item 保模长，保内积
-	\item 无限维
-	\item 保序性 \quad \textit{的线性操作}
+	\item 线性
+	\item 保定向性 \quad \textit{的线性操作}
 \end{enumerate}
 
 \textbf{性质}:绕不同的轴的转动不可对易
@@ -4157,62 +4139,35 @@ R_z(\varepsilon) = \begin{bmatrix}
 
 其他类似
 
-\[
-R_x(\theta) R_y(\theta) - R_y(\theta) R_x(\theta) = 
-\begin{bmatrix}
+\begin{align*}
+R_x(\varepsilon) R_y(\varepsilon) - R_y(\varepsilon) R_x(\varepsilon)
+&= \begin{bmatrix}
 	1 & 0 & 0 \\
-	0 & 1 - \frac{\varepsilon^2}{2} & -\varepsilon \\
-	0 & \varepsilon & 1 - \frac{\varepsilon^2}{2}
+	0 & 1 & -\varepsilon \\
+	0 & \varepsilon & 1
 \end{bmatrix}
 \begin{bmatrix}
-	1 - \frac{\varepsilon^2}{2} & 0 & -\varepsilon \\
-	\varepsilon & 1 & 0 \\
-	0 & \varepsilon & 1 - \frac{\varepsilon^2}{2}
+	1 & 0 & \varepsilon \\
+	0 & 1 & 0 \\
+	-\varepsilon & 0 & 1
 \end{bmatrix}
 -
 \begin{bmatrix}
-	1 - \frac{\varepsilon^2}{2} & 0 & -\varepsilon \\
-	\varepsilon & 1 & 0 \\
-	0 & \varepsilon & 1 - \frac{\varepsilon^2}{2}
+	1 & 0 & \varepsilon \\
+	0 & 1 & 0 \\
+	-\varepsilon & 0 & 1
 \end{bmatrix}
 \begin{bmatrix}
 	1 & 0 & 0 \\
-	0 & 1 - \frac{\varepsilon^2}{2} & -\varepsilon \\
-	0 & \varepsilon & 1 - \frac{\varepsilon^2}{2}
-\end{bmatrix}
-\]
-
-\[
-= \begin{bmatrix}
-	1 - \frac{\varepsilon^2}{2} & 0 & -\varepsilon \\
-	-\varepsilon & 1 - \frac{\varepsilon^2}{2} & -\varepsilon + \frac{\varepsilon^3}{2} \\
-	\varepsilon - \frac{\varepsilon^3}{2} & \varepsilon & 1 - \frac{3\varepsilon^2}{2}
-\end{bmatrix}
--
-\begin{bmatrix}
-	1 - \frac{\varepsilon^2}{2} & -\varepsilon & -\varepsilon + \frac{\varepsilon^3}{2} \\
-	0 & 1 - \frac{\varepsilon^2}{2} & -\varepsilon \\
-	\varepsilon & \varepsilon - \frac{\varepsilon^3}{2} & 1 - \frac{3\varepsilon^2}{2}
-\end{bmatrix}
-\]
-
-\[
-= \begin{bmatrix}
-	0 & -\varepsilon^2 & \frac{\varepsilon^3}{2} \\
-	-\varepsilon^2 & 0 & \frac{\varepsilon^3}{2} \\
-	-\frac{\varepsilon^3}{2} & \frac{\varepsilon^3}{2} & 0
-\end{bmatrix}
-\]
-
-保留 \(\varepsilon^2\) 项，得到：
-
-\[
-\begin{bmatrix}
+	0 & 1 & -\varepsilon \\
+	0 & \varepsilon & 1
+\end{bmatrix} \\
+&= \begin{bmatrix}
 	0 & -\varepsilon^2 & 0 \\
-	-\varepsilon^2 & 0 & 0 \\
+	\varepsilon^2 & 0 & 0 \\
 	0 & 0 & 0
-\end{bmatrix}
-\]
+\end{bmatrix} + O(\varepsilon^3)
+\end{align*}
 
 \begin{align*}
 	R_y(\varepsilon) R_z(\varepsilon) - R_z(\varepsilon) R_y(\varepsilon) &= R_x(\varepsilon^2) - I \\
@@ -4220,7 +4175,7 @@ R_x(\theta) R_y(\theta) - R_y(\theta) R_x(\theta) =
 \end{align*}
 
 \[
-\Longrightarrow \quad R_\alpha(\varepsilon) R_\beta(\varepsilon) - R_\beta(\varepsilon) R_\alpha(\varepsilon) = \varepsilon_{\alpha\beta\gamma} R_\gamma(\varepsilon^2) - I
+\Longrightarrow \quad R_\alpha(\varepsilon) R_\beta(\varepsilon) - R_\beta(\varepsilon) R_\alpha(\varepsilon) = \varepsilon_{\alpha\beta\gamma} \left[ R_\gamma(\varepsilon^2) - I \right]
 \]
 
 
@@ -4228,9 +4183,12 @@ R_x(\theta) R_y(\theta) - R_y(\theta) R_x(\theta) =
 
 记住结论就行了!!
 
-$设 \quad \left[ \hat{D}_\alpha(\epsilon), \hat{D}_\beta(c\epsilon) \right] = \mathcal{E}_{\text{expr}} \hat{D}_\alpha(c\epsilon) - 1$
+设
+\[
+\left[ \hat{D}_\alpha(\epsilon), \hat{D}_\beta(\epsilon) \right] = \varepsilon_{\alpha\beta\gamma}\left[\hat{D}_\gamma(\epsilon^2)-1\right]+O(\epsilon^3)
+\]
 
-以 $\quad \left[ \hat{D}_x(\epsilon), \hat{D}_y(c\epsilon) \right] \quad \text{为例}$
+以 $\quad \left[ \hat{D}_x(\epsilon), \hat{D}_y(\epsilon) \right] \quad \text{为例}$
 
 同样只保留至 \(\epsilon^2\) 项。
 
@@ -4288,13 +4246,13 @@ $设 \quad \left[ \hat{D}_\alpha(\epsilon), \hat{D}_\beta(c\epsilon) \right] = \
 
 设
 \[
-\hat{J}^+ |j, m\rangle = \lambda_+ |j, m\rangle = \lambda_+' |j, m\rangle
+\hat{J}^2 |j, m\rangle = \lambda |j, m\rangle = j(j+1)\hbar^2 |j, m\rangle
 \]
 \[
 \hat{J}_z |j, m\rangle = \lambda_0 |j, m\rangle = m \hbar |j, m\rangle
 \]
 
-\(\lambda_+'\) 和 \(m\hbar\) 分别为 \(\hat{J}^+\)，\(\hat{J}_z\) 在 \(|j, m\rangle\) 态上的本征值。
+\(j(j+1)\hbar^2\) 和 \(m\hbar\) 分别为 \(\hat{J}^2\)，\(\hat{J}_z\) 在 \(|j, m\rangle\) 态上的本征值。
 
 \textit{How to solve?}
 
@@ -4310,17 +4268,17 @@ $(\hat{J}_+)^\dagger = \hat{J}_-$
 考虑其对易关系
 
 \begin{enumerate}
-	\item \([\hat{J}_-, \hat{J}_+] = -2i\hat{J}_z\)
+	\item \([\hat{J}_-, \hat{J}_+] = -2\hbar\hat{J}_z\)
 	\[
 	\text{左边} = [\hat{J}_x - i\hat{J}_y, \hat{J}_x + i\hat{J}_y]
 	\]
 	\[
-	= i\hbar(\hat{J}_x - i\hat{J}_y)\hat{J}_z - (-i\hbar)\hat{J}_z(\hat{J}_x + i\hat{J}_y) = -2i\hbar\hat{J}_z
+	= i[\hat{J}_x,\hat{J}_y] - i[\hat{J}_y,\hat{J}_x] = -2\hbar\hat{J}_z
 	\]
 	
-	\item \([\hat{J}_x, \hat{J}_\pm] = \pm\hbar\hat{J}_\pm\)
+	\item \([\hat{J}_z, \hat{J}_\pm] = \pm\hbar\hat{J}_\pm\)
 	\[
-	\text{取“+”时 左边} = [\hat{J}_x, \hat{J}_x + i\hat{J}_y] = i\hbar\hat{J}_y - i\hbar\hat{J}_x = i\hbar(\hat{J}_y + \hat{J}_x)
+	\text{取“+”时 左边} = [\hat{J}_z, \hat{J}_x + i\hat{J}_y] = i\hbar\hat{J}_y + i(-i\hbar\hat{J}_x)
 	\]
 	\[
 	= \hbar(i\hat{J}_y + \hat{J}_x) = \hbar(\hat{J}_x + i\hat{J}_y) = \hbar\hat{J}_+
@@ -4346,24 +4304,21 @@ $(\hat{J}_+)^\dagger = \hat{J}_-$
 = \hat{J}_x^2 + \hat{J}_y^2 + i[\hat{J}_x, \hat{J}_y]
 \]
 \[
-= \hat{J}^2 - \hat{J}_z^2 + i\hbar \hat{J}_z
-\]
-\[
 = \hat{J}^2 - \hat{J}_z^2 - \hbar \hat{J}_z
 \]
 
 考虑 \(\hat{J}_\pm\) 对 \(|j, m\rangle\) 的作用。（即考虑 \(\hat{J}_\pm\) 作用在 \(|j, m\rangle\) 态上的结果）
 
 \[
-\hat{J}_\pm |j, m\rangle = \hat{J}_\pm \hat{J}' |j, m\rangle = \hat{J}_\pm \lambda_\pm |j, m\rangle = \lambda_\pm \hat{J}_\pm |j, m\rangle
+\hat{J}^2\hat{J}_\pm |j, m\rangle = \hat{J}_\pm \hat{J}^2 |j, m\rangle = j(j+1)\hbar^2\,\hat{J}_\pm |j, m\rangle
 \]
 
-因此 \(\hat{J}_\pm \hat{J}_\pm\) 对应的本征值。
+因此 \(\hat{J}_\pm |j,m\rangle\) 仍是 \(\hat{J}^2\) 的本征态。
 
 \begin{align*}
-	\hat{J}_z \hat{J}_\pm |j, m\rangle &= \left( \hat{J}_\pm \hat{J}_\pm \pm \hat{J}_\pm \right) |j, m\rangle \\
-	&= \left( m_\pm \pm \hat{J}_\pm \right) |j, m\rangle \\
-	&= (m \pm \hbar) \hat{J}_\pm |j, m\rangle
+	\hat{J}_z \hat{J}_\pm |j, m\rangle &= \left( \hat{J}_\pm \hat{J}_z + [\hat{J}_z,\hat{J}_\pm] \right) |j, m\rangle \\
+	&= \left( m\hbar \pm \hbar \right) \hat{J}_\pm |j, m\rangle \\
+	&= (m \pm 1)\hbar\, \hat{J}_\pm |j, m\rangle
 \end{align*}
 
 因此 \(\hat{J}_+\) 使 \(\hat{J}_z\) 的本征值上升 \(\hbar\)，\(\hat{J}_-\) 使 \(\hat{J}_z\) 的本征值下降 \(\hbar\)。
@@ -4394,18 +4349,18 @@ $\hat{J}_\pm |j, m\rangle $应与 \(|j, m\pm 1\rangle\) 只相差一个常系数
 	\]
 	which tells us: \(\hat{J}^2\) 的本征值可以用 \(\hat{J}_z\) 本征值的最大值来表示。
 	\[
-	\lambda = m_{\text{max}} (m_{\text{max}} + 1)
+	\lambda = m_{\text{max}} (m_{\text{max}} + 1)\hbar^2
 	\]
 	
 	\item 再以 \(|j, m_{\text{min}}\rangle\) 为例
 	
-	由于 \(\hat{J}_+ \hat{J}_- = \hat{J}_- \hat{J}_- + \hat{J}_- \hat{J}_- = \hat{J}_+ \hat{J}_- + \hat{J}_-\)
+	由于 \(\hat{J}_+ \hat{J}_- = \hat{J}^2-\hat{J}_z^2+\hbar\hat{J}_z\)
 	
 	\begin{align*}
-		\hat{J}^2 |j, m_{\text{min}}\rangle &= (\hat{J}_+ \hat{J}_- + \hat{J}_- + \hat{J}_- (\hat{J}_- + \hat{J}_-)) |j, m_{\text{min}}\rangle \\
+		\hat{J}^2 |j, m_{\text{min}}\rangle &= (\hat{J}_+ \hat{J}_- + \hat{J}_z^2 - \hbar\hat{J}_z) |j, m_{\text{min}}\rangle \\
 		&= (m_{\text{min}}^2 \hbar^2 - m_{\text{min}} \hbar^2) |j, m_{\text{min}}\rangle \\
 		&= m_{\text{min}} (m_{\text{min}} - 1) \hbar^2 |j, m_{\text{min}}\rangle \\
-		\lambda &= m_{\text{min}} (m_{\text{min}} - 1)
+		\lambda &= m_{\text{min}} (m_{\text{min}} - 1)\hbar^2
 	\end{align*}
 \end{itemize}
 \[
@@ -4418,14 +4373,10 @@ m_{\text{max}}(m_{\text{max}} + 1) = m_{\text{min}}(m_{\text{min}} - 1)
 		m_{\text{min}} = m_{\text{max}} + 1 \\
 		m_{\text{min}} = -m_{\text{max}}
 	\end{array}
-	\right. \\
-	&= \left\{
-	\begin{array}{l}
-		m_{\text{max}}(m_{\text{max}} + 1) \\
-		m_{\text{min}} = -m_{\text{max}}
-	\end{array}
 	\right.
 \end{align*}
+
+\(m_{\text{min}}=m_{\text{max}}+1\) 与最低值定义矛盾，故取 \(m_{\text{min}}=-m_{\text{max}}\)。
 
 因此，\(\hat{J}_z\) 的取值范围是从 \(-m_{\text{max}} \hbar \longrightarrow m_{\text{max}} \hbar\)
 
@@ -4464,28 +4415,29 @@ m = -j, -j+1, -j+2, \ldots, j-2, j-1, j
 
 \begin{align*}
 	&\text{两边取模方.} \langle j, m | \hat{J}_- \hat{J}_+ | j, m \rangle = |c_+|^2 \langle j, m+1 | j, m+1 \rangle \\
-	&\langle j, m | \hat{J}_- \hat{J}_+ | j, m \rangle = |q|^2
+	&\langle j, m | \hat{J}_- \hat{J}_+ | j, m \rangle = |c_+|^2
 \end{align*}
 
-\(j(j+1) \hbar - m \hbar - m^2 \langle j, m | j, m \rangle = |q|^2\)
+\(j(j+1)\hbar^2 - m(m+1)\hbar^2 = |c_+|^2\)
 
 \[
 \Longrightarrow c_+ = \sqrt{j(j+1) - m(m+1)} \hbar
 \]
 
-同理对于 \(\hat{J}_-\)，计算可得 \(c_- = \sqrt{j(j-1) - m(m-1)} \hbar\)
+同理对于 \(\hat{J}_-\)，计算可得 \(c_- = \sqrt{j(j+1) - m(m-1)} \hbar\)
 
 \[
-\hat{J}_{\pm} |j, m\rangle = \sqrt{j(j\pm1) - m(m\pm1)} \hbar |j, m\pm1\rangle
+\hat{J}_{\pm} |j, m\rangle = \sqrt{j(j+1) - m(m\pm1)} \hbar |j, m\pm1\rangle
 \]
 
 \textbf{j=1的粒子角动量的矩阵表示}
 
-在 \(\{\hat{J}}^2, \hat{J}_z\) 表象中，\(\hat{J}_z\) 是对角矩阵，其对角元是其本征值 \(\hbar, 0, -\hbar\)。
+在 \(\{\hat{J}^2, \hat{J}_z\}\) 表象中，\(\hat{J}_z\) 是对角矩阵，其对角元是其本征值 \(\hbar, 0, -\hbar\)。
 
 \[
 \hat{J}_z = \hbar \begin{bmatrix}
 1 & 0 & 0 \\
+0 & 0 & 0 \\
 0 & 0 & -1 \\
 \end{bmatrix}
 \]
@@ -4493,18 +4445,18 @@ m = -j, -j+1, -j+2, \ldots, j-2, j-1, j
 对于 \(\hat{J}_x\)，其矩阵元
 
 \[
-J_{x, m, m'} = \langle 1 m | \hat{J}_x | 1 m' \rangle = \langle 1 m | \frac{\hat{J}_+ + \hat{J}_-}{2i} | 1 m' \rangle
+J_{x, m, m'} = \langle 1 m | \hat{J}_x | 1 m' \rangle = \langle 1 m | \frac{\hat{J}_+ + \hat{J}_-}{2} | 1 m' \rangle
 \]
 
 \[
-= \frac{1}{2} \langle 1 m | (\sqrt{1(m) - m(m+1)} \hbar | 1 m+1 \rangle + \sqrt{1(m) - m(m-1)} \hbar | 1 m-1 \rangle)
+= \frac{1}{2} \langle 1 m | (\sqrt{1(1+1) - m'(m'+1)} \hbar | 1,m'+1 \rangle + \sqrt{1(1+1) - m'(m'-1)} \hbar | 1,m'-1 \rangle)
 \]
 
 \[
-= \frac{1}{2} \sqrt{1(m) - m(m+1)} \delta_{m, m'+1} + \frac{1}{2} \sqrt{1(m) - m(m-1)} \delta_{m, m'-1}
+= \frac{\hbar}{2} \sqrt{2 - m'(m'+1)} \delta_{m, m'+1} + \frac{\hbar}{2} \sqrt{2 - m'(m'-1)} \delta_{m, m'-1}
 \]
 
-则 \(J_{x, 10} = \frac{1}{2} \sqrt{1(1) - 0(0+1)} \hbar = \frac{1}{\sqrt{2}} \hbar\)
+则 \(J_{x,10} = \frac{1}{2} \sqrt{1(1+1) - 0(0+1)} \hbar = \frac{1}{\sqrt{2}} \hbar\)
 
 \(J_{x, 01} = J_{x, 10}^* = \frac{1}{\sqrt{2}} \hbar\)
 
@@ -4533,15 +4485,15 @@ i & 0 & -i \\
 通过求解矩阵本征矢，我们可以得到：
 
 \[
-|J_z\rangle = \begin{bmatrix} 1 \\ 0 \\ 0 \end{bmatrix}, \quad |J_{z,0}\rangle = \begin{bmatrix} 0 \\ 1 \\ 0 \end{bmatrix}, \quad |J_z\rangle = \begin{bmatrix} 0 \\ 0 \\ 1 \end{bmatrix}
+|J_{z,+}\rangle = \begin{bmatrix} 1 \\ 0 \\ 0 \end{bmatrix}, \quad |J_{z,0}\rangle = \begin{bmatrix} 0 \\ 1 \\ 0 \end{bmatrix}, \quad |J_{z,-}\rangle = \begin{bmatrix} 0 \\ 0 \\ 1 \end{bmatrix}
 \]
 
 \[
-|J_x+\rangle = \begin{bmatrix} \frac{1}{\sqrt{2}} \\ \frac{1}{\sqrt{2}} \\ -\frac{1}{\sqrt{2}} \end{bmatrix}, \quad |J_{x,0}\rangle = \begin{bmatrix} \frac{1}{\sqrt{2}} \\ 0 \\ -\frac{1}{\sqrt{2}} \end{bmatrix}, \quad |J_x\rangle = \begin{bmatrix} \frac{1}{\sqrt{2}} \\ -\frac{1}{\sqrt{2}} \\ \frac{1}{\sqrt{2}} \end{bmatrix}
+|J_{x,+}\rangle = \begin{bmatrix} \frac{1}{2} \\ \frac{1}{\sqrt{2}} \\ \frac{1}{2} \end{bmatrix}, \quad |J_{x,0}\rangle = \begin{bmatrix} \frac{1}{\sqrt{2}} \\ 0 \\ -\frac{1}{\sqrt{2}} \end{bmatrix}, \quad |J_{x,-}\rangle = \begin{bmatrix} \frac{1}{2} \\ -\frac{1}{\sqrt{2}} \\ \frac{1}{2} \end{bmatrix}
 \]
 
 \[
-|J_y+\rangle = \begin{bmatrix} \frac{1}{\sqrt{2}} \\ \frac{i}{\sqrt{2}} \\ -\frac{1}{\sqrt{2}} \end{bmatrix}, \quad |J_{y,0}\rangle = \begin{bmatrix} \frac{1}{\sqrt{2}} \\ 0 \\ \frac{1}{\sqrt{2}} \end{bmatrix}, \quad |J_y\rangle = \begin{bmatrix} \frac{1}{\sqrt{2}} \\ -\frac{1}{\sqrt{2}} \\ \frac{1}{\sqrt{2}} \end{bmatrix}
+|J_{y,+}\rangle = \begin{bmatrix} -\frac{1}{2} \\ -\frac{i}{\sqrt{2}} \\ \frac{1}{2} \end{bmatrix}, \quad |J_{y,0}\rangle = \begin{bmatrix} \frac{1}{\sqrt{2}} \\ 0 \\ \frac{1}{\sqrt{2}} \end{bmatrix}, \quad |J_{y,-}\rangle = \begin{bmatrix} -\frac{1}{2} \\ \frac{i}{\sqrt{2}} \\ \frac{1}{2} \end{bmatrix}
 \]
 
 \section{轨道角动量}
@@ -4602,31 +4554,31 @@ i & 0 & -i \\
 
 \[
 \begin{aligned}
-	\hat{L} &= i \hbar \left( \sin \varphi \, \frac{\partial}{\partial \theta} + \cot \theta \sin \varphi \, \frac{\partial}{\partial \varphi} \right) \hat{e}_x \\
-	&\quad + i \hbar \left( \cos \varphi \, \frac{\partial}{\partial \theta} + \cot \theta \cos \varphi \, \frac{\partial}{\partial \varphi} \right) \hat{e}_y \\
+	\hat{L} &= i \hbar \left( \sin \varphi \, \frac{\partial}{\partial \theta} + \cot \theta \cos \varphi \, \frac{\partial}{\partial \varphi} \right) \hat{e}_x \\
+	&\quad + i \hbar \left( -\cos \varphi \, \frac{\partial}{\partial \theta} + \cot \theta \sin \varphi \, \frac{\partial}{\partial \varphi} \right) \hat{e}_y \\
 	&\quad - i \hbar \, \frac{\partial}{\partial \varphi} \, \hat{e}_z
 \end{aligned}
 \]
 
 
-\textbf{[\(\hat{L}_z, \hat{L}_x\)] 的共同本征函数}
+\textbf{[\(\hat{L}^2, \hat{L}_z\)] 的共同本征函数}
 
 先考虑，\(\hat{L}_z = -i\hbar \frac{\partial}{\partial \varphi}\) 的本征函数 \(f\)
 
 \[
-\hat{L}_z f(\varphi) = \hat{L}_z f(\varphi) \quad \text{即} \quad -i\hbar \frac{\partial}{\partial \varphi} f(\varphi) = \hat{L}_z f(\varphi)
+\hat{L}_z f(\varphi) = L_z f(\varphi) \quad \text{即} \quad -i\hbar \frac{\partial}{\partial \varphi} f(\varphi) = L_z f(\varphi)
 \]
 
 \[
-\Rightarrow \frac{1}{f} df = -\frac{\hat{L}_z}{\hbar} d\varphi = \frac{i\hat{L}_z}{\hbar} d\varphi
+\Rightarrow \frac{1}{f} df = \frac{iL_z}{\hbar} d\varphi
 \]
 
 \[
-\ln f = \frac{i\hat{L}_z}{\hbar} \varphi + c
+\ln f = \frac{iL_z}{\hbar} \varphi + c
 \]
 
 \[
-\Rightarrow f(\varphi) = N e^{\frac{i\hat{L}_z}{\hbar} \varphi}
+\Rightarrow f(\varphi) = N e^{\frac{iL_z}{\hbar} \varphi}
 \]
 
 由于在位置空间转动 \(2\pi\) 后波函数要保持不变。
@@ -4636,19 +4588,19 @@ f(\varphi + 2\pi) = f(\varphi)
 \]
 
 \[
-N e^{\frac{i\hat{L}_z}{\hbar} (2\pi)} = N e^{\frac{i\hat{L}_z}{\hbar} \varphi} \cdot e^{\frac{i\hat{L}_z}{\hbar} 2\pi} = N e^{\frac{i\hat{L}_z}{\hbar} \varphi}
+N e^{\frac{iL_z}{\hbar} (\varphi+2\pi)} = N e^{\frac{iL_z}{\hbar} \varphi} \cdot e^{\frac{iL_z}{\hbar} 2\pi} = N e^{\frac{iL_z}{\hbar} \varphi}
 \]
 
 \[
-\Rightarrow e^{\frac{i\hat{L}_z}{\hbar} 2\pi} = 1
+\Rightarrow e^{\frac{iL_z}{\hbar} 2\pi} = 1
 \]
 
 \[
-\Rightarrow (e^{i\frac{\hat{L}_z}{\hbar}})^{2\pi/\hat{L}_z} = 1 \Rightarrow \frac{\hat{L}_z}{\hbar} = m \quad m \text{为 } 0, \pm1, \pm2, \ldots
+\Rightarrow \frac{L_z}{\hbar} = m \quad m \text{为 } 0, \pm1, \pm2, \ldots
 \]
 
 \[
-\hat{L}_z = m\hbar
+L_z = m\hbar
 \]
 
 \[
@@ -4663,7 +4615,7 @@ N e^{\frac{i\hat{L}_z}{\hbar} (2\pi)} = N e^{\frac{i\hat{L}_z}{\hbar} \varphi} \
 
 注意球坐标下 $\nabla^2 = \frac{1}{r^2} \frac{\partial}{\partial r} \left( r^2 \frac{\partial}{\partial r} \right) + \frac{1}{r^2 \sin\theta} \frac{\partial}{\partial \theta} \left( \sin\theta \frac{\partial}{\partial \theta} \right) + \frac{1}{r^2 \sin^2\theta} \frac{\partial^2}{\partial \varphi^2}$
 
-$\hat{L}^2$ 与 $\nabla^2$ 角度部分仅相差因子 $-\frac{1}{r^2}$
+$\nabla^2$ 的角度部分为 $-\frac{\hat{L}^2}{\hbar^2 r^2}$
 
 而 $\hat{p}^2 = -\hbar^2 \nabla^2$
 
@@ -4686,31 +4638,24 @@ $\hat{L}^2$ 与 $\nabla^2$ 角度部分仅相差因子 $-\frac{1}{r^2}$
 \end{equation}
 
 \begin{equation}
-	-i\kappa e^{it}\left(i\frac{\partial}{\partial \theta} - \omega t \theta \frac{\partial}{\partial \theta}\right) \langle \theta, \varphi | (L)
+	\hat{L}_+Y_l^l(\theta,\varphi)=\hbar e^{i\varphi}\left(\frac{\partial}{\partial\theta}+i\cot\theta\frac{\partial}{\partial\varphi}\right)Y_l^l(\theta,\varphi)=0
 \end{equation}
 
+令 \(Y_l^l(\theta,\varphi)=\Theta(\theta)e^{il\varphi}\)，则
 \begin{equation}
-	\left(i\frac{\partial}{\partial \theta} - \omega t \theta \frac{\partial}{\partial \theta}\right) Y_{l}^{m}(\theta, \varphi) = 0
+	\left(\frac{d}{d\theta}-l\cot\theta\right)\Theta(\theta)=0
 \end{equation}
 
-\begin{equation}
-	\left(i\frac{\partial}{\partial \theta} - \omega t \theta \frac{\partial}{\partial \theta}\right) \theta(0) e^{il\varphi} = 0
-\end{equation}
+解得 \(\Theta(\theta)=N'\sin^l\theta\)
 
-\begin{equation}
-	i\frac{\partial \theta}{\partial \theta} e^{im\varphi} - \theta \omega t \theta i l e^{il\varphi} = 0
-\end{equation}
+因此 \(Y_l^l(\theta,\varphi)=N N' e^{il\varphi}\sin^l\theta\)
 
-解得 $\theta(\theta) = N' \sin^l \theta$
-
-因此 $Y_{l}^{m}(\theta, \varphi) = N N' e^{im\varphi} \sin^l \theta$
-
-归化 $\Rightarrow \frac{(l-1)!}{2^l l} \sqrt{\frac{(2l+1)(l+m)!}{4\pi (l-m)!}} e^{im\varphi} \sin^l \theta$
+归一化可得 \(Y_l^l(\theta,\varphi)=(-1)^l\sqrt{\frac{(2l+1)!}{4\pi\,2^{2l}(l!)^2}}\,e^{il\varphi}\sin^l\theta\)
 
 通过在 $Y_{l}^{m}(\theta, \varphi)$ 上不断作用 $\hat{L}_-$，可得到所有的 $Y_{l}^{m}(\theta, \varphi)$
 
 \begin{equation}
-	Y_{l}^{m}(\theta, \varphi) = \sqrt{\frac{(l-m)!(2l+1)}{4\pi (l+m)!}} e^{im\varphi} P_{l}^{m}(\cos \theta)
+	Y_{l}^{m}(\theta, \varphi) = (-1)^m\sqrt{\frac{(l-m)!(2l+1)}{4\pi (l+m)!}} e^{im\varphi} P_{l}^{m}(\cos \theta)
 \end{equation}
 
 称为球谐函数，它是 $\hat{L}^2$ 和 $\hat{L}_z$ 的共同本征函数，满足正交归一关系
@@ -4723,7 +4668,7 @@ $\hat{L}^2$ 与 $\nabla^2$ 角度部分仅相差因子 $-\frac{1}{r^2}$
 \textbf{另解}:
 
 \[
-\hat{L}^2 Y(\theta, \varphi) = -\hbar^2 \left[ \frac{1}{\sin\theta} \frac{\partial}{\partial \theta} \left( \sin\theta \frac{\partial Y}{\partial \theta} \right) + \frac{1}{\sin^2\theta} \frac{\partial^2 Y}{\partial \varphi^2} \right] Y(\theta, \varphi) = \hbar^2 l(l+1) Y(\theta, \varphi)
+\hat{L}^2 Y(\theta, \varphi) = -\hbar^2 \left[ \frac{1}{\sin\theta} \frac{\partial}{\partial \theta} \left( \sin\theta \frac{\partial Y}{\partial \theta} \right) + \frac{1}{\sin^2\theta} \frac{\partial^2 Y}{\partial \varphi^2} \right] = \hbar^2 l(l+1) Y(\theta, \varphi)
 \]
 
 这个方程可以分离变量。
@@ -4784,7 +4729,7 @@ $\Rightarrow c = m^2$
 归一化，得
 
 \[
-Y_l^m(\theta, \varphi) = \sqrt{\frac{(2l+1)(l-m)!}{4\pi(l+m)!}} e^{im\varphi} P_l^m(\cos\theta)
+Y_l^m(\theta, \varphi) = (-1)^m\sqrt{\frac{(2l+1)(l-m)!}{4\pi(l+m)!}} e^{im\varphi} P_l^m(\cos\theta)
 \]
 
 
@@ -4807,10 +4752,10 @@ Y_l^m(\theta, \varphi) = \sqrt{\frac{(2l+1)(l-m)!}{4\pi(l+m)!}} e^{im\varphi} P_
 \textbf{球谐函数的性质}
 
 \begin{enumerate}
-	\item 宇称：与 $l$ 有关，\begin{cases} 
-		\text{偶宇称} & l \text{为偶} \\
-		\text{奇宇称} & l \text{为奇}
-	\end{cases}
+	\item 宇称：与 $l$ 有关，\(\begin{cases} 
+			\text{偶宇称} & l \text{为偶} \\
+			\text{奇宇称} & l \text{为奇}
+		\end{cases}\)
 	\item 正交归一性：$\langle Y_l^m | Y_{l'}^{m'} \rangle = \delta_{ll'} \delta_{mm'}$
 	\item 完备性：球谐函数可以用来展开任意的角向函数
 	\item 递推关系：
@@ -4820,8 +4765,8 @@ Y_l^m(\theta, \varphi) = \sqrt{\frac{(2l+1)(l-m)!}{4\pi(l+m)!}} e^{im\varphi} P_
 	\end{align*}
 	\item 笛卡尔坐标系与球坐标系的关系：
 	\begin{align*}
-		x &= r \sin\theta \cos\varphi = r \sqrt{\frac{4\pi}{3}} (Y_1^1 - Y_1^{-1}) \\
-		y &= r \sin\theta \sin\varphi = r i \sqrt{\frac{4\pi}{3}} (Y_1^1 + Y_1^{-1}) \\
+		x &= r \sin\theta \cos\varphi = r \sqrt{\frac{2\pi}{3}} (Y_1^{-1} - Y_1^1) \\
+		y &= r \sin\theta \sin\varphi = ir \sqrt{\frac{2\pi}{3}} (Y_1^1 + Y_1^{-1}) \\
 		z &= r \cos\theta = r 2 \sqrt{\frac{\pi}{3}} Y_1^0
 	\end{align*}
 \end{enumerate}
@@ -4838,7 +4783,7 @@ Y_l^m(\theta, \varphi) = \sqrt{\frac{(2l+1)(l-m)!}{4\pi(l+m)!}} e^{im\varphi} P_
 	\hat{S} \times \hat{S} = i \hbar \hat{S}
 	\]
 	
-	自旋角动量在 z 轴的投影为 \(\pm \frac{\hbar}{2}\)，即 \(m_{\text{max}} = \frac{1}{2}\)，则 \(J = \frac{1}{2}\)。
+		自旋角动量在 z 轴的投影为 \(\pm \frac{\hbar}{2}\)，即 \(m_{\text{max}} = \frac{1}{2}\)，则 \(S = \frac{1}{2}\)。
 	
 	为示区分，在研究自旋的问题里，分别令 \(J\) 和 \(m\) 为 \(S\) 和 \(m_s\)，\(m_s = \pm \frac{1}{2}\)。
 	
@@ -4878,24 +4823,24 @@ Y_l^m(\theta, \varphi) = \sqrt{\frac{(2l+1)(l-m)!}{4\pi(l+m)!}} e^{im\varphi} P_
 	\hat{S}_y = \frac{\hbar}{2} \begin{bmatrix} 0 & -i \\ i & 0 \end{bmatrix} = \frac{\hbar}{2} \hat{\sigma}_y
 	\]
 	
-	$\hat{S}_i$ 称为 Pauli 矩阵
+	$\hat{\sigma}_i$ 称为 Pauli 矩阵
 	
 	$\{\hat{S}^2, \hat{S}_z\}$ 表象也称为 $\hat{\sigma}_z$ 表象 (Pauli 表象)
 	
 	\begin{enumerate}
-		\item $[\hat{S}_\alpha, \hat{S}_\beta] = \hbar \epsilon_{\alpha \beta \gamma} \hat{S}_\gamma$
-		\item $\{\hat{S}_\alpha, \hat{S}_\beta\} = \hat{S}_\alpha \hat{S}_\beta + \hat{S}_\beta \hat{S}_\alpha = 0$
+		\item $[\hat{S}_\alpha, \hat{S}_\beta] = i\hbar \epsilon_{\alpha \beta \gamma} \hat{S}_\gamma$
+		\item $\{\hat{\sigma}_\alpha, \hat{\sigma}_\beta\} = \hat{\sigma}_\alpha \hat{\sigma}_\beta + \hat{\sigma}_\beta \hat{\sigma}_\alpha = 2\delta_{\alpha\beta}\hat{I}$
 		\item
 		\begin{align*}
-			\hat{S}_z |\uparrow\rangle &= |\uparrow\rangle \\
-			\hat{S}_x |\uparrow\rangle &= |\downarrow\rangle \\
-			\hat{S}_y |\uparrow\rangle &= i |\downarrow\rangle \\
-			\hat{S}_z |\downarrow\rangle &= -|\downarrow\rangle \\
-			\hat{S}_x |\downarrow\rangle &= |\uparrow\rangle \\
-			\hat{S}_y |\downarrow\rangle &= -i |\uparrow\rangle
+			\hat{S}_z |\uparrow\rangle &= \frac{\hbar}{2}|\uparrow\rangle \\
+			\hat{S}_x |\uparrow\rangle &= \frac{\hbar}{2}|\downarrow\rangle \\
+			\hat{S}_y |\uparrow\rangle &= \frac{i\hbar}{2}|\downarrow\rangle \\
+			\hat{S}_z |\downarrow\rangle &= -\frac{\hbar}{2}|\downarrow\rangle \\
+			\hat{S}_x |\downarrow\rangle &= \frac{\hbar}{2}|\uparrow\rangle \\
+			\hat{S}_y |\downarrow\rangle &= -\frac{i\hbar}{2}|\uparrow\rangle
 		\end{align*}
-		\item 完备性：任意的 $2 \times 2$ 矩阵都可以用 $\{\hat{S}_x, \hat{S}_y, \hat{S}_z\}$ 来展开
-		\item General Euler formula: $e^{i\alpha \hat{S}_3} = \cos(\alpha) + i \hat{S}_3 \sin(\alpha)$
+		\item 完备性：任意的 $2 \times 2$ 矩阵都可以用 $\{\hat{I},\hat{\sigma}_x, \hat{\sigma}_y, \hat{\sigma}_z\}$ 来展开
+		\item General Euler formula: $e^{i\alpha \hat{\sigma}_3} = \cos(\alpha)\hat{I} + i \hat{\sigma}_3 \sin(\alpha)$
 	\end{enumerate}
 	
 	\item 考虑自选后描述量子体系的波函数
@@ -4906,11 +4851,11 @@ Y_l^m(\theta, \varphi) = \sqrt{\frac{(2l+1)(l-m)!}{4\pi(l+m)!}} e^{im\varphi} P_
 	
 	$\mathcal{E}_r$ 空间 CSO 可选为 $\{x, y, z\}$
 	
-	$\mathcal{E}_s$ 空间 CSO 可选为 $\{\hat{S}_x, \hat{S}_y, \hat{S}_z\}$
+		$\mathcal{E}_s$ 空间 CSO 可选为 $\{\hat{S}^2, \hat{S}_z\}$
 	
 	由于对于给定的粒子，$S$ 是固定的，$S^2$ 可简写不写。
 	
-	$\mathcal{E}$ 空间 CSO 可选为 $\{x, y, z, S_x, S_y, S_z\}$
+		$\mathcal{E}$ 空间 CSO 可选为 $\{x, y, z, S^2, S_z\}$
 	
 	$\mathcal{E}_r$ 空间基矢 $|x, y, z\rangle$
 	
@@ -4920,27 +4865,24 @@ Y_l^m(\theta, \varphi) = \sqrt{\frac{(2l+1)(l-m)!}{4\pi(l+m)!}} e^{im\varphi} P_
 	
 	其满足
 	\[
-	\langle x, y, z, m_s | x', y', z', m_s' \rangle = \delta_x \delta_y \delta_z \delta_{m_s m_s'}
+	\langle x, y, z, m_s | x', y', z', m_s' \rangle = \delta(x-x')\delta(y-y')\delta(z-z')\delta_{m_s m_s'}
 	\]
 	正交归一性。
 	
 	完备性
 	\[
-	\int_{-\infty}^{\infty} |x, y, z, \uparrow\rangle \langle x, y, z, \uparrow| + |x, y, z, \downarrow\rangle \langle x, y, z, \downarrow| \, dx \, dy \, dz = 1
+\int_{-\infty}^{\infty} \left( |x, y, z, \uparrow\rangle \langle x, y, z, \uparrow| + |x, y, z, \downarrow\rangle \langle x, y, z, \downarrow| \right) dx \, dy \, dz = \hat{I}
 	\]
 	
 	此空间中任意的态矢量 $|\psi\rangle$ 都可用 $|x, y, z, m_s\rangle$ 来展开
 	\[
 	|\psi\rangle = \int_{-\infty}^{\infty} \left( |x, y, z, \uparrow\rangle \langle x, y, z, \uparrow | \psi \rangle + |x, y, z, \downarrow\rangle \langle x, y, z, \downarrow | \psi \rangle \right) \, dx \, dy \, dz
 	\]
-	\[
-	= \int_{-\infty}^{\infty} \left( \psi_\uparrow(x, y, z) |x, y, z, \uparrow\rangle + \psi_\downarrow(x, y, z) |x, y, z, \downarrow\rangle \right) \, dx \, dy \, dz
-	\]
-	\[
-	= \int_{-\infty}^{\infty} \left( \psi_\uparrow(x, y, z) |x, y, z, \uparrow\rangle + \psi_\downarrow(x, y, z) |x, y, z, \downarrow\rangle \right) \, dx \, dy \, dz
-	\]
-	
-	由于 $\hat{S}_z$ 表象中 $|\uparrow\rangle = \begin{bmatrix} 1 \\ 0 \end{bmatrix}$，$|\downarrow\rangle = \begin{bmatrix} 0 \\ 1 \end{bmatrix}$
+		\[
+		= \int_{-\infty}^{\infty} \left( \psi_\uparrow(x, y, z) |x, y, z, \uparrow\rangle + \psi_\downarrow(x, y, z) |x, y, z, \downarrow\rangle \right) \, dx \, dy \, dz
+		\]
+		
+		由于 $\hat{S}_z$ 表象中 $|\uparrow\rangle = \begin{bmatrix} 1 \\ 0 \end{bmatrix}$，$|\downarrow\rangle = \begin{bmatrix} 0 \\ 1 \end{bmatrix}$
 	
 	上式 = $\int_{-\infty}^{\infty} \begin{bmatrix} \psi_\uparrow(x, y, z) \\ \psi_\downarrow(x, y, z) \end{bmatrix} |x, y, z\rangle \, dx \, dy \, dz$
 	
@@ -4996,16 +4938,13 @@ Y_l^m(\theta, \varphi) = \sqrt{\frac{(2l+1)(l-m)!}{4\pi(l+m)!}} e^{im\varphi} P_
 	= P_{\uparrow} \cdot \int_{\Omega} \frac{|\psi_{1}|^2 d\tau}{\int_{-\infty}^{\infty} |\psi_{1}|^2 d\tau}
 	\]
 	\[
-	= P_{\uparrow} \cdot r dr \int_{0}^{\pi} \int_{0}^{2\pi} \frac{|\psi_{1}|^2 \sin\theta d\theta d\phi}{\int_{-\infty}^{\infty} |\psi_{1}|^2 d\tau}
+	= P_{\uparrow} \cdot r^2 dr \int_{0}^{\pi} \int_{0}^{2\pi} \frac{|\psi_{1}|^2 \sin\theta d\theta d\varphi}{\int_{-\infty}^{\infty} |\psi_{1}|^2 d\tau}
 	\]
 	
 	(2) $P = P_{\downarrow} \cdot P(\cos\theta, \varphi)$
 	\[
-	= P_{\downarrow} \cdot \int_{-\infty}^{\infty} \frac{|\psi_{2}| r d\tau}{\int_{-\infty}^{\infty} |\psi_{2}|^2 d\tau}
-	\]
-	\[
-	= P_{\downarrow} \cdot \sin\theta d\theta d\varphi \int_{-\infty}^{\infty} \frac{|\psi_{2}| r d\tau}{\int_{-\infty}^{\infty} |\psi_{2}|^2 d\tau}
-	\]
+	= P_{\downarrow} \cdot \sin\theta d\theta d\varphi \int_{0}^{\infty} \frac{|\psi_{2}|^2 r^2 dr}{\int_{-\infty}^{\infty} |\psi_{2}|^2 d\tau}
+\]
 	
 	(3) $P_{\uparrow}$
 \end{solution}
@@ -5070,17 +5009,17 @@ Y_l^m(\theta, \varphi) = \sqrt{\frac{(2l+1)(l-m)!}{4\pi(l+m)!}} e^{im\varphi} P_
 归一化条件 $|\alpha|^2 + |\beta|^2 = 1$
 
 \[
-\alpha^2 + \left(\frac{\sin \frac{\theta}{2}}{\cos \frac{\theta}{2}}\right)^2 \alpha^2 = 1
+|\alpha|^2 + \left(\frac{\sin \frac{\theta}{2}}{\cos \frac{\theta}{2}}\right)^2 |\alpha|^2 = 1
 \]
 \[
-\left(1 + \frac{\sin^2 \frac{\theta}{2}}{\cos^2 \frac{\theta}{2}}\right) \alpha^2 = 1 \Rightarrow \alpha = \cos \frac{\theta}{2}
+\left(1 + \frac{\sin^2 \frac{\theta}{2}}{\cos^2 \frac{\theta}{2}}\right) |\alpha|^2 = 1 \Rightarrow \alpha = \cos \frac{\theta}{2}
 \]
 
 则 $\beta = \sin \frac{\theta}{2} \cdot e^{i\varphi}$
 
 则 $|S_{n+}\rangle = \begin{bmatrix} \cos \frac{\theta}{2} \\ \sin \frac{\theta}{2} \cdot e^{i\varphi} \end{bmatrix}$
 
-同理可得 $|S_{n-}\rangle = \begin{bmatrix} \cos \frac{\theta}{2} \\ -\sin \frac{\theta}{2} \cdot e^{i\varphi} \end{bmatrix}$
+同理可得 $|S_{n-}\rangle = \begin{bmatrix} -e^{-i\varphi}\sin \frac{\theta}{2} \\ \cos \frac{\theta}{2} \end{bmatrix}$
 \section{角动量的合成}
 \subsection{两个一般角动量的合成}
 
@@ -5117,7 +5056,7 @@ m = -J, -J+1, \ldots, J-1, J
 
 而 $m$ 的取值为 $-J, -J+1, \ldots, J-1, J$
 
-\subsection{双自旋$\frac{1}{2}$粒子}
+\subsection{双自旋\texorpdfstring{$\frac{1}{2}$}{1/2}粒子}
 \[
 S_1 = \frac{1}{2} \quad S_2 = \frac{1}{2}
 \]
@@ -5157,23 +5096,20 @@ $\text{自旋单态} \quad |0, 0\rangle$
 
 这意味着
 \begin{align*}
-	[\hat{J}, \hat{H}] &\neq 0 \\
+	[\hat{J}, \hat{H}] &= 0 \\
 	[\hat{J}_1, \hat{H}] &\neq 0 \\
-	[\hat{J}_2, \hat{H}] &= 0
+	[\hat{J}_2, \hat{H}] &\neq 0
 \end{align*}
 反过来也可以推。
 
 \begin{itemize}
 	\item 几个对易关系
 	\begin{align*}
-		[\hat{J}_1, \hat{J}_2] &= 0 \quad \text{: } \hat{J}_1, \hat{J}_2 \text{ 处于两个不同的空间，测量相互不影响} \\
-		[\hat{J}_i, \hat{J}_\alpha] &= 0 \\
-		[\hat{J}_i^2, \hat{J}_j^2] &= 0 : [\hat{J}_i^2 + \hat{J}_j^2 + 2\hat{J}_i\hat{J}_j, \hat{J}_i] = 0 \\
-		[\hat{J}_1^2, \hat{J}_2^2] &= 0 \quad \text{同上} \\
-		[\hat{J}_2, \hat{J}_1^2] &= 0 : [\hat{J}_{12} + \hat{J}_{22}, \hat{J}_1^2] = 0 \\
-		[\hat{J}_2^2, \hat{J}_1^2] &= 0 \quad \text{同上} \\
-		[\hat{J}_i, \hat{J}_{12}] &= [\hat{J}_i^2 + \hat{J}_j^2 + 2\hat{J}_i\hat{J}_j, \hat{J}_{12}] = 2(\hat{J}_i[\hat{J}_2, \hat{J}_\alpha] + [\hat{J}_i, \hat{J}_\alpha]\hat{J}_2) \\
-		[\hat{J}_i^2, \hat{J}_{12}] &\neq 0
+		[\hat{J}_{1\alpha}, \hat{J}_{2\beta}] &= 0 \quad \text{: } \hat{J}_1, \hat{J}_2 \text{ 处于两个不同的空间，测量相互不影响} \\
+		[\hat{J}_1^2, \hat{J}_2^2] &= 0 \\
+		[\hat{J}_1^2, \hat{J}^2] &= 0,\quad [\hat{J}_2^2, \hat{J}^2] = 0 \\
+		[\hat{J}^2, \hat{J}_z] &= 0,\quad [\hat{J}_1^2, \hat{J}_z] = 0,\quad [\hat{J}_2^2, \hat{J}_z] = 0 \\
+		[\hat{J}_{1z}, \hat{J}^2] &\neq 0,\quad [\hat{J}_{2z}, \hat{J}^2] \neq 0
 	\end{align*}
 \end{itemize}
 
@@ -5186,18 +5122,16 @@ $\text{自旋单态} \quad |0, 0\rangle$
 \hat{H}_{SO} = \xi(r) \hat{L} \cdot \hat{S}
 \]
 
-\[
 \begin{align*}
 	[\hat{L}_z, \hat{H}_{SO}] &= \xi(r) [\hat{L}_z, \hat{L}_x \hat{S}_x + \hat{L}_y \hat{S}_y + \hat{L}_z \hat{S}_z] \\
 	&= \xi(r) (i \hbar \hat{L}_y \hat{S}_x - i \hbar \hat{L}_x \hat{S}_y) \\
 	[\hat{S}_z, \hat{H}_{SO}] &= \xi(r) [\hat{S}_z, \hat{L}_x \hat{S}_x + \hat{L}_y \hat{S}_y + \hat{L}_z \hat{S}_z] \\
 	&= \xi(r) (i \hbar \hat{L}_x \hat{S}_y - i \hbar \hat{L}_y \hat{S}_x)
 \end{align*}
-\]
 
 同理有：$\hat{L}_x, \hat{L}_y, \hat{S}_x, \hat{S}_y$ 与 $\hat{H}_{SO}$ 不对易。
 
-于是 $\hat{L}$ 和 $\hat{S}$ 不是守恒量。
+于是 $\hat{L}$ 和 $\hat{S}$ 的各分量一般不是守恒量。
 
 然而，如果我们令 $\hat{J} = \hat{L} + \hat{S}$，则
 \[
@@ -5208,7 +5142,7 @@ $\text{自旋单态} \quad |0, 0\rangle$
 
 因此 $\hat{J}$ 是个守恒量。
 
-因为 $\hat{L}$ 和 $\hat{S}$ 不为守恒量，用它们构建 CSCO 一般不太方便，我们可以选择用守恒量 $\hat{J}$ 来构建 CSCO。
+因为 $\hat{L}_z$ 和 $\hat{S}_z$ 一般不为守恒量，用它们构建 CSCO 一般不太方便，我们可以选择用守恒量 $\hat{J}$ 来构建 CSCO。
 
 \textbf{L-S 耦合和 J-J 耦合}
 
@@ -5247,30 +5181,27 @@ L_1, S_1; \quad L_2, S_2; \quad \ldots; \quad L_i, S_i; \quad \ldots; \quad L_N,
 
 对于单个的 $\hat{J}_1$，知道了 $\hat{J}_1^2$ 和 $\hat{J}_{1z}$ 的共同本征矢 $|j_1, m_1\rangle$ 我们就知晓了 $\hat{J}_1$ 的所有信息。对于单个的 $\hat{J}_2$，知道了 $\hat{J}_2^2$ 和 $\hat{J}_{2z}$ 的共同本征矢 $|j_2, m_2\rangle$ 我们就知晓了 $\hat{J}_2$ 的所有信息。
 
-知道了 $\hat{J}_1, \hat{J}_2$ 的信息则该系统的所有信息都被确定了。于是 $\{\hat{J}_1, \hat{J}_2, \hat{J}_1^2, \hat{J}_2^2\}$ 构成一组 CSCO（完备集），维数为4。
+知道了 $\hat{J}_1, \hat{J}_2$ 的信息则该系统的所有信息都被确定了。于是 $\{\hat{J}_1^2, \hat{J}_{1z}, \hat{J}_2^2, \hat{J}_{2z}\}$ 构成一组 CSCO（完备集），维数为4。
 
-基矢为 $|j, m, j_z, m_z\rangle$ 有：
+基矢为 $|j_1, m_1; j_2, m_2\rangle$ 有：
 \[
-\hat{J}^2 |j, m, j_z, m_z\rangle = j(j+1) \hbar^2 |j, m, j_z, m_z\rangle
+\hat{J}_1^2 |j_1, m_1; j_2, m_2\rangle = j_1(j_1+1) \hbar^2 |j_1, m_1; j_2, m_2\rangle
 \]
 \[
-\hat{J}_z |j, m, j_z, m_z\rangle = m \hbar |j, m, j_z, m_z\rangle
+\hat{J}_{1z} |j_1, m_1; j_2, m_2\rangle = m_1 \hbar |j_1, m_1; j_2, m_2\rangle
 \]
 \[
-\hat{J}_1^2 |j, m, j_z, m_z\rangle = j_1(j_1+1) \hbar^2 |j, m, j_z, m_z\rangle
+\hat{J}_2^2 |j_1, m_1; j_2, m_2\rangle = j_2(j_2+1) \hbar^2 |j_1, m_1; j_2, m_2\rangle
 \]
 \[
-\hat{J}_2^2 |j, m, j_z, m_z\rangle = j_2(j_2+1) \hbar^2 |j, m, j_z, m_z\rangle
-\]
-\[
-\hat{J}_{2z} |j, m, j_z, m_z\rangle = m_2 \hbar |j, m, j_z, m_z\rangle
+\hat{J}_{2z} |j_1, m_1; j_2, m_2\rangle = m_2 \hbar |j_1, m_1; j_2, m_2\rangle
 \]
 
 在非耦合表象中并没有出现总角动量 $\hat{J}$，故称其为非耦合表象。
 
 例如上节中的 $|\uparrow \uparrow \rangle$，$|\downarrow \downarrow \rangle$。
 \subsection{耦合表象}
-在此问题中，引入 $j = j_1 + j_2$，则 $\hat{J}^2, \hat{J}_z, \hat{J}_1^2, \hat{J}_2^2$ 也是两两对易的，$\{\hat{J}^2, \hat{J}_z, \hat{J}_1^2, \hat{J}_2^2\}$ 也构成一组 CSCO（完备集）。
+在此问题中，引入总角动量量子数 $j,m$，则 $\hat{J}^2, \hat{J}_z, \hat{J}_1^2, \hat{J}_2^2$ 也是两两对易的，$\{\hat{J}^2, \hat{J}_z, \hat{J}_1^2, \hat{J}_2^2\}$ 也构成一组 CSCO（完备集）。
 
 基矢为 $|j, m, j_1, j_2\rangle$ 有：
 \[
@@ -5287,7 +5218,7 @@ L_1, S_1; \quad L_2, S_2; \quad \ldots; \quad L_i, S_i; \quad \ldots; \quad L_N,
 \]
 
 例如上节中的 $|1, 1\rangle, |1, 0\rangle, |1, -1\rangle, |0, 0\rangle$。
-\subsection{双自旋$\frac{1}{2}$系统非耦合表象和耦合表象的联系}
+\subsection{双自旋\texorpdfstring{$\frac{1}{2}$}{1/2}系统非耦合表象和耦合表象的联系}
 \begin{table}[h]
 	\centering
 	\begin{tabular}{|c|c|}
@@ -5302,7 +5233,7 @@ L_1, S_1; \quad L_2, S_2; \quad \ldots; \quad L_i, S_i; \quad \ldots; \quad L_N,
 
 求 $|10\rangle$ 和 $|00\rangle$ 在非耦合表象下的形式。
 
-由正交归一性，$|10\rangle$ 和 $|00\rangle$ 应不含 $|\uparrow\downarrow\rangle$ 和 $|\downarrow\downarrow\rangle$ 的成分。于是令
+由 \(m=0\) 可知，$|10\rangle$ 和 $|00\rangle$ 应不含 $|\uparrow\uparrow\rangle$ 和 $|\downarrow\downarrow\rangle$ 的成分。于是令
 \[
 |10\rangle = c_1 |\uparrow\downarrow\rangle + c_2 |\downarrow\uparrow\rangle
 \]
@@ -5312,19 +5243,16 @@ L_1, S_1; \quad L_2, S_2; \quad \ldots; \quad L_i, S_i; \quad \ldots; \quad L_N,
 
 对于 $|10\rangle$，有
 \[
-\hat{S}_- |10\rangle = \sqrt{1(1+1) - 1(1-1)} \hbar |10\rangle
+\hat{S}_- |1,1\rangle = \sqrt{1(1+1) - 1(1-1)} \hbar |1,0\rangle
 \]
 \[
-|10\rangle = \frac{1}{\sqrt{2}} \hat{S}_- |11\rangle
+|10\rangle = \frac{1}{\sqrt{2}\hbar} \hat{S}_- |11\rangle
 \]
 \[
-= \frac{1}{\sqrt{2}} (\hat{S}_- + \hat{S}_{2-}) |\uparrow\uparrow\rangle
+= \frac{1}{\sqrt{2}\hbar} (\hat{S}_{1-} + \hat{S}_{2-}) |\uparrow\uparrow\rangle
 \]
 \[
-= \frac{1}{\sqrt{2}} \left[ (\hat{S}_- |\uparrow\rangle) |\uparrow\rangle + |\uparrow\rangle (\hat{S}_- |\uparrow\rangle) \right]
-\]
-\[
-= \frac{1}{\sqrt{2}} \left( \hbar |\downarrow\rangle + \hbar |\downarrow\rangle \right)
+= \frac{1}{\sqrt{2}\hbar} \left[ (\hat{S}_{1-} |\uparrow\rangle) |\uparrow\rangle + |\uparrow\rangle (\hat{S}_{2-} |\uparrow\rangle) \right]
 \]
 \[
 = \frac{1}{\sqrt{2}} (|\downarrow\uparrow\rangle + |\uparrow\downarrow\rangle)
@@ -5338,10 +5266,10 @@ L_1, S_1; \quad L_2, S_2; \quad \ldots; \quad L_i, S_i; \quad \ldots; \quad L_N,
 (\hat{S}_{1+} + \hat{S}_{2+}) (c_3 |\uparrow\downarrow\rangle + c_4 |\downarrow\uparrow\rangle) = 0
 \]
 \[
-c_3 (\hat{S}_{1+} |\uparrow\rangle) |\downarrow\rangle_2 + c_4 (\hat{S}_{2+} |\downarrow\rangle) |\uparrow\rangle_2 + c_3 |\uparrow\rangle_1 (\hat{S}_{2+} |\downarrow\rangle) + c_4 |\downarrow\rangle_1 (\hat{S}_{1+} |\uparrow\rangle) = 0
+c_3 (\hat{S}_{1+} |\uparrow\rangle) |\downarrow\rangle_2 + c_3 |\uparrow\rangle_1 (\hat{S}_{2+} |\downarrow\rangle) + c_4 (\hat{S}_{1+} |\downarrow\rangle) |\uparrow\rangle_2 + c_4 |\downarrow\rangle_1 (\hat{S}_{2+} |\uparrow\rangle) = 0
 \]
 \[
-c_4 |\uparrow\uparrow\rangle + c_3 |\uparrow\uparrow\rangle = 0
+(c_3+c_4)\hbar |\uparrow\uparrow\rangle = 0
 \]
 \[
 \Longrightarrow c_3 = -c_4
@@ -5366,23 +5294,4 @@ c_4 |\uparrow\uparrow\rangle + c_3 |\uparrow\uparrow\rangle = 0
 	\item 纠缠态：不能写成两个单粒子态矢的简单直积形式的态称作纠缠态。
 \end{itemize}
 
-\begin{tikzpicture}[>=stealth]
-	% 定义节点
-	\node (X) at (0,2) {$X$};
-	\node (Y) at (4,2) {$Y$};
-	\node (Xpp) at (0,0) {$X''$};
-	\node (Ypp) at (4,0) {$Y''$};
-	
-	% 绘制箭头
-	\draw[->] (X) -- node[above] {$T$} (Y);
-	\draw[->] (X) -- node[left] {$J_X$} (Xpp);
-	\draw[->] (Y) -- node[right] {$J_Y$} (Ypp);
-	\draw[->] (Xpp) -- node[below] {$T^{**}$} (Ypp);
-	
-	% 添加说明文字
-	\node[align=left] at (10,2) {For any $x \in X, f \in Y'$:};
-	\node[align=left] at (10,1) {$T^{**}(J_X(x))(f) = (T^*)'(J_X(x))(f) = J_X(x)(T^*f) = (T^*f)(x) = f(Tx)$};
-	\node[align=left] at (10,0) {$J_Y(Tx)(f) = f(Tx)$};
-	\node[align=left] at (10,-1) {$\Rightarrow J_Y(Tx) = T^{**}(J_X(x))$};
-\end{tikzpicture}
 \end{document}
