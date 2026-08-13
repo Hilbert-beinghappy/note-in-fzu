@@ -1,5 +1,9 @@
 # FZU 数综课程笔记与推免复盘
 
+<p align="center">
+  <strong>📕 <a href="https://www.xiaohongshu.com/user/profile/63e13ff300000000260108ee">点击访问我的小红书主页（Hilbert）</a></strong>
+</p>
+
 ## 一、这份仓库是什么
 
 这是我在福州大学数学与应用数学相关方向读本科时留下的学习记录，主要包括：
@@ -204,4 +208,4 @@
 如果这份资料能帮你少踩几个坑，那它就有价值。祝你顺利。
 
 ---
-学长在小红书也有账号，id为Hilbert，头像和Github一样，有什么问题可以关注学长，来私聊学长哦。
+学长在小红书也有账号：[Hilbert](https://www.xiaohongshu.com/user/profile/63e13ff300000000260108ee)（头像和 GitHub 一样）。有问题可以关注学长，来私聊哦。
